@@ -10,5 +10,7 @@
  * @version    2.0.0-0
  */
 
-//Globale Konstanten
-define('PATH_SHC', __DIR__);           //Pfad zum Hauptordner des SHC
+//SHC Grundkonfiguration
+define('PATH_SHC', __DIR__);                                                     //Pfad zum Hauptordner des SHC
+define('PATH_SHC_STORAGE', PATH_SHC . 'data/storage/');                         //Pfad zum Speicherordner des SHC
+define('PATH_SHC_LOG', PATH_SHC . 'data/log/');                                 //Pfad zum Logordner des SHC

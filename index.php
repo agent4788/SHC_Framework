@@ -14,5 +14,5 @@
 error_reporting(E_ALL | E_ERROR | E_NOTICE | E_PARSE | E_STRICT | E_WARNING);
 
 //Includes
-require_once(__DIR__ . '/rwf/lib/global.php');
+require_once(__DIR__ . '/rwf/global.php');
 
