@@ -2,6 +2,9 @@
 
 namespace RWF\ClassLoader;
 
+//Imports
+use RWF\ClassLoader\Exception\ClassNotFoundException;
+
 /**
  * Klassen Laden
  * 
@@ -26,25 +29,56 @@ class ClassLoader {
      * @var Array 
      */
     protected $namespaces = array();
+    
+    /**
+     * vom Packer ausgeschlossene Dateien/Ordner
+     * 
+     * @var Array 
+     */
+    protected $excludes = array('classloader.class.php', 'classnotfoundexception.class.php', 'error.class.php');
+    
+    /**
+     * gibt an ob die Klassendatei schon geladen wurde
+     * 
+     * @var Boolean 
+     */
+    protected $classesLoaded = false;
 
     public function __construct() {
 
+        //eigenen Namensraum anmelden
         $this->registerBaseNamespace('RWF', PATH_RWF_CLASSES);
+    }
+    
+    /**
+     * schliest eine Datei vom AUtoload aus
+     * 
+     * @param String $file Dateiname
+     */
+    public function addExclude($file) {
+        
+        $this->excludes[] = $file;
     }
 
     /**
      * laedt alle Klassen durch die gepackte Klassendatei
      */
-    public function loadAllClasses() {
+    public function loadAllClasses($class = '') {
 
+        //pruefen ob Klassendatei schon geladen
+        if($this->classesLoaded === true) {
+            
+            throw new ClassNotFoundException($class, 1004, 'Die Klasse "'. $class .'" konnte nicht geladen werden oder existiert nicht');
+        }
+        
         //Classes.php erstellen falls nicht vorhanden
-//        if (!file_exists(PATH_RWF_CACHE . 'classes.php')) {
-//
-//            $this->pack();
-//        }
-        $this->pack();
+        if (!file_exists(PATH_RWF_CACHE . 'classes.php')) {
+
+            $this->pack();
+        }
         //Klassendatei einbinden
         require_once(PATH_RWF_CACHE . 'classes.php');
+        $this->classesLoaded = true;
     }
 
     /**
@@ -67,7 +101,7 @@ class ClassLoader {
         foreach ($this->namespaces as $classPath) {
 
             //Alle Ordner und Dateien durchlaufen
-            $files = $this->readFiles($classPath, array('classloader'));
+            $files = $this->readFiles($classPath, $this->excludes);
             foreach ($files as $file) {
                 
                 fwrite($classesFile, $this->packFile($file) ."\n");
@@ -112,7 +146,7 @@ class ClassLoader {
      * @param  Array  $excludes Dateien/Ordner die nicht mit eingelesen werden sollen
      * @return Array
      */
-    protected function readFiles($path = CLASS_PATH, array $excludes = array()) {
+    protected function readFiles($path, array $excludes = array()) {
 
         $files = array();
 
@@ -128,7 +162,7 @@ class ClassLoader {
                 $files[] = $path . $file;
             }
 
-            if (is_dir($path . $file) && !in_array($file, $excludes)) {
+            if (is_dir($path . $file)) {
 
                 $result = $this->readFiles($path . $file . '/', $excludes);
                 $files = array_merge($files, $result);
@@ -176,16 +210,20 @@ class ClassLoader {
             if (file_exists($path)) {
 
                 @require_once($path);
+                //pruefen ob Klasse jetzt bekannt
                 if (!class_exists($class, false) || !interface_exists($class, false)) {
 
-                    throw new Exception\ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
+                    throw new ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
                 }
+                
+                //Return wenn die Klasse erfolgreich geladen wurde
+                return true;
             } else {
 
-                throw new Exception\ClassNotFoundException($class, 1001, 'Die Klasse "' . $class . '" konnte nicht gefunden werden');
+                throw new ClassNotFoundException($class, 1001, 'Die Klasse "' . $class . '" konnte nicht gefunden werden');
             }
         }
-        throw new Exception\ClassNotFoundException($class, 1000, 'Unbekannter Namensraum "' . $baseNamespace . '"');
+        throw new ClassNotFoundException($class, 1000, 'Unbekannter Namensraum "' . $baseNamespace . '"');
     }
 
     /**

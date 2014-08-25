@@ -19,27 +19,42 @@ define('PATH_RWF_CACHE', PATH_RWF . 'data/cache/');                             
 define('PATH_RWF_LOG', PATH_RWF . 'data/log/');                                 //Pfad zum Logordner des Frameworks
 define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   //Pfad zum Sessionordner des Frameworks
 //Grundeinstellungen
-define('DEVELOPMENT_MODE', false);                                               //Aktiviert/Deaktiviert den Entwicklermodus
+define('DEVELOPMENT_MODE', true);                                               //Aktiviert/Deaktiviert den Entwicklermodus
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
 define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
 
 //Fehlerbehandlung initalisieren
+require_once(PATH_RWF_CLASSES . 'error/error.class.php');
+$error = new RWF\Error\Error();
+$error->enableDisplayErrors(true); //später mit DEVELOPMENT_MODE verknuepfen
+$error->enableLogErrors(true);
 
+//APP Namen ermitteln und Pruefen
+if (!isset($_GET['app']) || !file_exists(PATH_BASE . $_GET['app']) || !preg_match('#^[a-z0-9]#i', $_GET['app'])) {
 
-//Autoload initialisieren
+    //Fehler (App Name muss zwingend uebergeben werden
+    throw new Exception('Die App ist nicht bekannt', 1010);
+}
+define('APP_NAME', strtolower($_GET['app']));
+
+//Autoload Klassen Laden
 require_once(PATH_RWF_CLASSES . 'classloader/classloader.class.php');
 require_once(PATH_RWF_CLASSES . 'classloader/exception/classnotfoundexception.class.php');
 
-if (DEVELOPMENT_MODE) {
+//Einbinden der Globalen Kofiguration der Anwendung
+require_once(PATH_BASE . APP_NAME . '/global.php');
 
-    //Autoload im Entwicklermodus
-    function __autoload($class) {
-        
+//Autoload durchfuehren
+function __autoload($class) {
+
+    if (DEVELOPMENT_MODE) {
+
+        //Autoload im Entwicklermodus
         \RWF\ClassLoader\ClassLoader::getInstance()->loadClass($class);
+    } else {
+
+        //Packen und Laden der gesamten Klassendatei
+        \RWF\ClassLoader\ClassLoader::getInstance()->loadAllClasses($class);
     }
-} else {
-    
-    //Packen und Laden der gesamten Klassendatei
-    \RWF\ClassLoader\ClassLoader::getInstance()->loadAllClasses();    
 }
