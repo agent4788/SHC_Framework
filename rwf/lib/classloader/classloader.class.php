@@ -29,14 +29,14 @@ class ClassLoader {
      * @var Array 
      */
     protected $namespaces = array();
-    
+
     /**
      * vom Packer ausgeschlossene Dateien/Ordner
      * 
      * @var Array 
      */
     protected $excludes = array('classloader.class.php', 'classnotfoundexception.class.php', 'error.class.php');
-    
+
     /**
      * gibt an ob die Klassendatei schon geladen wurde
      * 
@@ -49,14 +49,14 @@ class ClassLoader {
         //eigenen Namensraum anmelden
         $this->registerBaseNamespace('RWF', PATH_RWF_CLASSES);
     }
-    
+
     /**
      * schliest eine Datei vom AUtoload aus
      * 
      * @param String $file Dateiname
      */
     public function addExclude($file) {
-        
+
         $this->excludes[] = $file;
     }
 
@@ -66,11 +66,11 @@ class ClassLoader {
     public function loadAllClasses($class = '') {
 
         //pruefen ob Klassendatei schon geladen
-        if($this->classesLoaded === true) {
-            
-            throw new ClassNotFoundException($class, 1004, 'Die Klasse "'. $class .'" konnte nicht geladen werden oder existiert nicht');
+        if ($this->classesLoaded === true) {
+
+            throw new ClassNotFoundException($class, 1004, 'Die Klasse "' . $class . '" konnte nicht geladen werden oder existiert nicht');
         }
-        
+
         //Classes.php erstellen falls nicht vorhanden
         if (!file_exists(PATH_RWF_CACHE . 'classes.php')) {
 
@@ -103,8 +103,8 @@ class ClassLoader {
             //Alle Ordner und Dateien durchlaufen
             $files = $this->readFiles($classPath, $this->excludes);
             foreach ($files as $file) {
-                
-                fwrite($classesFile, $this->packFile($file) ."\n");
+
+                fwrite($classesFile, $this->packFile($file) . "\n");
             }
         }
 
@@ -130,11 +130,11 @@ class ClassLoader {
         //PHP Tags entfernen
         $content = preg_replace('#<\\?php#', '', $content);
         $content = preg_replace('#\\?>#', '', $content);
-        
+
         //unnoetige Leerzeichen und Leerzeilen entfernen
         $content = preg_replace('#^\s*$#', '', $content);
         $content = trim($content);
-        
+
         //Inhalt zurueckgeben
         return $content;
     }
@@ -203,7 +203,9 @@ class ClassLoader {
         if (isset($this->namespaces[$baseNamespace])) {
 
             //Versuchen Klasse zu laden
-            $path = preg_replace(array('#^(\S+)\\\\#', '#\\\\#'), array('', '/'), $class);
+            $path = preg_replace('#^' . $baseNamespace . '\\\\#i', '', $class);
+            $path = preg_replace('#\\\\' . $className . '$#i', '', $path);
+            $path = str_replace('\\', '/', $path);
             $path = strtolower($path);
             $path = $this->namespaces[$baseNamespace] . $path . '/' . $className . '.class.php';
 
@@ -211,11 +213,11 @@ class ClassLoader {
 
                 @require_once($path);
                 //pruefen ob Klasse jetzt bekannt
-                if (!class_exists($class, false) || !interface_exists($class, false)) {
+                if (!class_exists($class, false) && !interface_exists($class, false)) {
 
                     throw new ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
                 }
-                
+
                 //Return wenn die Klasse erfolgreich geladen wurde
                 return true;
             } else {
