@@ -23,6 +23,18 @@ define('DEVELOPMENT_MODE', true);                                               
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
 define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
+//Zugriffsmethode
+if(PHP_SAPI == 'cli') {
+    
+    //per Kommandozeile
+    define('ACCESS_METHOD_CLI', true);
+    define('ACCESS_METHOD_HTTP', false);
+} else {
+    
+    //Per Browser
+    define('ACCESS_METHOD_CLI', false);
+    define('ACCESS_METHOD_HTTP', true);
+}
 
 //Fehlerbehandlung initalisieren
 require_once(PATH_RWF_CLASSES . 'error/error.class.php');

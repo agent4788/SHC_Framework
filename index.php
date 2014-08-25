@@ -15,3 +15,11 @@ error_reporting(E_ALL | E_ERROR | E_NOTICE | E_PARSE | E_STRICT | E_WARNING);
 
 //Includes
 require_once(__DIR__ . '/rwf/global.php');
+
+$class = '\\' . APP_NAME .'\\core\\' . APP_NAME;
+/* @var $app RWF\Core\RWF */
+$app = new $class();
+
+var_dump($app);
+
+$app->finalize();
