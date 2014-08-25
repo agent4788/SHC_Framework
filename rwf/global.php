@@ -20,6 +20,7 @@ define('PATH_RWF_LOG', PATH_RWF . 'data/log/');                                 
 define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   //Pfad zum Sessionordner des Frameworks
 //Grundeinstellungen
 define('DEVELOPMENT_MODE', true);                                               //Aktiviert/Deaktiviert den Entwicklermodus
+define('RWF_COOKIE_PREFIX', 'rwf_');                                            //Cookie Prefix
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
 define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
