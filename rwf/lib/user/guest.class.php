@@ -1,0 +1,87 @@
+<?php
+
+namespace RWF\User;
+
+/**
+ * Gast
+ * 
+ * @author     Oliver Kleditzsch
+ * @copyright  Copyright (c) 2014, Oliver Kleditzsch
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since      2.0.0-0
+ * @version    2.0.0-0
+ */
+class Guest implements Visitor {
+
+    /**
+     * Benutzer Hauptgruppe
+     * 
+     * @var RWF\User\UserGroup 
+     */
+    protected $mainGroup = null;
+
+    /**
+     * @param \RWF\User\UserGroup $mainGroup Benutzergruppe
+     */
+    public function __construct(UserGroup $mainGroup) {
+
+        $this->mainGroup = $mainGroup;
+    }
+
+    /**
+     * gibt an ob der Benutzer der Gruender der Seite ist
+     * 
+     * @return Boolean
+     */
+    public function isOriginator() {
+
+        return false;
+    }
+
+    /**
+     * gibt den Sprach Code zurueckk
+     * 
+     * @return String
+     */
+    public function getLanguage() {
+
+        return null;
+    }
+
+    /**
+     * gibt das Gruppenobjekt der Hauptgruppe zurueck
+     * 
+     * @return RWF\User\User\Group
+     */
+    public function getMainGroup() {
+
+        return $this->mainGroup;
+    }
+
+    /**
+     * gibt ein Array mit allen Gruppenobjekten des Users zurueck
+     * 
+     * @return Array
+     */
+    public function listGroups() {
+
+        return array();
+    }
+
+    /**
+     * prueft die Berechtigung des Benutzers (die rechte ergeben sich aus den Benutzergruppen)
+     * 
+     * @param  String  $premission Recht
+     * @return Boolean
+     */
+    public function checkPremission($premission) {
+
+        //Hauptgruppe
+        if ($this->mainGroup instanceof UserGroup && $this->mainGroup->checkPremission($premission) === true) {
+
+            return true;
+        }
+        return false;
+    }
+
+}
