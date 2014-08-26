@@ -142,9 +142,9 @@ class XmlFileManager {
     /**
      * gibt die Instanz des XmlFileManagers zurueck
      * 
-     * @return RWF\XML\XmlFileManager
+     * @return \RWF\XML\XmlFileManager
      */
-    public function getInstance() {
+    public static function getInstance() {
 
         if (self::$instance === null) {
 
