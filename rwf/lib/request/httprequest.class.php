@@ -70,6 +70,7 @@ class HttpRequest implements Request {
             }
         }
 
+        //Superglobale Variablen
         $this->httpVars['post'] = $_POST;
         $this->httpVars['get'] = $_GET;
         $this->httpVars['server'] = $_SERVER;
@@ -77,6 +78,9 @@ class HttpRequest implements Request {
         $this->httpVars['file'] = $_FILES;
         $this->httpVars['env'] = $_ENV;
         $this->httpVars['request'] = $_REQUEST;
+        
+        //Cookies Einlesen
+        $this->readCookies();
     }
 
     /**
