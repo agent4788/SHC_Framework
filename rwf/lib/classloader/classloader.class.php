@@ -164,7 +164,7 @@ class ClassLoader {
     /**
      * gibt den Classloader zurueck
      * 
-     * @return RWF\ClassLoader\ClassLoader  
+     * @return \RWF\ClassLoader\ClassLoader  
      */
     public static function getInstance() {
 
