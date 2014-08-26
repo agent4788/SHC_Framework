@@ -25,13 +25,13 @@ define('RWF_COOKIE_PREFIX', 'rwf_');                                            
 define('TIME_NOW', time());
 define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
 //Zugriffsmethode
-if(PHP_SAPI == 'cli') {
-    
+if (PHP_SAPI == 'cli') {
+
     //per Kommandozeile
     define('ACCESS_METHOD_CLI', true);
     define('ACCESS_METHOD_HTTP', false);
 } else {
-    
+
     //Per Browser
     define('ACCESS_METHOD_CLI', false);
     define('ACCESS_METHOD_HTTP', true);
@@ -61,13 +61,5 @@ require_once(PATH_BASE . APP_NAME . '/global.php');
 //Autoload durchfuehren
 function __autoload($class) {
 
-    if (DEVELOPMENT_MODE) {
-
-        //Autoload im Entwicklermodus
-        \RWF\ClassLoader\ClassLoader::getInstance()->loadClass($class);
-    } else {
-
-        //Packen und Laden der gesamten Klassendatei
-        \RWF\ClassLoader\ClassLoader::getInstance()->loadAllClasses($class);
-    }
+    \RWF\ClassLoader\ClassLoader::getInstance()->loadClass($class);
 }

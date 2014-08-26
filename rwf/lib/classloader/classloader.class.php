@@ -29,14 +29,7 @@ class ClassLoader {
      * @var Array 
      */
     protected $namespaces = array();
-
-    /**
-     * vom Packer ausgeschlossene Dateien/Ordner
-     * 
-     * @var Array 
-     */
-    protected $excludes = array('classloader.class.php', 'classnotfoundexception.class.php', 'error.class.php');
-
+    
     /**
      * gibt an ob die Klassendatei schon geladen wurde
      * 
@@ -48,68 +41,6 @@ class ClassLoader {
 
         //eigenen Namensraum anmelden
         $this->registerBaseNamespace('RWF', PATH_RWF_CLASSES);
-    }
-
-    /**
-     * schliest eine Datei vom AUtoload aus
-     * 
-     * @param String $file Dateiname
-     */
-    public function addExclude($file) {
-
-        $this->excludes[] = $file;
-    }
-
-    /**
-     * laedt alle Klassen durch die gepackte Klassendatei
-     */
-    public function loadAllClasses($class = '') {
-
-        //pruefen ob Klassendatei schon geladen
-        if ($this->classesLoaded === true) {
-
-            throw new ClassNotFoundException($class, 1004, 'Die Klasse "' . $class . '" konnte nicht geladen werden oder existiert nicht');
-        }
-
-        //Classes.php erstellen falls nicht vorhanden
-        if (!file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
-
-            $this->pack();
-        }
-        //Klassendatei einbinden
-        require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
-        $this->classesLoaded = true;
-    }
-
-    /**
-     * packt alle Klassen in eine Datei
-     * (aus den vorher registrierten Namensraeumen)
-     */
-    protected function pack() {
-
-        //pruefen ob Schreibrechte vorhanden
-        if (!is_writeable(PATH_RWF_CACHE)) {
-
-            throw new \Exception('Die "classes.php" kann wegen felenden Schreibrechten nicht erstellt werden', 1003);
-        }
-
-        //Datei oeffnen und Inhalt initialisieren
-        $classesFile = fopen(PATH_RWF_CACHE . APP_NAME .'_classes.php');
-        fwrite($classesFile, "<?php \n\n/**\n * Diese Datei wird automatisch erstellt und sollte nicht von Hand veraendert werden\n * Erstellt am: " . date('r') . "\n * @author Oliver Kleditzsch\n * @copyright Copyright (c) " . date('Y') . ", Oliver Kleditzsch\n * @license http://opensource.org/licenses/gpl-license.php GNU Public License\n*/\n");
-
-        //Alle Namensraume durchlaufen
-        foreach ($this->namespaces as $classPath) {
-
-            //Alle Ordner und Dateien durchlaufen
-            $files = $this->readFiles($classPath, $this->excludes);
-            foreach ($files as $file) {
-
-                fwrite($classesFile, $this->packFile($file) . "\n");
-            }
-        }
-
-        //Datei schliesen
-        fclose($classesFile);
     }
 
     /**
@@ -140,39 +71,6 @@ class ClassLoader {
     }
 
     /**
-     * Filtert alle .class.php Dateien aus einem Ordner und gibt die Dateinamen als Array zurück
-     * 
-     * @param  String $path     Pfad
-     * @param  Array  $excludes Dateien/Ordner die nicht mit eingelesen werden sollen
-     * @return Array
-     */
-    protected function readFiles($path, array $excludes = array()) {
-
-        $files = array();
-
-        $dir = opendir($path);
-        while ($file = readdir($dir)) {
-
-            if ($file == '.' || $file == '..') {
-                continue;
-            }
-
-            if (is_file($path . $file) && preg_match('#.class.php$#i', $path . $file) && !in_array($file, $excludes)) {
-
-                $files[] = $path . $file;
-            }
-
-            if (is_dir($path . $file)) {
-
-                $result = $this->readFiles($path . $file . '/', $excludes);
-                $files = array_merge($files, $result);
-            }
-        }
-
-        return $files;
-    }
-
-    /**
      * registriert einen Basis Namensraum und den zugehoerigen Klassen Pfad
      * 
      * @param String $namespace Basisnamensraum
@@ -190,6 +88,18 @@ class ClassLoader {
      */
     public function loadClass($class) {
 
+        //Classes PHP Laden falls nicht schon geschehen
+        if(!DEVELOPMENT_MODE && $this->classesLoaded === false && is_file(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
+            
+            require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
+            $this->classesLoaded = true;
+            
+            if (class_exists($class, false) && interface_exists($class, false)) {
+                
+                return true;
+            }
+        }
+        
         //Basis Namensraum
         $matches = array();
         preg_match('#^(\S+?)\\\\#', $class, $matches);
@@ -218,6 +128,22 @@ class ClassLoader {
                     throw new ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
                 }
 
+                //Wenn Klasse erfolgreich geladen und development Modus aus die Klasse an die classes.php anheangen
+                if(!DEVELOPMENT_MODE) {
+                    
+                    //Schreibrechte pruefen
+                    if(!is_writable(PATH_RWF_CACHE)) {
+                        
+                        throw new ClassNotFoundException($class, 1003, 'Die classes.php kann wegen felenden Schreibrechten nicht erstellt werden');
+                    }
+                    
+                    //Classes.php initalisieren falls die Datei noch nicht existiert
+                    if(!file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
+                        
+                        file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', "<?php \n\n/**\n * Diese Datei wird automatisch erstellt und sollte nicht von Hand veraendert werden\n * Erstellt am: " . date('r') . "\n * @author Oliver Kleditzsch\n * @copyright Copyright (c) " . date('Y') . ", Oliver Kleditzsch\n * @license http://opensource.org/licenses/gpl-license.php GNU Public License\n*/\n");
+                    }
+                    file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($path), FILE_APPEND);
+                }
                 //Return wenn die Klasse erfolgreich geladen wurde
                 return true;
             } else {
