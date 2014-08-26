@@ -7,6 +7,7 @@ use RWF\Request\HttpRequest;
 use RWF\Request\HttpResponse;
 use RWF\Request\CliRequest;
 use RWF\Request\CliResponse;
+use RWF\Session\Session;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -33,6 +34,13 @@ class RWF {
      */
     protected static $response = null;
     
+    /**
+     * Sessionobjekt
+     * 
+     * @var RWF\Session\Session 
+     */
+    protected static $session = null;
+    
     public function __construct() {
         
         //Multibyte Engine Konfigurieren
@@ -47,12 +55,13 @@ class RWF {
         
         //Anfrage/Antwort initialisieren
         $this->initRequest();
+        $this->initSession();
     }
     
     /**
      * initalisiert die Anfrage und Antwortobjekte
      */
-    public function initRequest() {
+    protected function initRequest() {
         
         if(ACCESS_METHOD_HTTP) {
             
@@ -63,6 +72,14 @@ class RWF {
             self::$request = new CliRequest();
             self::$response = new CliResponse();
         }
+    }
+    
+    /**
+     * initialisiert die Session
+     */
+    protected function initSession() {
+        
+        self::$session = new Session();
     }
     
     /**
@@ -86,9 +103,24 @@ class RWF {
     }
     
     /**
+     * gibt das Sessionobjekt zurueck
+     * 
+     * @return RWF\Session\Session
+     */
+    public static function getSession() {
+        
+        return self::$session;
+    }
+    
+    /**
      * beendet die Anwendung
      */
     public function finalize() {
         
+        //Sessionobjekt abschliesen
+        if(self::$session instanceof Session) {
+            
+            self::$session->finish();
+        }
     }
 }

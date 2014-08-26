@@ -47,20 +47,27 @@ class DataTypeUtil {
      * @var Integer
      */
     const MD5 = 16;
+    
+    /**
+     * Zufaelliger 64 Zeichen langer String
+     * 
+     * @var Integer
+     */
+    const STRING_64 = 32;
 
     /**
      * Array
      * 
      * @var Integer
      */
-    const ARRAY_STR = 32;
+    const ARRAY_STR = 64;
 
     /**
      * keine Datentyp bestimmung
      * 
      * @var Integer
      */
-    const PLAIN = 64;
+    const PLAIN = 128;
 
     /**
      * konvertiert den Uebergebene Wert in das gewuenschte Format und prueft dabei auf Plausibilitaet
@@ -78,25 +85,31 @@ class DataTypeUtil {
                 } elseif ((int) $value === 0 || (string) $value === 'false') {
                     return false;
                 }
-                throw new Exception('Hacking versuch entdeckt', 1011);
+                throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;
             case self::INTEGER:
                 if ((string) $value == (int) $value) {
                     return $value;
                 }
-                throw new Exception('Hacking versuch entdeckt', 1011);
+                throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;
             case self::FLOAT:
                 if ((string) $value == (float) $value) {
                     return $value;
                 }
-                throw new Exception('Hacking versuch entdeckt', 1011);
+                throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;
             case self::MD5:
-                if (preg_match('#[0-9a-f]{32}#i', $value)) {
+                if (preg_match('#^[0-9a-f]{32}$#i', $value)) {
                     return $value;
                 }
-                throw new Exception('Hacking versuch entdeckt', 1011);
+                throw new \Exception('Hacking versuch entdeckt', 1011);
+                break;
+            case self::STRING_64:
+                if (preg_match('#^[0-9a-z]{64}$#i', $value)) {
+                    return $value;
+                }
+                throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;
             case self::STRING:
             case self::PLAIN;
