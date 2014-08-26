@@ -19,7 +19,7 @@ class ClassLoader {
     /**
      * Singleton Instanz
      * 
-     * @var ClassLoader 
+     * @var RWF\ClassLoader\ClassLoader 
      */
     protected static $instance = null;
 
@@ -164,7 +164,7 @@ class ClassLoader {
     /**
      * gibt den Classloader zurueck
      * 
-     * @return ClassLoader 
+     * @return RWF\ClassLoader\ClassLoader  
      */
     public static function getInstance() {
 
