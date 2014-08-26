@@ -72,7 +72,7 @@ class DataTypeUtil {
 
         switch ($dataType) {
 
-            case self::BOOL:
+            case self::BOOLEAN:
                 if ((int) $value === 1 || (string) $value === 'true') {
                     return true;
                 } elseif ((int) $value === 0 || (string) $value === 'false') {
@@ -80,7 +80,7 @@ class DataTypeUtil {
                 }
                 throw new Exception('Hacking versuch entdeckt', 1011);
                 break;
-            case self::INT:
+            case self::INTEGER:
                 if ((string) $value == (int) $value) {
                     return $value;
                 }
