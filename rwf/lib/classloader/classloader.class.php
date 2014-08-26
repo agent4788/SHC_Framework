@@ -72,12 +72,12 @@ class ClassLoader {
         }
 
         //Classes.php erstellen falls nicht vorhanden
-        if (!file_exists(PATH_RWF_CACHE . 'classes.php')) {
+        if (!file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
 
             $this->pack();
         }
         //Klassendatei einbinden
-        require_once(PATH_RWF_CACHE . 'classes.php');
+        require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
         $this->classesLoaded = true;
     }
 
@@ -94,7 +94,7 @@ class ClassLoader {
         }
 
         //Datei oeffnen und Inhalt initialisieren
-        $classesFile = fopen(PATH_RWF_CACHE . 'classes.php', 'w');
+        $classesFile = fopen(PATH_RWF_CACHE . APP_NAME .'_classes.php');
         fwrite($classesFile, "<?php \n\n/**\n * Diese Datei wird automatisch erstellt und sollte nicht von Hand veraendert werden\n * Erstellt am: " . date('r') . "\n * @author Oliver Kleditzsch\n * @copyright Copyright (c) " . date('Y') . ", Oliver Kleditzsch\n * @license http://opensource.org/licenses/gpl-license.php GNU Public License\n*/\n");
 
         //Alle Namensraume durchlaufen
