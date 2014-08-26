@@ -1,4 +1,6 @@
 nbproject/
+rwf/data/storage/*.xml
+shc/data/storage/*.xml
 errors.txt
 todo.txt
 templateTags.txt

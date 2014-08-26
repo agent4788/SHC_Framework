@@ -4,6 +4,7 @@ namespace RWF\Error;
 
 //Imports
 use RWF\ClassLoader\Exception\ClassNotFoundException;
+use RWF\XML\Exception\XmlException;
 
 /**
  * Fehlerbehandlung
@@ -226,13 +227,13 @@ class Error {
      */
     public function handleException(\Exception $e) {
 
-//        //XML Fehler
-//        if ($e instanceof XMLException) {
-//
-//            $this->handleXMLException($e);
-//            return;
-//        }
-        
+        //XML Fehler
+        if ($e instanceof XmlException) {
+
+            $this->handleXMLException($e);
+            return;
+        }
+
         if ($e instanceof ClassNotFoundException) {
 
             $this->handelClassNotFoundException($e);
@@ -304,7 +305,7 @@ class Error {
                 echo '#' . ++$index . ' {main}' . "\n\n";
             } else {
 
-                $html = $this->createHtmlErrorHeader('SystemException - ' . $file . ' in Zeile ' . $e->getLine());
+                $html = $this->createHtmlErrorHeader('System Exception - ' . $file . ' in Zeile ' . $e->getLine());
                 $html .= '<body><div id="error_box"><div id="content">';
                 $html .= '<div id="ueberschrift">System Error</div>';
                 $html .= '<div id="error">';
@@ -342,166 +343,166 @@ class Error {
      * 
      * @param Exception $e
      */
-//    public function handleXMLException(XMLException $e) {
-//
-//        //Anzeigen
-//        if ($this->displayErrors) {
-//
-//            //Hilfsvariablen vorbereiten
-//            $file = str_replace(PATH_RWF, '', $e->getFile());
-//            $date = new \DateTime();
-//
-//            if (PHP_SAPI == 'cli') {
-//
-//                echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
-//                echo "// XML Fehler\n";
-//                echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
-//                echo "Datei:         " . $file . "\n";
-//                echo "Zeile:         " . $e->getLine() . "\n";
-//                echo "Meldung:       " . $e->getMessage() . "\n";
-//                echo "Klasse:        " . get_class($e) . "\n";
-//                echo "Fehler Nummer: " . $e->getCode() . "\n";
-//                echo "Zeit:          " . $date->format('d.m.Y H:i:s') . "\n";
-//
-//                echo "//XML error///////////////////////////////////////////////////////////////////////////////////////\n";
-//                $first = true;
-//                foreach ($e->getXmlErrors() as $error) {
-//
-//                    if ($error instanceof libXMLError) {
-//
-//                        if ($first === true) {
-//
-//                            echo "\n";
-//                        }
-//
-//                        echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
-//                        echo 'Level: ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . "\n";
-//                        echo 'Code: ' . $error->code . "\n";
-//                        echo 'Message: ' . $error->message;
-//                        echo 'Zeile: ' . $error->line . "\n";
-//                        $first = false;
-//                    }
-//                }
-//
-//                echo "//Trace///////////////////////////////////////////////////////////////////////////////////////////\n";
-//                foreach ($e->getTrace() as $index => $row) {
-//
-//                    //Daten Aufbereiten
-//                    $file = str_replace(PATH_RWF, '', (isset($row['file']) ? $row['file'] : ''));
-//
-//                    $args = '';
-//                    $comma = '';
-//                    if (isset($row['args'])) {
-//
-//                        foreach ($row['args'] as $item) {
-//
-//                            if (is_string($item)) {
-//
-//                                if (preg_match('#' . PATH_RWF . '#', $item)) {
-//
-//                                    $item = str_replace(PATH_RWF, '', $item);
-//                                    $args .= $comma . "'" . $item . "'";
-//                                } else {
-//
-//                                    $args .= $comma . "'" . (strlen($item) > 30 ? substr($item, 0, 30) . '...' : $item) . "'";
-//                                }
-//                                $comma = ', ';
-//                            } elseif (is_int($item) || is_float($item)) {
-//
-//                                $args .= $comma . $item;
-//                                $comma = ', ';
-//                            } elseif (is_array($item)) {
-//
-//                                $args .= $comma . 'Array(' . count($item) . ')';
-//                                $comma = ', ';
-//                            } elseif (is_object($item)) {
-//
-//                                $args .= $comma . get_class($item);
-//                                $comma = ', ';
-//                            }
-//                        }
-//                    }
-//
-//                    echo '#' . $index . ' ' . $file . ' @ Line: ' . (isset($row['line']) ? $row['line'] : 0) . ' ';
-//                    echo (isset($row['class']) ? $row['class'] . $row['type'] : '') . $row['function'] . '(' . $args . ')' . "\n";
-//                }
-//
-//                echo '#' . ++$index . ' {main}' . "\n\n";
-//            } else {
-//
-//                $html = $this->createHtmlErrorHeader('XMLException - ' . $file . ' in Zeile ' . $e->getLine());
-//                $html .= '<body><div id="error_box"><div id="content">';
-//                $html .= '<div id="ueberschrift">XML Error</div>';
-//                $html .= '<div id="error">';
-//                $html .= '<p>' . $this->html($e->getMessage()) . '</p>';
-//                $html .= '<table><tr><td>Klasse:</td>';
-//                $html .= '<td>' . $this->html(get_class($e)) . '</td>';
-//                $html .= '</tr><tr><td>File:</td>';
-//                $html .= '<td>' . $this->html($file) . '</td>';
-//                $html .= '</tr><tr><td>Line:</td>';
-//                $html .= '<td>' . $this->html($e->getLine()) . '</td>';
-//                $html .= '</tr><tr><td>Code:</td>';
-//                $html .= '<td>' . $this->html($e->getCode()) . '</td>';
-//                $html .= '</tr><tr><td>Stack:</td>';
-//                $html .= '<td>' . $this->formatStackTrace($e->getTrace()) . '</td>';
-//                $html .= '</tr><tr><td>XML:</td>';
-//                $html .= '<td>';
-//
-//                $first = true;
-//                foreach ($e->getXmlErrors() as $error) {
-//
-//                    if ($error instanceof libXMLError) {
-//
-//                        if ($first === false) {
-//
-//                            $html .= '<div><hr/></div>';
-//                        }
-//                        $html .= '<div><b>Level:</b> ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . '</div>';
-//                        $html .= '<div><b>Code:</b> ' . $error->code . '</div>';
-//                        $html .= '<div><b>Message:</b> ' . $error->message . '</div>';
-//                        $html .= '<div><b>Zeile:</b> ' . $error->line . '</div>';
-//                        $first = false;
-//                    }
-//                }
-//
-//                $html .= '</td>';
-//                $html .= '</tr></table></div></div></div></body></html>';
-//
-//                echo utf8_encode($html);
-//            }
-//        } else {
-//
-//            $this->displayDefaultError();
-//        }
-//
-//        //Loggen
-//        if ($this->logErrors) {
-//
-//            $first = true;
-//            $data = '';
-//            foreach ($e->getXmlErrors() as $error) {
-//
-//                if ($error instanceof libXMLError) {
-//
-//                    if ($first === true) {
-//
-//                        $data .= "\n";
-//                    }
-//
-//                    $data .= "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
-//                    $data .= 'Level: ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . "\n";
-//                    $data .= 'Code: ' . $error->code . "\n";
-//                    $data .= 'Message: ' . $error->message;
-//                    $data .= 'Zeile: ' . $error->line . "\n";
-//                    $first = false;
-//                }
-//            }
-//
-//            $this->logError('xml.log', 'XML Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('XML Fehler' => $data));
-//        }
-//
-//        exit(1);
-//    }
+    public function handleXMLException(XMLException $e) {
+
+        //Anzeigen
+        if ($this->displayErrors) {
+
+            //Hilfsvariablen vorbereiten
+            $file = str_replace(PATH_RWF, '', $e->getFile());
+            $date = new \DateTime();
+
+            if (PHP_SAPI == 'cli') {
+
+                echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
+                echo "// XML Fehler\n";
+                echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
+                echo "Datei:         " . $file . "\n";
+                echo "Zeile:         " . $e->getLine() . "\n";
+                echo "Meldung:       " . $e->getMessage() . "\n";
+                echo "Klasse:        " . get_class($e) . "\n";
+                echo "Fehler Nummer: " . $e->getCode() . "\n";
+                echo "Zeit:          " . $date->format('d.m.Y H:i:s') . "\n";
+
+                echo "//XML error///////////////////////////////////////////////////////////////////////////////////////\n";
+                $first = true;
+                foreach ($e->getXmlErrors() as $error) {
+
+                    if ($error instanceof \libXMLError) {
+
+                        if ($first === true) {
+
+                            echo "\n";
+                        }
+
+                        echo "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
+                        echo 'Level: ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . "\n";
+                        echo 'Code: ' . $error->code . "\n";
+                        echo 'Message: ' . $error->message;
+                        echo 'Zeile: ' . $error->line . "\n";
+                        $first = false;
+                    }
+                }
+
+                echo "//Trace///////////////////////////////////////////////////////////////////////////////////////////\n";
+                foreach ($e->getTrace() as $index => $row) {
+
+                    //Daten Aufbereiten
+                    $file = str_replace(PATH_RWF, '', (isset($row['file']) ? $row['file'] : ''));
+
+                    $args = '';
+                    $comma = '';
+                    if (isset($row['args'])) {
+
+                        foreach ($row['args'] as $item) {
+
+                            if (is_string($item)) {
+
+                                if (preg_match('#' . PATH_RWF . '#', $item)) {
+
+                                    $item = str_replace(PATH_RWF, '', $item);
+                                    $args .= $comma . "'" . $item . "'";
+                                } else {
+
+                                    $args .= $comma . "'" . (strlen($item) > 30 ? substr($item, 0, 30) . '...' : $item) . "'";
+                                }
+                                $comma = ', ';
+                            } elseif (is_int($item) || is_float($item)) {
+
+                                $args .= $comma . $item;
+                                $comma = ', ';
+                            } elseif (is_array($item)) {
+
+                                $args .= $comma . 'Array(' . count($item) . ')';
+                                $comma = ', ';
+                            } elseif (is_object($item)) {
+
+                                $args .= $comma . get_class($item);
+                                $comma = ', ';
+                            }
+                        }
+                    }
+
+                    echo '#' . $index . ' ' . $file . ' @ Line: ' . (isset($row['line']) ? $row['line'] : 0) . ' ';
+                    echo (isset($row['class']) ? $row['class'] . $row['type'] : '') . $row['function'] . '(' . $args . ')' . "\n";
+                }
+
+                echo '#' . ++$index . ' {main}' . "\n\n";
+            } else {
+
+                $html = $this->createHtmlErrorHeader('XMLException - ' . $file . ' in Zeile ' . $e->getLine());
+                $html .= '<body><div id="error_box"><div id="content">';
+                $html .= '<div id="ueberschrift">XML Error</div>';
+                $html .= '<div id="error">';
+                $html .= '<p>' . $this->html($e->getMessage()) . '</p>';
+                $html .= '<table><tr><td>Klasse:</td>';
+                $html .= '<td>' . $this->html(get_class($e)) . '</td>';
+                $html .= '</tr><tr><td>File:</td>';
+                $html .= '<td>' . $this->html($file) . '</td>';
+                $html .= '</tr><tr><td>Line:</td>';
+                $html .= '<td>' . $this->html($e->getLine()) . '</td>';
+                $html .= '</tr><tr><td>Code:</td>';
+                $html .= '<td>' . $this->html($e->getCode()) . '</td>';
+                $html .= '</tr><tr><td>Stack:</td>';
+                $html .= '<td>' . $this->formatStackTrace($e->getTrace()) . '</td>';
+                $html .= '</tr><tr><td>XML:</td>';
+                $html .= '<td>';
+
+                $first = true;
+                foreach ($e->getXmlErrors() as $error) {
+
+                    if ($error instanceof \libXMLError) {
+
+                        if ($first === false) {
+
+                            $html .= '<div><hr/></div>';
+                        }
+                        $html .= '<div><b>Level:</b> ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . '</div>';
+                        $html .= '<div><b>Code:</b> ' . $error->code . '</div>';
+                        $html .= '<div><b>Message:</b> ' . $error->message . '</div>';
+                        $html .= '<div><b>Zeile:</b> ' . $error->line . '</div>';
+                        $first = false;
+                    }
+                }
+
+                $html .= '</td>';
+                $html .= '</tr></table></div></div></div></body></html>';
+
+                echo utf8_encode($html);
+            }
+        } else {
+
+            $this->displayDefaultError();
+        }
+
+        //Loggen
+        if ($this->logErrors) {
+
+            $first = true;
+            $data = '';
+            foreach ($e->getXmlErrors() as $error) {
+
+                if ($error instanceof libXMLError) {
+
+                    if ($first === true) {
+
+                        $data .= "\n";
+                    }
+
+                    $data .= "//////////////////////////////////////////////////////////////////////////////////////////////////\n";
+                    $data .= 'Level: ' . ($error->level == LIBXML_ERR_WARNING ? 'Warnung' : 'Fehler') . "\n";
+                    $data .= 'Code: ' . $error->code . "\n";
+                    $data .= 'Message: ' . $error->message;
+                    $data .= 'Zeile: ' . $error->line . "\n";
+                    $first = false;
+                }
+            }
+
+            $this->logError('xml.log', 'XML Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('XML Fehler' => $data));
+        }
+
+        exit(1);
+    }
     
     /**
      * behandelt alle Fehler vom ClassLoader
