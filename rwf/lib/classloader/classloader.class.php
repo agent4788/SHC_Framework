@@ -44,7 +44,7 @@ class ClassLoader {
      */
     protected $classesLoaded = false;
 
-    public function __construct() {
+    protected function __construct() {
 
         //eigenen Namensraum anmelden
         $this->registerBaseNamespace('RWF', PATH_RWF_CLASSES);
