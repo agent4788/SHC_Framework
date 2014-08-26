@@ -88,16 +88,33 @@ class XmlFileManager {
     /**
      * gibt das XML Editor Objekt der jeweiligen Datei zurueck
      * 
-     * @param  String $name
+     * @param  String  $name           Name unter dem die XML Datei behandelt wird
+     * @param  Boolean $alwysNewObject immer neues Objekt erzeugen
      * @return \RWF\XML\XmlEditor
      */
-    public function getXmlObject($name) {
+    public function getXmlObject($name, $alwysNewObject = false) {
+
+        //immer neues Objekt erzeugen
+        if ($alwysNewObject == true) {
+
+            //pruefen ob XML Datei bekannt
+            if (isset($this->xmlFileList[$name])) {
+
+                //pruefen ob die XML Datei existiert und falls nicht versuchen die default Datei zu kopieren und laden
+                if (!is_file($this->xmlFileList[$name]['file']) && $this->xmlFileList[$name]['default'] != '') {
+
+                    FileUtil::copyFile($this->xmlFileList[$name]['default'], $this->xmlFileList[$name]['file']);
+                }
+                return XmlEditor::createFromFile($this->xmlFileList[$name]['file']);
+            }
+            return null;
+        }
 
         //Puefen ob Objekt schon erstellt
         if (!isset($this->xmlObjects[$name])) {
 
             //pruefen ob XML Datei bekannt
-            if (isset($this->xmlFileList[$name]['file'])) {
+            if (isset($this->xmlFileList[$name])) {
 
                 //pruefen ob die XML Datei existiert und falls nicht versuchen die default Datei zu kopieren und laden
                 if (!is_file($this->xmlFileList[$name]['file']) && $this->xmlFileList[$name]['default'] != '') {
