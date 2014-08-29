@@ -131,7 +131,9 @@ class Session {
 
         $oldSid = $this->sid;
         $this->sid = String::randomStr(64);
-        setcookie('shcsession', $this->sid, TIME_NOW + 3600);
+        $sessionCookie = new Cookie(RWF_COOKIE_PREFIX, 'session', $this->sid);
+        $sessionCookie->setTimeByInterval(0, 0, 0, 0, 0, 15);
+        RWF::getResponse()->addCookie($sessionCookie);
 
         @rename(PATH_RWF_SESSION . $oldSid . '.session.dat', PATH_RWF_SESSION . $this->sid . '.session.dat');
 
@@ -169,7 +171,7 @@ class Session {
      * 
      * @param String $var Variable
      */
-    public function delete($var) {
+    public function remove($var) {
 
         if (isset($this->sessionVars['vars'][$var])) {
 

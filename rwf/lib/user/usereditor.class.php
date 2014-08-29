@@ -31,6 +31,13 @@ class UserEditor {
      * @var Array 
      */
     protected $users = array();
+    
+    /**
+     * Gast Objekt
+     * 
+     * @var \RWF\User\Guest 
+     */
+    protected $guest = null;
 
     /**
      * Singleton Instanz
@@ -76,6 +83,21 @@ class UserEditor {
         }
     }
 
+    /**
+     * gibt ein Gast Objekt zurueck
+     * 
+     * @return \RWF\User\Guest 
+     */
+    public function getGuest() {
+        
+        if($this->guest === null) {
+            
+            //Gast erstellen
+            $this->guest = new Guest($this->getUserGroupById(RWF_GUEST_USER_GROUP));
+        }
+        return $this->guest;
+    }
+    
     /**
      * gibt eine Userobjekt anhand der ID zurueck
      * 

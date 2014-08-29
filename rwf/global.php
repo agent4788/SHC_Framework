@@ -21,6 +21,7 @@ define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   
 //Grundeinstellungen
 define('DEVELOPMENT_MODE', true);                                               //Aktiviert/Deaktiviert den Entwicklermodus
 define('RWF_COOKIE_PREFIX', 'rwf_');                                            //Cookie Prefix
+define('RWF_GUEST_USER_GROUP', 3);                                              //Benutzergruppe fuer Gaeste
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
 define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
