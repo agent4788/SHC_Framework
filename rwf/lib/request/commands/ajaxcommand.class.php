@@ -4,6 +4,7 @@ namespace RWF\Request\Commands;
 
 //Imports
 use RWF\Request\AbstractCommand;
+use RWF\Util\JSON;
 
 /**
  * AJAX Anfrage
@@ -44,9 +45,11 @@ abstract class AjaxCommand extends AbstractCommand {
         
         if(is_array($this->data)) {
             
-            $this->response->write(json_encode($this->data));
+            //als JSON senden
+            JSON::sendJSON($this->data, $this->response);
         } else {
             
+            //als HTML oder Text Fragment senden
             $this->response->write($this->data);
         }        
     }
