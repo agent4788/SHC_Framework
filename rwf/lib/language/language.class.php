@@ -4,6 +4,7 @@ namespace RWF\Language;
 
 //Imports
 use RWF\Util\String;
+use RWF\Util\FileUtil;
 
 /**
  * Sprachverwaltung
@@ -138,7 +139,8 @@ class Language {
             return true;
         }
 
-        if (file_exists($this->languageDir . $this->language . '/' . $name . '.lang.php') && @require($this->languageDir . $this->language . '/' . $name . '.lang.php')) {
+        $file = FileUtil::scannDirectory($this->languageDir . $this->language, strtolower($name) . '.lang.php');
+        if ($file !== null && @require($file)) {
 
             $this->languageItems = array_merge($this->languageItems, $l);
             $this->modules[] = $name;
