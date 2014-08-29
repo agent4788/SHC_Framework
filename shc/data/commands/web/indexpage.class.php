@@ -20,7 +20,7 @@ class IndexPage extends PageCommand {
      * Daten verarbeiten
      */
     public function processData() {
-        
+
         $this->response->writeLn('test');
     }
 }

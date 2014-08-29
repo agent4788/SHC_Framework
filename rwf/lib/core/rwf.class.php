@@ -11,6 +11,7 @@ use RWF\Request\CliResponse;
 use RWF\Session\Session;
 use RWF\User\UserEditor;
 use RWF\User\User;
+use RWF\Language\Language;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -56,7 +57,14 @@ class RWF {
      * 
      * @var \RWF\User\Visitor 
      */
-    protected static $user = null;
+    protected static $visitor = null;
+
+    /**
+     * Sprachverwaltung
+     * 
+     * @var \RWF\Language\Language 
+     */
+    protected static $language = null;
 
     public function __construct() {
 
@@ -76,12 +84,13 @@ class RWF {
         $this->initSession();
         $this->redirection();
         $this->initUser();
+        $this->initLanguage();
     }
 
     /**
      * initialisiert die Einstellungen
      */
-    public function initSettings() {
+    protected function initSettings() {
 
         self::$settings = new Settings();
     }
@@ -113,7 +122,7 @@ class RWF {
     /**
      * prueft ob die Auto Umleitung aktiv ist und leitet bei einer neuen Session den Benutzer automatisch um
      */
-    public function redirection() {
+    protected function redirection() {
 
         //Umleitung fuer PC/Tablet/Smartphone
         if (self::$session->isNewSession() && self::$settings->getValue('rwf.ui.redirectActive')) {
@@ -198,14 +207,28 @@ class RWF {
      * intialisiert den Benutzer
      */
     protected function initUser() {
-        
+
         $user = UserEditor::getInstance()->getUserByAuthCode(self::$session->get('authCode'));
         if ($user instanceof User) {
-            
-            self::$user = $user;
-        }  else {
-        
-            self::$user = UserEditor::getInstance()->getGuest();
+
+            self::$visitor = $user;
+        } else {
+
+            self::$visitor = UserEditor::getInstance()->getGuest();
+        }
+    }
+
+    /**
+     * initialisiert die Sprache
+     */
+    protected function initLanguage() {
+
+        if (self::$visitor instanceof User) {
+
+            self::$language = new Language($user->getLanguage());
+        } else {
+
+            self::$language = new Language(self::$settings->getValue('rwf.language.defaultLanguage'));
         }
     }
 
@@ -248,15 +271,25 @@ class RWF {
 
         return self::$session;
     }
-    
+
     /**
      * gibt das Objekt des Besuchers zurueck
      * 
      * @return \RWF\User\Visitor
      */
     public static function getVisitor() {
-        
-        return self::$user;
+
+        return self::$visitor;
+    }
+
+    /**
+     * gibt das Sprachobjekt zurueck
+     * 
+     * @return \RWF\Language\Language
+     */
+    public static function getLanguage() {
+
+        return self::$language;
     }
 
     /**

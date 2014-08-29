@@ -147,7 +147,7 @@ class User implements Visitor {
      */
     public function getLanguage() {
 
-        return $this->getLanguage();
+        return $this->language;
     }
 
     /**

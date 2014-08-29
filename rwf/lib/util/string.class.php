@@ -2,6 +2,9 @@
 
 namespace RWF\Util;
 
+//Imports
+use RWF\Core\RWF;
+
 /**
  * Zeichenketten Funktionen
  * 
@@ -45,7 +48,7 @@ class String {
      */
     public static function formatFloat($value, $decimals = 2) {
 
-        return number_format($value, $decimals, PCC::getLanguage()->getDecimalSeparator(), PCC::getLanguage()->getTousandsSeparator());
+        return number_format($value, $decimals, RWF::getLanguage()->getDecimalSeparator(), RWF::getLanguage()->getTousandsSeparator());
     }
 
     /**
@@ -56,7 +59,7 @@ class String {
      */
     public static function formatInteger($value) {
 
-        return number_format($value, 0, PCC::getLanguage()->getDecimalSeparator(), PCC::getLanguage()->getTousandsSeparator());
+        return number_format($value, 0, RWF::getLanguage()->getDecimalSeparator(), RWF::getLanguage()->getTousandsSeparator());
     }
 
     /**
