@@ -4,7 +4,6 @@ namespace RWF\User;
 
 //Imports
 use RWF\XML\XmlFileManager;
-use RWF\Util\DataTypeUtil;
 use RWF\Util\String;
 
 /**
@@ -63,7 +62,11 @@ class UserEditor {
             }
 
             $this->userGroups[(int) $group->id] = new UserGroup(
-                    (int) $group->id, (string) $group->name, (string) $group->description, $premissions, (bool) $group->isSystemGroup
+                    (int) $group->id, 
+                    (string) $group->name, 
+                    (string) $group->description, 
+                    $premissions, 
+                    (bool) $group->isSystemGroup
             );
         }
 
@@ -78,7 +81,17 @@ class UserEditor {
             }
 
             $this->users[(int) $user->id] = new User(
-                    (int) $user->id, (string) $user->authCode, (string) $user->name, (string) $user->password, (bool) $user->isOriginator, $this->getUserGroupById((int) $user->mainUserGroup), $userGroups, ((string) $user->language != '' ? (string) $user->language : null), \DateTime::createFromFormat('Y-m-d', (string) $user->register)
+                    (int) $user->id, 
+                    (string) $user->authCode, 
+                    (string) $user->name, 
+                    (string) $user->password, 
+                    (bool) $user->isOriginator, 
+                    $this->getUserGroupById((int) $user->mainUserGroup), 
+                    $userGroups, 
+                    ((string) $user->language != '' ? (string) $user->language : null),
+                    ((string) $user->webStyle != '' ? (string) $user->webStyle : null), 
+                    ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null), 
+                    \DateTime::createFromFormat('Y-m-d', (string) $user->register)
             );
         }
     }
@@ -234,10 +247,12 @@ class UserEditor {
      * @param  Integer $mainGroupId ID der Hauptgruppe
      * @param  Array   $userGroups  IDs der Benutzergruppen
      * @param  Integer $language    Sprache
+     * @param  String  $webStyle    Name des Styles fuer die Webaoberflaeche 
+     * @param  String  $mobileStyle Name des Styles fuer die Mobiloberflaeche
      * @return Integer
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addUser($name, $password, $mainGroupId, array $userGroups = array(), $language = null) {
+    public function addUser($name, $password, $mainGroupId, array $userGroups = array(), $language = null, $webStyle = null, $mobileStyle = null) {
 
         //Passwort Libary einbinden fuer PHP Versionen < PHP 5.5
         require_once(PATH_RWF_CLASSES . 'external/password/password.php');
@@ -265,6 +280,8 @@ class UserEditor {
         $user->addChild('password', password_hash($password, PASSWORD_DEFAULT));
         $user->addChild('authCode', String::randomStr(64));
         $user->addChild('language', ($language !== null ? $language : ''));
+        $user->addChild('webStyle', ($webStyle !== null ? $webStyle : ''));
+        $user->addChild('mobileStyle', ($mobileStyle !== null ? $mobileStyle : ''));
         $user->addChild('register', $date->format('Y-m-d'));
         $user->addChild('mainUserGroup', $mainGroupId);
         $user->addChild('userGroups', implode(',', $userGroups));
@@ -284,10 +301,12 @@ class UserEditor {
      * @param  Integer $mainGroupId ID der Hauptgruppe
      * @param  Array   $userGroups  IDs der Benutzergruppen
      * @param  Integer $language    Sprache
+     * @param  String  $webStyle    Name des Styles fuer die Webaoberflaeche 
+     * @param  String  $mobileStyle Name des Styles fuer die Mobiloberflaeche
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editUser($id, $name = null, $password = null, $mainGroupId = null, array $userGroups = null, $language = null) {
+    public function editUser($id, $name = null, $password = null, $mainGroupId = null, array $userGroups = null, $language = null, $webStyle = null, $mobileStyle = null) {
 
         //Passwort Libary einbinden fuer PHP Versionen < PHP 5.5
         require_once(PATH_RWF_CLASSES . 'external/password/password.php');

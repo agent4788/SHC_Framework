@@ -54,6 +54,20 @@ class User implements Visitor {
      * @var String 
      */
     protected $language = null;
+    
+    /**
+     * Name des Styles fuer die Webaoberflaeche
+     * 
+     * @var String 
+     */
+    protected $webStyle = null;
+    
+    /**
+     * Name des Styles fuer die Mobiloberflaeche
+     * 
+     * @var String 
+     */
+    protected $mobileStyle = null;
 
     /**
      * Registrierungsdatum
@@ -85,9 +99,11 @@ class User implements Visitor {
      * @param \RWF\User\UserGroup $mainGroup    Hauptgruppe
      * @param Array               $userGroups   Benutzergruppen
      * @param String              $language     Sprache
+     * @param String              $webStyle     Name des Styles fuer die Webaoberflaeche 
+     * @param String              $mobileStyle  Name des Styles fuer die Mobiloberflaeche
      * @param \DateTime           $registerDate Registrierungsdatum
      */
-    public function __construct($id, $authCode, $name, $passwordHash, $isOriginator, UserGroup $mainGroup, array $userGroups, $language = null, \DateTime $registerDate = null) {
+    public function __construct($id, $authCode, $name, $passwordHash, $isOriginator, UserGroup $mainGroup, array $userGroups, $language = null, $webStyle = null, $mobileStyle = null, \DateTime $registerDate = null) {
 
         $this->id = $id;
         $this->authCode = $authCode;
@@ -97,6 +113,8 @@ class User implements Visitor {
         $this->mainGroup = $mainGroup;
         $this->userGroups = $userGroups;
         $this->language = $language;
+        $this->webStyle = $webStyle;
+        $this->mobileStyle = $mobileStyle;
         $this->registerDate = $registerDate;
     }
 
@@ -148,6 +166,26 @@ class User implements Visitor {
     public function getLanguage() {
 
         return $this->language;
+    }
+    
+    /**
+     * gibt den Name des Styles fuer die Weboberflaeche zurueckk
+     * 
+     * @return String
+     */
+    public function getWebStyle() {
+        
+        return $this->webStyle;
+    }
+    
+    /**
+     * gibt den Name des Styles fuer die Mobiloberflaeche zurueckk
+     * 
+     * @return String
+     */
+    public function getMobileStyle() {
+        
+        return $this->mobileStyle;
     }
 
     /**
