@@ -3,6 +3,7 @@
 namespace RWF\Core;
 
 //Imports
+use RWF\Settings\Settings;
 use RWF\Request\HttpRequest;
 use RWF\Request\HttpResponse;
 use RWF\Request\CliRequest;
@@ -21,23 +22,30 @@ use RWF\Session\Session;
 class RWF {
     
     /**
+     * Einstellungen
+     * 
+     * @var \RWF\Settings\Settings 
+     */
+    protected static $settings = null;
+
+    /**
      * Anfrageobjekt
      * 
-     * @var RWF\Request\Request 
+     * @var \RWF\Request\Request 
      */
     protected static $request = null;
     
     /**
      * Antwortobjekt
      * 
-     * @var RWF\Request\Response 
+     * @var \RWF\Request\Response 
      */
     protected static $response = null;
     
     /**
      * Sessionobjekt
      * 
-     * @var RWF\Session\Session 
+     * @var \RWF\Session\Session 
      */
     protected static $session = null;
     
@@ -54,8 +62,17 @@ class RWF {
         }
         
         //Anfrage/Antwort initialisieren
+        $this->initSettings();
         $this->initRequest();
         $this->initSession();
+    }
+    
+    /**
+     * initialisiert die Einstellungen
+     */
+    public function initSettings() {
+        
+        self::$settings = new Settings();
     }
     
     /**
@@ -83,9 +100,19 @@ class RWF {
     }
     
     /**
+     * gibt das Einstellungsobjekt zurueck
+     * 
+     * @return \RWF\Setting\Settings
+     */
+    public static function getSettings() {
+        
+        return self::$settings;
+    }
+    
+    /**
      * gibt das Anfrageobjekt zurueck
      * 
-     * @return RWF\Request\Request
+     * @return \RWF\Request\Request
      */
     public static function getRequest() {
 
@@ -95,7 +122,7 @@ class RWF {
     /**
      * gibt das Antwortobjekt zurueck
      * 
-     * @return RWF\Request\Response
+     * @return \RWF\Request\Response
      */
     public static function getResponse() {
 
@@ -105,7 +132,7 @@ class RWF {
     /**
      * gibt das Sessionobjekt zurueck
      * 
-     * @return RWF\Session\Session
+     * @return \RWF\Session\Session
      */
     public static function getSession() {
         
@@ -113,14 +140,31 @@ class RWF {
     }
     
     /**
+     * gibt den Wert einer Einstellung zurueck
+     * 
+     * @param  String $name Name der Einstellung
+     * @return Mixed
+     */
+    public static function getSetting($name) {
+        
+        return self::$settings->getValue($name);
+    }
+    
+    /**
      * beendet die Anwendung
      */
     public function finalize() {
         
+        //Einstellungen Speichern
+        if(self::$settings instanceof Settings) {
+            
+            self::$settings->finalize();
+        }
+        
         //Sessionobjekt abschliesen
         if(self::$session instanceof Session) {
             
-            self::$session->finish();
+            self::$session->finalize();
         }
     }
 }

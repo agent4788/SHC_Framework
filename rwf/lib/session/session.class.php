@@ -240,7 +240,7 @@ class Session {
     /**
      * speichert die Session Daten
      */
-    public function finish() {
+    public function finalize() {
 
         $data = serialize($this->sessionVars);
         //Daten Schreiben

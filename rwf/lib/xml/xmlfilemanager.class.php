@@ -29,6 +29,13 @@ class XmlFileManager {
      * @var String
      */
     const XML_USERS = 'users';
+    
+    /**
+     * Einstellungen XML Datei
+     * 
+     * @var String
+     */
+    const XML_SETTINGS = 'settings';
 
     /**
      * Liste mit den bekannten XML Dateien
@@ -56,6 +63,7 @@ class XmlFileManager {
         //RWF XML Dateien Registrieren
         $this->registerXmlFile(self::XML_Version, PATH_RWF_STORAGE . 'version.xml', PATH_RWF_STORAGE . 'default/defaultVersion.xml');
         $this->registerXmlFile(self::XML_USERS, PATH_RWF_STORAGE . 'users.xml', PATH_RWF_STORAGE . 'default/defaultUsers.xml');
+        $this->registerXmlFile(self::XML_SETTINGS, PATH_RWF_STORAGE . 'settings.xml', PATH_RWF_STORAGE . 'default/defaultSettings.xml');
     }
 
     /**
