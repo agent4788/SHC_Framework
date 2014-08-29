@@ -3,9 +3,7 @@
 namespace RWF\Request\Commands;
 
 //Imports
-use RWF\Request\Command;
-use RWF\Request\Request;
-use RWF\Request\Response;
+use RWF\Request\AbstractCommand;
 
 /**
  * Action Anfrage
@@ -16,7 +14,7 @@ use RWF\Request\Response;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-abstract class ActionCommand implements Command {
+abstract class ActionCommand extends AbstractCommand {
 
     /**
      * Ziel nach dem ausfuehren
@@ -26,40 +24,10 @@ abstract class ActionCommand implements Command {
     protected $location = '';
     
     /**
-     * benoetigte Berechtigung
-     * 
-     * @var type 
+     * fuehrt das Kommando aus
      */
-    protected $requiredPremission = '';
-    
-    /**
-     * Anfrageobjekt
-     * 
-     * @var RWF\Request\Request
-     */
-    protected $request = null;
-    
-    /**
-     * Anfrageobjekt
-     * 
-     * @var RWF\Request\Response
-     */
-    protected $response = null;
-    
-    /**
-     * erzeugt die Seite
-     * 
-     * @param Request  $request  Anfrageobjekt
-     * @param Response $response Antwortobjekt
-     */
-    public function execute(Request $request, Response $response) {
+    protected function executeCommand() {
         
-        $this->request = $request;
-        $this->response = $response;
-        
-        //rechte Pruefen
-        
-        //Daten verarbeiten und in Antwortobjekt schreiben
         $this->executeAction();
         $this->executedAction();
     }

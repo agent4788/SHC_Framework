@@ -3,9 +3,7 @@
 namespace RWF\Request\Commands;
 
 //Imports
-use RWF\Request\Command;
-use RWF\Request\Request;
-use RWF\Request\Response;
+use RWF\Request\AbstractCommand;
 
 /**
  * Anfrage auf der Kommandozeile
@@ -16,15 +14,12 @@ use RWF\Request\Response;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-abstract class CliCommand implements Command {
+abstract class CliCommand extends AbstractCommand {
 
     /**
-     * erzeugt die Seite
-     * 
-     * @param Request  $request  Anfrageobjekt
-     * @param Response $response Antwortobjekt
+     * fuehrt das Kommando aus
      */
-    public function execute(Request $request, Response $response) {
+    protected function executeCommand() {
         
     }
 

@@ -103,7 +103,7 @@ class Language {
         }
 
         $this->language = $lang;
-        $this->loadModule('global');
+        $this->loadModul('global');
 
         $this->tousandsSeparator = $this->getPlain('global.tousandsSeparator');
         $this->decimalSeparator = $this->getPlain('global.decimalSeparator');
@@ -131,7 +131,7 @@ class Language {
      * @param  String $name Name des Moduls
      * @return Boolean
      */
-    public function loadModule($name) {
+    public function loadModul($name) {
 
         if (in_array($name, $this->modules)) {
 
