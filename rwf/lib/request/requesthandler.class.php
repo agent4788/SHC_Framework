@@ -171,6 +171,9 @@ class RequestHandler {
                 throw new \Exception('Die Kommandoklasse konnte nicht geladen werden', 1023);
             }
             
+            //Templateorner registrieren
+            RWF::getTemplate()->addTemplateDir(dirname($path));
+            
             /* @var $command Command */
             $command = new $className();
             $command->execute(self::$request, self::$response);

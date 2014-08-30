@@ -4,6 +4,7 @@ namespace RWF\Request\Commands;
 
 //Imports
 use RWF\Request\AbstractCommand;
+use RWF\Core\RWF;
 
 /**
  * Seiten Anfrage
@@ -43,5 +44,9 @@ abstract class PageCommand extends AbstractCommand {
     public function fetch() {
         
         //wenn Template angegeben Template verarbeiten
+        if($this->template != '') {
+            
+            $this->response->setBody(\RWF\Core\RWF::getTemplate()->fetchString($this->template));
+        }
     }
 }

@@ -16,6 +16,7 @@ define('PATH_RWF', __DIR__ . '/');                                              
 define('PATH_RWF_CLASSES', __DIR__ . '/lib/');                                   //Pfad zum Klassenordner des Frameworks
 define('PATH_RWF_STORAGE', PATH_RWF . 'data/storage/');                         //Pfad zum Speicherordner des Frameworks
 define('PATH_RWF_CACHE', PATH_RWF . 'data/cache/');                             //Pfad zum Cacheordner des Frameworks
+define('PATH_RWF_CACHE_TEMPLATES', PATH_RWF_CACHE . 'templates/');              //Pfad zum Cacheordner der Templates des Frameworks
 define('PATH_RWF_LOG', PATH_RWF . 'data/log/');                                 //Pfad zum Logordner des Frameworks
 define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   //Pfad zum Sessionordner des Frameworks
 //Grundeinstellungen

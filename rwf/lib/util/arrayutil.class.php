@@ -84,7 +84,7 @@ abstract class ArrayUtil {
             }
         } else {
 
-            $array = StringUtil::trim($array);
+            $array = String::trim($array);
         }
 
         return $array;

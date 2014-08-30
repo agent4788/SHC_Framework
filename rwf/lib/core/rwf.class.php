@@ -12,6 +12,7 @@ use RWF\Session\Session;
 use RWF\User\UserEditor;
 use RWF\User\User;
 use RWF\Language\Language;
+use RWF\Template\Template;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -65,6 +66,13 @@ class RWF {
      * @var \RWF\Language\Language 
      */
     protected static $language = null;
+    
+    /**
+     * Template Engine
+     * 
+     * @var \RWF\Template\Template 
+     */
+    protected static $template = null;
 
     public function __construct() {
 
@@ -85,6 +93,7 @@ class RWF {
         $this->redirection();
         $this->initUser();
         $this->initLanguage();
+        $this->initTemplate();
     }
 
     /**
@@ -231,6 +240,14 @@ class RWF {
             self::$language = new Language(self::$settings->getValue('rwf.language.defaultLanguage'));
         }
     }
+    
+    /**
+     * initialisiert die Template Engine
+     */
+    protected function initTemplate() {
+        
+        self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, APP_NAME .'_', DEVELOPMENT_MODE);
+    }
 
     /**
      * gibt das Einstellungsobjekt zurueck
@@ -290,6 +307,16 @@ class RWF {
     public static function getLanguage() {
 
         return self::$language;
+    }
+    
+    /**
+     * gibt das Template Objekt zurueck
+     * 
+     * @return \RWF\Template\Template 
+     */
+    public static function getTemplate() {
+        
+        return self::$template;
     }
 
     /**

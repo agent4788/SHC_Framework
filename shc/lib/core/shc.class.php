@@ -20,5 +20,8 @@ class SHC extends RWF {
         
         //Basisklasse initalisieren
         parent::__construct();
+        
+        //Template Ordner anmelden
+        self::$template->addTemplateDir(PATH_SHC .'data/templates');
     }
 }
