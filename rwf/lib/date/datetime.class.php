@@ -100,12 +100,12 @@ class DateTime extends \DateTime {
     public static function createFromFormat($format, $time, $object = null) {
 
         //Zeitzone
-        if ($object === null && defined('DATETIME_TIMEZONE')) {
+        if ($object === null && RWF::getSetting('rwf.date.Timezone') != '') {
 
-            $object = new DateTimeZone(DATETIME_TIMEZONE);
+            $object = new \DateTimeZone(RWF::getSetting('rwf.date.Timezone'));
         } elseif ($object === null) {
 
-            $object = new DateTimeZone('Europe/London');
+            $object = new \DateTimeZone('Europe/London');
         }
         
         $date = parent::createFromFormat($format, $time, $object);
@@ -171,12 +171,12 @@ class DateTime extends \DateTime {
     public function __construct($time = null, \DateTimeZone $timezone = null) {
 
         //Zeitzone
-        if ($timezone === null && defined('DATETIME_TIMEZONE')) {
+        if ($timezone === null && RWF::getSetting('rwf.date.Timezone') != '') {
 
-            $timezone = new DateTimeZone(DATETIME_TIMEZONE);
+            $timezone = new \DateTimeZone(RWF::getSetting('rwf.date.Timezone'));
         } elseif ($timezone === null) {
 
-            $timezone = new DateTimeZone('Europe/London');
+            $timezone = new \DateTimeZone('Europe/London');
         }
 
         parent::__construct($time, $timezone);
@@ -448,14 +448,14 @@ class DateTime extends \DateTime {
      */
     public function getSunrise() {
         
-        $sunrise = date_sunrise($this->getTimestamp(), SUNFUNCS_RET_STRING, DATETIME_LATITUDE, DATETIME_LONGITUDE, 90.833333, ($this->format('I') == 1 ? 2 : 1));
+        $sunrise = date_sunrise($this->getTimestamp(), SUNFUNCS_RET_STRING, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
         $date = new DateTime($this->format('Y-m-d ') . $sunrise . ':0');
         $offset = RWF::getSetting('rwf.date.sunriseOffset');
         if($offset != 0) {
             if($offset > 0) {
-                $date->add(new DateInterval('PT'. $offset .'M'));
+                $date->add(new \DateInterval('PT'. $offset .'M'));
             } elseif($offset <= 0) {
-                $date->sub(new DateInterval('PT'. abs($offset) .'M'));
+                $date->sub(new \DateInterval('PT'. abs($offset) .'M'));
             }
         }
         
@@ -469,14 +469,14 @@ class DateTime extends \DateTime {
      */
     public function getSunset() {
         
-        $sunset = date_sunset($this->getTimestamp(), SUNFUNCS_RET_STRING, DATETIME_LATITUDE, DATETIME_LONGITUDE, 90.833333, ($this->format('I') == 1 ? 2 : 1));
+        $sunset = date_sunset($this->getTimestamp(), SUNFUNCS_RET_STRING, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
         $date = new DateTime($this->format('Y-m-d ') . $sunset . ':0');
         $offset = RWF::getSetting('rwf.date.sunsetOffset');
         if($offset != 0) {
             if($offset > 0) {
-                $date->add(new DateInterval('PT'. $offset .'M'));
+                $date->add(new \DateInterval('PT'. $offset .'M'));
             } elseif($offset <= 0) {
-                $date->sub(new DateInterval('PT'. abs($offset) .'M'));
+                $date->sub(new \DateInterval('PT'. abs($offset) .'M'));
             }
         }
         
