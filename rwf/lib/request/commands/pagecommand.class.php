@@ -25,9 +25,22 @@ abstract class PageCommand extends AbstractCommand {
     protected $template = '';
     
     /**
+     * Template Objekt
+     * 
+     * @var \RWF\Template\Template 
+     */
+    protected $templateObject = null;
+    
+    /**
      * fuehrt das Kommando aus
      */
     protected function executeCommand() {
+        
+        //Template Objekt in Objekteigenschaft laden
+        if($this->template != '') {
+            
+            $this->templateObject = RWF::getTemplate();
+        }
         
         $this->processData();
         $this->fetch();
@@ -46,7 +59,7 @@ abstract class PageCommand extends AbstractCommand {
         //wenn Template angegeben Template verarbeiten
         if($this->template != '') {
             
-            $this->response->setBody(\RWF\Core\RWF::getTemplate()->fetchString($this->template));
+            $this->response->setBody($this->templateObject->fetchString($this->template));
         }
     }
 }

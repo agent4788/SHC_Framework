@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Formular</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="./rwf/inc/js/jquery.js"></script>
+        <link rel="stylesheet" type="text/css" href="./rwf/inc/style/web/dark_hive/jquery_ui.css" />
+        <link rel="stylesheet" type="text/css" href="./rwf/inc/style/web/dark_hive/form.css" />
+        <script type="text/javascript" src="./rwf/inc/js/jquery_ui.js"></script>
+    </head>
+    <body>
+        {$form->fetchStartTag()}
+        {$form->fetchDescription()}
+        {$form->fetchMessages()}
+        {$form->fetchAllElements()}
+        <input type="submit" />
+        {$form->fetchEndTag()}
+    </body>
+</html>
