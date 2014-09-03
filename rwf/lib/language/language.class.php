@@ -51,6 +51,13 @@ class Language {
      * @var Integer
      */
     protected $currentLanguage = 0;
+    
+    /**
+     * Automatisch HTML encodieren
+     * 
+     * @var Boolean 
+     */
+    protected $autoEncodeHtml = true;
 
     /**
      * Parameter
@@ -92,6 +99,7 @@ class Language {
         if (PHP_SAPI == 'cli') {
 
             $this->cli = true;
+            $this->autoEncodeHtml = false;
         }
 
         //Ordner mit den Sprachdateien
@@ -110,6 +118,32 @@ class Language {
         $this->decimalSeparator = $this->getPlain('global.decimalSeparator');
     }
 
+    /**
+     * aktiviert das automatische HTML Encodieren
+     */
+    public function enableAutoHtmlEndocde() {
+        
+        $this->autoEncodeHtml = true;
+    }
+    
+    /**
+     * deaktiviert das automatische HTML Encodieren
+     */
+    public function disableAutoHtmlEndocde() {
+        
+        $this->autoEncodeHtml = false;
+    }
+    
+    /**
+     * gibt an ob das automatische HTML Encodieren aktiv ist
+     * 
+     * @return Boolean
+     */
+    public function isEnabledAutoHtmlEndocde() {
+        
+        return $this->autoEncodeHtml;
+    }
+    
     /**
      * setzt den Ordner in dem nach den Sprachdateien gesucht wird
      * 
@@ -160,7 +194,7 @@ class Language {
      */
     public function getPlain($var, $default = null, $useTranslation = true, $encodeHTML = true) {
 
-        if ($this->cli === true) {
+        if ($this->cli === true && $this->autoEncodeHtml === false) {
 
             $encodeHTML = false;
         }
@@ -215,7 +249,7 @@ class Language {
         $this->params = array();
         $this->params = func_get_args();
 
-        if ($this->cli === false) {
+        if ($this->cli === false && $this->autoEncodeHtml === true) {
 
             if (isset($this->languageItems[$var])) {
 
