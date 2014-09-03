@@ -39,16 +39,16 @@ class CheckBoxes extends AbstractFormElement {
         $request = RWF::getRequest();
         if ($request->issetParam($this->getName(), Request::POST)) {
 
-            //Daten per POST
+//Daten per POST
             $values = $request->getParam($this->getName(), Request::POST);
 
-            //Leerzeichen entfernen
+//Leerzeichen entfernen
             foreach ($values as $index => $value) {
 
                 $values[$index] = String::trim($value);
             }
 
-            //Pruefen ob der Wert veraendert wurde
+//Pruefen ob der Wert veraendert wurde
             $isDefault = true;
             foreach ($values as $value) {
 
@@ -61,7 +61,7 @@ class CheckBoxes extends AbstractFormElement {
             $this->isDefault = $isDefault;
         } else {
 
-            //keine Daten per POST
+//keine Daten per POST
             $this->isDefault = true;
             $values = array();
             foreach ($this->values as $value) {
@@ -129,7 +129,7 @@ class CheckBoxes extends AbstractFormElement {
             $checked = '';
             $inputValue = $this->getValues();
             if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
-                
+
                 $checked = 'checked="checked"';
             }
 
@@ -165,7 +165,75 @@ class CheckBoxes extends AbstractFormElement {
      */
     protected function fetchMobileView() {
 
-        return 'not implemented';
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content ui-field-contain">' . "\n";
+
+        //Titel
+        $html .= '<fieldset data-role="controlgroup" class="' . $class . '">' . "\n";
+        $html .= '<legend>' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</legend>\n";
+
+        //Formularfeld
+        $i = 0;
+        foreach ($this->values as $value => $index) {
+
+            //Pruefen ob Ausgewaehlt
+            $checked = '';
+            $inputValue = $this->getValues();
+            if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
+
+                $checked = 'checked="checked"';
+            }
+
+            $html .= '<input type="checkbox" id="a' . $randomId . '_checkbox_' . $i . '" name="' . String::encodeHTML($this->getName()) . '[]" value="' . String::encodeHTML($value) . '" ' . $checked . $disabled . ' /><label for="a' . $randomId . '_checkbox_' . $i . '">' . (is_array($index) ? String::encodeHTML($index[0]) : String::encodeHTML($index)) . '</label>' . "\n";
+            $i++;
+        }
+        
+        $html .= '</fieldset>' . "\n";
+
+        //Pflichtfeld
+        if ($this->isRequiredField() && $this->getValue() == '') {
+
+            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
+        } elseif (!$this->isValid) {
+
+            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+        }
+
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**
@@ -200,6 +268,7 @@ class CheckBoxes extends AbstractFormElement {
 
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
         return $valid;
     }
 

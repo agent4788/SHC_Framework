@@ -74,23 +74,23 @@ class Select extends AbstractFormElement {
         $html .= '<div class="rwf-ui-form-content-element">';
         $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" >' . "\n";
         if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
-            
+
             //Gruppierte Auswahl
-            foreach($this->values as $group => $entrys) {
-                
-                $html .= '<optgroup label="'. String::encodeHTML($group) .'">' . "\n";
+            foreach ($this->values as $group => $entrys) {
+
+                $html .= '<optgroup label="' . String::encodeHTML($group) . '">' . "\n";
                 foreach ($entrys as $value => $index) {
 
-                //Pruefen ob Ausgewaehlt
-                $selected = '';
-                $inputValue = $this->getValues();
-                if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
+                    //Pruefen ob Ausgewaehlt
+                    $selected = '';
+                    $inputValue = $this->getValues();
+                    if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
 
-                    $selected = 'selected="selected"';
+                        $selected = 'selected="selected"';
+                    }
+
+                    $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
                 }
-
-                $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
-            }
                 $html .= "</optgroup>\n";
             }
         } else {
@@ -130,7 +130,95 @@ class Select extends AbstractFormElement {
      */
     protected function fetchMobileView() {
 
-        return 'not implemented';
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //Size
+        $size = '';
+        if (isset($this->options['size'])) {
+
+            $size = ' size="' . StringUtil::encodeHTML($this->options['size']) . '" ';
+        }
+
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content">' . "\n";
+
+        //Formularfeld
+        $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
+        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+
+        $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" data-native-menu="false">' . "\n";
+        if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
+
+            //Gruppierte Auswahl
+            foreach ($this->values as $group => $entrys) {
+
+                $html .= '<optgroup label="' . String::encodeHTML($group) . '">' . "\n";
+                foreach ($entrys as $value => $index) {
+
+                    //Pruefen ob Ausgewaehlt
+                    $selected = '';
+                    $inputValue = $this->getValues();
+                    if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
+
+                        $selected = 'selected="selected"';
+                    }
+
+                    $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+                }
+                $html .= "</optgroup>\n";
+            }
+        } else {
+
+            //Nicht Gruppierte Auswahl
+            foreach ($this->values as $value => $index) {
+
+                //Pruefen ob Ausgewaehlt
+                $selected = '';
+                $inputValue = $this->getValues();
+                if (($this->isDefaultValue() && is_array($index) && $index[1] == 1) || (!$this->isDefaultValue() && in_array($value, $inputValue))) {
+
+                    $selected = 'selected="selected"';
+                }
+
+                $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+            }
+        }
+        $html .= "</select>\n";
+        $html .= "</div>\n";
+
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**

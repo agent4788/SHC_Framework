@@ -20,17 +20,17 @@ use RWF\Util\String;
  * @version    2.0.0-0
  */
 class TextField extends AbstractFormElement {
-    
+
     /**
      * erzeugt das HTML Element fuer die Web View
      * 
      * @return String
      */
     protected function fetchWebView() {
-        
+
         //Zufaellige ID
         $randomId = String::randomStr(64);
-        $this->addId('a'. $randomId);
+        $this->addId('a' . $randomId);
 
         //Deaktiviert
         $disabled = '';
@@ -89,26 +89,26 @@ class TextField extends AbstractFormElement {
             \$(function() {
                 \$('#a" . $randomId . "').bind('keyup', function() {
                     
-                    var val   = \$('#a". $randomId ."').val();
+                    var val   = \$('#a" . $randomId . "').val();
                     var error = false;
                     
-                    ". (isset($this->options['maxlength']) ?"
+                    " . (isset($this->options['maxlength']) ? "
                     //Maximal Laenge
-                    if(val.length > ". (isset($this->options['maxlength']) ? $this->options['maxlength'] : '0' ) .") {
+                    if(val.length > " . (isset($this->options['maxlength']) ? $this->options['maxlength'] : '0' ) . ") {
 			error = true;
-                    }" : '') ."
+                    }" : '') . "
                         
-                    ". (isset($this->options['minlength']) ?"
+                    " . (isset($this->options['minlength']) ? "
                     //Minimal Laenge
-                    if(". ($this->isRequiredField() === false ? 'val.length > 0 && ' : '') ."val.length < ". (isset($this->options['minlength']) ? $this->options['minlength'] : '0' ) .") {
+                    if(" . ($this->isRequiredField() === false ? 'val.length > 0 && ' : '') . "val.length < " . (isset($this->options['minlength']) ? $this->options['minlength'] : '0' ) . ") {
                         error = true;
-                    }" : '') ."
+                    }" : '') . "
                         
                     //Fehler
                     if(error == true) {
-                        \$('#a". $randomId ."').addClass('rwf-ui-form-content-invalid');
+                        \$('#a" . $randomId . "').addClass('rwf-ui-form-content-invalid');
                     } else {
-			\$('#a". $randomId ."').removeClass('rwf-ui-form-content-invalid');
+			\$('#a" . $randomId . "').removeClass('rwf-ui-form-content-invalid');
                     }
 						
                     //Reset
@@ -119,15 +119,75 @@ class TextField extends AbstractFormElement {
 
         return $html;
     }
-    
+
     /**
      * erzeugt das HTML Element fuer die Mobile View
      * 
      * @return String
      */
     protected function fetchMobileView() {
+
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //Optionen
+        $options = '';
+        if (isset($this->options['maxlength'])) {
+
+            $options .= ' maxlength="' . $this->options['maxlength'] . '" ';
+        }
+
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content">' . "\n";
+
+        //Titel
+        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+
+        //Formularfeld
+        $html .= '<input type="text" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-textfield" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . $options . $disabled . ' />';
+
+        //Pflichtfeld
+        if($this->isRequiredField() && $this->getValue() == '') {
+            
+            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+        }
         
-        return 'not implemented';
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**
@@ -136,35 +196,37 @@ class TextField extends AbstractFormElement {
      * @return Boolean
      */
     public function validate() {
-        
+
         $valid = true;
         $value = $this->getValue();
-        
+
         //Pflichtfeld
-        if($this->isRequiredField() && $value == '') {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' muss ausgefüllt werden';
+        if ($this->isRequiredField() && $value == '') {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss ausgefüllt werden';
             $valid = false;
         }
-        
+
         //Minimale Laenge
-        if(isset($this->options['minlength']) && !String::checkLength($value, $this->options['minlength'])) {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' muss mindestens '. String::numberFormat($this->options['minlength']) .' Zeichen lang sein';
+        if (isset($this->options['minlength']) && !String::checkLength($value, $this->options['minlength'])) {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss mindestens ' . String::numberFormat($this->options['minlength']) . ' Zeichen lang sein';
             $valid = false;
         }
-        
+
         //Maximale Laenge
-        if(isset($this->options['maxlength']) && !String::checkLength($value, 0, $this->options['maxlength'])) {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' darf maximal '. String::numberFormat($this->options['maxlength']) .' Zeichen lang sein';
+        if (isset($this->options['maxlength']) && !String::checkLength($value, 0, $this->options['maxlength'])) {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' darf maximal ' . String::numberFormat($this->options['maxlength']) . ' Zeichen lang sein';
             $valid = false;
         }
-        
-        if($valid === false) {
-            
+
+        if ($valid === false) {
+
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
         return $valid;
     }
+
 }

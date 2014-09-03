@@ -139,7 +139,67 @@ class TextArea extends AbstractFormElement {
      */
     protected function fetchMobileView() {
 
-        return 'not implemented';
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //Optionen
+        $options = '';
+        if (isset($this->options['maxlength'])) {
+
+            $options .= ' maxlength="' . $this->options['maxlength'] . '" ';
+        }
+
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content">' . "\n";
+
+        //Titel
+        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+
+        //Formularfeld
+        $html .= '<textarea type="text" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-textarea" ' . $id . $options . $disabled . ' >' . String::encodeHTML($this->getValue()) . '</textarea>';
+
+        //Pflichtfeld
+        if($this->isRequiredField() && $this->getValue() == '') {
+            
+            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+        }
+        
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**
@@ -177,6 +237,7 @@ class TextArea extends AbstractFormElement {
 
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
         return $valid;
     }
 

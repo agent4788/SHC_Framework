@@ -77,9 +77,9 @@ class FloatInputField extends AbstractFormElement {
         $html .= "
             \$(function() {
                 \$('#a" . $randomId . "').spinner({
-                    min: ". (isset($this->options['min']) ? $this->options['min'] : 0.0) .",
-                    max: ". (isset($this->options['max']) ? $this->options['max'] : 100.0) .",
-                    step: ". (isset($this->options['step']) ? $this->options['step'] : 0.5) .",
+                    min: " . (isset($this->options['min']) ? $this->options['min'] : 0.0) . ",
+                    max: " . (isset($this->options['max']) ? $this->options['max'] : 100.0) . ",
+                    step: " . (isset($this->options['step']) ? $this->options['step'] : 0.5) . ",
                 });
             });\n";
         $html .= "</script>\n";
@@ -94,7 +94,75 @@ class FloatInputField extends AbstractFormElement {
      */
     protected function fetchMobileView() {
 
-        return 'not implemented';
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //Optionen
+        $options = '';
+        if (isset($this->options['min'])) {
+
+            $options .= ' min="' . $this->options['min'] . '" ';
+        }
+        if (isset($this->options['max'])) {
+
+            $options .= ' max="' . $this->options['max'] . '" ';
+        }
+        if (isset($this->options['step'])) {
+
+            $options .= ' step="' . $this->options['step'] . '" ';
+        }
+
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content">' . "\n";
+
+        //Titel
+        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+
+        //Formularfeld
+        $html .= '<input type="text" pattern="[0-9\.]*" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . $options . $disabled . ' />';
+
+        //Pflichtfeld
+        if ($this->isRequiredField() && $this->getValue() == '') {
+
+            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
+        } elseif (!$this->isValid) {
+
+            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+        }
+
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**
@@ -115,23 +183,23 @@ class FloatInputField extends AbstractFormElement {
         }
 
         //Minimalwert
-        if((isset($this->options['min']) && $value < $this->options['min']) || (!isset($this->options['min']) && $value < 0)) {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' muss mindestens einen Wert von '. String::numberFormat($this->options['min']) .' haben';
+        if ((isset($this->options['min']) && $value < $this->options['min']) || (!isset($this->options['min']) && $value < 0)) {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss mindestens einen Wert von ' . String::numberFormat($this->options['min']) . ' haben';
             $valid = false;
         }
-        
+
         //Maximalwert
-        if((isset($this->options['max']) && $value > $this->options['max']) || (!isset($this->options['max']) && $value > 100)) {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' darf maximal einen Wert von '. String::numberFormat($this->options['max']) .' haben';
+        if ((isset($this->options['max']) && $value > $this->options['max']) || (!isset($this->options['max']) && $value > 100)) {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' darf maximal einen Wert von ' . String::numberFormat($this->options['max']) . ' haben';
             $valid = false;
         }
-        
+
         //Schritte
-        if((isset($this->options['step']) && floor(abs($value) / $this->options['step']) != abs($value) / $this->options['step']) || (!isset($this->options['step']) && floor(abs($value) / 0.5) != abs($value) / 0.5))  {
-            
-            $this->messages[] = 'Das Feld '. String::encodeHTML($this->getTitle()) .' darf nur Wert in '. String::numberFormat($this->options['step']) .'er Schritten haben';
+        if ((isset($this->options['step']) && floor(abs($value) / $this->options['step']) != abs($value) / $this->options['step']) || (!isset($this->options['step']) && floor(abs($value) / 0.5) != abs($value) / 0.5)) {
+
+            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' darf nur Wert in ' . String::numberFormat($this->options['step']) . 'er Schritten haben';
             $valid = false;
         }
 
@@ -139,6 +207,7 @@ class FloatInputField extends AbstractFormElement {
 
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
         return $valid;
     }
 

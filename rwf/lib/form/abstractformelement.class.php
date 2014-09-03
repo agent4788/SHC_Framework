@@ -82,6 +82,13 @@ abstract class AbstractFormElement extends AbstractHtmlElement implements FormEl
      * @var Array
      */
     protected $messages = array();
+    
+    /**
+     * gibt an ob die Eingabedaten Vald sind
+     * 
+     * @var Boolean 
+     */
+    protected $isValid = true;
 
     /**
      * @param String $name    Name

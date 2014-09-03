@@ -105,7 +105,65 @@ class Slider extends AbstractFormElement {
      */
     protected function fetchMobileView() {
 
-        return 'not implemented';
+        //Zufaellige ID
+        $randomId = String::randomStr(64);
+        $this->addId('a' . $randomId);
+
+        //Deaktiviert
+        $disabled = '';
+        if ($this->isDisabled()) {
+
+            $disabled = ' disabled="disabled" ';
+            $this->addClass('disabled');
+        }
+
+        //CSS Klassen
+        $class = '';
+        if (count($this->classes) > 0) {
+
+            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+        }
+
+        //CSS IDs
+        $id = '';
+        if (count($this->ids) > 0) {
+
+            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+        }
+
+        //Optionen
+        $options = '';
+        if (isset($this->options['min'])) {
+
+            $options .= ' min="' . $this->options['min'] . '" ';
+        }
+        if (isset($this->options['max'])) {
+
+            $options .= ' max="' . $this->options['max'] . '" ';
+        }
+        if (isset($this->options['step'])) {
+
+            $options .= ' step="' . $this->options['step'] . '" ';
+        }
+        
+        //HTML Code
+        $html = '<div class="rwf-ui-form-content">' . "\n";
+
+        //Formularfeld
+        $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
+        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
+        $html .= "</div>\n";
+
+        //Beschreibung
+        if ($this->getDescription() != '') {
+
+            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
     }
 
     /**
