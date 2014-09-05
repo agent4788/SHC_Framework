@@ -23,7 +23,6 @@ $l['form.message.mivValueFloat'] = 'Das Feld {1:s} muss mindestens einen Wert vo
 $l['form.message.maxValueFloat'] = 'Das Feld {1:s} darf maximal einen Wert von {2:f:2} haben';
 $l['form.message.stepsFloat'] = 'Das Feld {1:s} darf nur Wert in {2:f:2}er Schritten haben';
 $l['form.message.invalidField'] = 'Ungültige Eingabe für {1:s}';
-$l['form.message.'] = '';
 $l['form.message.mobile.required'] = 'Das Formularfeld muss ausgefüllt werden';
 $l['form.message.mobile.invalid'] = 'Fehlerhafte Eingaben';
 
