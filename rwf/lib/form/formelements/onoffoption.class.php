@@ -3,6 +3,7 @@
 namespace RWF\Form\FormElements;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
 use RWF\Util\String;
 
@@ -227,11 +228,11 @@ class OnOffOption extends AbstractFormElement {
 
         //Pflichtfeld
         if ($this->isRequiredField() && $this->getValue() == '') {
-
-            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
-        } elseif (!$this->isValid) {
-
-            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.invalid') .'</div>';
         }
 
         //Beschreibung
@@ -254,18 +255,20 @@ class OnOffOption extends AbstractFormElement {
 
         $valid = true;
         $value = $this->getValue();
+        $lang = RWF::getLanguage();
+        $lang->disableAutoHtmlEndocde();
 
         //Pflichtfeld
         if ($this->isRequiredField() && $value == '') {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss ausgefüllt werden';
+            $this->messages[] = $lang->get('form.message.requiredField', $this->getTitle());
             $valid = false;
         }
 
         //erlaubte Werte Pruefen
         if ($value != 0 && $value != 1) {
 
-            $this->messages[] = 'Ungültige Eingabe für ' . String::encodeHTML($this->getTitle());
+            $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
             $valid = false;
         }
 
@@ -274,6 +277,7 @@ class OnOffOption extends AbstractFormElement {
             $this->addClass('rwf-ui-form-content-invalid');
         }
         $this->isValid = $valid;
+        $lang->enableAutoHtmlEndocde();
         return $valid;
     }
 

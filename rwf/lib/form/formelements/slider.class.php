@@ -3,6 +3,7 @@
 namespace RWF\Form\FormElements;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
 use RWF\Util\String;
 
@@ -155,6 +156,15 @@ class Slider extends AbstractFormElement {
         $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
         $html .= "</div>\n";
 
+        //Pflichtfeld
+        if ($this->isRequiredField() && $this->getValue() == '') {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.invalid') .'</div>';
+        }
+        
         //Beschreibung
         if ($this->getDescription() != '') {
 
@@ -175,32 +185,34 @@ class Slider extends AbstractFormElement {
 
         $valid = true;
         $value = $this->getValue();
+        $lang = RWF::getLanguage();
+        $lang->disableAutoHtmlEndocde();
 
         //Pflichtfeld
         if ($this->isRequiredField() && $value == '') {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss ausgefüllt werden';
+            $this->messages[] = $lang->get('form.message.requiredField', $this->getTitle());
             $valid = false;
         }
 
         //Minimalwert
         if ((isset($this->options['min']) && $value < $this->options['min']) || (!isset($this->options['min']) && $value < 0)) {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss mindestens einen Wert von ' . String::numberFormat($this->options['min']) . ' haben';
+            $this->messages[] = $lang->get('form.message.mivValueInteger', $this->getTitle(), $this->options['min']);
             $valid = false;
         }
 
         //Maximalwert
         if ((isset($this->options['max']) && $value > $this->options['max']) || (!isset($this->options['max']) && $value > 100)) {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' darf maximal einen Wert von ' . String::numberFormat($this->options['max']) . ' haben';
+            $this->messages[] = $lang->get('form.message.maxValueInteger', $this->getTitle(), $this->options['max']);
             $valid = false;
         }
 
         //Schritte
         if ((isset($this->options['step']) && $value % $this->options['step'] > 0) || (!isset($this->options['step']) && $value % 1 > 0)) {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' darf nur Wert in ' . String::numberFormat($this->options['step']) . 'er Schritten haben';
+            $this->messages[] = $lang->get('form.message.stepsInteger', $this->getTitle(), $this->options['step']);
             $valid = false;
         }
 
@@ -208,6 +220,8 @@ class Slider extends AbstractFormElement {
 
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
+        $lang->enableAutoHtmlEndocde();
         return $valid;
     }
 

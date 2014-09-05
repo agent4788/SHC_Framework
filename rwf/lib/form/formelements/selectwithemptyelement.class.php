@@ -284,6 +284,15 @@ class SelectWithEmptyElement extends AbstractFormElement {
         }
         $html .= "</select>\n";
         $html .= "</div>\n";
+        
+        //Pflichtfeld
+        if ($this->isRequiredField() && $this->getValue() == '') {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.invalid') .'</div>';
+        }
 
         //Beschreibung
         if ($this->getDescription() != '') {
@@ -305,18 +314,20 @@ class SelectWithEmptyElement extends AbstractFormElement {
 
         $valid = true;
         $value = $this->getValue();
+        $lang = RWF::getLanguage();
+        $lang->disableAutoHtmlEndocde();
 
         //Pflichtfeld
         if ($this->isRequiredField() && $value !== null && $value == '') {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss ausgefüllt werden';
+            $this->messages[] = $lang->get('form.message.requiredField', $this->getTitle());
             $valid = false;
         }
 
         //Pruefen ob der Wert existiert
         if (!array_key_exists($value, $this->values) && $value !== null) {
 
-            $this->messages[] = 'Ungültige Eingaben für ' . String::encodeHTML($this->getTitle());
+            $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
             $valid = false;
         }
 
@@ -324,6 +335,8 @@ class SelectWithEmptyElement extends AbstractFormElement {
 
             $this->addClass('rwf-ui-form-content-invalid');
         }
+        $this->isValid = $valid;
+        $lang->enableAutoHtmlEndocde();
         return $valid;
     }
 

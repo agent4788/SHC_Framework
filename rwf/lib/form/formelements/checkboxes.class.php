@@ -39,16 +39,16 @@ class CheckBoxes extends AbstractFormElement {
         $request = RWF::getRequest();
         if ($request->issetParam($this->getName(), Request::POST)) {
 
-//Daten per POST
+            //Daten per POST
             $values = $request->getParam($this->getName(), Request::POST);
 
-//Leerzeichen entfernen
+            //Leerzeichen entfernen
             foreach ($values as $index => $value) {
 
                 $values[$index] = String::trim($value);
             }
 
-//Pruefen ob der Wert veraendert wurde
+            //Pruefen ob der Wert veraendert wurde
             $isDefault = true;
             foreach ($values as $value) {
 
@@ -61,7 +61,7 @@ class CheckBoxes extends AbstractFormElement {
             $this->isDefault = $isDefault;
         } else {
 
-//keine Daten per POST
+            //keine Daten per POST
             $this->isDefault = true;
             $values = array();
             foreach ($this->values as $value) {
@@ -217,12 +217,12 @@ class CheckBoxes extends AbstractFormElement {
         $html .= '</fieldset>' . "\n";
 
         //Pflichtfeld
-        if ($this->isRequiredField() && $this->getValue() == '') {
-
-            $html .= '<div class="rwf-ui-form-content-required">Das Formularfeld muss ausgefüllt werden</div>';
-        } elseif (!$this->isValid) {
-
-            $html .= '<div class="rwf-ui-form-content-required">Fehlerhafte Eingaben</div>';
+        if ($this->isRequiredField() && !count($this->getValue())) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
+        } elseif(!$this->isValid) {
+            
+            $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.invalid') .'</div>';
         }
 
         //Beschreibung
@@ -245,11 +245,13 @@ class CheckBoxes extends AbstractFormElement {
 
         $valid = true;
         $values = $this->getValues();
+        $lang = RWF::getLanguage();
+        $lang->disableAutoHtmlEndocde();
 
         //Pflichtfeld
         if ($this->isRequiredField() && count($values) < 1) {
 
-            $this->messages[] = 'Das Feld ' . String::encodeHTML($this->getTitle()) . ' muss ausgefüllt werden';
+            $this->messages[] = $lang->get('form.message.requiredField', $this->getTitle());
             $valid = false;
         }
 
@@ -258,7 +260,7 @@ class CheckBoxes extends AbstractFormElement {
 
             if (!array_key_exists($value, $this->values)) {
 
-                $this->messages[] = 'Ungültige Eingaben für ' . String::encodeHTML($this->getTitle());
+                $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
                 $valid = false;
                 break;
             }
@@ -269,6 +271,7 @@ class CheckBoxes extends AbstractFormElement {
             $this->addClass('rwf-ui-form-content-invalid');
         }
         $this->isValid = $valid;
+        $lang->enableAutoHtmlEndocde();
         return $valid;
     }
 

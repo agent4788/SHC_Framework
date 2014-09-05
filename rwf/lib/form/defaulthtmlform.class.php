@@ -3,6 +3,7 @@
 namespace RWF\Form;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Util\String;
 use RWF\Util\Message;
 
@@ -22,7 +23,8 @@ class DefaultHtmlForm extends AbstractForm {
      */
     public function __construct($description = '') {
 
-        $this->message = new Message(Message::ERROR, 'Fehlerhafte Eingaben');
+        RWF::getLanguage()->loadModul('form');
+        $this->message = new Message(Message::ERROR, RWF::getLanguage()->getPlain('form.message.typedWrong'));
         $this->setDescription($description);
         $this->addClass('rfw-ui-form-default');
     }
