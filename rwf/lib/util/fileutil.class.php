@@ -12,7 +12,7 @@ namespace RWF\Util;
  * @version    2.0.0-0
  */
 class FileUtil {
-    
+
     /**
      * Datei
      * 
@@ -677,7 +677,7 @@ class FileUtil {
             //Ordner
             if (@is_dir($element) && $recursive === true) {
 
-                $size += self::getDirSize($element, $recursive);
+                $size += self::getDirectorySize($element, $recursive);
                 continue;
             }
         }
@@ -708,9 +708,10 @@ class FileUtil {
      * @param  String  $dir          Pfad
      * @param  Boolean $recursive    Unterorner einbeziehen
      * @param  Boolean $ignoreHidden versteckte Dateien ignorieren
+     * @param  Boolean $onlyNames    Nur Datei und Ornder Namen ohne zusaetzliche Informationen
      * @return Array
      */
-    public static function listDirectoryFiles($dir, $recursive = false, $ignoreHidden = false) {
+    public static function listDirectoryFiles($dir, $recursive = false, $ignoreHidden = false, $onlyNames = false) {
 
         //Ordner Existiert nicht
         if (!@is_dir($dir)) {
@@ -739,15 +740,18 @@ class FileUtil {
             if (@is_file($element)) {
 
                 //Versteckte Dateien ignorieren
-                if($ignoreHidden == true && substr($file, 0, 1) == '.') {
-                    
+                if ($ignoreHidden == true && substr($file, 0, 1) == '.') {
+
                     continue;
                 }
                 $entry['name'] = $file;
                 $entry['type'] = self::FILE;
-                $entry['editTime'] = @filectime($element);
-                $entry['accessTime'] = @fileatime($element);
-                $entry['size'] = @filesize($element);
+                if ($onlyNames == false) {
+
+                    $entry['editTime'] = @filectime($element);
+                    $entry['accessTime'] = @fileatime($element);
+                    $entry['size'] = @filesize($element);
+                }
             }
 
             //Ordner
@@ -756,20 +760,26 @@ class FileUtil {
                 if ($recursive === true) {
 
                     //Rekursiver aufruf
-                    $entry = self::listDirectoryFiles($element, $recursive, $ignoreHidden);
+                    $entry = self::listDirectoryFiles($element, $recursive, $ignoreHidden, $onlyNames);
                     $entry['name'] = $file;
                     $entry['type'] = self::DIR;
-                    $entry['editTime'] = @filectime($element);
-                    $entry['accessTime'] = @fileatime($element);
-                    $entry['size'] = self::getDirectorySize($element);
+                    if ($onlyNames == false) {
+
+                        $entry['editTime'] = @filectime($element);
+                        $entry['accessTime'] = @fileatime($element);
+                        $entry['size'] = self::getDirectorySize($element);
+                    }
                 } else {
 
                     //Normaler aufruf
                     $entry['name'] = $file;
                     $entry['type'] = self::DIR;
-                    $entry['editTime'] = @filectime($element);
-                    $entry['accessTime'] = @fileatime($element);
-                    $entry['size'] = self::getDirectorySize($element);
+                    if ($onlyNames == false) {
+
+                        $entry['editTime'] = @filectime($element);
+                        $entry['accessTime'] = @fileatime($element);
+                        $entry['size'] = self::getDirectorySize($element);
+                    }
                 }
             }
 
@@ -836,4 +846,5 @@ class FileUtil {
         @closedir($dir);
         return null;
     }
+
 }
