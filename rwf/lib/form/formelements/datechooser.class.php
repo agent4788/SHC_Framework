@@ -15,5 +15,16 @@ use RWF\Form\AbstractFormElement;
  * @version    2.0.0-0
  */
 class DateChooser extends AbstractFormElement {
-    
+    protected function fetchMobileView() {
+        
+    }
+
+    protected function fetchWebView() {
+        
+    }
+
+    public function validate() {
+        
+    }
+
 }

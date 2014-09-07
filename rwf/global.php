@@ -61,7 +61,15 @@ require_once(PATH_RWF_CLASSES . 'classloader/exception/classnotfoundexception.cl
 require_once(PATH_BASE . APP_NAME . '/global.php');
 
 //Autoload durchfuehren
-function __autoload($class) {
+if (DEVELOPMENT_MODE === true) {
 
-    \RWF\ClassLoader\ClassLoader::getInstance()->loadClass($class);
+    function __autoload($class) {
+
+        \RWF\ClassLoader\ClassLoader::getInstance()->loadClass($class);
+    }
+
+} else {
+
+    RWF\ClassLoader\ClassLoader::getInstance()->icnludeClasses();
 }
+

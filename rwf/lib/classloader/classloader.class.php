@@ -29,18 +29,103 @@ class ClassLoader {
      * @var Array 
      */
     protected $namespaces = array();
-    
+
     /**
      * gibt an ob die Klassendatei schon geladen wurde
      * 
      * @var Boolean 
      */
     protected $classesLoaded = false;
+    
+    /**
+     * vom Packen ausgeschlossene Dateien
+     * 
+     * @var Array 
+     */
+    protected $excludes = array('classloader.class.php', 'classnotfoundexception.class.php', 'error.class.php');
 
     protected function __construct() {
 
         //eigenen Namensraum anmelden
         $this->registerBaseNamespace('RWF', PATH_RWF_CLASSES);
+    }
+
+    /**
+     * includiert die gepackte Klassendatei
+     */
+    public function icnludeClasses() {
+        
+        //Klassen Packen wenn Datei nicht vorhanden
+        if(!file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
+            
+            $this->packClasses();
+        } 
+        
+        //Wenn Classes Datei noch nicht includiert, Datei includieren
+        if($this->classesLoaded === false) {
+            
+            require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
+        }
+    }
+
+    /**
+     * packt alle Klassen in eine Klassendatei
+     */
+    protected function packClasses() {
+        
+        //Datei loeschen falls schon vorhanden
+        if(file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
+            
+            @unlink(PATH_RWF_CACHE . APP_NAME .'_classes.php');
+        }
+        
+        //Datei Initialisieren
+        file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', "<?php \n\n/**\n * Diese Datei wird automatisch erstellt und sollte nicht von Hand veraendert werden\n * Erstellt am: " . date('r') . "\n * @author Oliver Kleditzsch\n * @copyright Copyright (c) " . date('Y') . ", Oliver Kleditzsch\n * @license http://opensource.org/licenses/gpl-license.php GNU Public License\n*/\n");
+        
+        //Alle bekannten Namensraume durchlaufen
+        foreach($this->namespaces as $name => $path) {
+            
+            //Dateibaum einlesen
+            $files = $this->readFiles($path);
+            
+            //Alle Klassen in die Klassendatei Packen
+            $orderedList = array('interface' => array(), 'abstract' => array(), 'class' => array());
+            foreach($files as $file) {
+                
+                $content = file_get_contents($file);
+                if(preg_match('#\n\s*interface\s+#', $content)) {
+                    
+                    //Interface
+                    $orderedList['interface'][] = $file;
+                } elseif(preg_match('#\n\s*abstract\s+class\s+#', $content)) {
+                    
+                    //Abstracte Klasse
+                    $orderedList['abstract'][] = $file;
+                } else {
+                    
+                    //Normale Klasse
+                    $orderedList['class'][] = $file;
+                }
+            }
+            
+            //Interfaces Packen
+            foreach($orderedList['interface'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+            
+            //Abstracte Klassen Packen
+            foreach($orderedList['abstract'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+            
+            //normale Klassen Packen
+            foreach($orderedList['class'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+        }
     }
 
     /**
@@ -67,7 +152,39 @@ class ClassLoader {
         $content = trim($content);
 
         //Inhalt zurueckgeben
-        return $content;
+        return $content . "\n";
+    }
+    
+    /**
+     * liest den Verzeichnisbaum ein
+     * 
+     * @param  String $path Pfad
+     * @return Array
+     */
+    protected function readFiles($path = PATH_RWF_CLASSES) {
+
+        $files = array();
+
+        $dir = opendir($path);
+        while ($file = readdir($dir)) {
+
+            if ($file == '.' || $file == '..') {
+                continue;
+            }
+
+            if (is_file($path . $file) && preg_match('#.class.php$#i', $path . $file) && !in_array($file, $this->excludes)) {
+
+                $files[] = $path . $file;
+            }
+
+            if (is_dir($path . $file)) {
+
+                $result = $this->readFiles($path . $file . '/');
+                $files = array_merge($files, $result);
+            }
+        }
+
+        return $files;
     }
 
     /**
@@ -88,18 +205,6 @@ class ClassLoader {
      */
     public function loadClass($class) {
 
-        //Classes PHP Laden falls nicht schon geschehen
-        if(!DEVELOPMENT_MODE && $this->classesLoaded === false && is_file(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
-            
-            require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
-            $this->classesLoaded = true;
-            
-            if (class_exists($class, false) && interface_exists($class, false)) {
-                
-                return true;
-            }
-        }
-        
         //Basis Namensraum
         $matches = array();
         preg_match('#^(\S+?)\\\\#', $class, $matches);
@@ -128,22 +233,6 @@ class ClassLoader {
                     throw new ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
                 }
 
-                //Wenn Klasse erfolgreich geladen und development Modus aus die Klasse an die classes.php anheangen
-                if(!DEVELOPMENT_MODE) {
-                    
-                    //Schreibrechte pruefen
-                    if(!is_writable(PATH_RWF_CACHE)) {
-                        
-                        throw new ClassNotFoundException($class, 1003, 'Die classes.php kann wegen felenden Schreibrechten nicht erstellt werden');
-                    }
-                    
-                    //Classes.php initalisieren falls die Datei noch nicht existiert
-                    if(!file_exists(PATH_RWF_CACHE . APP_NAME .'_classes.php')) {
-                        
-                        file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', "<?php \n\n/**\n * Diese Datei wird automatisch erstellt und sollte nicht von Hand veraendert werden\n * Erstellt am: " . date('r') . "\n * @author Oliver Kleditzsch\n * @copyright Copyright (c) " . date('Y') . ", Oliver Kleditzsch\n * @license http://opensource.org/licenses/gpl-license.php GNU Public License\n*/\n");
-                    }
-                    file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($path), FILE_APPEND);
-                }
                 //Return wenn die Klasse erfolgreich geladen wurde
                 return true;
             } else {
