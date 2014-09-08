@@ -646,7 +646,7 @@ class UserEditor {
     }
 
     /**
-     * gibt den Classloader zurueck
+     * gibt den Benutzer Editor zurueck
      * 
      * @return \RWF\User\UserEditor 
      */
