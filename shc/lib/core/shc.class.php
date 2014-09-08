@@ -4,6 +4,7 @@ namespace SHC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\XML\XmlFileManager;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -16,12 +17,26 @@ use RWF\Core\RWF;
  */
 class SHC extends RWF {
     
+    /**
+     * Raeume XML Datei
+     * 
+     * @var String
+     */
+    const XML_ROOM = 'rooms';
+    
     public function __construct() {
+        
         
         //Basisklasse initalisieren
         parent::__construct();
         
         //Template Ordner anmelden
         self::$template->addTemplateDir(PATH_SHC .'data/templates');
+    }
+    
+    protected function initXml() {
+        
+        $fileManager = XmlFileManager::getInstance();
+        $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultrooms.xml');
     }
 }
