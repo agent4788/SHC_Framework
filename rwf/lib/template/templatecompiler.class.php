@@ -999,19 +999,19 @@ class TemplateCompiler {
         //HTML Encode
         if ($encodeHTML === true) {
 
-            $compiledTag = 'hf\core\util\String::encodeHTML(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\String::encodeHTML(' . $compiledTag . ')';
         }
 
         //Strip HTML
         if ($stripHTML === true) {
 
-            $compiledTag = 'hf\core\util\String::stripHTML(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\String::stripHTML(' . $compiledTag . ')';
         }
 
         //Number Format
         if ($numFormat === true) {
 
-            $compiledTag = 'hf\core\util\String::numberFormat(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\String::numberFormat(' . $compiledTag . ')';
         }
 
         return '<?php echo ' . $compiledTag . '; ?>';
