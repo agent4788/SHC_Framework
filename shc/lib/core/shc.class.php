@@ -26,6 +26,8 @@ class SHC extends RWF {
     
     public function __construct() {
         
+        //XML Initialisieren
+        $this->initXml();
         
         //Basisklasse initalisieren
         parent::__construct();
@@ -37,6 +39,6 @@ class SHC extends RWF {
     protected function initXml() {
         
         $fileManager = XmlFileManager::getInstance();
-        $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultrooms.xml');
+        $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
     }
 }

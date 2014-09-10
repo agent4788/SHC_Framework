@@ -130,7 +130,7 @@ class XmlFileManager {
                     FileUtil::copyFile($this->xmlFileList[$name]['default'], $this->xmlFileList[$name]['file']);
                 }
                 //XML Objekt erzeugen
-                $this->xmlObjects[$name] = XmlEditor::createFromFile($this->xmlFileList[$name]['file']);
+                return $this->xmlObjects[$name] = XmlEditor::createFromFile($this->xmlFileList[$name]['file']);
             } else {
 
                 //XML Datei nicht registriert
