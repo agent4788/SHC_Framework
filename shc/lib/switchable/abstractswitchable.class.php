@@ -42,6 +42,13 @@ abstract class AbstractSwitchable implements Switchable {
     protected $state = self::STATE_OFF;
 
     /**
+     * ID des Elements
+     * 
+     * @var Integer 
+     */
+    protected $id = 0;
+    
+    /**
      * Icon des Elements
      * 
      * @var String 
@@ -218,6 +225,28 @@ abstract class AbstractSwitchable implements Switchable {
         return false;
     }
 
+    /**
+     * setzt die ID des Elements
+     * 
+     * @param Integer $id
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setId($id) {
+        
+        $this->id = $id;
+        return $this;
+    }
+    
+    /**
+     * gibt die ID des Elements zurueck
+     * 
+     * @return Integer
+     */
+    public function getId() {
+        
+        return $this->id;
+    }
+    
     /**
      * setzt das Icon welches Angezeigt werden soll
      * 
