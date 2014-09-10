@@ -43,6 +43,13 @@ class ClassLoader {
      * @var Array 
      */
     protected $excludes = array('classloader.class.php', 'classnotfoundexception.class.php', 'error.class.php');
+    
+    /**
+     * Klassendateien die beim Packen zuerst geladen werden muessen
+     * 
+     * @var Array 
+     */
+    protected $loadFirst = array('abstractform.class.php', 'abstractformelement.class.php', 'abstractcommand.class.php');
 
     protected function __construct() {
 
@@ -65,6 +72,7 @@ class ClassLoader {
         if($this->classesLoaded === false) {
             
             require_once(PATH_RWF_CACHE . APP_NAME .'_classes.php');
+            $this->classesLoaded = true;
         }
     }
 
@@ -89,39 +97,75 @@ class ClassLoader {
             $files = $this->readFiles($path);
             
             //Alle Klassen in die Klassendatei Packen
-            $orderedList = array('interface' => array(), 'abstract' => array(), 'class' => array());
+            $orderedList = array('interface' => array('first' => array(), 'normal' => array()), 'abstract' => array('first' => array(), 'normal' => array()), 'class' => array('first' => array(), 'normal' => array()));
             foreach($files as $file) {
                 
                 $content = file_get_contents($file);
                 if(preg_match('#\n\s*interface\s+#', $content)) {
                     
                     //Interface
-                    $orderedList['interface'][] = $file;
+                    $split = preg_split('#/#', $file);
+                    $filename = $split[count($split) - 1];
+                    if(in_array($filename, $this->loadFirst)) {
+                        
+                        $orderedList['interface']['first'][] = $file;
+                    } else {
+                        
+                        $orderedList['interface']['normal'][] = $file;
+                    }
                 } elseif(preg_match('#\n\s*abstract\s+class\s+#', $content)) {
                     
                     //Abstracte Klasse
-                    $orderedList['abstract'][] = $file;
+                    $split = preg_split('#/#', $file);
+                    $filename = $split[count($split) - 1];
+                    if(in_array($filename, $this->loadFirst)) {
+                        
+                        $orderedList['abstract']['first'][] = $file;
+                    } else {
+                        
+                        $orderedList['abstract']['normal'][] = $file;
+                    }
                 } else {
                     
                     //Normale Klasse
-                    $orderedList['class'][] = $file;
+                    $split = preg_split('#/#', $file);
+                    $filename = $split[count($split) - 1];
+                    if(in_array($filename, $this->loadFirst)) {
+                        
+                        $orderedList['class']['first'][] = $file;
+                    } else {
+                        
+                        $orderedList['class']['normal'][] = $file;
+                    }
                 }
             }
             
             //Interfaces Packen
-            foreach($orderedList['interface'] as $file) {
+            foreach($orderedList['interface']['first'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+            foreach($orderedList['interface']['normal'] as $file) {
                 
                 file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
             }
             
             //Abstracte Klassen Packen
-            foreach($orderedList['abstract'] as $file) {
+            foreach($orderedList['abstract']['first'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+            foreach($orderedList['abstract']['normal'] as $file) {
                 
                 file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
             }
             
             //normale Klassen Packen
-            foreach($orderedList['class'] as $file) {
+            foreach($orderedList['class']['first'] as $file) {
+                
+                file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
+            }
+            foreach($orderedList['class']['normal'] as $file) {
                 
                 file_put_contents(PATH_RWF_CACHE . APP_NAME .'_classes.php', $this->packFile($file), FILE_APPEND);
             }
