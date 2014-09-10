@@ -1,0 +1,124 @@
+{* ... *}                                                                  //Komentar
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+$test                                                                      //variablenzugriff
+$test.test.test                                                            //Arrayzugriff
+$test.[$test1]                                                             //Variable als Arrayelement
+$test->methode()                                                           //Objektzugriff
+$test->methode('123', 123, $var)                                           //Objektzugriff mit Parametern
+$test|isset                                                                //Template Funktion
+
+#$test                                                                     //Variablenfunktion HTML Encode
+%$test                                                                     //Variablenfunktion Strip HTML
+@$test                                                                     //Variablenfunktion Numberformat
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+include file="DATEINAME" [sandbox=true|false]                              //Anderes Template einbinden
+        file             //Parameter der die an zu zeigende Datei angibt
+        sandbox          //optionaler Parameter Template Variablen im include Template verfügbar
+  
+-----------------------------------------------------------------------------------------------------------------------------------------
+       
+includeonce file="DATEINAME" [sandbox=true|false]                          //Anderes Template einmalig einbinden
+            file             //Parameter der die an zu zeigende Datei angibt
+            sandbox          //optionaler Parameter Template Variablen im include Template verfügbar
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+if     Bedingungen                                                         //IF Anweisungen
+elseif Bedingungen                                                         //ELSEIF Anweisungen
+else                                                                       //ELSE Anweisung
+/if                                                                        //Beendet die IF Anweisung
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+foreach from=$variable item='INDEX'|$variable [key='INDEX'|$variable] [name='NAME']
+                                                                            //Foreach Schleife 
+        from             //Parameter der die Ausgansvariable angibt
+        item             //Parameter Variable für den Wert des aktuellen Elements
+        key              //optionaler Parameter Variable für den Schlüssel des aktuellen Array Elements
+        name             //optionaler Parameter Name für die Foreachschleife
+                         //ist der Name gesetzt kann über $tpl.foreach.NAME.
+                         //                                                  total     => Anzahl der Elemente
+                         //                                                  show      => Schleife wird ausgeführt (Total > 0)
+                         //                                                  iteration => ID des Schleifendurchlaufs
+                         //                                                  first     => True beim ersten Schleifendurchlauf
+                         //                                                  last      => True beim letzten schleifendurchlauf
+                         //                                                  even      => ist in jedem geraden Durchlauf True
+                         //                                                  odd       => ist in jedem ungeraden Durchlauf True
+                         
+foreachelse                                                                 //wenn das Array Leer ist und die Schleife nicht ausgeführt wurde
+
+/foreach                                                                    //beendet die Foreach Schleife
+                         
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+capture [name='NAME'] [assign='VARIABLENNAME'] [append='VARIABLENNAME']     //Fängt die Ausgaben und speichert sie in einer Variable
+        name             //optionaler Parameter ist der Name gesetzt kann der wert unter $tpl.capture.NAME abgefragt werden 
+                         //ansonsten unter $tpl.capture.default
+        assign           //optionaler Parameter Name der Variable unter der der Wert gespeichert werden soll
+        append           //optionaler Parameter Name der Variable an die der der Wert angehängt werden soll werden soll
+        
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+section loop=$variable name='NAME' [start=ZAHL] [max=ZAHL] [step=ZAHL]      //Schreife um durch Arrays zu Interrieren
+        loop             //Parameter der die Ausgansvariable angibt
+        name             //Parameter der den Namen der Schreife angibt Daruter werden alle Meta Informationen gespeichert
+        start            //optionaler Parameter Startindex der Schleife
+        max              //optionaler Parameter oberster Index bei dem die Schleife beendet wird
+        step             //optionaler Parameter Schriite in denen Interiert werden soll
+                         //Metainformationen können über $tpl.section.NAME.
+                         //                                                index         => Aktuelle Index (auch über $SCHLEIFENNAME erreichbar)
+                         //                                                total         => Anzahl der Arrayelemente
+                         //                                                rowNumber     => Fortlaufende Zeilennummer
+                         //                                                show          => True wenn die Schleife angezeigt wird
+                         //                                                step          => Schritte (aus Parameter step)
+                         //                                                max           => Maximalwert (aus Parameter max)
+                         //                                                previousIndex => vorheriger Index
+                         //                                                nextIndex     => nächste Index
+                         //                                                first         => True beim ersten Schleifedurchlauf
+                         //                                                last          => True beim letzten Schleifendurchlauf
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Plugins
+
+Compiler Plugin          //wird beim Compilieren eines unbenkannten Tags aufgerufen
+Compiler Block Plugin    //wird beim Compilieren eines unbenkannten Blocks aufgerufen 
+Template Funktion        //wird zur Laufzeit aufgerufen und kann eine Variable Modifizieren
+Template Block Plugin    //wird zur Laufzeit aufgerufen und kann die Daten eines Bereches Modifizieren
+Template Prefiler        //wird beim Compilieren vor dem Compiliervorgang aufgerufen
+Template Postfilter      //wird beim Compilieren nach dem Compiliervorgang aufgerufen    
+
+Dateinamensvorschriften                                             
+
+Compiler Plugin          //*COMMANDO*      CompilerPlugin
+Compiler Block Plugin    //*COMMANDO*      CompilerBlockPlugin
+Template Funktion        //*FUNKTIONSNAME* Function
+Template Block Plugin    //*COMMANDO*      BlockPlugin
+Template Prefiler        //frei wählbar
+Template Postfilter      //frei wählbar
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Funktions Plugins
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Block Plugins
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Compiler Plugins
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Compiler Block Plugins
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Prefilter
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Postfilter
