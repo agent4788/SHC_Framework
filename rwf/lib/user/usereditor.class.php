@@ -18,6 +18,27 @@ use RWF\Util\String;
 class UserEditor {
 
     /**
+     * nach ID sortieren
+     * 
+     * @var String
+     */
+    const SORT_BY_ID = 'id';
+    
+    /**
+     * nach Namen sortieren
+     * 
+     * @var String
+     */
+    const SORT_BY_NAME = 'name';
+    
+    /**
+     * nicht sortieren
+     * 
+     * @var String
+     */
+    const SORT_NOTHING = 'unsorted';
+    
+    /**
      * Liste mit allen Benutzergruppen
      * 
      * @var Array 
@@ -30,7 +51,7 @@ class UserEditor {
      * @var Array 
      */
     protected $users = array();
-    
+
     /**
      * Gast Objekt
      * 
@@ -62,11 +83,7 @@ class UserEditor {
             }
 
             $this->userGroups[(int) $group->id] = new UserGroup(
-                    (int) $group->id, 
-                    (string) $group->name, 
-                    (string) $group->description, 
-                    $premissions, 
-                    (bool) $group->isSystemGroup
+                    (int) $group->id, (string) $group->name, (string) $group->description, $premissions, (bool) $group->isSystemGroup
             );
         }
 
@@ -81,17 +98,7 @@ class UserEditor {
             }
 
             $this->users[(int) $user->id] = new User(
-                    (int) $user->id, 
-                    (string) $user->authCode, 
-                    (string) $user->name, 
-                    (string) $user->password, 
-                    (bool) $user->isOriginator, 
-                    $this->getUserGroupById((int) $user->mainUserGroup), 
-                    $userGroups, 
-                    ((string) $user->language != '' ? (string) $user->language : null),
-                    ((string) $user->webStyle != '' ? (string) $user->webStyle : null), 
-                    ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null), 
-                    \DateTime::createFromFormat('Y-m-d', (string) $user->register)
+                    (int) $user->id, (string) $user->authCode, (string) $user->name, (string) $user->password, (bool) $user->isOriginator, $this->getUserGroupById((int) $user->mainUserGroup), $userGroups, ((string) $user->language != '' ? (string) $user->language : null), ((string) $user->webStyle != '' ? (string) $user->webStyle : null), ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null), \DateTime::createFromFormat('Y-m-d', (string) $user->register)
             );
         }
     }
@@ -102,15 +109,15 @@ class UserEditor {
      * @return \RWF\User\Guest 
      */
     public function getGuest() {
-        
-        if($this->guest === null) {
-            
+
+        if ($this->guest === null) {
+
             //Gast erstellen
             $this->guest = new Guest($this->getUserGroupById(RWF_GUEST_USER_GROUP));
         }
         return $this->guest;
     }
-    
+
     /**
      * gibt eine Userobjekt anhand der ID zurueck
      * 
@@ -137,7 +144,7 @@ class UserEditor {
         foreach ($this->users as $user) {
 
             /* @var $user \RWF\User\User */
-            if (strtolower($user->getName()) == strtolower($name)) {
+            if (String::toLower($user->getName()) == String::toLower($name)) {
 
                 return $user;
             }
@@ -226,14 +233,23 @@ class UserEditor {
         } elseif ($orderBy == 'name') {
 
             //Benuternamen als Index verwenden
-            $users = array();
-            foreach ($this->users as $user) {
+            $users = $this->users;
+            
+            //Sortierfunktion
+            $orderFunction = function($a, $b) {
 
-                /* @var $user \RWF\User\User */
-                $users[$user->getName()] = $user;
-            }
+                if ($a->getName() == $b->getName()) {
 
-            ksort($users, SORT_STRING);
+                    return 0;
+                }
+
+                if ($a->getName() < $b->getName()) {
+
+                    return -1;
+                }
+                return 1;
+            };
+            usort($users, $orderFunction);
             return $users;
         }
         return $this->users;
@@ -611,7 +627,7 @@ class UserEditor {
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function removeUserGroup($id) {
-        
+
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
 
