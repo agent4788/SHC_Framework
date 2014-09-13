@@ -113,6 +113,7 @@ class RWF {
 
             self::$request = new HttpRequest();
             self::$response = new HttpResponse();
+            self::$response->addNoCacheHeader();
         } else {
 
             self::$request = new CliRequest();
