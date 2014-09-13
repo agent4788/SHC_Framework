@@ -394,7 +394,7 @@ abstract class AbstractSwitchable implements Switchable {
             //Alle Benutzergruppen pruefen
             foreach ($user->listGroups() as $userGroup) {
 
-                if (in_array($userGroup, $this->allowedUserGroups)) {
+                if (in_array($userGroup->getId(), $this->allowedUserGroups)) {
 
                     return true;
                 }
