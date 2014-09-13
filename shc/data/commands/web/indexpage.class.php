@@ -27,7 +27,7 @@ class IndexPage extends PageCommand {
      * Daten verarbeiten
      */
     public function processData() {
-
-        var_dump(\RWF\Style\StyleEditor::getInstance()->listStyles());
+        
+        var_dump(\SHC\Room\RoomEditor::getInstance()->listRooms(\SHC\Room\RoomEditor::SORT_BY_NAME));
     }
 }
