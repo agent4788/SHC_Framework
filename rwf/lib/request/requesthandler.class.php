@@ -160,7 +160,7 @@ class RequestHandler {
      * @param  String $requestedObject Anfrage Objekt
      * @throws \Exception
      */
-    protected function handleWebRequest($requestedObject) {
+    protected function handleWebRequest($requestType, $requestedObject) {
 
         //Objektname pruefen
         if (!preg_match('#^[a-z0-9]+$#i', $requestedObject)) {
