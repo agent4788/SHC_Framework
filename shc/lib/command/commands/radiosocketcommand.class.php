@@ -1,14 +1,12 @@
 <?php
 
-namespace SHC\Switchable\Switchables;
+namespace SHC\Command\Commands;
 
 //Imports
-use SHC\Switchable\AbstractSwitchable;
-use SHC\Command\CommandSheduler;
-use SHC\Command\Commands\RadioSocketCommand;
+use SHC\Command\AbstractCommand;
 
 /**
- * Funksteckdose
+ * Funksteckdose schalten
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -16,7 +14,7 @@ use SHC\Command\Commands\RadioSocketCommand;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class RadioSocket extends AbstractSwitchable {
+class RadioSocketCommand extends AbstractCommand {
     
     /**
      * Protokol
@@ -40,10 +38,24 @@ class RadioSocket extends AbstractSwitchable {
     protected $deviceCode = '';
     
     /**
+     * @param String  $protocol   Protokoll
+     * @param String  $systemCode Systemcode
+     * @param String  $deviceCode Geraetecode
+     * @param Integer $command    Kommando
+     */
+    public function __construct($protocol, $systemCode, $deviceCode, $command) {
+        
+        $this->protocol = $protocol;
+        $this->systemCode = $systemCode;
+        $this->deviceCode = $deviceCode;
+        $this->command = $command;
+    }
+    
+    /**
      * setzt das Protokoll
      * 
      * @param  String $protocol Sendeprotokoll
-     * @return \SHC\Switchable\Switchables\RadioSocket
+     * @return \SHC\Command\Commands\RadioSocketCommand
      */
     public function setProtocol($protocol) {
         
@@ -65,7 +77,7 @@ class RadioSocket extends AbstractSwitchable {
      * setzt den Systemcode
      * 
      * @param  String $systemCode Systemcode
-     * @return \SHC\Switchable\Switchables\RadioSocket
+     * @return \SHC\Command\Commands\RadioSocketCommand
      */
     public function setSystemCode($systemCode) {
         
@@ -87,7 +99,7 @@ class RadioSocket extends AbstractSwitchable {
      * etzt den Geraetecode
      * 
      * @param  String $deviceCode Geraetecode
-     * @return \SHC\Switchable\Switchables\RadioSocket
+     * @return \SHC\Command\Commands\RadioSocketCommand
      */
     public function setDeviceCode($deviceCode) {
         
@@ -106,23 +118,18 @@ class RadioSocket extends AbstractSwitchable {
     }
     
     /**
-     * schaltet das Objekt ein
+     * gibt ein Array mit den zu sendenen Daten zurueck
      * 
-     * @return Boolean
+     * @return Array
      */
-    public function switchOn() {
+    public function getCommandData() {
         
-        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_ON));
-    }
-    
-    /**
-     * schaltet das Objekt aus
-     * 
-     * @return Boolean
-     */
-    public function switchOff() {
-        
-        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_OFF));
+        return array(
+            'protocol' => $this->protocol,
+            'systemCode' => $this->systemCode,
+            'deviceCode' => $this->deviceCode,
+            'command' => $this->command
+        );
     }
 
 }

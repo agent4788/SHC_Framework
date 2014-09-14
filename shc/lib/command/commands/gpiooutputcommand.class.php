@@ -1,14 +1,12 @@
-<?php 
+<?php
 
-namespace SHC\Switchable\Switchables;
+namespace SHC\Command\Commands;
 
 //Imports
-use SHC\Switchable\AbstractSwitchable;
-use SHC\Command\CommandSheduler;
-use SHC\Command\Commands\GpioOutputCommand;
+use SHC\Command\AbstractCommand;
 
 /**
- * Raspberry Pi GPIO
+ * GPIO schalten
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -16,7 +14,7 @@ use SHC\Command\Commands\GpioOutputCommand;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class RpiGpio extends AbstractSwitchable {
+class GpioOutputCommand extends AbstractCommand {
     
     /**
      * ID des Schaltservers
@@ -33,10 +31,22 @@ class RpiGpio extends AbstractSwitchable {
     protected $pinNumber = 0;
     
     /**
+     * @param Integer $switchServer ID des Schaltservers
+     * @param Integer $pinNumber    Pin Nummer
+     * @param Integer $command      Kommando
+     */
+    public function __construct($switchServer, $pinNumber, $command) {
+        
+        $this->switchServer = $switchServer;
+        $this->pinNumber = $pinNumber;
+        $this->command = $command;
+    }
+    
+    /**
      * setzt den Schaltserver
      * 
      * @param  Integer $switchServer ID des Schaltservers
-     * @return \SHC\Switchable\Switchables\RpiGpio
+     * @return \SHC\Command\Commands\GpioOutputCommand
      */
     public function setSwitchServer($switchServer) {
         
@@ -58,7 +68,7 @@ class RpiGpio extends AbstractSwitchable {
      * setzt die Pin Nummer
      * 
      * @param  Integer $pinNumber Pin Nummer
-     * @return \SHC\Switchable\Switchables\RpiGpio
+     * @return \SHC\Command\Commands\GpioOutputCommand
      */
     public function setPinNumber($pinNumber) {
         
@@ -77,23 +87,16 @@ class RpiGpio extends AbstractSwitchable {
     }
     
     /**
-     * schaltet das Objekt ein
+     * gibt ein Array mit den zu sendenen Daten zurueck
      * 
-     * @return Boolean
+     * @return Array
      */
-    public function switchOn() {
+    public function getCommandData() {
         
-        CommandSheduler::getInstance()->addCommand(new GpioOutputCommand($this->switchServer, $this->pinNumber, GpioOutputCommand::SWITCH_ON));
+        return array(
+            'switchServer' => $this->switchServer,
+            'pinNumber' => $this->pinNumber,
+            'command' => $this->command
+        );
     }
-    
-    /**
-     * schaltet das Objekt aus
-     * 
-     * @return Boolean
-     */
-    public function switchOff() {
-        
-        CommandSheduler::getInstance()->addCommand(new GpioOutputCommand($this->switchServer, $this->pinNumber, GpioOutputCommand::SWITCH_OFF));
-    }
-
 }
