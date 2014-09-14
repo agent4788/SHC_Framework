@@ -250,7 +250,7 @@ class RequestHandler {
         }
 
         //kein Objekt gefunden
-        throw new \Exception('unbekanntes Kommando mit "-h" oder "--help" kannst du dir anzeigen lassen welche Kommandos es gibt', 1900);
+        throw new \Exception('unbekanntes Kommando mit "-h" oder "--help" kannst du dir anzeigen lassen welche Kommandos es gibt', 1024);
     }
 
     /**
