@@ -22,7 +22,7 @@ class CliResponse implements Response {
      * @var String 
      */
     protected $body = '';
-    
+
     /**
      * CLI Util
      * 
@@ -31,10 +31,10 @@ class CliResponse implements Response {
     protected $cli = null;
 
     public function __construct() {
-        
+
         $this->cli = new CliUtil(false);
     }
-    
+
     /**
      * setzt den HTTP Status der Antwort
      * 
@@ -139,7 +139,7 @@ class CliResponse implements Response {
      */
     public function write($content) {
 
-        $this->body .= $content;
+        print($content);
     }
 
     /**
@@ -149,7 +149,7 @@ class CliResponse implements Response {
      */
     public function writeLn($content) {
 
-        $this->body .= $content . "\n";
+        print($content . "\n");
     }
 
     /**
@@ -160,8 +160,8 @@ class CliResponse implements Response {
      * @param String $backgrundColor Hintergrundfarbe
      */
     public function writeColored($content, $color, $backgrundColor = '') {
-        
-        $this->body .= $this->cli->writeColored($content, $color, $backgrundColor);
+
+        print($this->cli->writeColored($content, $color, $backgrundColor));
     }
 
     /**
@@ -172,8 +172,8 @@ class CliResponse implements Response {
      * @param String $backgrundColor Hintergrundfarbe
      */
     public function writeLnColored($content, $color, $backgrundColor = '') {
-        
-        $this->body .= $this->cli->writeLineColored($content, $color, $backgrundColor);;
+
+        print($this->cli->writeLineColored($content, $color, $backgrundColor));
     }
 
     /**
@@ -186,17 +186,6 @@ class CliResponse implements Response {
      */
     public function insert($content, $start, $length = -1, $overwrite = false) {
         
-        $newBody = String::subString($this->httpBody, 0, $start);
-        $newBody .= $content;
-        if ($overwrite == true) {
-
-            $newBody .= String::subString($this->httpBody, ($start + ($length === -1 ? String::length($content) : $length)));
-        } else {
-
-            $newBody .= String::subString($this->httpBody, $start);
-        }
-
-        $this->httpBody = $newBody;
     }
 
     /**
@@ -210,10 +199,6 @@ class CliResponse implements Response {
      */
     public function replace($search, $replace, $limit = -1, $caseIntensive = true) {
         
-        $search = preg_quote($search, '#');
-        $count = 0;
-        $this->httpBody = preg_replace('#' . $search . '#' . ($caseIntensive == true ? '' : 'i'), $replace, $this->httpBody, $limit, $count);
-        return $count;
     }
 
     /**
@@ -225,14 +210,13 @@ class CliResponse implements Response {
      */
     public function replaceByPosition($content, $replaceStart, $replaceLength = -1) {
         
-        $this->insert($content, $replaceStart, $replaceLength, true);
     }
 
     /**
      * gibt den inhalt auf den Standart Datenstrom aus
      */
     public function flush() {
-        
+
         echo $this->body;
     }
 
