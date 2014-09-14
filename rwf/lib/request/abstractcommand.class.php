@@ -34,14 +34,14 @@ abstract class AbstractCommand implements Command {
     /**
      * Anfrageobjekt
      * 
-     * @var RWF\Request\Request
+     * @var \RWF\Request\Request
      */
     protected $request = null;
     
     /**
      * Anfrageobjekt
      * 
-     * @var RWF\Request\Response
+     * @var \RWF\Request\Response
      */
     protected $response = null;
     

@@ -6,6 +6,7 @@ namespace RWF\Request;
 use RWF\Core\RWF;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\FileUtil;
+use RWF\Request\Commands\CliCommand;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -68,6 +69,13 @@ class RequestHandler {
     protected static $response = null;
 
     /**
+     * Liste mit allen CLI Kommandos
+     * 
+     * @var Array
+     */
+    protected $cliCommands = array();
+
+    /**
      * behandelt eine Anfrage an die Anwendung
      */
     public static function handleRequest() {
@@ -116,14 +124,10 @@ class RequestHandler {
 
             //Startseite Anzeigen
             new RequestHandler(self::PAGE, 'index');
-        } elseif (false) {
-
-            //Kommandozeilen Anfrage
-            //Muss noch implementiert werden
         } elseif (ACCESS_METHOD_CLI) {
 
-            //Kommandozeilen Anfrage bei aufruf ohne Parameter
-            //Muss noch implementiert werden
+            //Kommandozeilen Anfrage behandeln
+            new RequestHandler(self::CLI, '');
         } else {
 
             //Fehler Anfragetyp nicht bekann
@@ -137,6 +141,26 @@ class RequestHandler {
      * @throws \Exception
      */
     public function __construct($requestType, $requestedObject) {
+
+        if ($requestType === self::CLI) {
+
+            //Kommandozeilen Anfrage behandeln
+            $this->handleCliRequest();
+        } else {
+
+            //Web Anfrage behandeln
+            $this->handleWebRequest($requestType, $requestedObject);
+        }
+    }
+
+    /**
+     * Anfrage vom Webbroser behandeln
+     * 
+     * @param  String $requestType     Anfragetyp
+     * @param  String $requestedObject Anfrage Objekt
+     * @throws \Exception
+     */
+    protected function handleWebRequest($requestedObject) {
 
         //Objektname pruefen
         if (!preg_match('#^[a-z0-9]+$#i', $requestedObject)) {
@@ -170,14 +194,14 @@ class RequestHandler {
                 //Fehler Klasse konnte nicht Galaden werden
                 throw new \Exception('Die Kommandoklasse konnte nicht geladen werden', 1023);
             }
-            
+
             //Templateorner registrieren
             RWF::getTemplate()->addTemplateDir(dirname($path));
-            
+
             /* @var $command Command */
             $command = new $className();
             $command->execute(self::$request, self::$response);
-            
+
             //Daten Senden
             self::$response->flush();
         } else {
@@ -185,6 +209,100 @@ class RequestHandler {
             //Fehler Datei nicht gefunden
             throw new \Exception('Unbekannte Anfrage', 1022);
         }
+    }
+
+    /**
+     * behandelt eine ANfrage auf der Kommandozeile
+     * 
+     * @throws \Exception
+     */
+    protected function handleCliRequest() {
+
+        global $argv;
+
+        //Kommandoobjekte Laden
+        $this->loadCliCommands(PATH_BASE . APP_NAME . '/data/commands/cli');
+
+        //aufgerufenenes Objekt sichen
+        foreach ($this->cliCommands as $cliCommand) {
+
+            /* @var $cliCommand \RWF\Request\Commands\CliCommand */
+            if (in_array($cliCommand->getShortParam(), $argv) || in_array($cliCommand->getFullParam(), $argv)) {
+
+                //Objekt gefunden
+                $cliCommand->execute(self::$request, self::$response);
+                //Daten Senden
+                self::$response->flush();
+                return;
+            }
+        }
+
+        //Hilfe ohne Objektaufruf (Hilfe aller Objekte ausgeben)
+        if (in_array('-h', $argv) || in_array('--help', $argv)) {
+
+            foreach ($this->cliCommands as $cliCommand) {
+
+                $cliCommand->execute(self::$request, self::$response);
+                //Daten Senden
+                self::$response->flush();
+            }
+            return;
+        }
+
+        //kein Objekt gefunden
+        throw new \Exception('unbekanntes Kommando mit "-h" oder "--help" kannst du dir anzeigen lassen welche Kommandos es gibt', 1900);
+    }
+
+    /**
+     * list alle verfuegbaren CLI Kommandos in eine Liste ein
+     * 
+     * @param String $path Pfad
+     */
+    protected function loadCliCommands($path) {
+
+        //Objektdateien Laden, Objekte initialisieren
+        $path = FileUtil::addTrailigSlash($path);
+        $dir = opendir($path);
+
+        //Dateien Einlesen
+        while ($file = readdir($dir)) {
+
+            //. und .. ignorieren
+            if ($file == '.' || $file == '..') {
+
+                continue;
+            }
+
+            //Unterordner Scannen
+            if (is_dir($path . $file)) {
+
+                $this->loadCliCommands($path . $file);
+                continue;
+            }
+
+            //Datei
+            if (is_file($path . $file) && preg_match('#.+cli\.class\.php$#i', $file)) {
+
+                //Objektdatei includieren
+                require_once($path . $file);
+
+                //Klassenname
+                $className = '\\' . APP_NAME . '\\Command\\CLI\\' . str_replace('.class.php', '', $file);
+                $obj = new $className();
+
+                //Pruefen ob das Objekt ein CLI Kommando ist
+                if ($obj instanceof CliCommand) {
+
+                    $this->cliCommands[] = $obj;
+                } else {
+
+                    $obj = null;
+                }
+            }
+        }
+
+        //Ordner Schliesen
+        closedir($dir);
     }
 
 }

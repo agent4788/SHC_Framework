@@ -33,7 +33,10 @@ class SHC extends RWF {
         parent::__construct();
         
         //Template Ordner anmelden
-        self::$template->addTemplateDir(PATH_SHC .'data/templates');
+        if (ACCESS_METHOD_HTTP) {
+            
+            self::$template->addTemplateDir(PATH_SHC .'data/templates');
+        }
     }
     
     protected function initXml() {

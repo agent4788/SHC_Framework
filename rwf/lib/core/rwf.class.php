@@ -66,7 +66,7 @@ class RWF {
      * @var \RWF\Language\Language 
      */
     protected static $language = null;
-    
+
     /**
      * Template Engine
      * 
@@ -87,13 +87,23 @@ class RWF {
         }
 
         //Anfrage/Antwort initialisieren
-        $this->initSettings();
-        $this->initRequest();
-        $this->initSession();
-        $this->redirection();
-        $this->initUser();
-        $this->initLanguage();
-        $this->initTemplate();
+        if (ACCESS_METHOD_HTTP) {
+            
+            //Anfrage vom Browser
+            $this->initSettings();
+            $this->initRequest();
+            $this->initSession();
+            $this->redirection();
+            $this->initUser();
+            $this->initLanguage();
+            $this->initTemplate();
+        } else {
+            
+            //CLI Anfrage
+            $this->initSettings();
+            $this->initRequest();
+            $this->initLanguage();
+        }
     }
 
     /**
@@ -241,13 +251,13 @@ class RWF {
             self::$language = new Language(self::$settings->getValue('rwf.language.defaultLanguage'));
         }
     }
-    
+
     /**
      * initialisiert die Template Engine
      */
     protected function initTemplate() {
-        
-        self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, APP_NAME .'_', DEVELOPMENT_MODE);
+
+        self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, APP_NAME . '_', DEVELOPMENT_MODE);
     }
 
     /**
@@ -309,14 +319,14 @@ class RWF {
 
         return self::$language;
     }
-    
+
     /**
      * gibt das Template Objekt zurueck
      * 
      * @return \RWF\Template\Template 
      */
     public static function getTemplate() {
-        
+
         return self::$template;
     }
 

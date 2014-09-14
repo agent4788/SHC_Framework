@@ -25,6 +25,7 @@ class CliRequest implements Request {
      */
     public function issetParam($name, $method = self::GET) {
         
+        global $argv;
         if(isset($argv[$name])) {
             
             return true;
@@ -42,6 +43,7 @@ class CliRequest implements Request {
      */
     public function getParam($name, $method = self::GET, $dataType = DataTypeUtil::PLAIN) {
         
+        global $argv;
         if(isset($argv[$name])) {
             
             return DataTypeUtil::checkAndConvert($argv[$name], $dataType);
@@ -57,6 +59,7 @@ class CliRequest implements Request {
      */
     public function listParamNames($method = 'all') {
         
+        global $argv;
         if(isset($argv)) {
             
             return array_keys($argv);

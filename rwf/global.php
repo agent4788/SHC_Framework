@@ -46,12 +46,29 @@ $error->enableDisplayErrors(true); //später mit DEVELOPMENT_MODE verknuepfen
 $error->enableLogErrors(true);
 
 //APP Namen ermitteln und Pruefen
-if (!isset($_GET['app']) || !file_exists(PATH_BASE . $_GET['app']) || !preg_match('#^[a-z0-9]#i', $_GET['app'])) {
+if (ACCESS_METHOD_HTTP && (!isset($_GET['app']) || !file_exists(PATH_BASE . $_GET['app']) || !preg_match('#^[a-z0-9]#i', $_GET['app']))) {
 
     //Fehler (App Name muss zwingend uebergeben werden
     throw new Exception('Die App ist nicht bekannt', 1010);
+} elseif (ACCESS_METHOD_CLI && (!isset($argv[1]) || !preg_match('#app=(.+)#', $argv[1]))) {
+
+    //Fehler (App Name muss zwingend uebergeben werden
+    throw new Exception('Die App ist nicht bekannt', 1010);
+} elseif (ACCESS_METHOD_CLI) {
+
+    $matches = array();
+    if (preg_match('#app=(.+)#', $argv[1], $matches)) {
+
+        define('APP_NAME', strtolower($matches[1]));
+    } else {
+
+        //Fehler (App Name muss zwingend uebergeben werden
+        throw new Exception('Die App ist nicht bekannt', 1010);
+    }
+} else {
+
+    define('APP_NAME', strtolower($_GET['app']));
 }
-define('APP_NAME', strtolower($_GET['app']));
 
 //Autoload Klassen Laden
 require_once(PATH_RWF_CLASSES . 'classloader/classloader.class.php');
