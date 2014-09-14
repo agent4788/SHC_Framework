@@ -64,6 +64,13 @@ abstract class CliCommand extends AbstractCommand {
             return;
         }
         
+        //Konfiguration anfordern
+        if (in_array('-c', $argv) || in_array('--config', $argv)) {
+        
+            $this->config();
+            return;
+        }
+        
         $this->executeCliCommand();
     }
     
@@ -71,6 +78,11 @@ abstract class CliCommand extends AbstractCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     protected abstract function writeHelp();
+    
+    /**
+     * konfiguriert das CLI Kommando
+     */
+    protected abstract function config();
     
     /**
      * fuehrt das CLI Kommando aus
