@@ -3,6 +3,7 @@
 namespace RWF\Request;
 
 //Imports
+use RWF\Util\CliUtil;
 
 /**
  * CLI Antwort
@@ -21,7 +22,19 @@ class CliResponse implements Response {
      * @var String 
      */
     protected $body = '';
+    
+    /**
+     * CLI Util
+     * 
+     * @var \RWF\Util\CliUtil 
+     */
+    protected $cli = null;
 
+    public function __construct() {
+        
+        $this->cli = new CliUtil(false);
+    }
+    
     /**
      * setzt den HTTP Status der Antwort
      * 
@@ -148,7 +161,7 @@ class CliResponse implements Response {
      */
     public function writeColored($content, $color, $backgrundColor = '') {
         
-        $this->body .= $content;
+        $this->body .= $this->cli->writeColored($content, $color, $backgrundColor);
     }
 
     /**
@@ -160,7 +173,7 @@ class CliResponse implements Response {
      */
     public function writeLnColored($content, $color, $backgrundColor = '') {
         
-        $this->body .= $content . "\n";
+        $this->body .= $this->cli->writeLineColored($content, $color, $backgrundColor);;
     }
 
     /**
