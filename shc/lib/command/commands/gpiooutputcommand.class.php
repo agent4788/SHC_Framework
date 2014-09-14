@@ -94,6 +94,7 @@ class GpioOutputCommand extends AbstractCommand {
     public function getCommandData() {
         
         return array(
+            'type' => 'gpiooutput',
             'switchServer' => $this->switchServer,
             'pinNumber' => $this->pinNumber,
             'command' => $this->command

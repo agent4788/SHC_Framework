@@ -125,6 +125,7 @@ class RadioSocketCommand extends AbstractCommand {
     public function getCommandData() {
         
         return array(
+            'type' => 'radiosocket',
             'protocol' => $this->protocol,
             'systemCode' => $this->systemCode,
             'deviceCode' => $this->deviceCode,
