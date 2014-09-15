@@ -24,6 +24,13 @@ class SHC extends RWF {
      */
     const XML_ROOM = 'rooms';
     
+    /**
+     * Schaltserver XML Datei
+     * 
+     * @var String
+     */
+    const XML_SWITCHSERVER = 'switchserver';
+    
     public function __construct() {
         
         //XML Initialisieren
@@ -43,5 +50,6 @@ class SHC extends RWF {
         
         $fileManager = XmlFileManager::getInstance();
         $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
+        $fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
     }
 }

@@ -28,6 +28,6 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
         
-        var_dump(\SHC\Room\RoomEditor::getInstance()->listRooms(\SHC\Room\RoomEditor::SORT_BY_NAME));
+        var_dump(\SHC\SwitchServer\SwitchServerEditor::getInstance()->listSwitchServers());
     }
 }
