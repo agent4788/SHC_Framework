@@ -60,7 +60,7 @@ class RoomEditor {
      */
     protected static $instance = null;
 
-    public function __construct() {
+    protected function __construct() {
 
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM);
 

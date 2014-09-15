@@ -66,7 +66,7 @@ class UserEditor {
      */
     protected static $instance = null;
 
-    public function __construct() {
+    protected function __construct() {
 
         //Daten einlesen
         $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS);
