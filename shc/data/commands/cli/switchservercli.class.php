@@ -61,7 +61,7 @@ class SwitchServerCli extends CliCommand {
             throw new Exception('Der Schaltserver wurde deaktiviert', 1600);
         }
 
-        //Nebug aktivieren
+        //Debug aktivieren
         if (in_array('-d', $argv) || in_array('--debug', $argv)) {
 
             $this->debug = true;
