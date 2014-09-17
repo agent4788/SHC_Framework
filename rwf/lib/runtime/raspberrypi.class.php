@@ -360,7 +360,7 @@ class RaspberryPi {
         //'000d' => 'Model B Revision 2.0 512MB', (Egoman)
         //'000e' => 'Model B Revision 2.0 512MB', (Sony)
         //'000f' => 'Model B Revision 2.0 512MB', (Qisda)
-        //'0010' => 'Model B+ Revision 2.0 512MB'
+        //'0010' => 'Model B+ Revision 2.0 512MB', (Sony)
         if (!isset($this->cache['rpiRevision'])) {
 
             $match = array();
