@@ -375,6 +375,19 @@ class RaspberryPi {
         }
         return $this->cache['rpiRevision'];
     }
+    
+    public function getModel() {
+        
+        $rev = $this->getRpiRevision();
+        if(($rev >= 1 && $rev <= 6) || ($rev >= 10 && $rev <= 15)) {
+            
+            return self::MODEL_B;
+        } elseif($rev >= 7 && $rev <= 9) {
+            
+            return self::MODEL_A;
+        }
+        return self::MODEL_B_PLUS;
+    }
 
     /**
      * gibt ein Array mit der AUfteilung von System und Videospeicher zurueck
