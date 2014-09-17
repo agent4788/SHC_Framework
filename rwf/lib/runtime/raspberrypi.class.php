@@ -16,6 +16,27 @@ namespace RWF\Runtime;
 class RaspberryPi {
 
     /**
+     * Schaltserver auf einem Model A
+     * 
+     * @var Integer
+     */
+    const MODEL_A = 1;
+    
+    /**
+     * Schaltserver auf einem Model B
+     * 
+     * @var Integer
+     */
+    const MODEL_B = 2;
+    
+    /**
+     * Schaltserver auf einem Model B+
+     * 
+     * @var Integer
+     */
+    const MODEL_B_PLUS = 4;
+    
+    /**
      * CPU Info
      * 
      * @var String 

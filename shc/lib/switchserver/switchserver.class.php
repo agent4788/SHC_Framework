@@ -15,7 +15,7 @@ use RWF\IO\Socket;
  * @version    2.0.0-0
  */
 class SwitchServer {
-
+    
     /**
      * ID
      * 
@@ -52,6 +52,20 @@ class SwitchServer {
     protected $timeout = 2;
     
     /**
+     * Rasberry Pi Model
+     * 
+     * @var Integer 
+     */
+    protected $model = 0;
+    
+    /**
+     * aktiviert/deaktiviert
+     * 
+     * @var Boolean 
+     */
+    protected $enabled = true;
+    
+    /**
      * Funksteckdosen Schalten
      * 
      * @var Boolean 
@@ -77,17 +91,19 @@ class SwitchServer {
      * @param String  $name         Name
      * @param String  $address      IP Adresse
      * @param Integer $port         Port
+     * @param Integer $model        Model ID
      * @param Boolean $radioSockets Funksteckdosen schalten
      * @param Boolean $writeGpios   GPIOs schalten
      * @param Boolean $readGpios    GPIOs lesen
      * @param Integer $timeout      Timeout
      */
-    public function __construct($id, $name, $address, $port, $radioSockets, $writeGpios, $readGpios, $timeout = 2) {
+    public function __construct($id, $name, $address, $port, $model, $radioSockets, $writeGpios, $readGpios, $timeout = 2) {
      
         $this->id = $id;
         $this->name = $name;
         $this->address = $address;
         $this->port = $port;
+        $this->model = $model;
         $this->radioSockets = ($radioSockets == true ? true : false);
         $this->writeGpios = ($writeGpios == true ? true : false);
         $this->readGpios = ($readGpios == true ? true : false);
@@ -202,6 +218,56 @@ class SwitchServer {
     public function getTimeout() {
         
         return $this->timeout;
+    }
+    
+    /**
+     * setzt das RPi Model
+     * 
+     * @param Integer $model Model ID
+     * @return \SHC\SwitchServer\SwitchServer
+     */
+    public function setModel($model) {
+        
+        $this->model = $model;
+        return $this;
+    }
+    
+    /**
+     * gibt die Model ID zurueck
+     * 
+     * @return Integer
+     */
+    public function getModel() {
+        
+        return $this->model;
+    }
+    
+    /**
+     * Aktiviert/Deaktiviert den Schaltserver
+     * 
+     * @param  Boolean $enabled Aktiviert
+     * @return \SHC\SwitchServer\SwitchServer
+     */
+    public function enable($enabled) {
+
+        if ($enabled == true) {
+
+            $this->enabled = true;
+        } else {
+
+            $this->enabled = false;
+        }
+        return $this;
+    }
+
+    /**
+     * gibt an ob der Schaltserver Aktiviert ist
+     * 
+     * @return Boolean 
+     */
+    public function isEnabled() {
+
+        return $this->enabled;
     }
     
     /**

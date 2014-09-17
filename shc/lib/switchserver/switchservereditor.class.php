@@ -60,7 +60,15 @@ class SwitchServerEditor {
         foreach ($xml->switchserver as $switchserver) {
 
             $this->switchServers[(int) $switchserver->id] = new SwitchServer(
-                    (int) $switchserver->id, (string) $switchserver->name, (string) $switchserver->address, (int) $switchserver->port, (int) $switchserver->radioSockets, (int) $switchserver->writeGpios, (int) $switchserver->readGpios, (int) $switchserver->timeout
+                    (int) $switchserver->id, 
+                    (string) $switchserver->name, 
+                    (string) $switchserver->address, 
+                    (int) $switchserver->port, 
+                    (int) $switchserver->model,
+                    (int) $switchserver->radioSockets, 
+                    (int) $switchserver->writeGpios, 
+                    (int) $switchserver->readGpios, 
+                    (int) $switchserver->timeout
             );
         }
     }
@@ -149,13 +157,14 @@ class SwitchServerEditor {
      * @param  String  $address      IP Adresse
      * @param  Integer $port         Port
      * @param  Integer $timeout      Timeout
+     * @param  Integer $model        Model ID
      * @param  Boolean $radioSockets Funksteckdosen schalten
      * @param  Boolean $writeGpios   GPIOs schalten
      * @param  Boolean $readGpios    GPIOs abfragen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addSwitchServer($name, $address, $port, $timeout, $radioSockets, $writeGpios, $readGpios) {
+    public function addSwitchServer($name, $address, $port, $timeout, $model, $radioSockets, $writeGpios, $readGpios) {
         
         //Ausnahme wenn Raumname schon belegt
         if (!$this->isSwitchServerNameAvailable($name)) {
@@ -194,13 +203,14 @@ class SwitchServerEditor {
      * @param  String  $address      IP Adresse
      * @param  Integer $port         Port
      * @param  Integer $timeout      Timeout
+     * @param  Integer $model        Model ID
      * @param  Boolean $radioSockets Funksteckdosen schalten
      * @param  Boolean $writeGpios   GPIOs schalten
      * @param  Boolean $readGpios    GPIOs abfragen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editSwitchServer($id, $name = null, $address = null, $port = null, $timeout = null, $radioSockets = null, $writeGpios = null, $readGpios = null) {
+    public function editSwitchServer($id, $name = null, $address = null, $port = null, $timeout = null, $model = null, $radioSockets = null, $writeGpios = null, $readGpios = null) {
         
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER, true);

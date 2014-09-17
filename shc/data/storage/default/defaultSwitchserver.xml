@@ -7,6 +7,7 @@
         <address>127.0.0.1</address>
         <port>9274</port>
         <timeout>2</timeout>
+        <model>2</model>
         <radioSockets>1</radioSockets>
         <writeGpios>1</writeGpios>
         <readGpios>1</readGpios>
