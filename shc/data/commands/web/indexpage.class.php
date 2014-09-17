@@ -28,6 +28,9 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
         
-        var_dump(\SHC\SwitchServer\SwitchServerEditor::getInstance()->listSwitchServers());
+        var_dump((new \SHC\Condition\Conditions\SunriseSunsetCondition())->isSatisfies());
+        var_dump((new \SHC\Condition\Conditions\SunsetSunriseCondition())->isSatisfies());
+        var_dump((new \SHC\Condition\Conditions\DayOfWeekCondition())->setData(array('start' => 'thu', 'end' => 'sat'))->isSatisfies());
+        var_dump((new \SHC\Condition\Conditions\TimeOfDayCondition())->setData(array('start' => '05:00', 'end' => '19:00'))->isSatisfies());
     }
 }
