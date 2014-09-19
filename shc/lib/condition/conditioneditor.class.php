@@ -15,7 +15,7 @@ use RWF\XML\XmlFileManager;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class ConditionEditor {
+abstract class ConditionEditor {
 
     /**
      * nach ID sortieren
