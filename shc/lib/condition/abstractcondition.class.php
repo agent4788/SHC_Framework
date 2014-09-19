@@ -45,6 +45,20 @@ abstract class AbstractCondition implements Condition {
     protected $enabled = true;
     
     /**
+     * @param type $id
+     * @param type $name
+     * @param array $data
+     * @param type $enabled
+     */
+    public function __construct($id, $name, array $data = array(), $enabled = true) {
+        
+        $this->id = $id;
+        $this->name = $name;
+        $this->data = $data;
+        $this->enable($enabled);
+    }
+    
+    /**
      * setzt die ID
      * 
      * @param   Integer $id ID
