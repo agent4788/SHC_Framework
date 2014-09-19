@@ -494,7 +494,7 @@ class ConditionEditor {
     }
 
     /**
-     * gibt den Raum Editor zurueck
+     * gibt den Bedingungs Editor zurueck
      * 
      * @return \SHC\Condition\ConditionEditor
      */
