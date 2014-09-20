@@ -10,7 +10,7 @@ use SHC\Condition\ConditionEditor;
 use SHC\Condition\Condition;
 
 /**
- * Schaltpunkt
+ * Schaltpunkt verwaltung
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
