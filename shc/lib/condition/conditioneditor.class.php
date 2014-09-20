@@ -120,7 +120,7 @@ class ConditionEditor {
     }
 
     /**
-     * gibt eine Liste mir allen Bedingungen zurueck
+     * gibt eine Liste mit allen Bedingungen zurueck
      * 
      * @param  String $orderBy Art der Sortierung (
      *      id => nach ID sorieren, 
@@ -464,6 +464,7 @@ class ConditionEditor {
      * 
      * @param  Integer $id ID
      * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeCondition($id) {
 
