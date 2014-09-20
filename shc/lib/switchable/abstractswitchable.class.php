@@ -21,13 +21,6 @@ use RWF\User\UserGroup;
 abstract class AbstractSwitchable implements Switchable {
 
     /**
-     * Bedingungen
-     * 
-     * @var Array 
-     */
-    protected $conditions = array();
-
-    /**
      * Schaltpunkte
      * 
      * @var Array 
@@ -82,41 +75,6 @@ abstract class AbstractSwitchable implements Switchable {
      * @var Array 
      */
     protected $allowedUserGroups = array();
-
-    /**
-     * fuegt eine Bedingung hinzu
-     * 
-     * @param \SHC\Condition\Condition $condition
-     * @return \SHC\Switchable\Switchable
-     */
-    public function addCondition(Condition $condition) {
-
-        $this->conditions[] = $condition;
-        return $this;
-    }
-
-    /**
-     * loecht eine Bedingung
-     * 
-     * @param  \SHC\Condition\Condition $condition
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeCondition(Condition $condition) {
-
-        $this->conditions = array_diff($this->conditions, array($condition));
-        return $this;
-    }
-
-    /**
-     * loescht alle Bedingungen
-     * 
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeAllConditions() {
-
-        $this->conditions = array();
-        return $this;
-    }
 
     /**
      * fuegt einen Schaltpunkt hinzu

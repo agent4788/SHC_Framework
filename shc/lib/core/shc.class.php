@@ -38,6 +38,13 @@ class SHC extends RWF {
      */
     const XML_CONDITIONS = 'conditions';
     
+    /**
+     * Schaltpunkte XML
+     * 
+     * @var String
+     */
+    const XML_SWITCHPOINTS = 'switchpoints';
+    
     public function __construct() {
         
         //XML Initialisieren
@@ -59,5 +66,6 @@ class SHC extends RWF {
         $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
         $fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
+        $fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
     }
 }

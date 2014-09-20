@@ -35,29 +35,6 @@ interface Switchable {
     const STATE_ON = 1;
     
     /**
-     * fuegt eine Bedingung hinzu
-     * 
-     * @param \SHC\Condition\Condition $condition
-     * @return \SHC\Switchable\Switchable
-     */
-    public function addCondition(Condition $condition);
-    
-    /**
-     * loecht eine Bedingung
-     * 
-     * @param  \SHC\Condition\Condition $condition
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeCondition(Condition $condition);
-    
-    /**
-     * loescht alle Bedingungen
-     * 
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeAllConditions();
-    
-    /**
      * fuegt einen Schaltpunkt hinzu
      * 
      * @param  \SHC\Timer\SwitchPoint $switchPoint
