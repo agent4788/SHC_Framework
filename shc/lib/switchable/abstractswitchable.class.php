@@ -32,6 +32,13 @@ abstract class AbstractSwitchable implements Switchable {
      * @var Integer 
      */
     protected $state = self::STATE_OFF;
+    
+    /**
+     * gibt an ob der Status veraendert wurde
+     * 
+     * @var Boolean 
+     */
+    protected $stateModified = false;
 
     /**
      * ID des Elements
@@ -139,6 +146,18 @@ abstract class AbstractSwitchable implements Switchable {
     }
 
     /**
+     * setzt den Status des Objekts
+     * 
+     * @param Boolean $state Status
+     * @return \SHC\Switchable\Element
+     */
+    public function setState($state) {
+        
+        $this->state = $state;
+        return $this;
+    }
+    
+    /**
      * gibt den aktuellen geschaltenen Zustand zurueck
      * 
      * @return Integer
@@ -146,6 +165,16 @@ abstract class AbstractSwitchable implements Switchable {
     public function getState() {
 
         return $this->state;
+    }
+    
+    /**
+     * gibt an ob der Status veraendert wurde
+     * 
+     * @return Boolean
+     */
+    public function isStateModified() {
+        
+        return $this->stateModified;
     }
 
     /**

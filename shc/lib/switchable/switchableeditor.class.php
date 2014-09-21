@@ -234,6 +234,7 @@ class SwitchableEditor {
             $object->setIcon((string) $switchable->icon);
             $object->setRoom(RoomEditor::getInstance()->getRoomById((int) $switchable->roomId));
             $object->setOrderId((int) $switchable->orderId);
+            $object->setState((int) $switchable->state);
 
             //Schaltpunkte
             $switchPoints = explode(',', (string) $switchable->switchPoints);
@@ -461,6 +462,39 @@ class SwitchableEditor {
         $xml->save();
         return true;
     }
+    
+    /**
+     * speichert den Status alle Elemente die veraendert wurden
+     * 
+     * @return Boolean
+     */
+    public function updateState() {
+        
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        
+        //Alle Elemente durchlaufen
+        foreach($this->switchables as $switchable) {
+            
+            //Wenn der Status veraendert wurde Speichern
+            if($switchable->isStateModified()) {
+                
+                //Nach Objekt suchen
+                $id = $switchable->getId();
+                foreach($xml->switchable as $xmlSwitchable) {
+                    
+                    if((int) $xmlSwitchable->id == $id) {
+                        
+                        $xmlSwitchable->state = $switchable->getState();
+                    }
+                }
+            }
+        }
+        
+        //Daten Speichern
+        $xml->save();
+        return true;
+    }
 
     /**
      * erstellt ein neues Schaltbares Element
@@ -500,6 +534,7 @@ class SwitchableEditor {
         $switchable->addChild('name', $name);
         $switchable->addChild('enabled', ($enabled == true ? 1 : 0));
         $switchable->addChild('visibility', ($visibility == true ? 1 : 0));
+        $switchable->addChild('state', 0);
         $switchable->addChild('icon', $icon);
         $switchable->addChild('roomId', $room);
         $switchable->addChild('orderId', $nextId);

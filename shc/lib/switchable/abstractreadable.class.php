@@ -19,6 +19,20 @@ use RWF\User\UserGroup;
 abstract class AbstractReadable implements Readable {
     
     /**
+     * Status
+     * 
+     * @var Integer 
+     */
+    protected $state = self::STATE_OFF;
+    
+    /**
+     * gibt an ob der Status veraendert wurde
+     * 
+     * @var Boolean 
+     */
+    protected $stateModified = false;
+    
+    /**
      * ID des Elements
      * 
      * @var Integer 
@@ -73,6 +87,28 @@ abstract class AbstractReadable implements Readable {
      * @var Array 
      */
     protected $allowedUserGroups = array();
+    
+    /**
+     * setzt den Status des Objekts
+     * 
+     * @param Boolean $state Status
+     * @return \SHC\Switchable\Readable
+     */
+    public function setState($state) {
+        
+        $this->state = $state;
+        return $this;
+    }
+    
+    /**
+     * gibt an ob der Status veraendert wurde
+     * 
+     * @return Boolean
+     */
+    public function isStateModified() {
+        
+        return $this->stateModified;
+    }
     
     /**
      * setzt die ID des Elements

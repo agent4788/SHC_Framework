@@ -116,6 +116,7 @@ class Activity extends AbstractSwitchable {
                 $object->switchOn();
             }
         }
+        $this->stateModified = true;
     }
 
     /**
@@ -137,6 +138,7 @@ class Activity extends AbstractSwitchable {
             }
         }
         return self::STATE_ON;
+        $this->stateModified = true;
     }
 
 }

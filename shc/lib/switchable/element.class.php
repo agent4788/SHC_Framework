@@ -47,10 +47,25 @@ interface Element {
     const HIDE = 0;
     
     /**
+     * setzt den Status des Objekts
+     * 
+     * @param Boolean $state Status
+     * @return \SHC\Switchable\Element
+     */
+    public function setState($state);
+    
+    /**
+     * gibt an ob der Status veraendert wurde
+     * 
+     * @return Boolean
+     */
+    public function isStateModified();
+    
+    /**
      * setzt die ID des Elements
      * 
      * @param  Integer $id
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setId($id);
     
@@ -65,7 +80,7 @@ interface Element {
      * setzt das Icon welches Angezeigt werden soll
      * 
      * @param  String $path Dateiname
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setIcon($path);
     
@@ -80,7 +95,7 @@ interface Element {
      * setzt den Namen des Elements
      * 
      * @param  String $name Name
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setName($name);
     
@@ -95,7 +110,7 @@ interface Element {
      * setzt den Raum dem das Element zugeordnet ist
      * 
      * @param  \SHC\Room\Room $room
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setRoom(Room $room);
     
@@ -110,7 +125,7 @@ interface Element {
      * setzt die Sortierungs ID
      * 
      * @param  Integer $orderId Sortierungs ID
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setOrderId($orderId);
     
@@ -125,7 +140,7 @@ interface Element {
      * Aktiviert/Deaktiviert das Element
      * 
      * @param  Boolean $enabled Aktiviert
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function enable($enabled);
     
@@ -140,7 +155,7 @@ interface Element {
      * setzt das Schaltelement Sichtbar/Versteckt
      * 
      * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function setVisibility($visibility);
     
@@ -155,7 +170,7 @@ interface Element {
      * fuegt eine Benutzergruppen hinzu der es erlaubt ist das Element zu schalten
      * 
      * @param  \RWF\User\UserGroup $userGroup
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function addAllowedUserGroup(UserGroup $userGroup);
     
@@ -163,14 +178,14 @@ interface Element {
      * entfernt eine Benutzergruppen der es erlaubt ist das Element zu schalten
      * 
      * @param  \RWF\User\UserGroup $userGroup
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function removeAllowedUserGroup(UserGroup $userGroup);
     
     /**
      * entfernt alle Benutzergruppen
      * 
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
     public function removeAllAllowedUserGroups();
     

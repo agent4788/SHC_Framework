@@ -93,6 +93,7 @@ class WakeOnLan extends AbstractSwitchable {
     public function switchOn() {
         
         WakeOnLan::wakeUp($this->mac, $this->ipAddress);
+        $this->stateModified = true;
     }
     
     /**

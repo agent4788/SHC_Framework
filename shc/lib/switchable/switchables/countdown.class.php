@@ -154,6 +154,7 @@ class Countdown extends AbstractSwitchable {
         }
 
         $this->switchOffTime = DateTime::now()->add($this->intervall);
+        $this->stateModified = true;
         //Update Ausschalzzeit im Schaltbare ELemente Editor
     }
 
@@ -179,6 +180,7 @@ class Countdown extends AbstractSwitchable {
                 $object->switchOn();
             }
         }
+        $this->stateModified = true;
     }
 
 }
