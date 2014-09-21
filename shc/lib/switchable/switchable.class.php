@@ -4,9 +4,6 @@ namespace SHC\Switchable;
 
 //Imports
 use SHC\Timer\SwitchPoint;
-use SHC\Room\Room;
-use RWF\User\User;
-use RWF\User\UserGroup;
 
 /**
  * Schnittstelle eines Schaltbaren Elements
@@ -17,35 +14,7 @@ use RWF\User\UserGroup;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-interface Switchable {
-    
-    /**
-     * Status eingeschalten
-     * 
-     * @var Integer
-     */
-    const STATE_OFF = 0;
-    
-    /**
-     * Status Ausgeschalten
-     * 
-     * @var Integer
-     */
-    const STATE_ON = 1;
-    
-    /**
-     * Das Schaltelement soll Angezeigt werden
-     * 
-     * @var Integer
-     */
-    const SHOW = 1;
-    
-    /**
-     * Das Schaltelement sol Versteckt werden
-     * 
-     * @var Integer
-     */
-    const HIDE = 0;
+interface Switchable extends Element {
     
     /**
      * fuegt einen Schaltpunkt hinzu
@@ -105,124 +74,4 @@ interface Switchable {
      */
     public function execute();
     
-    /**
-     * setzt das Icon welches Angezeigt werden soll
-     * 
-     * @param  String $path Dateiname
-     * @return \SHC\Switchable\Switchable
-     */
-    public function setIcon($path);
-    
-    /**
-     * gibt den Dateinamen des Icons zurueck
-     * 
-     * @return String
-     */
-    public function getIcon();
-    
-    /**
-     * setzt den Namen des Elements
-     * 
-     * @param  String $name Name
-     * @return \SHC\Switchable\Switchable
-     */
-    public function setName($name);
-    
-    /**
-     * gibt den Namen des Elements zurueck
-     * 
-     * @return String
-     */
-    public function getName();
-    
-    /**
-     * setzt den Raum dem das Element zugeordnet ist
-     * 
-     * @param  \SHC\Room\Room $room
-     * @return \SHC\Switchable\Switchable
-     */
-    public function setRoom(Room $room);
-    
-    /**
-     * gibt den Raum zurueck in dem das Element zugeordnet ist
-     * 
-     * @return \SHC\Room\Room
-     */
-    public function getRoom();
-    
-    /**
-     * setzt die Sortierungs ID
-     * 
-     * @param  Integer $orderId Sortierungs ID
-     * @return \SHC\Switchable\Switchable
-     */
-    public function setOrderId($orderId);
-    
-    /**
-     * gibt die Sortierungs ID zurueck
-     * 
-     * @return Integer
-     */
-    public function getOrderId();
-    
-    /**
-     * Aktiviert/Deaktiviert das Element
-     * 
-     * @param  Boolean $enabled Aktiviert
-     * @return \SHC\Switchable\Switchable
-     */
-    public function enable($enabled);
-    
-    /**
-     * gibt an ob das Element Aktiviert ist
-     * 
-     * @return Boolean 
-     */
-    public function isEnabled();
-    
-    /**
-     * setzt das Schaltelement Sichtbar/Versteckt
-     * 
-     * @param  Integer $display Sichtbarkeit
-     * @return \SHC\Switchable\Switchable
-     */
-    public function setVisibility($visibility);
-    
-    /**
-     * gibt die Sichtbarkeit des Schaltelementes zurueck
-     * 
-     * @return Integer
-     */
-    public function isVisible();
-    
-    /**
-     * fuegt eine Benutzergruppen hinzu der es erlaubt ist das Element zu schalten
-     * 
-     * @param  \RWF\User\UserGroup $userGroup
-     * @return \SHC\Switchable\Switchable
-     */
-    public function addAllowedUserGroup(UserGroup $userGroup);
-    
-    /**
-     * entfernt eine Benutzergruppen der es erlaubt ist das Element zu schalten
-     * 
-     * @param  \RWF\User\UserGroup $userGroup
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeAllowedUserGroup(UserGroup $userGroup);
-    
-    /**
-     * entfernt alle Benutzergruppen
-     * 
-     * @return \SHC\Switchable\Switchable
-     */
-    public function removeAllAllowedUserGroups();
-    
-    /**
-     * prueft ob ein Benutzer berechtigt ist das Element zu schalten
-     * 
-     * @param \RWF\User\User $user
-     * @return Boolean
-     */
-    public function isUserEntitled(User $user);
 }

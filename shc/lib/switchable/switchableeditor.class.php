@@ -10,8 +10,10 @@ use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
-use SHC\Switchable\Switchables\RpiGpio;
+use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\WakeOnLan;
+use SHC\Switchable\Readables\ArduinoInput;
+use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Room\RoomEditor;
 use SHC\Timer\SwitchPointEditor;
 use SHC\Timer\SwitchPoint;
@@ -90,7 +92,7 @@ class SwitchableEditor {
      * 
      * @var Integer
      */
-    const TYPE_RPI_GPIO = 16;
+    const TYPE_RPI_GPIO_OUTPUT = 16;
 
     /**
      * WOL
@@ -98,6 +100,20 @@ class SwitchableEditor {
      * @var Integer
      */
     const TYPE_WAKEONLAN = 32;
+    
+    /**
+     * Arduino Eingang
+     * 
+     * @var Integer
+     */
+    const TYPE_ARDUINO_INPUT = 64;
+    
+    /**
+     * Raspberry Pi GPIO Eingang
+     * 
+     * @var Integer
+     */
+    const TYPE_RPI_GPIO_INPUT = 128;
 
     /**
      * Liste mit allen Schaltbaren Objekten
@@ -181,9 +197,9 @@ class SwitchableEditor {
                     $object->setSystemCode((string) $switchable->systemCode);
                     $object->setDeviceCode((string) $switchable->deviceCode);
                     break;
-                case self::TYPE_RPI_GPIO:
+                case self::TYPE_RPI_GPIO_OUTPUT:
 
-                    $object = new RpiGpio();
+                    $object = new RpiGpioOutput();
                     $object->setSwitchServer((int) $switchable->switchServer);
                     $object->setPinNumber((int) $switchable->pinNumber);
                     break;
@@ -192,6 +208,18 @@ class SwitchableEditor {
                     $object = new WakeOnLan();
                     $object->setMac((string) $switchable->mac);
                     $object->setIpAddress((string) $switchable->ipAddress);
+                    break;
+                case self::TYPE_ARDUINO_INPUT:
+
+                    $object = new ArduinoInput();
+                    $object->setDeviceId((string) $switchable->deviceId);
+                    $object->setPinNumber((int) $switchable->pinNumber);
+                    break;
+                case self::TYPE_RPI_GPIO_INPUT:
+
+                    $object = new RpiGpioInput();
+                    $object->setSwitchServer((int) $switchable->switchServer);
+                    $object->setPinNumber((int) $switchable->pinNumber);
                     break;
                 default:
 
@@ -236,13 +264,13 @@ class SwitchableEditor {
         //Aktivitaeten und Countdowns Schaltbare Objekte zuweisen
         foreach ($this->switchableList as $objectId => $list) {
 
-            $object = $this->getSwitchableById($objectId);
+            $object = $this->getElementById($objectId);
             if ($object instanceof Activity || $object instanceof Countdown) {
 
                 foreach ($list as $switchables) {
 
                     //Schaltbare Objekte hinzufuegen
-                    $usedSwitchable = $this->getSwitchableById($switchables['id']);
+                    $usedSwitchable = $this->getElementById($switchables['id']);
                     if ($usedSwitchable instanceof Switchable) {
 
                         $object->addSwitchable($usedSwitchable, $switchables['command']);
@@ -256,9 +284,9 @@ class SwitchableEditor {
      * gibt das Schaltbares Element der ID zurueck
      * 
      * @param  Integer $id ID
-     * @return \SHC\Switchable\Switchable
+     * @return \SHC\Switchable\Element
      */
-    public function getSwitchableById($id) {
+    public function getElementById($id) {
 
         if (isset($this->switchables[$id])) {
 
@@ -273,7 +301,7 @@ class SwitchableEditor {
      * @param  String  $name Name
      * @return Boolean
      */
-    public function isSwitchableNameAvailable($name) {
+    public function isElementNameAvailable($name) {
 
         foreach ($this->switchables as $switchable) {
 
@@ -297,7 +325,7 @@ class SwitchableEditor {
      *  )
      * @return Array
      */
-    public function listSwitchables($orderBy = 'orderId') {
+    public function listElements($orderBy = 'orderId') {
 
         if ($orderBy == 'id') {
 
@@ -354,7 +382,7 @@ class SwitchableEditor {
      *  )
      * @return Array
      */
-    public function listSwitchablesForRoom($roomId, $orderBy = 'orderId') {
+    public function listElementsForRoom($roomId, $orderBy = 'orderId') {
 
         //Schaltbare Elemente suchen die dem Raum zugeordnet sind
         $roomSwitchables = array();
@@ -449,10 +477,10 @@ class SwitchableEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    protected function addSwitchable($type, $name, $enabled, $visibility, $icon, $room, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
+    protected function addElement($type, $name, $enabled, $visibility, $icon, $room, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
 
         //Ausnahme wenn Elementname schon belegt
-        if (!$this->isSwitchableNameAvailable($name)) {
+        if (!$this->isElementNameAvailable($name)) {
 
             throw new \Exception('Der Name ist schon vergeben', 1507);
         }
@@ -519,7 +547,7 @@ class SwitchableEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    protected function editSwitchable($id, $name, $enabled, $visibility, $icon, $room, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
+    protected function editElement($id, $name, $enabled, $visibility, $icon, $room, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
 
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
@@ -534,7 +562,7 @@ class SwitchableEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Name der Bedingung schon belegt
-                    if (!$this->isSwitchableNameAvailable($name)) {
+                    if (!$this->isElementNameAvailable($name)) {
 
                         throw new \Exception('Der Name ist schon vergeben', 1507);
                     }
@@ -626,7 +654,7 @@ class SwitchableEditor {
     public function addActivity($name, $enabled, $visibility, $icon, $room, array $switchPoints = array(), array $allowedUserGroups = array()) {
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_ACTIVITY, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups);
+        return $this->addElement(self::TYPE_ACTIVITY, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups);
     }
 
     /**
@@ -646,7 +674,7 @@ class SwitchableEditor {
     public function editAcrivity($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, array $switchPoints = null, array $allowedUserGroups = null) {
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups);
     }
 
     /**
@@ -781,7 +809,7 @@ class SwitchableEditor {
         );
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_ARDUINO_OUTPUT, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->addElement(self::TYPE_ARDUINO_OUTPUT, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -809,7 +837,7 @@ class SwitchableEditor {
         );
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -862,7 +890,7 @@ class SwitchableEditor {
         );
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_COUNTDOWN, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->addElement(self::TYPE_COUNTDOWN, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -888,7 +916,7 @@ class SwitchableEditor {
         );
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1025,7 +1053,7 @@ class SwitchableEditor {
         );
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_RADIOSOCKET, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->addElement(self::TYPE_RADIOSOCKET, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1055,11 +1083,11 @@ class SwitchableEditor {
         );
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
-     * erstellt einen neuen Raspberry Pi GPIO
+     * erstellt einen neuen Raspberry Pi GPIO Ausgang
      * 
      * @param  String  $name              Name
      * @param  Boolean $enabled           Aktiv
@@ -1073,7 +1101,7 @@ class SwitchableEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addRriGpio($name, $enabled, $visibility, $icon, $room, $switchServerId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addRriGpioOutput($name, $enabled, $visibility, $icon, $room, $switchServerId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
         
         //Daten Vorbereiten
         $data = array(
@@ -1082,11 +1110,11 @@ class SwitchableEditor {
         );
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_RPI_GPIO, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->addElement(self::TYPE_RPI_GPIO_OUTPUT, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
-     * bearbeitet einen Raspberry Pi GPIO
+     * bearbeitet einen Raspberry Pi GPIO Ausgang
      * 
      * @param  Integer $id                ID
      * @param  String  $name              Name
@@ -1101,7 +1129,7 @@ class SwitchableEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRpiGpio($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $switchServerId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editRpiGpioOutput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $switchServerId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
         
         //Daten Vorbereiten
         $data = array(
@@ -1110,7 +1138,7 @@ class SwitchableEditor {
         );
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1137,7 +1165,7 @@ class SwitchableEditor {
         );
 
         //Datensatz erstellen
-        return $this->addSwitchable(self::TYPE_WAKEONLAN, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->addElement(self::TYPE_WAKEONLAN, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1165,7 +1193,117 @@ class SwitchableEditor {
         );
 
         //Datensatz bearbeiten
-        return $this->editSwitchable($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+    }
+    
+    /**
+     * erstellt einen neuen Arduino Eingang
+     * 
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  String  $deviceId          Geraete ID
+     * @param  Integer $pinNumber         Pin Nummer
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addArduinoInput($name, $enabled, $visibility, $icon, $room, $deviceId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'deviceId' => $deviceId,
+            'pinNumber' => $pinNumber
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_ARDUINO_INPUT, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet einen Arduino Eingang
+     * 
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  String  $deviceId          Geraete ID
+     * @param  Integer $pinNumber         Pin Nummer
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editArduinoInput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $deviceId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'deviceId' => $deviceId,
+            'pinNumber' => $pinNumber
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+    }
+    
+    /**
+     * erstellt einen neuen Raspberry Pi GPIO Input
+     * 
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $switchServerId    Schaltserver ID
+     * @param  Integer $pinNumber         Pin Nummer
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addRriGpioInput($name, $enabled, $visibility, $icon, $room, $switchServerId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
+        
+        //Daten Vorbereiten
+        $data = array(
+            'switchServer' => $switchServerId,
+            'pinNumber' => $pinNumber
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_RPI_GPIO_OUTPUT, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet einen Raspberry Pi GPIO Input
+     * 
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $switchServerId    Schaltserver ID
+     * @param  Integer $pinNumber         Pin Nummer
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editRpiGpioInput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $switchServerId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
+        
+        //Daten Vorbereiten
+        $data = array(
+            'switchServer' => $switchServerId,
+            'pinNumber' => $pinNumber
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
