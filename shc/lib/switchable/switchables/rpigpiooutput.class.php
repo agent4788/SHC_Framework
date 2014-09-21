@@ -16,7 +16,7 @@ use SHC\Command\Commands\GpioOutputCommand;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class RpiGpio extends AbstractSwitchable {
+class RpiGpioOutput extends AbstractSwitchable {
     
     /**
      * ID des Schaltservers
@@ -46,7 +46,7 @@ class RpiGpio extends AbstractSwitchable {
      * setzt den Schaltserver
      * 
      * @param  Integer $switchServer ID des Schaltservers
-     * @return \SHC\Switchable\Switchables\RpiGpio
+     * @return \SHC\Switchable\Switchables\RpiGpioOutput
      */
     public function setSwitchServer($switchServer) {
         
@@ -68,7 +68,7 @@ class RpiGpio extends AbstractSwitchable {
      * setzt die Pin Nummer
      * 
      * @param  Integer $pinNumber Pin Nummer
-     * @return \SHC\Switchable\Switchables\RpiGpio
+     * @return \SHC\Switchable\Switchables\RpiGpioOutput
      */
     public function setPinNumber($pinNumber) {
         
