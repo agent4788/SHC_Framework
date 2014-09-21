@@ -164,7 +164,7 @@ class RoomEditor {
     }
 
     /**
-     * bearbeitet die SOrtierung der Raeume
+     * bearbeitet die Sortierung der Raeume
      * 
      * @param  Array   $order Array mit Raum ID als Index und Sortierungs ID als Wert
      * @return Boolean

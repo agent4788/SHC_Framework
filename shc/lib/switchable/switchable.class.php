@@ -3,7 +3,6 @@
 namespace SHC\Switchable;
 
 //Imports
-use SHC\Condition\Condition;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
 use RWF\User\User;
@@ -33,6 +32,20 @@ interface Switchable {
      * @var Integer
      */
     const STATE_ON = 1;
+    
+    /**
+     * Das Schaltelement soll Angezeigt werden
+     * 
+     * @var Integer
+     */
+    const SHOW = 1;
+    
+    /**
+     * Das Schaltelement sol Versteckt werden
+     * 
+     * @var Integer
+     */
+    const HIDE = 0;
     
     /**
      * fuegt einen Schaltpunkt hinzu
@@ -138,6 +151,21 @@ interface Switchable {
     public function getRoom();
     
     /**
+     * setzt die Sortierungs ID
+     * 
+     * @param  Integer $orderId Sortierungs ID
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setOrderId($orderId);
+    
+    /**
+     * gibt die Sortierungs ID zurueck
+     * 
+     * @return Integer
+     */
+    public function getOrderId();
+    
+    /**
      * Aktiviert/Deaktiviert das Element
      * 
      * @param  Boolean $enabled Aktiviert
@@ -151,6 +179,21 @@ interface Switchable {
      * @return Boolean 
      */
     public function isEnabled();
+    
+    /**
+     * setzt das Schaltelement Sichtbar/Versteckt
+     * 
+     * @param  Integer $display Sichtbarkeit
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setVisibility($visibility);
+    
+    /**
+     * gibt die Sichtbarkeit des Schaltelementes zurueck
+     * 
+     * @return Integer
+     */
+    public function isVisible();
     
     /**
      * fuegt eine Benutzergruppen hinzu der es erlaubt ist das Element zu schalten

@@ -33,6 +33,16 @@ class RpiGpio extends AbstractSwitchable {
     protected $pinNumber = 0;
     
     /**
+     * @param Integer $switchServer Schaltserver
+     * @param Integer $pinNumber    GPIO Pin Nummer
+     */
+    public function __construct($switchServer = 0, $pinNumber = 0) {
+        
+        $this->switchServer = $switchServer;
+        $this->pinNumber = $pinNumber;
+    }
+    
+    /**
      * setzt den Schaltserver
      * 
      * @param  Integer $switchServer ID des Schaltservers

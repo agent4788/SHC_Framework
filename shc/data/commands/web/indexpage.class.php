@@ -28,6 +28,6 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
 
-        
+        var_dump(\SHC\Switchable\SwitchableEditor::getInstance());
     }
 }

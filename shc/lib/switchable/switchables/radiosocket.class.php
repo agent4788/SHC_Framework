@@ -40,6 +40,18 @@ class RadioSocket extends AbstractSwitchable {
     protected $deviceCode = '';
     
     /**
+     * @param String $protocol   Protokoll
+     * @param String $systemCode System Code
+     * @param String $deviceCode Geraete Code
+     */
+    public function __construct($protocol = '', $systemCode = '',  $deviceCode = '') {
+        
+        $this->protocol = $protocol;
+        $this->systemCode = $systemCode;
+        $this->deviceCode = $deviceCode;
+    }
+    
+    /**
      * setzt das Protokoll
      * 
      * @param  String $protocol Sendeprotokoll

@@ -3,7 +3,6 @@
 namespace SHC\Switchable;
 
 //Imports
-use SHC\Condition\Condition;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
 use RWF\User\User;
@@ -61,6 +60,13 @@ abstract class AbstractSwitchable implements Switchable {
      * @var \SHC\Room\Room 
      */
     protected $room = null;
+    
+    /**
+     * Sortierungs ID
+     * 
+     * @var Integer 
+     */
+    protected $orderId = 0;
 
     /**
      * aktiviert/deaktiviert
@@ -68,6 +74,13 @@ abstract class AbstractSwitchable implements Switchable {
      * @var Boolean 
      */
     protected $enabled = true;
+    
+    /**
+     * sichtbarkeit des Schaltelementes
+     * 
+     * @var Integer 
+     */
+    protected $visibility = 1;
 
     /**
      * Berechtigte Benutzergruppen
@@ -257,7 +270,7 @@ abstract class AbstractSwitchable implements Switchable {
      */
     public function setRoom(Room $room) {
 
-        return $this->room;
+        $this->room = $room;
         return $this;
     }
 
@@ -269,6 +282,28 @@ abstract class AbstractSwitchable implements Switchable {
     public function getRoom() {
 
         return $this->room;
+    }
+    
+    /**
+     * setzt die Sortierungs ID
+     * 
+     * @param  Integer $orderId Sortierungs ID
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setOrderId($orderId) {
+        
+        $this->orderId = $orderId;
+        return $this;
+    }
+    
+    /**
+     * gibt die Sortierungs ID zurueck
+     * 
+     * @return Integer
+     */
+    public function getOrderId() {
+        
+        return $this->orderId;
     }
 
     /**
@@ -297,6 +332,28 @@ abstract class AbstractSwitchable implements Switchable {
     public function isEnabled() {
 
         return $this->enabled;
+    }
+    
+    /**
+     * setzt die Sichtbarkeit dss Schaltelements
+     * 
+     * @param  Integer $visibility Sichtbarkeit
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setVisibility($visibility) {
+        
+        $this->visibility = $visibility;
+        return $this;
+    }
+    
+    /**
+     * gibt die Sichtbarkeit des Schaltelementes zurueck
+     * 
+     * @return Integer
+     */
+    public function isVisible() {
+        
+        return $this->visibility;
     }
 
     /**

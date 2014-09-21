@@ -4,6 +4,7 @@ namespace SHC\Switchable\Switchables;
 
 //Imports
 use SHC\Switchable\AbstractSwitchable;
+use SHC\WakeOnLan\WakeOnLan;
 
 /**
  * Wake On Lan Geraet
@@ -17,13 +18,81 @@ use SHC\Switchable\AbstractSwitchable;
 class WakeOnLan extends AbstractSwitchable {
     
     /**
+     * MAC Adresse
+     * 
+     * @var String 
+     */
+    protected $mac = '';
+    
+    /**
+     * IP Adresse
+     * 
+     * @var String 
+     */
+    protected $ipAddress = '';
+    
+    /**
+     * @param String $mac
+     * @param String $ipAddess
+     */
+    public function __construct($mac = '', $ipAddess = '') {
+        
+        $this->mac = $mac;
+        $this->ipAddress = $ipAddress;
+    }
+    
+    /**
+     * setzt die MAC Adresse
+     * 
+     * @param  String $mac MAC Adresse
+     * @return \SHC\Switchable\Switchables\WakeOnLan
+     */
+    public function setMac($mac) {
+        
+        $this->mac = $mac;
+        return $this;
+    }
+    
+    /**
+     * gibt die MAC Adresse zurueck
+     * 
+     * @return String
+     */
+    public function getMac() {
+        
+        return $this->mac;
+    }
+
+    /**
+     * setzt die IP Adresse
+     * 
+     * @param  String $ipAddress IP Adresse
+     * @return \SHC\Switchable\Switchables\WakeOnLan
+     */
+    public function setIpAddress($ipAddress) {
+        
+        $this->ipAddress = $ipAddress;
+        return $this;
+    }
+    
+    /**
+     * gibt die IP Adresse zurueck
+     * 
+     * @return String
+     */
+    public function getIpAddress() {
+        
+        return $this->ipAddress;
+    }
+    
+    /**
      * schaltet das Objekt ein
      * 
      * @return Boolean
      */
     public function switchOn() {
         
-        
+        WakeOnLan::wakeUp($this->mac, $this->ipAddress);
     }
     
     /**
@@ -33,7 +102,7 @@ class WakeOnLan extends AbstractSwitchable {
      */
     public function switchOff() {
         
-        
+        //nicht moeglich bei WOL
     }
 
 }

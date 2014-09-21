@@ -4,10 +4,11 @@ namespace SHC\Switchable\Switchables;
 
 //Imports
 use SHC\Switchable\AbstractSwitchable;
+use RWF\Date\DateTime;
 use SHC\Switchable\Switchable;
 
 /**
- * Aktivitaet (ermoeglicht Gruppierung von Schaltbaren Elementen)
+ * Countdown (schaltet nach einer vorgegebenen Zeit automatisch zuruck in den jeweils anderen Schaltzustand)
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -15,7 +16,7 @@ use SHC\Switchable\Switchable;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class Activity extends AbstractSwitchable {
+class Countdown extends AbstractSwitchable {
 
     /**
      * liste mit den zu schaltenden Elementen
@@ -23,6 +24,20 @@ class Activity extends AbstractSwitchable {
      * @var type 
      */
     protected $switchables = array();
+
+    /**
+     * Zeitintervall
+     * 
+     * @var \DateIntervall 
+     */
+    protected $intervall = null;
+
+    /**
+     * Ausschaltzeit
+     * 
+     * @var \RWF\Date\DateTime 
+     */
+    protected $switchOffTime = null;
 
     /**
      * registriet ein Schaltbares Objekt
@@ -34,9 +49,9 @@ class Activity extends AbstractSwitchable {
      */
     public function addSwitchable(Switchable $switchable, $command = self::STATE_ON) {
 
-        if ($switchable instanceof Activity) {
+        if ($switchable instanceof Countdown) {
 
-            throw new \Exception('Eine Aktivität kann nicht bei einer Aktivität registriert werden', 1505);
+            throw new \Exception('Ein Countdown kann nicht bei einem Countdown registriert werden', 1504);
         }
 
         $this->switchables[] = array('object' => $switchable, 'command' => $command);
@@ -73,6 +88,50 @@ class Activity extends AbstractSwitchable {
     }
 
     /**
+     * setzt den Zeitintervall fuer das ausschalten
+     * 
+     * @param  \DateInterval $intervall Zeitintervall
+     * @return \SHC\Switchable\Switchables\Countdown
+     */
+    public function setIntervall(\DateInterval $intervall) {
+
+        $this->intervall = $intervall;
+        return $this;
+    }
+
+    /**
+     * gibt den Zeitintervall fuer das Ausschalten 
+     * 
+     * @return \DateIntervall
+     */
+    public function getIntervall() {
+
+        return $this->intervall;
+    }
+
+    /**
+     * setzt die Ausschalt Zeit
+     * 
+     * @param  \RWF\Date\DateTime $time
+     * @return \SHC\Switchable\Switchables\Countdown
+     */
+    public function setSwitchOffTime(DateTime $time) {
+        
+        $this->switchOffTime = $time;
+        return $this;
+    }
+    
+    /**
+     * gibt das Zeitobjekt der Ausschaltzeit zurueck
+     * 
+     * @return \RWF\Date\DateTime
+     */
+    public function getSwitchOffTime() {
+
+        return $this->switchOffTime;
+    }
+
+    /**
      * schaltet das Objekt ein
      * 
      * @return Boolean
@@ -93,10 +152,14 @@ class Activity extends AbstractSwitchable {
                 $object->switchOff();
             }
         }
+
+        $this->switchOffTime = DateTime::now()->add($this->intervall);
+        //Update Ausschalzzeit im Schaltbare ELemente Editor
     }
 
     /**
      * schaltet das Objekt aus
+     * Das ausschalten wird vom CountdownSheduler durchgefuehrt
      * 
      * @return Boolean
      */
@@ -116,27 +179,6 @@ class Activity extends AbstractSwitchable {
                 $object->switchOn();
             }
         }
-    }
-
-    /**
-     * gibt den aktuellen geschaltenen Zustand zurueck
-     * 
-     * @return Integer
-     */
-    public function getState() {
-
-        foreach ($this->switchables as $switchable) {
-
-            /* @var $object \SHC\Switchable\Switchable */
-            $object = $switchable['object'];
-            $command = $switchable['command'];
-            $state = $object->getState();
-            if (($command == self::STATE_ON && $state == self::STATE_OFF) || ($command == self::STATE_OFF && $state == self::STATE_ON)) {
-
-                return self::STATE_OFF;
-            }
-        }
-        return self::STATE_ON;
     }
 
 }
