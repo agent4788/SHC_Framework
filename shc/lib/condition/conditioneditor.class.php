@@ -243,7 +243,7 @@ class ConditionEditor {
                 //Aktiv
                 if ($enabled !== null) {
 
-                    $condition->$enabled = ($enabled == true ? 1 : 0);
+                    $condition->enabled = ($enabled == true ? 1 : 0);
                 }
 
                 //Zusatzdaten
@@ -476,7 +476,7 @@ class ConditionEditor {
 
             if ((int) $xml->condition[$i]->id == $id) {
 
-                //Raum loeschen
+                //Bedingung loeschen
                 unset($xml->condition[$i]);
 
                 //Daten Speichern
