@@ -9,7 +9,7 @@ use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\Switchable\Element;
 
 /**
- * Timer Task prueft regelmäßig ob Schaltpunkte zur ausfuehrung bereit stehen
+ * aktualisiert den Status von WOL Geraeten
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
