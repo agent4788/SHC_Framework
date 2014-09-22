@@ -338,10 +338,10 @@ class SwitchableEditor {
 
             //nach Sortierungs ID sortieren
             $switchables = array();
-            foreach ($this->switchables as $room) {
+            foreach ($this->switchables as $element) {
 
-                /* @var $room \SHC\Room\Room */
-                $switchables[$room->getOrderId()] = $room;
+                /* @var $element \SHC\Switchable\Element */
+                $switchables[$element->getOrderId()] = $element;
             }
 
             ksort($switchables, SORT_NUMERIC);
