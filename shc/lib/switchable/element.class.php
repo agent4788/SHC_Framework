@@ -49,10 +49,11 @@ interface Element {
     /**
      * setzt den Status des Objekts
      * 
-     * @param Boolean $state Status
+     * @param  Integer $state    Status
+     * @param  Boolean $modified als veaendert Markieren
      * @return \SHC\Switchable\Element
      */
-    public function setState($state);
+    public function setState($state, $modified = true);
     
     /**
      * gibt an ob der Status veraendert wurde

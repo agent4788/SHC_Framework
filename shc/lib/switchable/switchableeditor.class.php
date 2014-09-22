@@ -234,7 +234,7 @@ class SwitchableEditor {
             $object->setIcon((string) $switchable->icon);
             $object->setRoom(RoomEditor::getInstance()->getRoomById((int) $switchable->roomId));
             $object->setOrderId((int) $switchable->orderId);
-            $object->setState((int) $switchable->state);
+            $object->setState((int) $switchable->state, false);
 
             //Schaltpunkte
             $switchPoints = explode(',', (string) $switchable->switchPoints);
@@ -444,7 +444,7 @@ class SwitchableEditor {
      * @param  Array   $order Array mit Element ID als Index und Sortierungs ID als Wert
      * @return Boolean
      */
-    public function editsOrder(array $order) {
+    public function editOrder(array $order) {
 
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);

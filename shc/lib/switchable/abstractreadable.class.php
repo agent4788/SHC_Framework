@@ -91,12 +91,17 @@ abstract class AbstractReadable implements Readable {
     /**
      * setzt den Status des Objekts
      * 
-     * @param Boolean $state Status
+     * @param  Integer $state    Status
+     * @param  Boolean $modified als veaendert Markieren
      * @return \SHC\Switchable\Readable
      */
-    public function setState($state) {
+    public function setState($state, $modified = true) {
         
         $this->state = $state;
+        if($modified == true) {
+            
+            $this->stateModified = true;
+        }
         return $this;
     }
     
