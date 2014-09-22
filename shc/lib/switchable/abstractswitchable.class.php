@@ -183,19 +183,8 @@ abstract class AbstractSwitchable implements Switchable {
      * @return Boolean
      */
     public function execute() {
-
-        //Bedingungen pruefen
-        foreach ($this->conditions as $condition) {
-
-            /* @var $condition \SHC\Condition\Condition */
-            if (!$condition->isSatisfies()) {
-
-                //mindestens eine Bedingung ist nicht erfuellt
-                return false;
-            }
-        }
-
-        //Schaltpunkte pruefen
+        
+        //Schaltpunkte durchlaufen und pruefen ob Ausfuhrungsbereit
         foreach ($this->switchPoints as $switchPoint) {
 
             /* @var $switchPoint \SHC\Timer\SwitchPoint */

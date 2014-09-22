@@ -514,6 +514,7 @@ class SwitchPoint {
         $this->lastExecute = $now;
         
         //alle Schaltpunkte und Bedingungen sind wahr
+        SwitchPointEditor::getInstance()->editExecutionTime($this->getId(), DateTime::now());
         return true;
     }
 
