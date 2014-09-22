@@ -6,6 +6,7 @@ namespace SHC\Switchable\Switchables;
 use SHC\Switchable\AbstractSwitchable;
 use RWF\Date\DateTime;
 use SHC\Switchable\Switchable;
+use SHC\Switchable\SwitchableEditor;
 
 /**
  * Countdown (schaltet nach einer vorgegebenen Zeit automatisch zuruck in den jeweils anderen Schaltzustand)
@@ -155,7 +156,7 @@ class Countdown extends AbstractSwitchable {
 
         $this->switchOffTime = DateTime::now()->add($this->intervall);
         $this->stateModified = true;
-        //Update Ausschalzzeit im Schaltbare ELemente Editor
+        SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), $this->switchOffTime);
     }
 
     /**
@@ -181,6 +182,7 @@ class Countdown extends AbstractSwitchable {
             }
         }
         $this->stateModified = true;
+        SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), new DateTime('2000-01-01 00:00:00'));
     }
 
 }

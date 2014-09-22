@@ -902,7 +902,7 @@ class SwitchableEditor {
         }
         return false;
     }
-
+    
     /**
      * erstellt einen neuen Arduino Ausgang
      * 

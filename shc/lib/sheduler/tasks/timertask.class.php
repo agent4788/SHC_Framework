@@ -6,6 +6,8 @@ namespace SHC\Sheduler\Tasks;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchable;
+use SHC\Switchable\Switchables\Countdown;
+use RWF\Date\DateTime;
 
 /**
  * Timer Task prueft regelmäßig ob Schaltpunkte zur ausfuehrung bereit stehen
@@ -17,7 +19,7 @@ use SHC\Switchable\Switchable;
  * @version    2.0.0-0
  */
 class TimerTask extends AbstractTask {
-    
+
     /**
      * Prioriteat
      * 
@@ -31,23 +33,33 @@ class TimerTask extends AbstractTask {
      * @var String 
      */
     protected $interval = 'PT20S';
-    
+
     /**
      * fuehrt die Aufgabe aus
      * falls ein Intervall angegeben ist wird automatisch die Ausfuerung in den vogegebenen Zeitabstaenden verzoegert
      */
     public function executeTask() {
-        
+
         //Liste mit den Schaltbaren Elementen holen
         $switchables = SwitchableEditor::getInstance()->listElements();
-        
+
         //alle Elemente durchlaufen und Pruefen ob ausfuehrbar
         foreach ($switchables as $switchable) {
-            
-            if($switchable instanceof Switchable) {
+
+            if($switchable instanceof Countdown) {
                 
+                //Pruefen ob Countdown abgelaufen
+                $switchOffTime = $switchable->getSwitchOffTime();
+                if($switchOffTime->isPast() || $switchOffTime == DateTime::now()) {
+                    
+                    $switchable->switchOff();
+                }                
+            } elseif($switchable instanceof Switchable) {
+
+                //Pruefen ob Schaltpunkte ausfuehrbar sind
                 $switchable->execute();
             }
         }
     }
+
 }
