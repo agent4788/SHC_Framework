@@ -32,7 +32,6 @@ class SunriseSunsetCondition extends AbstractCondition {
 
         //Aktuelle Zeit
         $now = DateTime::now();
-        $tomorrow = DateTime::nextDay();
 
         //Datum und Zeit Sonnenaufgang/Sonnenuntergang
         $dateSunriseToday = $now->getSunrise();
