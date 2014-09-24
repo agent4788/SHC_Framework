@@ -52,6 +52,11 @@ class SHC extends RWF {
      */
     const XML_SWITCHABLES = 'switchables';
     
+    /**
+     * 
+     */
+    const XML_USERS_AT_HOME = 'usersathome';
+    
     public function __construct() {
         
         //XML Initialisieren
@@ -75,5 +80,6 @@ class SHC extends RWF {
         $fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
+        $fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
     }
 }
