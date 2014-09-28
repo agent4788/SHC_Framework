@@ -26,48 +26,6 @@ use RWF\Date\DateTime;
 class ArduinoSensorReciver {
 
     /**
-     * DS18x20 Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_DS18X20 = 1;
-
-    /**
-     * DHT Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_DHT = 2;
-
-    /**
-     * BMP Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_BMP = 3;
-
-    /**
-     * Regen Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_RAIN = 4;
-
-    /**
-     * Feuchtigkeit Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_HYGROMETER = 5;
-
-    /**
-     * Licht Sensor
-     * 
-     * @var Integer
-     */
-    const TYPE_LDR = 6;
-
-    /**
      * Objekt zum lesen der Seriellen Schnittstelle
      * 
      * @var \PhpSerial 
@@ -167,27 +125,27 @@ class ArduinoSensorReciver {
 
                 switch ($typeId) {
 
-                    case self::TYPE_DHT:
+                    case SensorPointEditor::SENSOR_DHT:
 
                         //DHT11/22
                         $this->saveDHT($sensorPointId, $sensorId, $values[0], $values[1]);
                         break;
-                    case self::TYPE_BMP:
+                    case SensorPointEditor::SENSOR_BMP:
 
                         //BMP085/180
                         $this->saveBMP($sensorPointId, $sensorId, $values[0], $values[1], $values[2]);
                         break;
-                    case self::TYPE_RAIN:
+                    case SensorPointEditor::SENSOR_RAIN:
 
                         //Regensenor (Analogwert 0 - 1023)
                         $this->saveRainSensor($sensorPointId, $sensorId, $values[0]);
                         break;
-                    case self::TYPE_HYGROMETER:
+                    case SensorPointEditor::SENSOR_HYGROMETER:
 
                         //Hygrometer (Analogwert 0 - 1023)
                         $this->saveHygrometer($sensorPointId, $sensorId, $values[0]);
                         break;
-                    case self::TYPE_LDR:
+                    case SensorPointEditor::SENSOR_LDR:
 
                         //LDR (Analogwert 0 - 1023)
                         $this->saveLightSensor($sensorPointId, $sensorId, $values[0]);
