@@ -28,13 +28,6 @@ abstract class AbstractCommand implements Command {
     protected $executed = false;
 
     /**
-     * Antwortdaten
-     * 
-     * @var Array 
-     */
-    protected $response = array();
-
-    /**
      * setzt das Kommando
      * 
      * @param  Integer $command Kommando
@@ -72,25 +65,5 @@ abstract class AbstractCommand implements Command {
     public function isExecuted() {
         
         return $this->executed;
-    }
-    
-    /**
-     * setzt die Antwortdaten
-     * 
-     * @param Array $data Antwortdaten
-     */
-    public function setResponse(array $data) {
-        
-        $this->response = $data;
-    }
-    
-    /**
-     * gibt ein Array mit den Antwortdaten zurueck
-     * 
-     * @return Array
-     */
-    public function getResponse() {
-        
-        return $this->response;
     }
 }

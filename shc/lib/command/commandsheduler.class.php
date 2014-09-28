@@ -6,6 +6,7 @@ namespace SHC\Command;
 use SHC\SwitchServer\SwitchServerEditor;
 use SHC\Command\Commands\RadioSocketCommand;
 use SHC\Command\Commands\GpioOutputCommand;
+use SHC\Command\Commands\GpioInputCommand;
 
 /**
  * Verwaltet und sendet die Kommandos an die Steckdosen/GPIOs
@@ -101,18 +102,75 @@ class CommandSheduler {
                         $request[] = $command->getCommandData();
                     }
                 }
+                
+                //Kommando als aufgefuehrt markieren
+                $command->executed();
             }
-            
+
             //Daten zum versenden aufbereiten
             $data = json_encode($request);
             $data = base64_encode($data);
-            
+
             //mit Schalserver verbinden und Daten senden
             $socket = $switchServer->getSocket();
             $socket->open();
             $socket->write($data);
             $socket->close();
         }
+    }
+
+    /**
+     * seindet ein GPIO Lesekommando
+     * 
+     * @param  \SHC\Command\Commands\GpioInputCommand $command
+     * @return Boolean
+     */
+    public function sendGPIOReadCommand(GpioInputCommand $command) {
+
+        //Schaltserver abfragen
+        $switchServers = SwitchServerEditor::getInstance()->listSwitchServers();
+
+        //alle Server durchlaufen und die Daten senden
+        foreach ($switchServers as $switchServer) {
+
+            /* @var $switchServer \SHC\SwitchServer\SwitchServer */
+            if ($switchServer->isReadGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
+
+                //Request Initialisieren
+                $request = array($command->getCommandData());
+                
+                //Daten zum versenden aufbereiten
+                $data = json_encode($request);
+                $data = base64_encode($data);
+
+                //mit Schalserver verbinden und Daten senden
+                $socket = $switchServer->getSocket();
+                $socket->open();
+                $socket->write($data);
+                
+                //Antwort Lesen
+                $rawData = base64_decode($socket->read(8192));
+                $response = json_decode($rawData, true);
+                if(isset($response['state'])) {
+                    
+                    if((int) $response['state'] == GpioInputCommand::HIGH) {
+                        
+                        $command->setState(GpioInputCommand::HIGH);
+                    } else {
+                        
+                        $command->setState(GpioInputCommand::LOW);
+                    }
+                }
+                
+                //Kommando als aufgefuehrt markieren
+                $command->executed();
+                
+                //Verbindung trennen
+                $socket->close();
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -131,7 +189,7 @@ class CommandSheduler {
 
         if (self::$instance === null) {
 
-            self::$instance = new RoomEditor();
+            self::$instance = new CommandSheduler();
         }
         return self::$instance;
     }

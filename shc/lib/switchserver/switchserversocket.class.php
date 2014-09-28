@@ -60,7 +60,6 @@ class SwitchServerSocket {
         $this->debug = $debug;
 
         //Einstellungen laden
-        $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
         $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
         $sendGpio = RWF::getSetting('shc.switchServer.sendLedPin');
         $senderActive = RWF::getSetting('shc.switchServer.senderActive');
@@ -97,18 +96,18 @@ class SwitchServerSocket {
             //Anfragen bearbeiten
             foreach ($requests as $request) {
 
-                if ($senderActive && isset($request['type']) && $request['type'] = 'radiosocket') {
+                if ($senderActive && isset($request['type']) && $request['type'] == 'radiosocket') {
 
                     //Funksteckdosen schalten
                     $this->send433MHzCommand($request);
-                } elseif ($writeGPIO && isset($request['type']) && $request['type'] = 'gpiooutput') {
+                } elseif ($writeGPIO && isset($request['type']) && $request['type'] == 'gpiooutput') {
 
                     //GPIO schreiben
                     $this->writeGpio($request);
-                } elseif ($readGPIO && isset($request['type']) && $request['type'] = 'gpioinput') {
+                } elseif ($readGPIO && isset($request['type']) && $request['type'] == 'gpioinput') {
 
                     //GPIO lesen
-                    $this->readGpio($request);
+                    $this->readGpio($client, $request);
                 } elseif (isset($request['stop']) && $request['stop'] == 1) {
 
                     //Server Stoppen
@@ -120,7 +119,7 @@ class SwitchServerSocket {
 
                         @shell_exec($gpioPath . ' write ' . $sendGpio . ' 0');
                     }
-                    
+
                     return;
                 }
             }
@@ -143,6 +142,7 @@ class SwitchServerSocket {
      */
     protected function send433MHzCommand(array $request) {
 
+        $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
         @shell_exec('sudo ' . $sendPath . ' ' . $request['protocol'] . ' ' . $request['systemCode'] . ' ' . $request['deviceCode'] . ' ' . $request['command']);
 
         //Debug ausgabe
@@ -159,6 +159,8 @@ class SwitchServerSocket {
      */
     protected function writeGpio(array $request) {
 
+        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        
         //Modus setzen
         if (!in_array($gpio['pinNumber'], $this->gpioModeSet)) {
 
@@ -185,16 +187,55 @@ class SwitchServerSocket {
      * @param Array                     $request Anfrage
      */
     protected function readGpio(SocketServerClient $client, array $request) {
+
+        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
         
+        //Modus setzen
+        if (!in_array($request['pinNumber'], $this->gpioModeSet)) {
+
+            @shell_exec($gpioPath . ' mode ' . $request['pinNumber'] . ' in');
+            $this->gpioModeSet[] = $request['pinNumber'];
+            if ($this->debug) {
+
+                $this->response->writeLnColored($gpioPath . ' mode ' . $request['pinNumber'] . ' in', 'light_green');
+            }
+        }
+
+        //Befehl ausfuehren
+        @exec($gpioPath . ' read ' . $request['pinNumber'], $data);
+
+        //Daten Auswerten
+        $data = trim($data[0]);
+        $response = array();
+        if ((int) $data == 1) {
+
+            $response['state'] = 1;
+        } else {
+
+            $response['state'] = 0;
+        }
+
+        //Antwort an Client schicken
+        $responseData = json_encode($response);
+        $responseData = base64_encode($responseData);
+        $client->write($responseData);
+        $client->close();
+
+        //Debug ausgabe
+        if ($this->debug) {
+
+            $this->response->writeLnColored($gpioPath . ' read ' . $request['pinNumber'], 'light_green');
+            $this->response->writeLnColored($data, 'light_green');
+        }
     }
 
     /**
      * beendet den Server
      */
     protected function stop() {
-        
+
         $this->server->stopServer();
-        $response->writeLnColored(RWF::getLanguage()->get('switchServer.stoppedSuccessfully'), 'green');
+        $this->response->writeLnColored(RWF::getLanguage()->get('switchServer.stoppedSuccessfully'), 'green');
     }
 
 }

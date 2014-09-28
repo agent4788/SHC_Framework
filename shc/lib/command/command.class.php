@@ -60,18 +60,4 @@ interface Command {
      * @return Boolean
      */
     public function isExecuted();
-    
-    /**
-     * setzt die Antwortdaten
-     * 
-     * @param Array $data Antwortdaten
-     */
-    public function setResponse(array $data);
-    
-    /**
-     * gibt ein Array mit den Antwortdaten zurueck
-     * 
-     * @return Array
-     */
-    public function getResponse();
 }
