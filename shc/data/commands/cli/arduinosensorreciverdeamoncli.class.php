@@ -8,7 +8,7 @@ use SHC\Arduino\ArduinoSensorReciver;
 use SHC\Core\SHC;
 
 /**
- * Schaltserver
+ * Sensordaten vom Arduino Lesen
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
