@@ -28,7 +28,9 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
 
-        
-        var_dump('test');
+        $sensors = \SHC\Sensor\SensorPointEditor::getInstance()->listSensors();
+        var_dump($sensors[1]->getTemperature());
+        var_dump($sensors[1]->getHumidity());
+        var_dump($sensors[2]->getValue());
     }
 }

@@ -4,6 +4,7 @@ namespace SHC\Sensor;
 
 //Imports
 use SHC\Room\Room;
+use RWF\Date\DateTime;
 
 /**
  * Standard Sensor
@@ -217,6 +218,18 @@ abstract class AbstractSensor implements Sensor {
         return $this->dataRecording;
     }
 
+    /**
+     * setzt die Zeit der letzten Verbindung
+     * 
+     * @param  DateTime $time
+     * @return \SHC\Sensor\AbstractSensor
+     */
+    public function setTime(DateTime $time) {
+        
+        $this->time = $time;
+        return $this;
+    }
+    
     /**
      * gibt den Zeitstempel des letzten Sensorwertes zurueck
      * 

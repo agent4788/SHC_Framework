@@ -170,7 +170,7 @@ class SensorPointEditor {
 
                                 $values[] = array(
                                     'temp' => (float) $value->temparature,
-                                    'hum' => (integer) $value->humidity,
+                                    'hum' => (float) $value->humidity,
                                     'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
                                 );
                             }
@@ -205,7 +205,7 @@ class SensorPointEditor {
                             foreach ($xmlSensor->values->value as $value) {
 
                                 $values[] = array(
-                                    'val' => (float) $value->sensorValue,
+                                    'value' => (float) $value->sensorValue,
                                     'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
                                 );
                             }
@@ -220,7 +220,7 @@ class SensorPointEditor {
                             foreach ($xmlSensor->values->value as $value) {
 
                                 $values[] = array(
-                                    'val' => (float) $value->sensorValue,
+                                    'value' => (float) $value->sensorValue,
                                     'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
                                 );
                             }
@@ -235,7 +235,7 @@ class SensorPointEditor {
                             foreach ($xmlSensor->values->value as $value) {
 
                                 $values[] = array(
-                                    'val' => (float) $value->sensorValue,
+                                    'value' => (float) $value->sensorValue,
                                     'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
                                 );
                             }
@@ -376,9 +376,9 @@ class SensorPointEditor {
                             $sensorValues = $sensor->getOldValues();
                             for ($i = 0; $i < count($sensorValues); $i++) {
 
-                                if (isset($sensorValues[$i]['val'])) {
+                                if (isset($sensorValues[$i]['value'])) {
 
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['val'];
+                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
                                     $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
                                 } else {
 
@@ -391,9 +391,9 @@ class SensorPointEditor {
                             $sensorValues = $sensor->getOldValues();
                             for ($i = 0; $i < count($sensorValues); $i++) {
 
-                                if (isset($sensorValues[$i]['val'])) {
+                                if (isset($sensorValues[$i]['value'])) {
 
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['val'];
+                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
                                     $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
                                 } else {
 
@@ -406,9 +406,9 @@ class SensorPointEditor {
                             $sensorValues = $sensor->getOldValues();
                             for ($i = 0; $i < count($sensorValues); $i++) {
 
-                                if (isset($sensorValues[$i]['val'])) {
+                                if (isset($sensorValues[$i]['value'])) {
 
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['val'];
+                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
                                     $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
                                 } else {
 
@@ -522,9 +522,9 @@ class SensorPointEditor {
 
                             //Werte Schreiben
                             $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['val'])) {
+                            if (isset($sensorValues[$i]['value'])) {
 
-                                $value->addChild('sensorValue', $sensorValues[$i]['val']);
+                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
                                 $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
                             } else {
 
@@ -544,9 +544,9 @@ class SensorPointEditor {
 
                             //Werte Schreiben
                             $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['val'])) {
+                            if (isset($sensorValues[$i]['value'])) {
 
-                                $value->addChild('sensorValue', $sensorValues[$i]['val']);
+                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
                                 $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
                             } else {
 
@@ -566,9 +566,9 @@ class SensorPointEditor {
 
                             //Werte Schreiben
                             $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['val'])) {
+                            if (isset($sensorValues[$i]['value'])) {
 
-                                $value->addChild('sensorValue', $sensorValues[$i]['val']);
+                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
                                 $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
                             } else {
 
@@ -592,7 +592,7 @@ class SensorPointEditor {
      * @param  Boolean                 $overwrite   Ueberschreiben falls vorhanden?     
      * @return Boolean   
      */
-    protected function addSensorPoint(SensorPoint $sensorPoint, $overwrite = false) {
+    public function addSensorPoint(SensorPoint $sensorPoint, $overwrite = false) {
 
         $id = $sensorPoint->getId();
         if ((isset($this->sensorPoints[$id]) && $overwrite == true) || !isset($this->sensorPoints[$id])) {
@@ -653,7 +653,7 @@ class SensorPointEditor {
      *  )
      * @return Array
      */
-    public function listSensorPoints($orderBy = 'orderId') {
+    public function listSensorPoints($orderBy = 'id') {
 
         if ($orderBy == 'id') {
 
@@ -709,7 +709,7 @@ class SensorPointEditor {
      *  )
      * @return Array
      */
-    public function listSensors($orderBy = 'orderId') {
+    public function listSensors($orderBy = 'id') {
 
         //Alle Sensoren durchlaufen
         $sensors = array();

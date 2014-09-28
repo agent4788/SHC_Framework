@@ -355,7 +355,7 @@ class SensorPoint {
      *  )
      * @return Array
      */
-    public function listSensors($orderBy = 'orderId') {
+    public function listSensors($orderBy = 'id') {
 
         if ($orderBy == 'id') {
 
