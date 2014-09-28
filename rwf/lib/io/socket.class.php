@@ -14,6 +14,20 @@ namespace RWF\IO;
 class Socket {
 
     /**
+     * TCP Server erstellen
+     * 
+     * @var Integer
+     */
+    const PROTOCOL_TCP = SOL_TCP;
+
+    /**
+     * UDP Server erstellen
+     * 
+     * @var Integer
+     */
+    const PROTOCOL_UDP = SOL_UDP;
+
+    /**
      * Hostname
      * 
      * @var String
@@ -161,12 +175,24 @@ class Socket {
     /**
      * Oeffnet einen Stream
      *
+     * @param  Integer $protocol Protokoll
      * @return Boolean
      * @throws \Exception
      */
-    public function open() {
+    public function open($protocol = self::PROTOCOL_TCP) {
 
-        $this->socket = socket_create(AF_INET, SOCK_STREAM, 0);
+        //Socket erstellen
+        if ($protocol == self::PROTOCOL_TCP) {
+            
+            //TCP Socket
+            $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        } elseif ($protocol == self::PROTOCOL_UDP) {
+            
+            //UDP Socket
+            $this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        }
+
+
         socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => $this->getTimeout(), 'usec' => 0));
         $connected = @socket_connect($this->socket, $this->host, $this->port);
 
