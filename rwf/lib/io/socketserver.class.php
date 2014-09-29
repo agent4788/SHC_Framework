@@ -14,20 +14,6 @@ namespace RWF\IO;
 class SocketServer {
 
     /**
-     * TCP Server erstellen
-     * 
-     * @var Integer
-     */
-    const PROTOCOL_TCP = SOL_TCP;
-
-    /**
-     * UDP Server erstellen
-     * 
-     * @var Integer
-     */
-    const PROTOCOL_UDP = SOL_UDP;
-
-    /**
      * Server Adresse
      * 
      * @var String
@@ -111,26 +97,15 @@ class SocketServer {
     /**
      * initialisiert den Socket Server
      * 
-     * @param  Integer $protocol Protokoll
      * @throws \Exception
      */
-    public function startServer($protocol = self::PROTOCOL_TCP) {
+    public function startServer() {
 
         //Socket erstellen
-        if ($protocol == self::PROTOCOL_TCP) {
-            
-            //TCP Server
-            if (($this->socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
+        //TCP Server
+        if (($this->socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
 
-                throw new \Exception('"' . socket_last_error() . ': ' . socket_strerror(socket_last_error()) . '"', 1151);
-            }
-        } elseif ($protocol == self::PROTOCOL_UDP) {
-            
-            //UDP Server
-            if (($this->socket = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP)) === false) {
-
-                throw new \Exception('"' . socket_last_error() . ': ' . socket_strerror(socket_last_error()) . '"', 1151);
-            }
+            throw new \Exception('"' . socket_last_error() . ': ' . socket_strerror(socket_last_error()) . '"', 1151);
         }
 
         //Adresse an Socket Binden
