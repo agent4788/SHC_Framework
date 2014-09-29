@@ -5,7 +5,7 @@ namespace SHC\Command\CLI;
 //Imports
 use RWF\Request\Commands\CliCommand;
 use SHC\Arduino\ArduinoSensorReciver;
-use SHC\Core\SHC;
+use RWF\Core\RWF;
 
 /**
  * Sensordaten vom Arduino Lesen
@@ -52,10 +52,10 @@ class ArduinoSensorReciverDeamonCli extends CliCommand {
         ob_implicit_flush();
 
         //Sprache einbinden
-        SHC::getLanguage()->loadModul('ArduinoReciver');
+        RWF::getLanguage()->loadModul('ArduinoReciver');
 
         //pruefen on Server aktiviert
-        if (!SHC::getSetting('shc.arduinoReciver.active')) {
+        if (!RWF::getSetting('shc.arduinoReciver.active')) {
 
             throw new Exception('Der Arduino Reciver wurde deaktiviert', 1600);
         }
@@ -109,7 +109,7 @@ class ArduinoSensorReciverDeamonCli extends CliCommand {
      */
     protected function executeCliCommand() {
         
-        $arduinoReciver = new ArduinoSensorReciver(SHC::getSetting('shc.arduinoReciver.interface'), SHC::getSetting('shc.arduinoReciver.baudRate'));
+        $arduinoReciver = new ArduinoSensorReciver(RWF::getSetting('shc.arduinoReciver.interface'), RWF::getSetting('shc.arduinoReciver.baudRate'));
         $arduinoReciver->readDataEndless($this->debug);
         $arduinoReciver->close();
     }
