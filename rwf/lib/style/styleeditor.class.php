@@ -143,9 +143,13 @@ class StyleEditor {
      */
     public function getWebStyle($name) {
         
-        if(isset($this->styleObjectList['web']['name'])) {
+        //Styles Laden
+        $this->listStyles();
+        
+        //Objekt zurueck geben
+        if(isset($this->styleObjectList['web'][$name])) {
             
-            return $this->styleObjectList['web']['name'];
+            return $this->styleObjectList['web'][$name];
         }
         return null;
     }
@@ -158,9 +162,13 @@ class StyleEditor {
      */
     public function getMobileStyle($name) {
         
-        if(isset($this->styleObjectList['mobile']['name'])) {
+        //Styles Laden
+        $this->listStyles(true);
+        
+        //Objekt zurueck geben
+        if(isset($this->styleObjectList['mobile'][$name])) {
             
-            return $this->styleObjectList['mobile']['name'];
+            return $this->styleObjectList['mobile'][$name];
         }
         return null;
     }

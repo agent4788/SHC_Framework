@@ -4,6 +4,7 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Request\Commands\PageCommand;
+use SHC\Core\SHC;
 
 /**
  * Startseite
@@ -21,16 +22,13 @@ class IndexPage extends PageCommand {
      * 
      * @var String
      */
-    protected $template = '';
+    protected $template = 'indexpage.html';
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        $sensors = \SHC\Sensor\SensorPointEditor::getInstance()->listSensors();
-        var_dump($sensors[1]->getTemperature());
-        var_dump($sensors[1]->getHumidity());
-        var_dump($sensors[2]->getValue());
+        SHC::getTemplate()->assign('style', SHC::getStyle());
     }
 }

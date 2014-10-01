@@ -5,6 +5,8 @@ namespace SHC\Core;
 //Imports
 use RWF\Core\RWF;
 use RWF\XML\XmlFileManager;
+use RWF\Style\StyleEditor;
+use RWF\User\User;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -57,6 +59,13 @@ class SHC extends RWF {
      */
     const XML_USERS_AT_HOME = 'usersathome';
     
+    /**
+     * Style
+     * 
+     * @var \RWF\Style\Style 
+     */
+    protected static $style = null;
+    
     public function __construct() {
         
         //XML Initialisieren
@@ -70,6 +79,9 @@ class SHC extends RWF {
             
             self::$template->addTemplateDir(PATH_SHC .'data/templates');
         }
+        
+        //SHC Initialisieren
+        $this->initStyle();
     }
     
     protected function initXml() {
@@ -81,5 +93,31 @@ class SHC extends RWF {
         $fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
         $fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
+    }
+    
+    /**
+     * initialisiert den Style
+     */
+    protected function initStyle() {
+        
+        $webStyle = '';
+        if(self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
+            
+            $webStyle = self::$visitor->getWebStyle();
+        } else {
+            
+            $webStyle = self::getSetting('shc.defaultStyle');
+        }
+        self::$style = StyleEditor::getInstance()->getWebStyle($webStyle);       
+    }
+    
+    /**
+     * gibt den Style zurueck
+     * 
+     * @return \RWF\Style\Style
+     */
+    public static function getStyle() {
+        
+        return self::$style;
     }
 }
