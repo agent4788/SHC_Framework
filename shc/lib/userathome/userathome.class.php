@@ -290,7 +290,7 @@ class UserAtHome {
      * 
      * @return Boolean
      */
-    public function isStateModifies() {
+    public function isStateModified() {
         
         return $this->stateModified;
     }
