@@ -381,7 +381,7 @@ class TemplateCompiler {
             }
 
             preg_match('#^([\w\d_]+)\.class\.php$#', $file, $match);
-            $class = 'RWF\\Template\\Plugin\\' . String::firstCharToUpper($match[1]);
+            $class = '\\RWF\\Template\\Plugin\\' . String::firstCharToUpper($match[1]);
             $object = new $class();
 
             if ($object instanceof TemplatePrefilter) {
@@ -1146,14 +1146,14 @@ class TemplateCompiler {
                         $modifierData['name'] = String::firstCharToUpper(String::toLower($currentVar));
                         try {
 
-                            if (class_exists('RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function')) {
+                            if (class_exists('\\RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function')) {
 
-                                $modifierData['className'] = 'RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
+                                $modifierData['className'] = '\\RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
                                 $modifierData['type'] = 'class';
                             }
                         } catch (ClassNotFoundException $e) {
 
-                            $modifierData['name'] = String::toLower($modifierData['name']);
+                            $modifierData['name'] = String::toLower($modifierData['name']);var_dump($modifierData['name']);
                             if ((function_exists($modifierData['name']) || in_array($modifierData['name'], $this->availableFunctions)) && !in_array($modifierData['name'], $this->disabledeFunctions)) {
 
                                 $modifierData['className'] = $modifierData['name'];
