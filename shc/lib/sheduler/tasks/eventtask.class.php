@@ -29,6 +29,12 @@ class EventTask extends AbstractTask {
      * @var String 
      */
     protected $interval = 'PT10S';
+    
+    public function __construct() {
+        
+        parent::__construct();
+        $this->userComeHome = new \SHC\Event\Events\UserComesHome(1, '123', array('users' => array(1)));
+    }
 
     /**
      * fuehrt die Aufgabe aus
@@ -37,5 +43,6 @@ class EventTask extends AbstractTask {
     public function executeTask() {
 
         
+        var_dump($this->userComeHome->isSatisfies());
     }
 }
