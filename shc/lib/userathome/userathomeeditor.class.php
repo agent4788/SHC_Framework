@@ -267,7 +267,7 @@ class UserAtHomeEditor {
         $user = $xml->addChild('user');
         $user->addChild('id', $nextId);
         $user->addChild('name', $name);
-        $user->addChild('ipAddress', $name);
+        $user->addChild('ipAddress', $ipAddress);
         $user->addChild('orderId', $nextId);
         $user->addChild('enabled', ($enabled == true ? 1 : 0));
         $user->addChild('visibility', ($visibility == true ? 1 : 0));

@@ -48,8 +48,8 @@ abstract class AbstractTask implements Task {
 
         if ($this->interval != '') {
 
-            $this->nextRunTime = new DateTime('2000-01-01 00:00:00');
-            $this->interval = new \DateInterval($this->interval);
+            $this->nextRunTime = DateTime::now();
+            $this->dateInterval = new \DateInterval($this->interval);
         }
     }
 
@@ -72,7 +72,7 @@ abstract class AbstractTask implements Task {
 
             $this->executeTask();
             $this->nextRunTime->add($this->dateInterval);
-        } else {
+        } elseif($this->nextRunTime === null) {
             
             $this->executeTask();
         }

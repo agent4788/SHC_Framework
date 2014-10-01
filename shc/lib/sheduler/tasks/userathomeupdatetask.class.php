@@ -3,7 +3,9 @@
 namespace SHC\Sheduler\Tasks;
 
 //Imports
+use SHC\Sheduler\AbstractTask;
 use SHC\UserAtHome\UserAtHomeEditor;
+use SHC\Switchable\Element;
 
 /**
  * aktualisiert den Status von Benutzern zu Hause
