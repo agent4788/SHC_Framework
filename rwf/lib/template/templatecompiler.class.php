@@ -1153,7 +1153,7 @@ class TemplateCompiler {
                             }
                         } catch (ClassNotFoundException $e) {
 
-                            $modifierData['name'] = String::toLower($modifierData['name']);var_dump($modifierData['name']);
+                            $modifierData['name'] = String::toLower($modifierData['name']);
                             if ((function_exists($modifierData['name']) || in_array($modifierData['name'], $this->availableFunctions)) && !in_array($modifierData['name'], $this->disabledeFunctions)) {
 
                                 $modifierData['className'] = $modifierData['name'];

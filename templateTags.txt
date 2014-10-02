@@ -102,7 +102,9 @@ Template Postfilter      //frei wählbar
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Funktions Plugins
-'Name der Einstellung'|setting[:1] -> HTML encode                               //gibt den Wert einer EInstellung zurueck
+'Name der Einstellung'|setting[:1] -> HTML encode                               //gibt den Wert einer Einstellung zurueck
+'Sprachvariable'|lang                                                           //bringt eine Sprachvariable zur anzeige
+'Sprachmodul'|loadlangmodul                                                     //laedt eine Sprachdatei
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Block Plugins
@@ -110,14 +112,27 @@ Block Plugins
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Plugins
+setting name='Name' [encodeHtml=1]                                              //gibt den Wert einer Sprachvariable aus
+        name       //Name der Einstellung
+        encodeHtml //HTML Encode
 
+lang var='Sprachvariable'                                                       //gibt eine Sprachvariable aus
+        var        //Sprachvariable
+
+langModul modul='Sprachmodul'                                                   //Ladt ein Sprachmodul
+        modul      //Sprachmodul
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Block Plugins
-
+premission premission='Berechtigung'                                            //Prueft ob eine berechtigung vorhanden ist
+        premission // Berechtigung
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Prefilter
+{css}{/css}                                                                     //CSS Daten
+{css src="ZIEL"}                                                                //Link Tag fur Style anweisungen
+{js}{/js}                                                                       //Javascript
+{js src="ZIEL"}                                                                 //Javascript mit SRC Tag
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
