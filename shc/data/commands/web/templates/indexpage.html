@@ -1,3 +1,5 @@
+{* Startseite *}
+{loadlangmodul modul='index'}
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,6 +9,28 @@
         {$style->fetchHtmlHeaderTags()}
     </head>
     <body>
-        {lang var='global.date.tomorrow'}
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="index.userAtHome.boxTitle"}
+            comming Soon ...
+            {/contentbox}
+            <div id="shc-content-tabs">
+                <ul>
+                    {foreach from=$roomList item='room'}
+                    {if $room->isUserEntitled($user)}
+                    <li><a href="index.php?app=shc&ajax=showroom&id={$room->getId()}">{#$room->getName()}</a></li>
+                    {/if}
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+        {literal}
+        <script type="text/javascript">
+            $(function () {
+
+                $('#shc-content-tabs').tabs();
+            })
+        </script>
+        {/literal}
     </body>
 </html>

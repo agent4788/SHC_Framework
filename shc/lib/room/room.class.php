@@ -3,7 +3,7 @@
 namespace SHC\Room;
 
 //Imports
-
+use RWF\User\Visitor;
 
 /**
  * Raum
@@ -198,12 +198,12 @@ class Room {
     /**
      * prueft ob ein Benutzer berechtigt ist das Element zu schalten
      * 
-     * @param \RWF\User\User $user
+     * @param \RWF\User\Visitor $user
      * @return Boolean
      */
-    public function isUserEntitled(User $user) {
+    public function isUserEntitled(Visitor $user) {
 
-        if (count($this->allowedUserGroups) > 0) {
+        if (isset($this->allowedUserGroups[0]) && $this->allowedUserGroups[0] != '') {
 
             //Hauptgruppe pruefen
             if (in_array($user->getMainGroup(), $this->allowedUserGroups)) {

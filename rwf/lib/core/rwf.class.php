@@ -245,7 +245,7 @@ class RWF {
 
         if (self::$visitor instanceof User) {
 
-            self::$language = new Language($user->getLanguage());
+            self::$language = new Language(self::$visitor->getLanguage());
         } else {
 
             self::$language = new Language(self::$settings->getValue('rwf.language.defaultLanguage'));

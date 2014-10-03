@@ -1,0 +1,148 @@
+<div id="shc-headline">
+    <div>
+        {premission premission='shc.acp.menue'}
+        <button id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</button>
+        {/premission}
+    </div>
+    <div id="shc-headline-left">
+        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}</a></div>
+    </div>
+    <div id="shc-headline-right">
+        <div>
+            {if $user->isUser()}
+            <span>
+                {'index.login.user'|lang::$user->getName()} | <a href="index.php?app=shc&action=logout" id="shc-logout-link">{lang var='index.button.logout'}</a>
+            </span>
+            {else}
+            <a href="#" id="shc-login-link">{lang var='index.button.login'}</a>
+            {/if}
+        </div>
+    </div>
+</div>
+{if $user->isUser() == false}
+<div id="shc-login-prompt" style="display: none;" title="{lang var='index.login.boxTitle'}">
+    <form action="#" id="shc-form-login">
+        <div class="shc-message-error" style="display: none;" id="shc-login-error">
+            <div class="shc-message-icon"></div>
+            <div class="shc-message" id="shc-login-error-message"></div>
+        </div>
+        <div>
+            <span>{lang var='index.login.name'}</span>
+            <input type="text" maxlength="20" name="user" id="shc-login-username" class="shc-form-defaulField" />
+        </div>
+        <div>
+            <span>{lang var='index.login.password'}</span>
+            <input type="password" maxlength="20" name="password" id="shc-login-password" class="shc-form-defaulField" />
+        </div>
+        <div>
+            <span>{lang var='index.login.longTime'}</span>
+            <input type="checkbox" name="longTime" value="1" id="shc-login-longtime" class="shc-form-defaulField" />
+        </div>
+    </form>
+</div>
+{/if}
+<script type="text/javascript">
+
+    //Formular Reset
+    function resetForm(id) {
+        $(id).each(function () {
+            this.reset();
+        });
+    }
+
+    $(function () {
+
+        //Login Formular absenden
+        function loginSubmit() {
+
+            //Anmeldedaten an den Server schicken
+            var $form = $('#shc-form-login');
+            var $inputs = $form.find("input, select, button, textarea");
+            var serializedData = $form.serialize();
+            $inputs.prop("disabled", true);
+
+            request = $.ajax({
+                url: "index.php?app=shc&ajax=login",
+                type: "post",
+                data: serializedData
+            });
+
+            request.done(function (response, textStatus, jqXHR) {
+                
+                //Antwort vom Server
+                var data = jQuery.parseJSON(response);
+
+                if (data.success == true) {
+                    
+                    window.location = 'index.php?app=shc&page=index';
+                } else if (data.success == false) {
+                    
+                    $('#shc-login-error-message').text(data.message);
+                    $('#shc-login-error').css({ display: 'block' });
+                    return;
+                } else {
+                    
+                    $('#shc-login-error-message').text("{lang var='index.login.requestError'}");
+                    $('#shc-login-error').css({ display: 'block' });
+                    return;
+                }
+            });
+
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                
+                //Anfrage Fehlgeschlagen
+                $('#shc-login-error-message').text("{lang var='index.login.requestError'}");
+                $('#shc-login-error').css({ display: 'block' });
+                return;
+            });
+
+            request.always(function () {
+                
+                $inputs.prop("disabled", false);
+            });
+        }
+
+        //Loginfenster Anzeigen
+        $('#shc-login-link').click(function () {
+            $('#shc-login-prompt').dialog({
+                modal: true,
+                resizable: false,
+                width: 325,
+                buttons: {
+                    "{lang var='index.login.submit'}": function () {
+
+                        loginSubmit();
+                    }
+                }
+            });
+        });
+
+        //Login Formular Absenden bei Enter
+        $('#login input[name=user]').bind('keypress', function (e) {
+            if (e.keyCode == 13) {
+                loginSubmit();
+            }
+        });
+        $('#login input[name=password]').bind('keypress', function (e) {
+            if (e.keyCode == 13) {
+                loginSubmit();
+            }
+        });
+        $('#login input[name=longTime]').bind('keypress', function (e) {
+            if (e.keyCode == 13) {
+                loginSubmit();
+            }
+        });
+    });
+</script>
+{premission premission='shc.acp.menue'}
+{literal}
+<script type="text/javascript">
+    $('#shc-display-acp-menu').button().css({
+        position: 'absolute',
+        top: '32px',
+        right: '24px'
+    });
+</script>
+{/literal}
+{/premission}

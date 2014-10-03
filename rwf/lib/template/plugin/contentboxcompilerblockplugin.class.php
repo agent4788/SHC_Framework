@@ -5,7 +5,6 @@ namespace RWF\Template\Plugin;
 //Imports
 use RWF\Template\TemplateCompilerBlockPlugin;
 use RWF\Template\TemplateCompiler;
-use RWF\Template\Template\Exception\TemplateCompilationException;
 
 /**
  * Rechtabfrage
@@ -16,7 +15,7 @@ use RWF\Template\Template\Exception\TemplateCompilationException;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
+class ContentBoxCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
     
     /**
      * wird beim Start Tag aufgerufen
@@ -27,18 +26,19 @@ class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
      */
     public function executeStart(array $args, TemplateCompiler $compiler) {
         
-        //Plichtangabe Pruefen
-        if(!isset($args['premission'])) {
+        //Name der Box (Optional)
+        $name = '';
+        if(isset($args['name'])) {
             
-            throw new TemplateCompilationException('missing "premission" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
+            $name = '<?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['name'] .'); ?>';
         }
         
-        $setting = '';
-        if(isset($args['setting'])) {
-            
-            $setting = '&& \\RWF\\Core\\RWF::getSetting('. $args['setting'] .') == true';
-        }
-        return '<?php if(\\RWF\Core\\RWF::getVisitor()->checkPremission('. $args['premission'] .') == true '. $setting .') { ?>';
+        $html = '<div class="shc-contentbox ui-tabs ui-widget ui-widget-content ui-corner-all">';
+        $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
+        $html .= $name;
+        $html .= '</div>';
+        $html .= '<div class="shc-contentbox-body">';
+        return $html;
     }
 
     /**
@@ -49,6 +49,6 @@ class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
      */
     public function executeEnd(TemplateCompiler $compiler) {
         
-        return '<?php } ?>';
+        return '</div></div>';
     }
 }

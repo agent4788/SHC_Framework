@@ -1233,9 +1233,9 @@ class TemplateCompiler {
 
                         while ($oldStatus = array_pop($statusStack)) {
 
-                            if ($oldStatus != 'variable' && $oldStatus != 'object') {
+//                            if ($oldStatus != 'variable' && $oldStatus != 'object') {
 
-                                if ($oldStatus == 'objectMethodStart' || $oldStatus == 'objectMethod' || $oldStatus == 'leftParenthesis' || $oldStatus == 'string') {
+                                if ($oldStatus != 'variable' || $oldStatus != 'object' || $oldStatus == 'objectMethodStart' || $oldStatus == 'objectMethod' || $oldStatus == 'leftParenthesis' || $oldStatus == 'string') {
 
                                     $code .= $operator;
                                     break 2;
@@ -1243,7 +1243,7 @@ class TemplateCompiler {
 
                                     break;
                                 }
-                            }
+//                            }
                         }
 
                         throw new TemplateCompilationException('nicht erwartetes ")" im Tag "' . $str . '"', $this->templateName, $this->line);

@@ -8,7 +8,7 @@ use RWF\Template\TemplateCompiler;
 use RWF\Template\Template\Exception\TemplateCompilationException;
 
 /**
- * Rechtabfrage
+ * EInstellung abfragen
  * 
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -16,7 +16,7 @@ use RWF\Template\Template\Exception\TemplateCompilationException;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
+class IfSettingCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
     
     /**
      * wird beim Start Tag aufgerufen
@@ -28,17 +28,12 @@ class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
     public function executeStart(array $args, TemplateCompiler $compiler) {
         
         //Plichtangabe Pruefen
-        if(!isset($args['premission'])) {
+        if(!isset($args['name'])) {
             
-            throw new TemplateCompilationException('missing "premission" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
+            throw new TemplateCompilationException('missing "name" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
         }
-        
-        $setting = '';
-        if(isset($args['setting'])) {
-            
-            $setting = '&& \\RWF\\Core\\RWF::getSetting('. $args['setting'] .') == true';
-        }
-        return '<?php if(\\RWF\Core\\RWF::getVisitor()->checkPremission('. $args['premission'] .') == true '. $setting .') { ?>';
+
+        return '<?php if(\\RWF\\Core\\RWF::getSetting('. $args['name'] .') == true) { ?>';
     }
 
     /**

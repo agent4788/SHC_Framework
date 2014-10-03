@@ -14,6 +14,13 @@ namespace RWF\User;
 interface Visitor {
 
     /**
+     * gibt on ob es sich um einen Gast oder Benutzer handelt
+     * 
+     * @return Boolean
+     */
+    public function isUser();
+    
+    /**
      * gibt an ob der Benutzer der Gruender der Seite ist
      * 
      * @return Boolean

@@ -27,6 +27,16 @@ class Guest implements Visitor {
 
         $this->mainGroup = $mainGroup;
     }
+    
+    /**
+     * gibt on ob es sich um einen Gast oder Benutzer handelt
+     * 
+     * @return Boolean
+     */
+    public function isUser() {
+        
+        return false;
+    }
 
     /**
      * gibt an ob der Benutzer der Gruender der Seite ist

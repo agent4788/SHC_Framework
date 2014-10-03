@@ -68,7 +68,7 @@ class RoomEditor {
         foreach ($xml->room as $room) {
 
             $this->rooms[(int) $room->id] = new Room(
-                    (int) $room->id, (string) $room->name, (int) $room->orderId, ((int) $room->enabled == 1 ? true : false), explode(',', $room->allowedUserGroups)
+                    (int) $room->id, (string) $room->name, (int) $room->orderId, ((int) $room->enabled == 1 ? true : false), explode(',', (string) $room->allowedUserGroups)
             );
         }
     }

@@ -28,12 +28,9 @@ class JSON {
 
         //JSON Optionen
         $options = JSON_HEX_TAG | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
-        if(DEVELOPMENT_MODE) {
-            $options |= JSON_PRETTY_PRINT;
-        }
         
         //Mimetype und Header schicken
-        $response->setContentType('application/json');
+        //$response->setContentType('application/json');
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden

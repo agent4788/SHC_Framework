@@ -119,6 +119,16 @@ class User implements Visitor {
     }
 
     /**
+     * gibt on ob es sich um einen Gast oder Benutzer handelt
+     * 
+     * @return Boolean
+     */
+    public function isUser() {
+        
+        return true;
+    }
+    
+    /**
      * gibt die Benutzer ID zurueck
      * 
      * @return Integer

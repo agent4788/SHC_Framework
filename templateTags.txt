@@ -124,8 +124,12 @@ langModul modul='Sprachmodul'                                                   
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Block Plugins
-premission premission='Berechtigung'                                            //Prueft ob eine berechtigung vorhanden ist
+premission premission='Berechtigung' [setting='Einstellung']                    //Prueft ob eine berechtigung vorhanden ist
         premission // Berechtigung
+        setting    //Prueft zusaetlich ob die EInstellung wahr ist
+
+ifsetting name='Einstellung'                                                    //Der Block wird nur durchlaufen wenn die Einstellung wahr ist
+        name       //Einstellung
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Prefilter
