@@ -12,6 +12,7 @@
 $l = array();
 
 $l['index.button.acpMenu'] = 'Administration';
+$l['index.button.ucp'] = 'Benutzer Bereich';
 $l['index.button.login'] = 'anmelden';
 $l['index.button.logout'] = 'abmelden';
 $l['index.login.user'] = 'angemeldet als {1:s}';

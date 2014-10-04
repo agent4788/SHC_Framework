@@ -1,13 +1,19 @@
 <div id="shc-headline">
     <div>
-        {if $acp|isset == false}
         {premission premission='shc.acp.menue'}
+        {if $acp|isset == true}
+        <a href="index.php?app=shc&page=index" id="shc-display-acp-menu">{lang var='index.button.ucp'}</a>
+        {else}
         <a href="index.php?app=shc&page=acp" id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
-        {/premission}
         {/if}
+        {/premission}
     </div>
     <div id="shc-headline-left">
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}{if $acp|isset == true} - {lang var='acpindex.text.acp'}{/if}</a></div>
+        {if $acp|isset == true}
+        <div id="shc-headline-logo"><a href="index.php?app=shc&page=acp">{setting name='shc.title'} - {lang var='acpindex.text.acp'}</a></div>
+        {else}
+        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}</a></div>
+        {/if}
     </div>
     <div id="shc-headline-right">
         <div>
