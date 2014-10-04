@@ -1,11 +1,13 @@
 <div id="shc-headline">
     <div>
+        {if $acp|isset == false}
         {premission premission='shc.acp.menue'}
-        <button id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</button>
+        <a href="index.php?app=shc&page=acp" id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
         {/premission}
+        {/if}
     </div>
     <div id="shc-headline-left">
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}</a></div>
+        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}{if $acp|isset == true} - {lang var='acpindex.text.acp'}{/if}</a></div>
     </div>
     <div id="shc-headline-right">
         <div>
@@ -34,10 +36,12 @@
             <span>{lang var='index.login.password'}</span>
             <input type="password" maxlength="20" name="password" id="shc-login-password" class="shc-form-defaulField" />
         </div>
+        {ifsetting name='rwf.session.allowLongTimeLogin'}
         <div>
             <span>{lang var='index.login.longTime'}</span>
             <input type="checkbox" name="longTime" value="1" id="shc-login-longtime" class="shc-form-defaulField" />
         </div>
+        {/ifsetting}
     </form>
 </div>
 {/if}
@@ -49,7 +53,7 @@
             this.reset();
         });
     }
-
+{if $user->isUser() == false}
     $(function () {
 
         //Login Formular absenden
@@ -70,14 +74,12 @@
             request.done(function (response, textStatus, jqXHR) {
                 
                 //Antwort vom Server
-                var data = jQuery.parseJSON(response);
-
-                if (data.success == true) {
+                if (response.success == true) {
                     
                     window.location = 'index.php?app=shc&page=index';
-                } else if (data.success == false) {
+                } else if (response.success == false) {
                     
-                    $('#shc-login-error-message').text(data.message);
+                    $('#shc-login-error-message').text(response.message);
                     $('#shc-login-error').css({ display: 'block' });
                     return;
                 } else {
@@ -128,12 +130,15 @@
                 loginSubmit();
             }
         });
+        {ifsetting name='rwf.session.allowLongTimeLogin'}
         $('#login input[name=longTime]').bind('keypress', function (e) {
             if (e.keyCode == 13) {
                 loginSubmit();
             }
         });
+        {/ifsetting}
     });
+{/if}
 </script>
 {premission premission='shc.acp.menue'}
 {literal}

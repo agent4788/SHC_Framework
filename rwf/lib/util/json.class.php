@@ -30,7 +30,7 @@ class JSON {
         $options = JSON_HEX_TAG | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
         
         //Mimetype und Header schicken
-        //$response->setContentType('application/json');
+        $response->setContentType('application/json');
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden
