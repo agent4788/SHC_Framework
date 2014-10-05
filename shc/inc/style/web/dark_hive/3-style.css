@@ -99,6 +99,47 @@ div.shc-contentbox-body-row {
     padding: 3px;
 }
 
+span.shc-contentbox-body-row-title {
+    display: inline-block;
+    text-align: right;
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 47%;
+}
+
+div.shc-contentbox-body-row-content {
+    display: inline-block;
+}
+
+/* Raum Ansicht */
+
+div.shc-contentbox-room {
+    margin-top: 10px;
+}
+
+span.shc-icon {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 10px;
+    margin: 0 10px;
+}
+
+div.shc-view-sensor  {
+    margin-bottom: 5px;
+}
+
+div.shc-view-sensorr div.shc-contentbox-body-row-content.shc-view-middle {
+    position: relative;
+    top: 5px;
+}
+
+div.shc-view-sensor div.shc-contentbox-body-row-content.shc-view-low {
+    position: relative;
+    top: 12px;
+}
+
 /* Meldungen */
 
 .shc-message-error, .shc-message-warning, .shc-message-info, .shc-message-successfully {
@@ -240,3 +281,4 @@ div.shc-contentbox-body-row {
     border-radius: 3px;
     font-size: 1.1em;
 }
+

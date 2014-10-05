@@ -1,0 +1,37 @@
+<div class="shc-contentbox-body-row shc-view-switchable">
+    <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
+    <span class="shc-icon {$switchable->getIcon()}"></span>
+    <div class="shc-contentbox-body-row-content">
+        <div id="shc-view-switchable-set-{$switchable->getId()}">
+            <button id="shc-view-switchable-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.on'}</button>
+            <button id="shc-view-switchable-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.off'}</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        //Buttons Initialisieren
+        $('#shc-view-switchable-set-{$switchable->getId()}').buttonset();
+        {if $switchable->getState() == 1}
+        $('#shc-view-switchable-{$switchable->getId()}-on').button({ icons: { primary: 'ui-icon-check' } });
+        {else}
+        $('#shc-view-switchable-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
+        {/if}
+
+        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+
+            //An Button gedrueckt
+            return false;
+        });
+        $('#shc-view-switchable-{$switchable->getId()}-off').click(function() {
+
+            //Aus Button gedrueckt
+            return false;
+        });
+        
+        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+        });
+    });
+</script>

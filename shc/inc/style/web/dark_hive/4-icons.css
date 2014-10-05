@@ -1,0 +1,43 @@
+/* Sensoren Icons */
+
+span.shc-icon-ds18x20 {
+    background-image: url(../../../img/sensor/ds18x20.png);
+}
+
+span.shc-icon-dht {
+    background-image: url(../../../img/sensor/dht.png);
+}
+
+span.shc-icon-bmp {
+    background-image: url(../../../img/sensor/bmp.png);
+}
+
+span.shc-icon-rain {
+    background-image: url(../../../img/sensor/rain.png);
+}
+
+span.shc-icon-hygrometer {
+    background-image: url(../../../img/sensor/hygrometer.png);
+}
+
+span.shc-icon-ldr {
+    background-image: url(../../../img/sensor/ldr.png);
+}
+
+/* Icons fuer Schaltbare Elemente */
+
+span.shc-icon-chip {
+    background-image: url(../../../img/switchables/chip.png);
+}
+
+span.shc-icon-countdown {
+    background-image: url(../../../img/switchables/countdown.png);
+}
+
+span.shc-icon-lamp {
+    background-image: url(../../../img/switchables/lamp.png);
+}
+
+span.shc-icon-socket {
+    background-image: url(../../../img/switchables/socket.png);
+}
