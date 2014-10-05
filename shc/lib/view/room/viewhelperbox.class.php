@@ -242,6 +242,13 @@ class ViewHelperBox {
      */
     public function showAll() {
         
+        //Leere Box ausblenden
+        if(count($this->elements) < 1) {
+            
+            return '';
+        }
+        
+        //HTML erstellen
         $html = $this->fetchStartTag();
         foreach($this->listElementsOrdered() as $element) {
             
