@@ -102,6 +102,7 @@ Template Postfilter      //frei wählbar
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Funktions Plugins
+
 'Sprachvariable'|lang[:1]                                                       //bringt eine Sprachvariable zur anzeige
 
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -110,27 +111,21 @@ Block Plugins
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Plugins
+
 setting name='Name' [encodeHtml=1]                                              //gibt den Wert einer Sprachvariable aus
-        name       //Name der Einstellung
-        encodeHtml //HTML Encode
-
 lang var='Sprachvariable'                                                       //gibt eine Sprachvariable aus
-        var        //Sprachvariable
-
 langModul modul='Sprachmodul'                                                   //Ladt ein Sprachmodul
-        modul      //Sprachmodul
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Block Plugins
-premission premission='Berechtigung' [setting='Einstellung']                    //Prueft ob eine berechtigung vorhanden ist
-        premission // Berechtigung
-        setting    //Prueft zusaetlich ob die EInstellung wahr ist
 
+premission premission='Berechtigung' [setting='Einstellung']                    //Prueft ob eine berechtigung vorhanden ist
 ifsetting name='Einstellung'                                                    //Der Block wird nur durchlaufen wenn die Einstellung wahr ist
-        name       //Einstellung
+contentbox [name='Sprachvariable'] [id='CSS ID'] [class='CSS Klasse]            //Box in der UI
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Prefilter
+
 {css}{/css}                                                                     //CSS Daten
 {css src="ZIEL"}                                                                //Link Tag fur Style anweisungen
 {js}{/js}                                                                       //Javascript

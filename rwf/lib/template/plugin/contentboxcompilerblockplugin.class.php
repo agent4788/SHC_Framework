@@ -33,7 +33,21 @@ class ContentBoxCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
             $name = '<?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['name'] .'); ?>';
         }
         
-        $html = '<div class="shc-contentbox ui-tabs ui-widget ui-widget-content ui-corner-all">';
+        //Id
+        $id = '';
+        if(isset($args['id'])) {
+            
+            $id = ' id="'. $args['id'] .'"';
+        }
+        
+        //Class
+        $class = '';
+        if(isset($args['class'])) {
+            
+            $class = $args['class'];
+        }
+        
+        $html = '<div class="shc-contentbox ui-tabs ui-widget ui-widget-content ui-corner-all '. $class .'"'. $id .'>';
         $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
         $html .= $name;
         $html .= '</div>';
