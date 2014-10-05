@@ -29,7 +29,7 @@ class AcpPage extends PageCommand {
      * 
      * @var type 
      */
-    protected $requiredPremission = 'shc.acp.menue';
+    protected $requiredPremission = 'shc.acp.menu';
     
     /**
      * Sprachpakete die geladen werden sollen

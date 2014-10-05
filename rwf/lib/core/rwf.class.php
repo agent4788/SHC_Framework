@@ -93,7 +93,6 @@ class RWF {
             $this->initSettings();
             $this->initRequest();
             $this->initSession();
-            $this->redirection();
             $this->initUser();
             $this->initLanguage();
             $this->initTemplate();
@@ -137,90 +136,6 @@ class RWF {
     protected function initSession() {
 
         self::$session = new Session();
-    }
-
-    /**
-     * prueft ob die Auto Umleitung aktiv ist und leitet bei einer neuen Session den Benutzer automatisch um
-     */
-    protected function redirection() {
-
-        //Umleitung fuer PC/Tablet/Smartphone
-        if (self::$session->isNewSession() && self::$settings->getValue('rwf.ui.redirectActive')) {
-
-            //Mobil Detect einbinden
-            require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
-
-            $mobilDetect = new \Mobile_Detect();
-
-            /**
-             * Einstellung der Umleitung
-             * 
-             * 1 => auf PC oberflaeche leiten
-             * 2 => auf Tablet Oberflache leiten
-             * 3 => auf Smartphone oberflaeche leiten
-             */
-            //Geraet feststellen und Umleiten nach den jeweiligen Einstellungen
-            $location = 'index.php?app=' . APP_NAME;
-            if ($mobilDetect->isTablet()) {
-
-                //Tablet
-                switch (self::$settings->getValue('rwf.ui.redirectTabletTo')) {
-
-                    case 1:
-                        //auf PC Oberflaeche
-                        //es muss nicht umgeleitet werden
-                        break;
-                    case 3:
-                        //auf Smartphone Oberflaeche
-                        $location .= '&m';
-                        break;
-                    default :
-                        //auf Tablet Oberflaeche
-                        $location .= '&t';
-                }
-            } elseif ($mobilDetect->isMobile()) {
-
-                //Smartphone
-                switch (self::$settings->getValue('rwf.ui.redirectSmartphoneTo')) {
-
-                    case 1:
-                        //auf PC Oberflaeche
-                        //es muss nicht umgeleitet werden
-                        break;
-                    case 2:
-                        //Auf Tablet Oberflaeche
-                        $location .= '&t';
-                        break;
-                    default :
-                        //auf Smartphone Oberflaeche
-                        $location .= '&m';
-                }
-            } else {
-
-                //PC und alles andere
-                switch (self::$settings->getValue('rwf.ui.redirectPcTo')) {
-
-                    case 2:
-                        //auf Tablet Oberflaeche
-                        $location .= '&t';
-                        break;
-                    case 3:
-                        //Auf Smartphone Oberflaeche
-                        $location .= '&m';
-                        break;
-                    default :
-                    //auf PC Oberflaeche
-                    //es muss nicht umgeleitet werden
-                }
-            }
-
-            //Header setzen, senden und beenden
-            self::$response->addLocationHeader($location);
-            self::$response->setBody('');
-            self::$response->flush();
-            $this->finalize();
-            exit(0);
-        }
     }
 
     /**
