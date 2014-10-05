@@ -118,7 +118,7 @@ class DHT extends AbstractSensor{
      * 
      * @return Boolean
      */
-    public function isHumidityVisivle() {
+    public function isHumidityVisible() {
         
         return ($this->humidityVisibility == 1 ? true : false);
     }
