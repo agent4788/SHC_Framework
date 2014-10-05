@@ -166,10 +166,13 @@ class XmlEditor extends \SimpleXMLElement {
             }
 
             //versuchen die Datei zu speichern
-            if (!$this->asXML($this->fileName)) {
+            $fileName = $this->fileName;
+            unset($this->fileName);
+            if (!$this->asXML($fileName)) {
 
                 throw new XmlException('Die XML Datei konntenicht gespeichert werden', 1103, \libxml_get_errors());
             }
+            $this->fileName = $fileName;
         }
 
         //Reload Flag erzeugen um andere Prozesse ueber aenderungen der XML Daten zu informieren
