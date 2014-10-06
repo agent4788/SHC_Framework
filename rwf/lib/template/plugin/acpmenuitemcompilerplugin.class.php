@@ -75,8 +75,9 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
         $html .= '$(\'#'. $randomStr .'\').click(function() {';
-        $html .= '$.get(\''. $args['link'] .'\', function(data, textStatus, jqXHR) {';
+        $html .= '$.get('. $args['link'] .', function(data, textStatus, jqXHR) {';
         $html .= '$(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
+        $html .= '});';
         $html .= '});';
         $html .= '});';
         $html .= '</script>';
