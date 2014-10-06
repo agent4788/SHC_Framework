@@ -37,7 +37,7 @@ class ContentBoxCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
         $id = '';
         if(isset($args['id'])) {
             
-            $id = ' id="'. $args['id'] .'"';
+            $id = ' id='. $args['id'];
         }
         
         //Class
