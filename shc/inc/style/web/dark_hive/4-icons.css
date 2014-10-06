@@ -41,3 +41,56 @@ span.shc-icon-lamp {
 span.shc-icon-socket {
     background-image: url(../../../img/switchables/socket.png);
 }
+
+/* ACP Menue Icons */
+span#shc-view-acp-menu-usermanagement {
+    background-image: url(../../../img/acpmenue/usermanagement.png);
+}
+
+span#shc-view-acp-menu-settings {
+    background-image: url(../../../img/acpmenue/settings.png);
+}
+
+span#shc-view-acp-menu-backup {
+    background-image: url(../../../img/acpmenue/backup.png);
+}
+
+span#shc-view-acp-menu-rooms {
+    background-image: url(../../../img/acpmenue/rooms.png);
+}
+
+span#shc-view-acp-menu-switchfunctions {
+    background-image: url(../../../img/acpmenue/switchfunctions.png);
+}
+
+span#shc-view-acp-menu-sensorpoints {
+    background-image: url(../../../img/acpmenue/sensorpoints.png);
+}
+
+span#shc-view-acp-menu-usersathome {
+    background-image: url(../../../img/acpmenue/usersathome.png);
+}
+
+span#shc-view-acp-menu-conditions {
+    background-image: url(../../../img/acpmenue/conditions.png);
+}
+
+span#shc-view-acp-menu-switchpoints {
+    background-image: url(../../../img/acpmenue/switchpoints.png);
+}
+
+span#shc-view-acp-menu-events {
+    background-image: url(../../../img/acpmenue/events.png);
+}
+
+span#shc-view-acp-menu-serverstate {
+    background-image: url(../../../img/acpmenue/serserstate.png);
+}
+
+span#shc-view-acp-menu-switchservers {
+    background-image: url(../../../img/acpmenue/switchservers.png);
+}
+
+span#shc-view-acp-menu-info {
+    background-image: url(../../../img/acpmenue/info.png);
+}

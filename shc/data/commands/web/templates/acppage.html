@@ -13,8 +13,44 @@
             {contentbox name="acpindex.box.overview"}
             comming Soon ...
             {/contentbox}
-            {contentbox name="acpindex.box.acpMenue"}
-            comming Soon ...
+            {contentbox name="acpindex.box.acpMenue" id='shc-view-acp-contentBox'}
+            <div class="shc-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.main'}</h2>
+                <hr/>
+                <div class="shc-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.users' icon='shc-view-acp-menu-usermanagement' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.settings' icon='shc-view-acp-menu-settings' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.backup' icon='shc-view-acp-menu-backup' link='' premission=''}
+                </div>
+            </div>
+            <div class="shc-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.smartHome'}</h2>
+                <hr/>
+                <div class="shc-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.rooms' icon='shc-view-acp-menu-rooms' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.switchFunctions' icon='shc-view-acp-menu-switchfunctions' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.sensorPoints' icon='shc-view-acp-menu-sensorpoints' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.userAtHome' icon='shc-view-acp-menu-usersathome' link='' premission=''}
+                </div>
+            </div>
+            <div class="shc-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.homeAutomation'}</h2>
+                <hr/>
+                <div class="shc-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.conditions' icon='shc-view-acp-menu-conditions' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.switchPoints' icon='shc-view-acp-menu-switchpoints' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.events' icon='shc-view-acp-menu-events' link='' premission=''}
+                </div>
+            </div>
+            <div class="shc-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.other'}</h2>
+                <hr/>
+                <div class="shc-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.serverStatus' icon='shc-view-acp-menu-serverstate' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.switchServer' icon='shc-view-acp-menu-switchservers' link='' premission=''}
+                    {acpmenuitem text='acpindex.menu.info' icon='shc-view-acp-menu-info' link='' premission=''}
+                </div>
+            </div>
             {/contentbox}
         </div>
     </body>

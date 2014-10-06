@@ -282,3 +282,47 @@ div.shc-view-sensor div.shc-contentbox-body-row-content.shc-view-low {
     font-size: 1.1em;
 }
 
+/* ACP Menue */
+div.shc-view-acp-menuGroup {
+    margin: 10px;
+    padding: 5px 10px;
+}
+
+div.shc-view-acp-menuGroup h2 {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+div.shc-view-acp-menuGroup hr {
+    margin-bottom: 10px;
+}
+
+div.shc-view-acp-menuGroup div.shc-view-acp-menuGroup-body {
+    padding: 3px 0 0 10px;
+}
+
+div.shc-view-acp-menuItem {
+    display: inline-block;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+div.shc-view-acp-menuItem span.shc-view-acp-menuItem-icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin-right: 5px;
+}
+
+div.shc-view-acp-menuItem span.shc-view-acp-menuItem-text {
+    font-size: 1.1em;
+    display: inline-block;
+    max-width: 120px;
+    position: relative;
+    top: -20px;
+}
+
+div.shc-view-acp-menuItem:hover span.shc-view-acp-menuItem-text {
+    text-decoration: underline;
+}
