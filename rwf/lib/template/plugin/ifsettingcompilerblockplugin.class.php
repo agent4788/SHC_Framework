@@ -5,7 +5,7 @@ namespace RWF\Template\Plugin;
 //Imports
 use RWF\Template\TemplateCompilerBlockPlugin;
 use RWF\Template\TemplateCompiler;
-use RWF\Template\Template\Exception\TemplateCompilationException;
+use RWF\Template\Exception\TemplateCompilationException;
 
 /**
  * EInstellung abfragen
