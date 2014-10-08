@@ -104,6 +104,10 @@ Template Postfilter      //frei wählbar
 Funktions Plugins
 
 'Sprachvariable'|lang[:1]                                                       //bringt eine Sprachvariable zur anzeige
+$Zeitobjekt|time[:'format']                                                     //Formatiert eine Zeit
+$Zeitobjekt|date[:'format']                                                     //Formatiert ein Datum
+$Zeitobjekt|datetime[:'format']                                                 //Formatiert Datum und Zeit
+$Zeitobjekt|timeline[:'format']                                                 //Formatiert eine Zeitschiene
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Block Plugins
@@ -115,6 +119,7 @@ Compiler Plugins
 setting name='Name' [encodeHtml=1]                                              //gibt den Wert einer Sprachvariable aus
 lang var='Sprachvariable'                                                       //gibt eine Sprachvariable aus
 langModul modul='Sprachmodul'                                                   //Ladt ein Sprachmodul
+acpmenuitem text='Sprachvariable' icon='CSS Klasse' link='Link' [premision='Berechtigung'] [setting="Einstellung]       //Menu Eintrag
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Block Plugins
