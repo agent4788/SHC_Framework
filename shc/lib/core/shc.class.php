@@ -73,8 +73,7 @@ class SHC extends RWF {
      */
     protected static $style = null;
     
-    public function __construct()
-    {
+    public function __construct() {
 
         //XML Initialisieren
         $this->initXml();
