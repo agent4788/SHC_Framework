@@ -1,6 +1,6 @@
 <?php
 
-namespace RWF\Template\Plugin;
+namespace SHC\Template\Plugin;
 
 //Imports
 use RWF\Template\TemplateCompilerPlugin;

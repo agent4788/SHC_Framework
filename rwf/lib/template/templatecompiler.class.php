@@ -52,9 +52,9 @@ class TemplateCompiler {
     /**
      * Ordner in dem die Plugins liegen
      * 
-     * @var String
+     * @var Array
      */
-    protected $pluginDir = '';
+    protected $pluginDirs = array();
 
     /**
      * Plugins
@@ -202,11 +202,22 @@ class TemplateCompiler {
      */
     const VARIABLE = 4;
 
-    public function __construct(Template $template, $pluginDir = '') {
+    public function __construct(Template $template, array $pluginDirs = array()) {
 
         $this->template = $template;
-        $this->pluginDir = ($pluginDir != '' ? $pluginDir : PATH_RWF_CLASSES . 'template/plugin');
+        $this->pluginDirs = $pluginDirs;
         $this->hash = md5(TIME_NOW);
+
+        //Template Plugin Ordner vorbereiten
+        if(count($this->pluginDirs) < 1) {
+
+            //Default Odrner nutzen (RWF Namespace Template\Plugin\....
+            $this->pluginDirs['RWF'] = PATH_RWF_CLASSES . 'template/plugin/';
+            //Template Plugins der App falls vorhanden
+            if(file_exists(PATH_BASE . APP_NAME .'/lib/template/plugin')) {
+                $this->pluginDirs[APP_NAME] = PATH_BASE . APP_NAME .'/lib/template/plugin/';
+            }
+        }
 
         //Delimiter escapen
         $this->ld = $this->quote($this->leftDelimiter) . '(?=\S)';
@@ -372,42 +383,46 @@ class TemplateCompiler {
      */
     protected function loadPlugins() {
 
-        $dir = opendir($this->pluginDir);
-        while ($file = readdir($dir)) {
+        //Template Ordner durchlaufen
+        foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-            if ($file == '.' || $file == '..') {
+            $dir = opendir($pluginDir);
+            while ($file = readdir($dir)) {
 
-                continue;
+                if ($file == '.' || $file == '..') {
+
+                    continue;
+                }
+
+                preg_match('#^([\w\d_]+)\.class\.php$#', $file, $match);
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper($match[1]);
+                $object = new $class();
+
+                if ($object instanceof TemplatePrefilter) {
+
+                    $this->filter['prefilter'][] = $object;
+                } elseif ($object instanceof TemplatePostfilter) {
+
+                    $this->filter['postfilter'][] = $object;
+                } elseif ($object instanceof TemplateBlockPlugin) {
+
+                    $this->plugins['block'][] = $object;
+                } elseif ($object instanceof TemplateCompilerPlugin) {
+
+                    $this->plugins['compiler'][] = $object;
+                } elseif ($object instanceof TemplateCompilerBlockPlugin) {
+
+                    $this->plugins['compilerBlock'][] = $object;
+                } elseif ($object instanceof TemplateFunction) {
+
+                    $this->plugins['functions'][] = $object;
+                } else {
+
+                    throw new TemplateCompilerException('Die Klasse "' . $class . '" implementiert nicht das richtige Interface', 1145);
+                }
             }
-
-            preg_match('#^([\w\d_]+)\.class\.php$#', $file, $match);
-            $class = '\\RWF\\Template\\Plugin\\' . String::firstCharToUpper($match[1]);
-            $object = new $class();
-
-            if ($object instanceof TemplatePrefilter) {
-
-                $this->filter['prefilter'][] = $object;
-            } elseif ($object instanceof TemplatePostfilter) {
-
-                $this->filter['postfilter'][] = $object;
-            } elseif ($object instanceof TemplateBlockPlugin) {
-
-                $this->plugins['block'][] = $object;
-            } elseif ($object instanceof TemplateCompilerPlugin) {
-
-                $this->plugins['compiler'][] = $object;
-            } elseif ($object instanceof TemplateCompilerBlockPlugin) {
-
-                $this->plugins['compilerBlock'][] = $object;
-            } elseif ($object instanceof TemplateFunction) {
-
-                $this->plugins['functions'][] = $object;
-            } else {
-
-                throw new TemplateCompilerException('Die Klasse "' . $class . '" implementiert nicht das richtige Interface', 1145);
-            }
+            closedir($dir);
         }
-        closedir($dir);
 
         //Prefilter Sortieren
         if (isset($this->filter['prefilter'])) {
@@ -654,13 +669,21 @@ class TemplateCompiler {
 
         if (isset($this->plugins['compiler'])) {
 
-            $class = 'RWF\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerPlugin';
-            $plugin = null;
-            foreach ($this->plugins['compiler'] as $object) {
+            //Plugin suchen
+            foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                if ($object instanceof $class) {
+                if(file_exists($pluginDir . String::toLower($command) . 'compilerplugin.class.php')) {
 
-                    return $object->execute($args, $this);
+                    $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerPlugin';
+
+                    $plugin = null;
+                    foreach ($this->plugins['compiler'] as $object) {
+
+                        if ($object instanceof $class) {
+
+                            return $object->execute($args, $this);
+                        }
+                    }
                 }
             }
         }
@@ -686,30 +709,38 @@ class TemplateCompiler {
                 $command = String::subString($command, 1);
             }
 
-            $class = 'RWF\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
-            $plugin = null;
-            foreach ($this->plugins['compilerBlock'] as $object) {
+            //Plugin suchen
+            foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                if ($object instanceof $class) {
+                if(file_exists($pluginDir . String::toLower($command) . 'compilerblockplugin.class.php')) {
 
-                    $plugin = $object;
+                    $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+
+                    $plugin = null;
+                    foreach ($this->plugins['compilerBlock'] as $object) {
+
+                        if ($object instanceof $class) {
+
+                            $plugin = $object;
+                        }
+                    }
+
+                    //Abbruch wenn kein Pluginobjekt vorhanen
+                    if ($plugin === null) {
+
+                        return null;
+                    }
+
+                    if ($tagStart) {
+
+                        $this->openTag($command);
+                        return $plugin->executeStart($args, $this);
+                    }
+
+                    $this->closeTag($command);
+                    return $plugin->executeEnd($this);
                 }
             }
-
-            //Abbruch wenn kein Pluginobjekt vorhanen
-            if ($plugin === null) {
-
-                return null;
-            }
-
-            if ($tagStart) {
-
-                $this->openTag($command);
-                return $plugin->executeStart($args, $this);
-            }
-
-            $this->closeTag($command);
-            return $plugin->executeEnd($this);
         }
 
         return null;
@@ -731,8 +762,15 @@ class TemplateCompiler {
             $command = String::subString($command, 1);
         }
 
-        $class = 'RWF\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'BlockPlugin';
-        $path = $this->pluginDir . String::toLower($command) . 'blockplugin.class.php';
+        //Plugin suchen
+        foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
+
+            if(file_exists($pluginDir . String::toLower($command) . 'blockplugin.class.php')) {
+
+                $path = $pluginDir . String::toLower($command) . 'blockplugin.class.php';
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'BlockPlugin';
+            }
+        }
 
         $code = '<?php ';
 
@@ -1144,14 +1182,25 @@ class TemplateCompiler {
                         }
 
                         $modifierData['name'] = String::firstCharToUpper(String::toLower($currentVar));
-                        try {
 
-                            if (class_exists('\\RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function')) {
+                        $found = false;
+                        foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                                $modifierData['className'] = '\\RWF\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
-                                $modifierData['type'] = 'class';
+                            //Klasse Suchen
+                            try {
+
+                                if (class_exists('\\'. $baseNamespace .'\\Template\\Plugin\\' . $modifierData['name'] . 'Function')) {
+
+                                    $modifierData['className'] = '\\'. $baseNamespace .'\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
+                                    $modifierData['type'] = 'class';
+                                    $found = true;
+                                }
+
+                            } catch (ClassNotFoundException $e) {
                             }
-                        } catch (ClassNotFoundException $e) {
+                        }
+
+                        if($found === false) {
 
                             $modifierData['name'] = String::toLower($modifierData['name']);
                             if ((function_exists($modifierData['name']) || in_array($modifierData['name'], $this->availableFunctions)) && !in_array($modifierData['name'], $this->disabledeFunctions)) {
