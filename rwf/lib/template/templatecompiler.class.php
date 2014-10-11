@@ -672,17 +672,12 @@ class TemplateCompiler {
             //Plugin suchen
             foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                if(file_exists($pluginDir . String::toLower($command) . 'compilerplugin.class.php')) {
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerPlugin';
+                foreach($this->plugins['compiler'] as $plugin) {
 
-                    $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerPlugin';
+                    if($plugin instanceof $class) {
 
-                    $plugin = null;
-                    foreach ($this->plugins['compiler'] as $object) {
-
-                        if ($object instanceof $class) {
-
-                            return $object->execute($args, $this);
-                        }
+                        return $plugin->execute($args, $this);
                     }
                 }
             }
@@ -712,33 +707,26 @@ class TemplateCompiler {
             //Plugin suchen
             foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                if(file_exists($pluginDir . String::toLower($command) . 'compilerblockplugin.class.php')) {
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+                foreach($this->plugins['compilerBlock'] as $plugin) {
 
-                    $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+                    if($plugin instanceof $class) {
 
-                    $plugin = null;
-                    foreach ($this->plugins['compilerBlock'] as $object) {
+                        //Abbruch wenn kein Pluginobjekt vorhanen
+                        if ($plugin === null) {
 
-                        if ($object instanceof $class) {
-
-                            $plugin = $object;
+                            return null;
                         }
+
+                        if ($tagStart) {
+
+                            $this->openTag($command);
+                            return $plugin->executeStart($args, $this);
+                        }
+
+                        $this->closeTag($command);
+                        return $plugin->executeEnd($this);
                     }
-
-                    //Abbruch wenn kein Pluginobjekt vorhanen
-                    if ($plugin === null) {
-
-                        return null;
-                    }
-
-                    if ($tagStart) {
-
-                        $this->openTag($command);
-                        return $plugin->executeStart($args, $this);
-                    }
-
-                    $this->closeTag($command);
-                    return $plugin->executeEnd($this);
                 }
             }
         }
@@ -765,10 +753,14 @@ class TemplateCompiler {
         //Plugin suchen
         foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-            if(file_exists($pluginDir . String::toLower($command) . 'blockplugin.class.php')) {
+            $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+            foreach($this->plugins['compilerBlock'] as $plugin) {
 
-                $path = $pluginDir . String::toLower($command) . 'blockplugin.class.php';
-                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'BlockPlugin';
+                if ($plugin instanceof $class) {
+
+                    $path = $pluginDir . String::toLower($command) . 'blockplugin.class.php';
+                    break 2;
+                }
             }
         }
 
@@ -1187,16 +1179,15 @@ class TemplateCompiler {
                         foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
                             //Klasse Suchen
-                            try {
+                            foreach($this->plugins['functions'] as $plugin) {
 
-                                if (class_exists('\\'. $baseNamespace .'\\Template\\Plugin\\' . $modifierData['name'] . 'Function')) {
+                                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
+                                if($plugin instanceof $class) {
 
                                     $modifierData['className'] = '\\'. $baseNamespace .'\\Template\\Plugin\\' . $modifierData['name'] . 'Function';
                                     $modifierData['type'] = 'class';
                                     $found = true;
                                 }
-
-                            } catch (ClassNotFoundException $e) {
                             }
                         }
 
