@@ -122,6 +122,8 @@ langModul modul='Sprachmodul'                                                   
 acpmenuitem text='Sprachvariable' icon='CSS Klasse' link='Link' [premision='Berechtigung'] [setting="Einstellung]       //Menu Eintrag
 editlink link='Link' id='ID'                                                    //erstellt einen bearbeiten Link
 deletelink link='Link' id='ID' [prompt='Sprachvariable'] [title='Sprachvariable'] //erstellt einen loeschen Link
+acpbutton link='Link' text='Sprachvariable'                                     //ERzeugt einen Button im ACP Bereich
+acpbackbutton [location='Ziel'] [link='Ziel']                                   //erzeugt einen zurueck Button (Eines von beiden Attributen muss angegeben werden)
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Compiler Block Plugins
