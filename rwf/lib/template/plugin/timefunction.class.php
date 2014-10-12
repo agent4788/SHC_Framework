@@ -29,7 +29,7 @@ class TimeFunction implements TemplateFunction {
      */
     public static function execute(array $value, Template $tpl) {
 
-        //Zeitobjekt vorbereiten
+        //Zeitobjekt vorbereitenz
         if($value[0] instanceof DateTime) {
 
             $time = LanguageDateTime::createFromDatabaseDateTime($value[0]);

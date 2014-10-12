@@ -3,7 +3,6 @@
 namespace RWF\Template\Plugin;
 
 //Imports
-use RWF\Date\DateTime;
 use RWF\Date\LanguageDateTime;
 use RWF\Template\TemplateFunction;
 use RWF\Template\Template;
@@ -30,9 +29,9 @@ class TimeLineFunction implements TemplateFunction {
     public static function execute(array $value, Template $tpl) {
 
         //Zeitobjekt vorbereiten
-        if($value[0] instanceof DateTime) {
+        if($value[0] instanceof \DateTime) {
 
-            $time = LanguageDateTime::createFromDatabaseDateTime($value[0]);
+            $time = LanguageDateTime::createFormObject($value[0]);
         } else {
 
             $time = LanguageDateTime::now();

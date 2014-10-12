@@ -74,10 +74,10 @@ class LanguageDateTime extends DateTime {
         //Zeitzone
         if ($object === null && defined('DATETIME_TIMEZONE')) {
 
-            $object = new DateTimeZone(DATETIME_TIMEZONE);
+            $object = new \DateTimeZone(DATETIME_TIMEZONE);
         } elseif ($object === null) {
 
-            $object = new DateTimeZone('Europe/London');
+            $object = new \DateTimeZone('Europe/London');
         }
         
         $date = parent::createFromFormat($format, $time, $object);
@@ -127,7 +127,7 @@ class LanguageDateTime extends DateTime {
      * @param  DateTime $date Datumsobjekt
      * @return \RWF\Date\LanguageDateTime
      */
-    public static function createFormObject(DateTime $date) {
+    public static function createFormObject(\DateTime $date) {
         
         $dateEx = new LanguageDateTime();
         $dateEx->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
