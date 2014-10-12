@@ -183,17 +183,17 @@ class Message {
 
         if ($this->getMessage() != '') {
             
-            $html = '<div class="rew-ui-message">' . "\n";
+            $html = '<div class="rwf-ui-message">' . "\n";
             $html .= '<div class="' . $type . '">' . "\n";
             $html .= '<div class="rwf-ui-message-icon"></div>' . "\n";
-            $html .= '<div class="ref-ui-message-text">' . String::encodeHTML($this->getMessage()) . '</div>' . "\n";
+            $html .= '<div class="rwf-ui-message">' . $this->getMessage() . '</div>' . "\n";
             if(count($this->getSubMessages())) {
                 
                 $html .= '<ul class="rwf-ui-message-sub">' . "\n";
                 
                 foreach($this->getSubMessages() as $subMessage) {
                     
-                    $html .= '<li class="rwf-ui-message-sub-element">'. String::encodeHTML($subMessage) . "</li>\n";
+                    $html .= '<li class="rwf-ui-message-sub-element">'. $subMessage . "</li>\n";
                 }
                 $html .= '</ul>' . "\n";
             }
