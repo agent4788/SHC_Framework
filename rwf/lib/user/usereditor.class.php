@@ -339,7 +339,7 @@ class UserEditor {
                 if ($name !== null) {
 
                     //puefen ob neuer Benutzername schon belegt
-                    if (!$this->isUserNameAvailable($name)) {
+                    if ($user->name != $name && !$this->isUserNameAvailable($name)) {
 
                         throw new \Exception('Der Benutzername ist schon vergeben', 1110);
                     }

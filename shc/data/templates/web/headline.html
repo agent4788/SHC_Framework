@@ -30,9 +30,9 @@
 {if $user->isUser() == false}
 <div id="shc-login-prompt" style="display: none;" title="{lang var='index.login.boxTitle'}">
     <form action="#" id="shc-form-login">
-        <div class="shc-message-error" style="display: none;" id="shc-login-error">
-            <div class="shc-message-icon"></div>
-            <div class="shc-message" id="shc-login-error-message"></div>
+        <div class="rwf-ui-message-error" style="display: none;" id="shc-login-error">
+            <div class="rwf-ui-message-icon"></div>
+            <div class="rwf-ui-message" id="shc-login-error-message"></div>
         </div>
         <div>
             <span>{lang var='index.login.name'}</span>
@@ -52,13 +52,6 @@
 </div>
 {/if}
 <script type="text/javascript">
-
-    //Formular Reset
-    function resetForm(id) {
-        $(id).each(function () {
-            this.reset();
-        });
-    }
 {if $user->isUser() == false}
     $(function () {
 

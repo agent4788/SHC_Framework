@@ -42,7 +42,7 @@ class SubmitButtonCompilerPlugin implements TemplateCompilerPlugin {
         $id = '';
         if(isset($args['id'])) {
 
-            $id = '&id='. str_replace(array('"', "'"), '', $args['id']);
+            $id = '&id=<?php echo '. $args['id'] .'?>';
         }
 
         $randomStr = String::randomStr(64);
@@ -55,7 +55,7 @@ class SubmitButtonCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '      var serializedData = $form.serialize();';
         $html .= '      $inputs.prop("disabled", true);';
         $html .= '      request = $.ajax({';
-        $html .= '          url: "'. str_replace(array('"', "'"), '', $args['action']) . $id .'",';
+        $html .= '          url: "'. str_replace(array('"', "'"), '', $args['action']) .''. $id .'",';
         $html .= '          type: "post",';
         $html .= '          data: serializedData';
         $html .= '      });';

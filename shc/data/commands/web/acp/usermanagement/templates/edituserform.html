@@ -1,0 +1,31 @@
+{* Benutzer bearbeiten Formular *}
+<div>
+    {if $userForm|isset}
+    <div class="shc-view-content">
+        {$userForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listusers"}
+            {resetbutton form="#shc-view-form-editUser"}
+            {submitbutton form="#shc-view-form-editUser" action="index.php?app=shc&ajax=edituserform" id=$user->getId()}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listusers"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.userManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

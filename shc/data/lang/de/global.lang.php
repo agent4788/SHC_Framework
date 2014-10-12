@@ -21,3 +21,11 @@ $l['global.date.totay'] = 'heute';
 $l['global.date.yesterday'] = 'gestern';
 $l['global.date.previousDays'] = 'vor {1:i} Tagen';
 $l['global.date.nextDays'] = 'in {1:i} Tagen';
+
+//Allgemeine Buttons
+$l['global.button.back'] = 'zurück';
+$l['global.button.save'] = 'speichern';
+$l['global.button.edit'] = 'bearbeiten';
+$l['global.button.delete'] = 'löschen';
+$l['global.button.yes'] = 'ja';
+$l['global.button.no'] = 'nein';

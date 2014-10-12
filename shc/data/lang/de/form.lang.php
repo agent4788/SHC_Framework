@@ -26,4 +26,8 @@ $l['form.message.invalidField'] = 'Ungültige Eingabe für {1:s}';
 $l['form.message.mobile.required'] = 'Das Formularfeld muss ausgefüllt werden';
 $l['form.message.mobile.invalid'] = 'Fehlerhafte Eingaben';
 
+//Buttons
+$l['form.button.submit'] = 'speichern';
+$l['form.button.reset'] = 'reset';
+
 
