@@ -55,7 +55,7 @@ class SubmitButtonCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '      var serializedData = $form.serialize();';
         $html .= '      $inputs.prop("disabled", true);';
         $html .= '      request = $.ajax({';
-        $html .= '          url: '. $args['action'] . $id .',';
+        $html .= '          url: "'. str_replace(array('"', "'"), '', $args['action']) . $id .'",';
         $html .= '          type: "post",';
         $html .= '          data: serializedData';
         $html .= '      });';
