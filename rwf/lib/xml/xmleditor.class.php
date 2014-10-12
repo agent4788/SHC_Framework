@@ -166,7 +166,7 @@ class XmlEditor extends \SimpleXMLElement {
             }
 
             //versuchen die Datei zu speichern
-            $fileName = $this->fileName;
+            $fileName = $this->fileName .'';
             unset($this->fileName);
             if (!$this->asXML($fileName)) {
 
