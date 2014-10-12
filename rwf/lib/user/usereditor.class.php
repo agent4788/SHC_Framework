@@ -370,6 +370,18 @@ class UserEditor {
                     $user->language = $language;
                 }
 
+                //Sprache
+                if ($webStyle !== null) {
+
+                    $user->webStyle = $webStyle;
+                }
+
+                //Sprache
+                if ($mobileStyle !== null) {
+
+                    $user->mobileStyle = $mobileStyle;
+                }
+
                 //Daten Speichern
                 $xml->save();
                 return true;
