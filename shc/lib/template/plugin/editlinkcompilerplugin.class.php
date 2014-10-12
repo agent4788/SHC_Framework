@@ -6,7 +6,6 @@ namespace SHC\Template\Plugin;
 use RWF\Template\TemplateCompilerPlugin;
 use RWF\Template\TemplateCompiler;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\Util\String;
 
 /**
  * erzeugt einen bearbeiten Button
@@ -39,9 +38,9 @@ class EditLinkCompilerPlugin implements TemplateCompilerPlugin {
             throw new TemplateCompilationException('missing "id" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
         }
 
-        $randomStr = String::randomStr(64);
-        $link = str_replace('\'', '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
-        $html = '<a href="#"  id="'. $randomStr .'" class="shc-view-buttons-edit" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.edit\'); ?>"></a>';
+        $link = str_replace(array('"', "'"), '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
+        $html  = '<?php $randomId = RWF\Util\String::randomStr(64); ?>';
+        $html .= '<a href="#"  id="<?php echo $randomId; ?>" class="shc-view-buttons-edit" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.edit\'); ?>"></a>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
         $html .= '  $(\'.shc-view-buttons-edit\').tooltip({';
@@ -51,7 +50,7 @@ class EditLinkCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '          at: "right center"';
         $html .= '      }';
         $html .= '  });';
-        $html .= '  $(\'#'. $randomStr .'\').click(function() {';
+        $html .= '  $(\'#<?php echo $randomId; ?>\').click(function() {';
         $html .= '      $.get(\''. $link .'\', function(data, textStatus, jqXHR) {;';
         $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
         $html .= '      });';

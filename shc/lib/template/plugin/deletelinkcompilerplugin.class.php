@@ -6,7 +6,6 @@ namespace SHC\Template\Plugin;
 use RWF\Template\TemplateCompilerPlugin;
 use RWF\Template\TemplateCompiler;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\Util\String;
 
 /**
  * erzeugt einen loeschen button
@@ -50,13 +49,12 @@ class DeleteLinkCompilerPlugin implements TemplateCompilerPlugin {
             $title = '<?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['title'] .'); ?>';
         }
 
-        $randomStr = String::randomStr(64);
-        $randomStr2 = String::randomStr(64);
         $link = str_replace('\'', '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
-        $html = '<a href="#"  id="'. $randomStr .'" class="shc-view-buttons-delete" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.delete\'); ?>"></a>';
+        $html  = '<?php $randomId = RWF\Util\String::randomStr(64); $randomId2 = RWF\Util\String::randomStr(64); ?>';
+        $html .= '<a href="#"  id="<?php echo $randomId; ?>" class="shc-view-buttons-delete" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.delete\'); ?>"></a>';
         if($safetyPromptText != '') {
 
-            $html .= '<div id="'. $randomStr2 .'" '. ($title != '' ? 'title="'. $title .'" ' : '') .'style="display: none">'. $safetyPromptText .'</div>';
+            $html .= '<div id="<?php echo $randomId2; ?>" '. ($title != '' ? 'title="'. $title .'" ' : '') .'style="display: none">'. $safetyPromptText .'</div>';
         }
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
@@ -67,8 +65,8 @@ class DeleteLinkCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '          at: "right center"';
         $html .= '      }';
         $html .= '  });';
-        $html .= '  $(\'#'. $randomStr .'\').click(function() {;';
-        $html .= '      $(\'#'. $randomStr2 .'\').dialog({';
+        $html .= '  $(\'#<?php echo $randomId; ?>\').click(function() {;';
+        $html .= '      $(\'#<?php echo $randomId2; ?>\').dialog({';
         $html .= '          modal: true,';
         $html .= '          resizable: false,';
         $html .= '          position: {my: "center top", at: "center bottom", of: $(\'#shc-headline\')},';
@@ -77,10 +75,10 @@ class DeleteLinkCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '                   $.get(\''. $link .'\', function(data, textStatus, jqXHR) {;';
         $html .= '                       $(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
         $html .= '                  });';
-        $html .= '                  $(\'#'. $randomStr2 .'\').dialog(\'close\');';
+        $html .= '                  $(\'#<?php echo $randomId2; ?>\').dialog(\'close\');';
         $html .= '               },';
         $html .= '            \'<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.no\'); ?>\': function() {';
-        $html .= '                  $(\'#'. $randomStr2 .'\').dialog(\'close\');';
+        $html .= '                  $(\'#<?php echo $randomId2; ?>\').dialog(\'close\');';
         $html .= '             }';
         $html .= '           }';
         $html .= '      });';
