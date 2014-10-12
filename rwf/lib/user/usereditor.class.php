@@ -370,13 +370,13 @@ class UserEditor {
                     $user->language = $language;
                 }
 
-                //Sprache
+                //Web Style
                 if ($webStyle !== null) {
 
                     $user->webStyle = $webStyle;
                 }
 
-                //Sprache
+                //Mobile Style
                 if ($mobileStyle !== null) {
 
                     $user->mobileStyle = $mobileStyle;
