@@ -758,51 +758,43 @@ class TemplateCompiler {
 
                 if ($plugin instanceof $class) {
 
-                    $path = $pluginDir . String::toLower($command) . 'blockplugin.class.php';
-                    break 2;
+                    $code = '<?php ';
+
+                    //Argumente Serialisieren
+                    $argsstr = '';
+                    foreach ($args as $key => $value) {
+
+                        if ($argsstr != '') {
+
+                            $argsstr .= ', ';
+                        }
+
+                        $argsstr .= '\'' . $key . '\' => ' . $value;
+                    }
+
+                    if ($tagStart === true) {
+
+                        $this->openTag($command);
+
+                        $code .= '$this->blocks[] = array(\'' . $command . '\', array(' . $argsstr . ')); ';
+                        $code .= $class . '::init($this->blocks[count($this->blocks) -1][1], $this); ';
+                        $code .= 'ob_start(); ';
+                    } else {
+
+                        $this->closeTag($command);
+
+                        $code .= '$content = ob_get_contents(); ';
+                        $code .= 'ob_end_clean(); ';
+                        $code .= 'echo ' . $class . '::execute($this->blocks[count($this->blocks) -1][1], $content, $this); ';
+                        $code .= 'unset($content); ';
+                    }
+
+                    $code .= ' ?>';
+                    return $code;
                 }
             }
         }
-
-        $code = '<?php ';
-
-        if (file_exists($path)) {
-
-            //Argumente Serialisieren
-            $argsstr = '';
-            foreach ($args as $key => $value) {
-
-                if ($argsstr != '') {
-
-                    $argsstr .= ', ';
-                }
-
-                $argsstr .= '\'' . $key . '\' => ' . $value;
-            }
-
-            if ($tagStart === true) {
-
-                $this->openTag($command);
-
-                $code .= '$this->blocks[] = array(\'' . $command . '\', array(' . $argsstr . ')); ';
-                $code .= $class . '::init($this->blocks[count($this->blocks) -1][1], $this); ';
-                $code .= 'ob_start(); ';
-            } else {
-
-                $this->closeTag($command);
-
-                $code .= '$content = ob_get_contents(); ';
-                $code .= 'ob_end_clean(); ';
-                $code .= 'echo ' . $class . '::execute($this->blocks[count($this->blocks) -1][1], $content, $this); ';
-                $code .= 'unset($content); ';
-            }
-        } else {
-
-            return null;
-        }
-
-        $code .= ' ?>';
-        return $code;
+        return null;
     }
 
     /**
