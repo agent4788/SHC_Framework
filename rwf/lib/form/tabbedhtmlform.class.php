@@ -2,6 +2,9 @@
 
 namespace RWF\Form;
 
+//Imports
+use RWF\Util\String;
+
 /**
  * HTML Formulat in Tabs aufgeteilt
  * 
@@ -253,7 +256,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
 
         if (isset($this->tabs[$tabName]['description'])) {
 
-            return '<div class="rwf-view-form-description"><div class="descriptionText">' . String::encodeHTML($this->tabs[$tabName]['description']) . '</div></div>' . "\n";
+            return '<div class="rwf-ui-form-description-text">' . String::encodeHTML($this->tabs[$tabName]['description']) . '</div>' . "\n";
         }
         return '';
     }
