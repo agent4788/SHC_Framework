@@ -11,7 +11,7 @@
     border: 1px solid #d00101 !important;
 }
 
-.rwf-ui-form-content-textfield, .rwf-ui-form-content-passwordfield, select {
+.rwf-ui-form-content-textfield, .rwf-ui-form-content-passwordfield, select, textarea.rwf-ui-form-content-textarea {
     background-color: transparent;
     color: #ffffff;
     padding: 3px;
@@ -24,7 +24,7 @@
     -webkit-border-radius: 5px;
 }
 
-textarea.wf-ui-form-content-textarea {
+textarea.rwf-ui-form-content-textarea {
     height: 80px;
 }
 

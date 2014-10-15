@@ -118,6 +118,16 @@ class UserGroup {
         }
         return false;
     }
+
+    /**
+     * gibt eine Liste mit allen Rechten zurueck
+     *
+     * @return Array
+     */
+    public function listPremissions() {
+
+        return $this->premissions;
+    }
     
     /**
      * wandelt das Objekt in einen String um

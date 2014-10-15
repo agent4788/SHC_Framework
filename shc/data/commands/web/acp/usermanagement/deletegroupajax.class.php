@@ -8,12 +8,13 @@ use RWF\Core\RWF;
 use RWF\Request\Request;
 use RWF\User\User;
 use RWF\User\UserEditor;
+use RWF\User\UserGroup;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 
 
 /**
- * loescht einen Benutzer
+ * loescht eine Benutzergruppe
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,7 +22,7 @@ use RWF\Util\Message;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteUserAjax extends AjaxCommand {
+class DeleteGroupAjax extends AjaxCommand {
 
     protected $premission = 'shc.acp.userManagement';
 
@@ -40,46 +41,46 @@ class DeleteUserAjax extends AjaxCommand {
         //Template Objekt holen
         $tpl = RWF::getTemplate();
 
-        //Benutzer Objekt laden
-        $userId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
-        $user = UserEditor::getInstance()->getUserById($userId);
+        //Gruppen Objekt laden
+        $groupId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
+        $group = UserEditor::getInstance()->getUserGroupById($groupId);
 
-        //pruefen ob der Benutzer existiert
-        if(!$user instanceof User) {
+        //pruefen ob die Benutzergruppe existiert
+        if(!$group instanceof UserGroup) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deleteuser.html');
+            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
+            $this->data = $tpl->fetchString('editgroupform.html');
             return;
         }
 
-        //Benutzer loeschen
+        //Benutzergruppe loeschen
         $message = new Message();
         try {
 
-            UserEditor::getInstance()->removeUser($userId);
+            UserEditor::getInstance()->removeUserGroup($groupId);
             $message->setType(Message::SUCCESSFULLY);
-            $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.deleteUser'));
+            $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.deleteGroup'));
         } catch(\Exception $e) {
 
             if($e->getCode() == 1102) {
 
                 //fehlende Schreibrechte
                 $message->setType(Message::ERROR);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1102.del'));
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1102.group.del'));
             } elseif($e->getCode() == 1111) {
 
-                //Hauptbenutzer
+                //Systemgruppe
                 $message->setType(Message::ERROR);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1111.del'));
-            }else {
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1113.group.del'));
+            } else {
 
                 //Allgemeiner Fehler
                 $message->setType(Message::ERROR);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.del'));
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group.del'));
             }
         }
         $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deleteuser.html');
+        $this->data = $tpl->fetchString('deletegroup.html');
     }
 
 }

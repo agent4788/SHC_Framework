@@ -14,6 +14,8 @@ $l = array();
 //Allgemeine
 $l['global.tousandsSeparator'] = '.';
 $l['global.decimalSeparator'] = ',';
+$l['global.yes'] = 'ja';
+$l['global.no'] = 'nein';
 
 //Datum
 $l['global.date.tomorrow'] = 'morgen';
@@ -27,5 +29,5 @@ $l['global.button.back'] = 'zurück';
 $l['global.button.save'] = 'speichern';
 $l['global.button.edit'] = 'bearbeiten';
 $l['global.button.delete'] = 'löschen';
-$l['global.button.yes'] = 'ja';
-$l['global.button.no'] = 'nein';
+$l['global.button.yes'] = $l['global.yes'];
+$l['global.button.no'] = $l['global.no'];

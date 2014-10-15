@@ -18,16 +18,22 @@ $l['acp.userManagement.title'] = 'Benutzerverwaltung';
 $l['acp.userManagement.userList.table.head.user'] = 'Benutzer';
 $l['acp.userManagement.userList.table.head.registrationDate'] = 'Registrierung';
 $l['acp.userManagement.userList.table.head.options'] = 'Optionen';
+$l['acp.userManagement.groupList.table.head.name'] = 'Name';
+$l['acp.userManagement.groupList.table.head.sysGroup'] = 'Systemgruppe';
+$l['acp.userManagement.groupList.table.head.options'] = 'Optionen';
 
 //Buttons
 $l['acp.userManagement.button.addUser'] = 'neuer Benutzer';
 $l['acp.userManagement.button.viewGroupList'] = 'Benutzergruppen';
+$l['acp.userManagement.button.addGroup'] = 'neue Benutzergruppe';
 
 //Prompts
 $l['acp.userManagement.prompt.deleteUser.title'] = 'Benutzer löschen';
 $l['acp.userManagement.prompt.deleteUser'] = 'Willst du den Benutzer wirklich löschen?';
+$l['acp.userManagement.prompt.deleteGroup.title'] = 'Benutzergruppe löschen';
+$l['acp.userManagement.prompt.deleteGroup'] = 'Willst du die Benutzergruppe wirklich löschen?';
 
-//Forulate
+//Formulate
 $l['acp.userManagement.form.user.addDescription'] = 'Benutzer erstellen';
 $l['acp.userManagement.form.user.editDescription'] = 'Benutzer bearbeiten';
 $l['acp.userManagement.form.user.name'] = 'Benutzername';
@@ -43,6 +49,17 @@ $l['acp.userManagement.form.user.userGroups.description'] = 'Benutzergruppen zu 
 $l['acp.userManagement.form.user.lang'] = 'Sprache';
 $l['acp.userManagement.form.user.lang.description'] = 'Sprache in der das SHC dem Benutzer angezeigt wird';
 
+$l['acp.userManagement.form.group.tab1.title'] = 'Allgemeine Daten';
+$l['acp.userManagement.form.group.tab1.description'] = 'Allgemeine Daten der Gruppe';
+$l['acp.userManagement.form.group.tab2.title'] = 'Benutzer Rechte';
+$l['acp.userManagement.form.group.tab2.description'] = 'Benutzer Rechte der Gruppe';
+$l['acp.userManagement.form.group.tab3.title'] = 'Administrator Rechte';
+$l['acp.userManagement.form.group.tab3.description'] = 'Administrator Rechte der Gruppe';
+$l['acp.userManagement.form.group.name'] = 'Name';
+$l['acp.userManagement.form.group.name.description'] = 'Name der Benutzergruppe';
+$l['acp.userManagement.form.group.desc'] = 'Beschreibung';
+$l['acp.userManagement.form.group.desc.description'] = 'Beschreibung der Benutzergruppe';
+
 //Meldungen
 $l['acp.userManagement.form.error.invalidName'] = 'Der Benutzername darf nur folgende Zeichen enthalten: a-z 0-9 # _ ! - . , ; + * ?';
 $l['acp.userManagement.form.error.nameNotAvailable'] =  'Der Benutzername ist bereits vergeben';
@@ -54,6 +71,25 @@ $l['acp.userManagement.form.success.deleteUser'] =  'Der Benutzer wurde erfolgre
 $l['acp.userManagement.form.error.1110'] =  $l['acp.userManagement.form.error.nameNotAvailable'];
 $l['acp.userManagement.form.error.1102'] =  'Der Benutzer konnte wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.userManagement.form.error.1102.del'] =  'Der Benutzer konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.userManagement.form.error.1102.del'] =  'Der Benutzer konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.userManagement.form.error.1111.del'] =  'Der Hauptbenutzer darf nicht gelöscht werden';
 $l['acp.userManagement.form.error.id'] =  'Ungültige Benutzer ID';
 $l['acp.userManagement.form.error'] =  'Der Benutzer konnte nicht gespeichert werden';
 $l['acp.userManagement.form.error.del'] =  'Der Benutzer konnte nicht gelöscht werden';
+
+$l['acp.userManagement.form.success.addGroup'] =  'Die Benutzergruppe wurde erfolgreich erstellt';
+$l['acp.userManagement.form.success.editGroup'] =  'Die Benutzergruppe wurde erfolgreich bearbeitet';
+$l['acp.userManagement.form.success.deleteGroup'] =  'Die Benutzergruppe wurde erfolgreich gelöscht';
+$l['acp.userManagement.form.error.1102.group'] =  'Die Benutzergruppe  konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.userManagement.form.error.1112.group'] =  'Der Name der Benutzergruppe  ist schon vergeben';
+$l['acp.userManagement.form.error.1102.group.del'] =  'Die Benutzergruppe konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.userManagement.form.error.1113.group.del'] =  'Eine System Benutzergruppe darf nicht gelöscht werden';
+$l['acp.userManagement.form.error.group'] =  'Die Benutzergruppe konnte nicht gespeichert werden';
+$l['acp.userManagement.form.error.group.del'] =  'Die Benutzergruppe konnte nicht gelöscht werden';
+$l['acp.userManagement.form.error.id.group'] =  'Ungültige Gruppen ID';
+
+//Rechte
+$l['acp.userManagement.premissions.shc.acp.menu'] =  'ACP Menü';
+$l['acp.userManagement.premissions.shc.acp.menu.description'] =  'das ACP Menü betreten und die Funktionen verwenden die keine gesonderten Berechtigungen erfordern';
+$l['acp.userManagement.premissions.shc.acp.userManagement'] =  'Benutzerverwaltung';
+$l['acp.userManagement.premissions.shc.acp.userManagement.description'] =  'Benutzer und Gruppen erstellen, bearbeiten und löschen';

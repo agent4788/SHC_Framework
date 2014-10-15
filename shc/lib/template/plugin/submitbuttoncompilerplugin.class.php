@@ -42,7 +42,7 @@ class SubmitButtonCompilerPlugin implements TemplateCompilerPlugin {
         $id = '';
         if(isset($args['id'])) {
 
-            $id = '&id=<?php echo '. $args['id'] .'?>';
+            $id = '&id=<?php echo '. $args['id'] .'; ?>';
         }
 
         $randomStr = String::randomStr(64);

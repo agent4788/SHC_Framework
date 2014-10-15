@@ -83,7 +83,7 @@ class UserEditor {
             }
 
             $this->userGroups[(int) $group->id] = new UserGroup(
-                    (int) $group->id, (string) $group->name, (string) $group->description, $premissions, (bool) $group->isSystemGroup
+                    (int) $group->id, (string) $group->name, (string) $group->description, $premissions, ((int) $group->isSystemGroup == 1 ? true : false)
             );
         }
 
@@ -339,7 +339,7 @@ class UserEditor {
                 if ($name !== null) {
 
                     //puefen ob neuer Benutzername schon belegt
-                    if ($user->name != $name && !$this->isUserNameAvailable($name)) {
+                    if ((string) $user->name != $name && !$this->isUserNameAvailable($name)) {
 
                         throw new \Exception('Der Benutzername ist schon vergeben', 1110);
                     }
@@ -588,7 +588,7 @@ class UserEditor {
                 if ($name !== null) {
 
                     //puefen ob neuer Gruppenname schon belegt
-                    if (!$this->isUserGroupNameAvailable($name)) {
+                    if ($name != (string) $group->name && !$this->isUserGroupNameAvailable($name)) {
 
                         throw new \Exception('Der Gruppenname ist schon vergeben', 1112);
                     }

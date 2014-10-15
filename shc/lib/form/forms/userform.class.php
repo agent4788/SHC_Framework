@@ -13,7 +13,7 @@ use SHC\Form\FormElements\UserGroupChooser;
 use SHC\Form\FormElements\UserMainGroupChooser;
 
 /**
- * Formular zum erstellen eines neuen Benutzers
+ * Benutzer Formular
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
