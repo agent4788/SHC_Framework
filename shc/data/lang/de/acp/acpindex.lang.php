@@ -13,6 +13,8 @@ $l = array();
 
 //Allgemein
 $l['acpindex.text.acp'] = 'Administration';
+$l['acpindex.options'] = 'Optionen';
+$l['acpindex.allUsers'] = 'jede Gruppe';
 
 //Boxen
 $l['acpindex.box.overview'] = 'Übersicht';

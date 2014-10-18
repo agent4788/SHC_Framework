@@ -5,7 +5,7 @@ namespace SHC\Command\Web;
 //Imports
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
-use RWF\User\UserEditor;
+use SHC\Room\RoomEditor;
 
 
 /**
@@ -17,16 +17,16 @@ use RWF\User\UserEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class ListUsersAjax extends AjaxCommand {
+class ListRoomsAjax extends AjaxCommand {
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $premission = 'shc.acp.roomManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'acpindex');
+    protected $languageModules = array('roommanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -34,8 +34,8 @@ class ListUsersAjax extends AjaxCommand {
     public function processData() {
 
         $tpl = RWF::getTemplate();
-        $tpl->assign('userList', UserEditor::getInstance()->listUsers(UserEditor::SORT_BY_NAME));
-        $this->data = $tpl->fetchString('userlist.html');
+        $tpl->assign('roomList', RoomEditor::getInstance()->listRooms(RoomEditor::SORT_BY_ORDER_ID));
+        $this->data = $tpl->fetchString('listrooms.html');
     }
 
 }

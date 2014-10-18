@@ -20,7 +20,6 @@ $l['acp.userManagement.userList.table.head.registrationDate'] = 'Registrierung';
 $l['acp.userManagement.userList.table.head.options'] = 'Optionen';
 $l['acp.userManagement.groupList.table.head.name'] = 'Name';
 $l['acp.userManagement.groupList.table.head.sysGroup'] = 'Systemgruppe';
-$l['acp.userManagement.groupList.table.head.options'] = 'Optionen';
 
 //Buttons
 $l['acp.userManagement.button.addUser'] = 'neuer Benutzer';
@@ -93,3 +92,5 @@ $l['acp.userManagement.premissions.shc.acp.menu'] =  'ACP Menü';
 $l['acp.userManagement.premissions.shc.acp.menu.description'] =  'das ACP Menü betreten und die Funktionen verwenden die keine gesonderten Berechtigungen erfordern';
 $l['acp.userManagement.premissions.shc.acp.userManagement'] =  'Benutzerverwaltung';
 $l['acp.userManagement.premissions.shc.acp.userManagement.description'] =  'Benutzer und Gruppen erstellen, bearbeiten und löschen';
+$l['acp.userManagement.premissions.shc.acp.roomManagement'] =  'Räume verwalten';
+$l['acp.userManagement.premissions.shc.acp.roomManagement.description'] =  'Räume erstellen, bearbeiten und löschen';

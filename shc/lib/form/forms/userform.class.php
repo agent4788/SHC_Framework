@@ -32,6 +32,8 @@ class UserForm extends DefaultHtmlForm {
         //Konstruktor von DefaultHtmlForm aufrufen
         parent::__construct();
 
+        RWF::getLanguage()->disableAutoHtmlEndocde();
+
         //Benutzername
         $name = new TextField('name', ($user instanceof User ? $user->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
         $name->setTitle(RWF::getLanguage()->get('acp.userManagement.form.user.name'));
@@ -76,6 +78,8 @@ class UserForm extends DefaultHtmlForm {
         $lang->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.lang.description'));
         $lang->requiredField(true);
         $this->addFormElement($lang);
+
+        RWF::getLanguage()->enableAutoHtmlEndocde();
 
     }
 }

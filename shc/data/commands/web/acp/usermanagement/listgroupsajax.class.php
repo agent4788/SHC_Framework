@@ -26,7 +26,7 @@ class ListGroupsAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement');
+    protected $languageModules = array('usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten

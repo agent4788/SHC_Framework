@@ -249,7 +249,7 @@ class RoomEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Raumname schon belegt
-                    if (!$this->isRoomNameAvailable($name)) {
+                    if ((string) $room->name != $name && !$this->isRoomNameAvailable($name)) {
 
                         throw new \Exception('Der Raumname ist schon vergeben', 1500);
                     }

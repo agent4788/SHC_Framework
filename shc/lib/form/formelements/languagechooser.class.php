@@ -5,7 +5,6 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Form\FormElements\Select;
 use RWF\User\User;
-use RWF\User\UserEditor;
 
 
 /**

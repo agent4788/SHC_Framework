@@ -30,8 +30,7 @@ class UserGroupForm extends TabbedHtmlForm {
         //Konstruktor von TabbedHtmlForm aufrufen
         parent::__construct();
 
-        //CSS ID
-        $this->setFormCssId('shc-view-form-userGroup');
+        RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Allgemeine Daten Tab hinzufuegen
         $this->addTab('data', RWF::getLanguage()->get('acp.userManagement.form.group.tab1.title'), RWF::getLanguage()->get('acp.userManagement.form.group.tab1.description'));
@@ -56,7 +55,6 @@ class UserGroupForm extends TabbedHtmlForm {
         $this->addTab('adminPremissions', RWF::getLanguage()->get('acp.userManagement.form.group.tab3.title'), RWF::getLanguage()->get('acp.userManagement.form.group.tab3.description'));
 
         //Rechte Ja/Nein Auswahl erstellen
-        RWF::getLanguage()->disableAutoHtmlEndocde();
         foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
             $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPremission($premissionName) : false));

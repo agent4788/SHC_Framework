@@ -3,6 +3,8 @@
 namespace SHC\Room;
 
 //Imports
+use RWF\User\User;
+use RWF\User\UserGroup;
 use RWF\User\Visitor;
 
 /**
@@ -196,6 +198,16 @@ class Room {
     }
 
     /**
+     * gibt eine Liste mit allen erlaubten Benutzergruppen zurueck
+     *
+     * @return Array
+     */
+    public function listAllowedUserGroups() {
+
+        return $this->allowedUserGroups;
+    }
+
+    /**
      * prueft ob ein Benutzer berechtigt ist das Element zu schalten
      * 
      * @param \RWF\User\Visitor $user
@@ -206,7 +218,7 @@ class Room {
         if (isset($this->allowedUserGroups[0]) && $this->allowedUserGroups[0] != '') {
 
             //Hauptgruppe pruefen
-            if (in_array($user->getMainGroup(), $this->allowedUserGroups)) {
+            if (in_array($user->getMainGroup()->getId(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
 
                 return true;
             }
@@ -214,7 +226,7 @@ class Room {
             //Alle Benutzergruppen pruefen
             foreach ($user->listGroups() as $userGroup) {
 
-                if (in_array($userGroup->getId(), $this->allowedUserGroups)) {
+                if ($userGroup instanceof UserGroup && in_array($userGroup->getId(), $this->allowedUserGroups)) {
 
                     return true;
                 }
