@@ -133,6 +133,7 @@ Compiler Block Plugins
 premission premission='Berechtigung' [setting='Einstellung']                    //Prueft ob eine berechtigung vorhanden ist
 ifsetting name='Einstellung'                                                    //Der Block wird nur durchlaufen wenn die Einstellung wahr ist
 contentbox [name='Sprachvariable'] [id='CSS ID'] [class='CSS Klasse]            //Box in der UI
+instanceof element=$element class='Klassen Name'                                //Prueft ein Objekt auf einen bestimmten Typ
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Prefilter
