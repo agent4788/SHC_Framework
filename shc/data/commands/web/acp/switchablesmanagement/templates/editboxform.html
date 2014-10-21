@@ -1,0 +1,31 @@
+{* Box bearbeiten Formular *}
+<div>
+    {if $boxForm|isset}
+    <div class="shc-view-content">
+        {$boxForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+            {resetbutton form="#shc-view-form-editBox"}
+            {submitbutton form="#shc-view-form-editBox" action="index.php?app=shc&ajax=editboxform" id=$box->getBoxId()}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

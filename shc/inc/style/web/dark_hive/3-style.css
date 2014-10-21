@@ -127,6 +127,20 @@ a.shc-view-buttons-delete {
     background: url(../../../img/buttons/delete.png) no-repeat;
 }
 
+a.shc-view-buttons-add {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../../../img/buttons/add.png) no-repeat;
+}
+
+a.shc-view-buttons-remove {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../../../img/buttons/remove.png) no-repeat;
+}
+
 /* Raum Ansicht */
 
 div.shc-contentbox-room {
@@ -381,4 +395,10 @@ div.shc-view-buttons {
     background-color: #000000;
     border-bottom-left-radius: 5px;;
     border-bottom-right-radius: 5px;
+}
+
+/* Spezielle Style Auweißungen */
+
+div.shc-view-switchableManagement-innerTableBox {
+    padding: 5px;
 }

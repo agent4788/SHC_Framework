@@ -4,7 +4,7 @@ namespace SHC\Switchable\Switchables;
 
 //Imports
 use SHC\Switchable\AbstractSwitchable;
-use SHC\WakeOnLan\WakeOnLan;
+use SHC\WakeOnLan\WakeOnLan as WakeOnLanTransmitter;
 
 /**
  * Wake On Lan Geraet
@@ -38,7 +38,7 @@ class WakeOnLan extends AbstractSwitchable {
     public function __construct($mac = '', $ipAddess = '') {
         
         $this->mac = $mac;
-        $this->ipAddress = $ipAddress;
+        $this->ipAddress = $ipAddess;
     }
     
     /**
@@ -91,8 +91,8 @@ class WakeOnLan extends AbstractSwitchable {
      * @return Boolean
      */
     public function switchOn() {
-        
-        WakeOnLan::wakeUp($this->mac, $this->ipAddress);
+
+        WakeOnLanTransmitter::wakeUp($this->mac, $this->ipAddress);
         $this->stateModified = true;
     }
     

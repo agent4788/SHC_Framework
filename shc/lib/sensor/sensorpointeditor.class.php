@@ -4,8 +4,10 @@ namespace SHC\Sensor;
 
 //Imports
 use RWF\Util\FileUtil;
+use RWF\Util\String;
 use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
+use SHC\Room\Room;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\BMP;
@@ -13,6 +15,7 @@ use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Room\RoomEditor;
+use SHC\View\Room\ViewHelperEditor;
 
 /**
  * Verwaltung der Sensorpunkte
@@ -766,6 +769,61 @@ class SensorPointEditor {
     }
 
     /**
+     * gibt eine Liste mit allen Elementen aus die keinem Raum zugeordnet sind
+     *
+     * @param  String $orderBy Art der Sortierung (
+     *      id => nach ID sorieren,
+     *      name => nach Namen sortieren,
+     *      unsorted => unsortiert
+     *  )
+     * @return Array
+     */
+    public function listSensorsWithoutRoom($orderBy = 'Id') {
+
+        $sensors = array();
+        foreach($this->listSensors(Self::SORT_NOTHING) as $sensor) {
+
+            if(!$sensor->getRoom() instanceof Room) {
+
+                if($orderBy == 'name') {
+
+                    $sensors[] = $sensor;
+                } else {
+
+                    $sensors[$sensor->getId()] = $sensor;
+                }
+            }
+        }
+
+        //Sortieren und zurueck geben
+        if ($orderBy == 'id') {
+
+            //nach ID sortieren
+            ksort($sensors, SORT_NUMERIC);
+            return $sensors;
+        } elseif ($orderBy == 'name') {
+
+            //Sortierfunktion
+            $orderFunction = function($a, $b) {
+
+                if ($a->getName() == $b->getName()) {
+
+                    return 0;
+                }
+
+                if ($a->getName() < $b->getName()) {
+
+                    return -1;
+                }
+                return 1;
+            };
+            usort($sensors, $orderFunction);
+            return $sensors;
+        }
+        return $sensors;
+    }
+
+    /**
      * bearbeitet die Sortierung der Sensorpunkte
      * 
      * @param  Array   $order Array mit Element ID als Index und Sortierungs ID als Wert
@@ -865,11 +923,11 @@ class SensorPointEditor {
      */
     public function removeSensorPoint($sensorPointId) {
 
-        if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $spId . '.xml')) {
+        if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPointId . '.xml')) {
 
             //XML Objekt erstellen
-            XmlFileManager::getInstance()->registerXmlFile('sp-' . $spId, PATH_SHC_STORAGE . 'sensorpoints/sp-' . $spId . '.xml');
-            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $spId);
+            XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPointId, PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPointId . '.xml');
+            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPointId);
 
             //Sortierungs ID setzen
             if ((string) $xml->id == $sensorPointId) {
@@ -905,7 +963,7 @@ class SensorPointEditor {
 
                     if (isset($order[(string) $sensor->id])) {
 
-                        $sensord->orderId = $order[(string) $sensor->id];
+                        $sensor->orderId = $order[(string) $sensor->id];
                     }
                 }
 
@@ -945,13 +1003,14 @@ class SensorPointEditor {
      * @param  String  $id            ID
      * @param  String  $name          Name
      * @param  Integer $roomId        Raum ID
+     * @param  Integer $orderId       Sortierungs ID
      * @param  Boolean $visibility    Sichtbarkeit
      * @param  Boolean $dataRecording Datenaufzeichnung aktiv
      * @param  Array   $data          Zusatzdaten
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    protected function editSensor($id, $name = null, $roomId = null, $visibility = null, $dataRecording = null, array $data = array()) {
+    protected function editSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $dataRecording = null, array $data = array()) {
 
         //Sensor Suchen
         foreach ($this->sensorPoints as $sensorPoint) {
@@ -978,7 +1037,7 @@ class SensorPointEditor {
                                 if ($name !== null) {
 
                                     //Ausnahme wenn Name der Bedingung schon belegt
-                                    if (!$this->isSensorNameAvailable($name)) {
+                                    if ($name != (string) $xmlSensor->name && !$this->isSensorNameAvailable($name)) {
 
                                         throw new \Exception('Der Name ist schon vergeben', 1507);
                                     }
@@ -994,13 +1053,24 @@ class SensorPointEditor {
                                 //Raum
                                 if ($roomId !== null) {
 
+                                    if((int )$xmlSensor->roomId != $roomId && $orderId === null) {
+
+                                        //Bei Raumwechsel neue Sortieruzngs ID setzen
+                                        $xmlSensor->orderId = ViewHelperEditor::getInstance()->getNextOrderId();
+                                    }
                                     $xmlSensor->roomId = $roomId;
+                                }
+
+                                //Sortierungs ID
+                                if ($orderId !== null) {
+
+                                    $xmlSensor->orderId = $orderId;
                                 }
 
                                 //$atenaufzeichnung
                                 if ($dataRecording !== null) {
 
-                                    $xmlSensor->roomId = ($dataRecording == true ? 1 : 0);
+                                    $xmlSensor->dataRecording = ($dataRecording == true ? 1 : 0);
                                 }
 
                                 //Zusatzdaten
@@ -1031,13 +1101,14 @@ class SensorPointEditor {
      * @param  String  $id                       ID
      * @param  String  $name                     Name
      * @param  Integer $roomId                   Raum ID
+     * @param  Integer $orderId                  Sortierungs ID
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDS18x20($id, $name = null, $roomId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null) {
+    public function editDS18x20($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1045,7 +1116,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1054,6 +1125,7 @@ class SensorPointEditor {
      * @param  String  $id                       ID
      * @param  String  $name                     Name
      * @param  Integer $roomId                   Raum ID
+     * @param  Integer $orderId                  Sortierungs ID
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $humidityVisibility       Sichtbarkeit Luftfeuchte
@@ -1061,7 +1133,7 @@ class SensorPointEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDHT($id, $name = null, $roomId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null) {
+    public function editDHT($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1070,7 +1142,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1087,7 +1159,7 @@ class SensorPointEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editBMP($id, $name = null, $roomId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null) {
+    public function editBMP($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1097,7 +1169,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1106,13 +1178,14 @@ class SensorPointEditor {
      * @param  String  $id                 ID
      * @param  String  $name               Name
      * @param  Integer $roomId             Raum ID
+     * @param  Integer $orderId            Sortierungs ID
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRainSensor($id, $name = null, $roomId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editRainSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1120,7 +1193,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1129,13 +1202,14 @@ class SensorPointEditor {
      * @param  String  $id                 ID
      * @param  String  $name               Name
      * @param  Integer $roomId             Raum ID
+     * @param  Integer $orderId            Sortierungs ID
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editHygrometer($id, $name = null, $roomId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editHygrometer($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1143,7 +1217,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1152,21 +1226,22 @@ class SensorPointEditor {
      * @param  String  $id                 ID
      * @param  String  $name               Name
      * @param  Integer $roomId             Raum ID
+     * @param  Integer $orderId            Sortierungs ID
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editLDR($id, $name = null, $roomId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editLDR($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
         
         //Zusatzdaten
         $data = array(
             'valueVisibility' => $valueVisibility
         );
-        
+
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
     }
 
     /**

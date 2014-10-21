@@ -1,6 +1,6 @@
 <div class="shc-contentbox-body-row shc-view-switchable">
     <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
-    <span class="shc-icon {$switchable->getIcon()}"></span>
+    <span class="shc-icon {if $switchable->getState() == 1}shc-icon-online{else}shc-icon-offline{/if}"></span>
     <div class="shc-contentbox-body-row-content">
         <div id="shc-view-switchable-set-{$switchable->getId()}">
             <button id="shc-view-switchable-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.on'}</button>

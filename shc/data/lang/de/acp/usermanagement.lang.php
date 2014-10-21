@@ -94,3 +94,5 @@ $l['acp.userManagement.premissions.shc.acp.userManagement'] =  'Benutzerverwaltu
 $l['acp.userManagement.premissions.shc.acp.userManagement.description'] =  'Benutzer und Gruppen erstellen, bearbeiten und löschen';
 $l['acp.userManagement.premissions.shc.acp.roomManagement'] =  'Räume verwalten';
 $l['acp.userManagement.premissions.shc.acp.roomManagement.description'] =  'Räume erstellen, bearbeiten und löschen';
+$l['acp.userManagement.premissions.shc.acp.switchableManagement'] =  'Schaltfunktionen verwalten';
+$l['acp.userManagement.premissions.shc.acp.switchableManagement.description'] =  'der Benutzer kann Sensoren, Schaltelementen und Lesnare elemente verwalten';

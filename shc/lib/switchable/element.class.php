@@ -3,8 +3,8 @@
 namespace SHC\Switchable;
 
 //Imports
+use RWF\User\Visitor;
 use SHC\Room\Room;
-use RWF\User\User;
 use RWF\User\UserGroup;
 
 /**
@@ -196,5 +196,5 @@ interface Element {
      * @param \RWF\User\User $user
      * @return Boolean
      */
-    public function isUserEntitled(User $user);
+    public function isUserEntitled(Visitor $user);
 }

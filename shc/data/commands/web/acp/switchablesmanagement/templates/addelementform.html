@@ -1,0 +1,66 @@
+{* Element erstellen Formular *}
+
+{* Typauswahl *}
+{if $elementTypeChooser|isset}
+<div>
+    <div class="shc-view-content">
+        <form>
+            <div style="text-align: center;">
+                {$elementTypeChooser->fetch()}
+            </div>
+        </form>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+            <button id="shc-view-switchableManagement-button-next">{lang var="acp.switchableManagement.button.next"}</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+        $('#shc-view-switchableManagement-button-next').click(function() {
+
+            $.get('index.php?app=shc&ajax=addelementform&type=' + $('select[name=type]').val(), function(data, textStatus, jqXHR) {
+                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+             });
+        });
+    });
+</script>
+
+{* Formular Anzeigen *}
+{else}
+<div>
+    {if $elementForm|isset}
+    <div class="shc-view-content">
+        {$elementForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+            {resetbutton form="#shc-view-form-addElement"}
+            {submitbutton form="#shc-view-form-addElement" action="index.php?app=shc&ajax=addelementform"}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>
+{/if}

@@ -13,7 +13,7 @@ use SHC\Room\RoomEditor;
 
 
 /**
- * loescht einen Benutzer
+ * loescht einen Raum
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -48,7 +48,7 @@ class DeleteRoomAjax extends AjaxCommand {
         if(!$room instanceof Room) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.roomManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editroomform.html');
+            $this->data = $tpl->fetchString('deleteroom.html');
             return;
         }
 

@@ -217,7 +217,12 @@ class ViewHelperBox {
         $this->elements = array_diff($$this->elements, array($sensor));
         return $this;
     }
-    
+
+    /**
+     * loescht alle Elemente
+     *
+     * @return \SHC\View\Room\ViewHelper
+     */
     public function removeAll() {
         
         $this->elements = array();
@@ -226,13 +231,32 @@ class ViewHelperBox {
     
     /**
      * gibt eine Sortierte Liste mit den Elementen zurueck
+     *
+     * @return Array
      */
     public function listElementsOrdered() {
         
         $elements = $this->elements;
         ksort($elements, SORT_NUMERIC);
         return $elements;
-        
+    }
+
+    /**
+     * prueft ob ein Element der Box angehoert
+     *
+     * @param  Mixed   $element Element
+     * @return Boolean
+     */
+    public function isElementInBox($element){
+
+        foreach($this->elements as $boxElement) {
+
+            if($element == $boxElement) {
+
+                return true;
+            }
+        }
+        return false;
     }
     
     /**

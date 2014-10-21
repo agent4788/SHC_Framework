@@ -89,13 +89,13 @@ class DataTypeUtil {
                 break;
             case self::INTEGER:
                 if ((string) $value == (int) $value) {
-                    return $value;
+                    return (int) $value;
                 }
                 throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;
             case self::FLOAT:
                 if ((string) $value == (float) $value) {
-                    return $value;
+                    return (float) $value;
                 }
                 throw new \Exception('Hacking versuch entdeckt', 1011);
                 break;

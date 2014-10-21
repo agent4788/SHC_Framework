@@ -3,6 +3,7 @@
 namespace SHC\Switchable;
 
 //Imports
+use RWF\User\Visitor;
 use SHC\Room\Room;
 use RWF\User\User;
 use RWF\User\UserGroup;
@@ -310,17 +311,27 @@ abstract class AbstractReadable implements Readable {
     }
 
     /**
+     * gibt eine Liste mit allen erlaubten Benutzergruppen zurueck
+     *
+     * @return Array
+     */
+    public function listAllowedUserGroups() {
+
+        return $this->allowedUserGroups;
+    }
+
+    /**
      * prueft ob ein Benutzer berechtigt ist das Element zu schalten
-     * 
-     * @param \RWF\User\User $user
+     *
+     * @param \RWF\User\Visitor $user
      * @return Boolean
      */
-    public function isUserEntitled(User $user) {
+    public function isUserEntitled(Visitor $user) {
 
-        if (count($this->allowedUserGroups) > 0) {
+        if (isset($this->allowedUserGroups[0]) && $this->allowedUserGroups[0] != '') {
 
             //Hauptgruppe pruefen
-            if (in_array($user->getMainGroup(), $this->allowedUserGroups)) {
+            if (in_array($user->getMainGroup()->getId(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
 
                 return true;
             }
@@ -328,12 +339,12 @@ abstract class AbstractReadable implements Readable {
             //Alle Benutzergruppen pruefen
             foreach ($user->listGroups() as $userGroup) {
 
-                if (in_array($userGroup->getId(), $this->allowedUserGroups)) {
+                if ($userGroup instanceof UserGroup && in_array($userGroup->getId(), $this->allowedUserGroups)) {
 
                     return true;
                 }
             }
-            
+
             //keine berechtigte Gruppe gefunden
             return false;
         }

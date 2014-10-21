@@ -32,10 +32,6 @@ class ViewHelper {
      */
     protected $elements = array();
     
-    function __construct() {
-        
-    }
-    
     /**
      * setzt die Raum ID
      * 
@@ -65,7 +61,7 @@ class ViewHelper {
      * @return \SHC\View\Room\ViewHelper
      */
     public function addReadable(Readable $readable) {
-        
+
         $this->elements[$readable->getOrderId()] = $readable;
         return $this;
     }
@@ -92,7 +88,7 @@ class ViewHelper {
      * @return \SHC\View\Room\ViewHelper
      */
     public function addSwitchable(Switchable $switchable) {
-        
+
         $this->elements[$switchable->getOrderId()] = $switchable;
         return $this;
     }
@@ -104,7 +100,7 @@ class ViewHelper {
      * @return \SHC\View\Room\ViewHelperBox
      */
     public function removeSwitchable(Switchable $switchable) {
-        
+
         if(isset($this->elements[$switchable->getOrderId()])) {
             
             unset($this->elements[$switchable->getOrderId()]);
@@ -119,7 +115,7 @@ class ViewHelper {
      * @return \SHC\View\Room\ViewHelper
      */
     public function addSensor(Sensor $sensor) {
-        
+
         $this->elements[$sensor->getOrderId()] = $sensor;
         return $this;
     }
@@ -146,7 +142,7 @@ class ViewHelper {
      * @return \SHC\View\Room\ViewHelper
      */
     public function addBox(ViewHelperBox $box) {
-        
+
         $this->elements[$box->getBoxOrderId()] = $box;
         return $this;
     }
@@ -165,7 +161,12 @@ class ViewHelper {
         }
         return $this;
     }
-    
+
+    /**
+     * loescht alle Elemente
+     *
+     * @return \SHC\View\Room\ViewHelper
+     */
     public function removeAll() {
         
         $this->elements = array();
@@ -174,13 +175,14 @@ class ViewHelper {
     
     /**
      * gibt eine Sortierte Liste mit den Elementen zurueck
+     *
+     * @return Array
      */
     public function listElementsOrdered() {
-        
+
         $elements = $this->elements;
         ksort($elements, SORT_NUMERIC);
         return $elements;
-        
     }
     
     /**

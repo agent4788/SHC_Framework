@@ -3,8 +3,10 @@
 namespace SHC\View\Room;
 
 //Imports
+use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
+use SHC\Room\Room;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -146,7 +148,7 @@ class ViewHelperEditor {
         foreach ($elements as $element) {
 
             /* @var $element \SHC\Switchable\Element */
-            if ($element->getRoom()->getId() == $roomId) {
+            if ($element->getRoom() instanceof Room && $element->getRoom()->getId() == $roomId) {
 
                 if ($element instanceof Readable) {
 
@@ -163,7 +165,7 @@ class ViewHelperEditor {
         foreach ($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensor */
-            if ($sensor->getRoom()->getId() == $roomId) {
+            if ($sensor->getRoom() instanceof Room && $sensor->getRoom()->getId() == $roomId) {
 
                 $viewHelper->addSensor($sensor);
             }
@@ -377,7 +379,7 @@ class ViewHelperEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Name der Box schon belegt
-                    if (!$this->isBoxNameAvailable($name)) {
+                    if ($name != (string) $box->name && !$this->isBoxNameAvailable($name)) {
 
                         throw new \Exception('Der Name ist schon vergeben', 1507);
                     }
@@ -388,6 +390,10 @@ class ViewHelperEditor {
                 //Raum
                 if ($roomId !== null) {
 
+                    if($roomId != (int) $box->roomId && $orderId === null) {
+
+                        $box->orderId = ViewHelperEditor::getInstance()->getNextOrderId();
+                    }
                     $box->roomId = $roomId;
                 }
 
@@ -422,11 +428,21 @@ class ViewHelperEditor {
         foreach ($xml->box as $box) {
 
             /* @var $box \SimpleXmlElement */
-            if ((int) $box->id == $id) {
+            if ((int) $box->id == $boxId) {
+
+                //pruefen ob das Element schon registriert ist
+                foreach($box->elements->element as $element) {
+
+                    $attr = $element->attributes();
+                    if((int) $attr->type == $type && (int) $attr->id == $elementId) {
+
+                        return true;
+                    }
+                }
 
                 $element = $box->elements->addChild('element');
                 $element->addAttribute('type', $type);
-                $element->addAttribute('is', $elementId);
+                $element->addAttribute('id', $elementId);
 
                 //Daten Speichern
                 $xml->save();
@@ -453,20 +469,48 @@ class ViewHelperEditor {
         for ($i = 0; $i < count($xml->box); $i++) {
 
             /* @var $box \SimpleXmlElement */
-            if ((int) $xml->box[$i]->id == $id) {
+            if ((int) $xml->box[$i]->id == $boxId) {
 
-                for ($j = 0; $j < count($box->elements->element); $j++) {
+                for ($j = 0; $j < count($xml->box[$i]->elements->element); $j++) {
 
-                    $attr = $box->elements->element[$j]->attributes();
+                    $attr = $xml->box[$i]->elements->element[$j]->attributes();
                     if ($elementId == (int) $attr->id && $type == (int) $attr->type) {
 
-                        unset($box->elements->element[$j]);
+                        unset($xml->box[$i]->elements->element[$j]);
 
                         //Daten Speichern
                         $xml->save();
                         return true;
                     }
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * loescht alle Elemente einer Box
+     *
+     * @param  Integer $boxId ID der Box
+     * @return Boolean
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    public function removeAllElementsFromBox($boxId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+
+        //Server Suchen
+        for ($i = 0; $i < count($xml->box); $i++) {
+
+            /* @var $box \SimpleXmlElement */
+            if ((int) $xml->box[$i]->id == $boxId) {
+
+                $xml->box[$i]->elements = null;
+
+                //Daten Speichern
+                $xml->save();
+                return true;
             }
         }
         return false;
@@ -489,7 +533,7 @@ class ViewHelperEditor {
             /* @var $box \SimpleXmlElement */
             if ((int) $xml->box[$i]->id == $id) {
 
-                unset($xml->box[$i]->id);
+                unset($xml->box[$i]);
 
                 //Daten Speichern
                 $xml->save();

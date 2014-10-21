@@ -121,7 +121,7 @@ abstract class AbstractSensor implements Sensor {
      */
     public function getName() {
 
-        return $this->name;
+        return ($this->name != '' ? $this->name : 'Sensor-ID-'. $this->id);
     }
 
     /**

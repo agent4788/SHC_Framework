@@ -16,7 +16,7 @@
             <div id="shc-content-tabs">
                 <ul>
                     {foreach from=$roomList item='room'}
-                    {if $room->isUserEntitled($user)}
+                    {if $room->isUserEntitled($user) == true && $room->isEnabled() == true}
                     <li><a href="index.php?app=shc&ajax=showroom&id={$room->getId()}">{#$room->getName()}</a></li>
                     {/if}
                     {/foreach}

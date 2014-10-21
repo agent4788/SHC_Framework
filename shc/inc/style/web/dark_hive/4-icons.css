@@ -42,6 +42,33 @@ span.shc-icon-socket {
     background-image: url(../../../img/switchables/socket.png);
 }
 
+span.shc-icon-offline {
+    background-image: url(../../../img/switchables/wol_state_offline.png);
+}
+
+span.shc-icon-online {
+    background-image: url(../../../img/switchables/wol_state_online.png);
+}
+
+/* Status Icons */
+span.shc-icon-high {
+    display: inline-block;
+    width: 48px;
+    heigt: 48px;
+    border: #006907 solid 1px;
+    background-color: #006907;;
+    border-radius: 24px;
+}
+
+span.shc-icon-low {
+    display: inline-block;
+    width: 48px;
+    heigt: 48px;
+    border: #d00101 solid 1px;
+    background-color: #d00101;;
+    border-radius: 24px;
+}
+
 /* ACP Menue Icons */
 span#shc-view-acp-menu-usermanagement {
     background-image: url(../../../img/acpmenue/usermanagement.png);

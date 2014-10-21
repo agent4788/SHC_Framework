@@ -1,0 +1,178 @@
+{* Liste aller schaltbaren Elemente *}
+<div>
+    <div class="shc-view-content">
+        <div id="shc-view-switchableManagement-tabs">
+            <ul>
+                {foreach from=$roomList item='room'}
+                <li><a href="#shc-view-switchableManagement-tabs-room-{$room->getId()}">{if $room->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$room->getName()}{if $room->isEnabled() == false}</span>{/if}</a></li>
+                {/foreach}
+                <li><a href="index.php?app=shc&ajax=listelementswithoutroom">{lang var="acp.switchableManagement.button.listElementsWithoutRoom"}</a></li>
+            </ul>
+            {foreach from=$roomList item='room'}
+            <div id="shc-view-switchableManagement-tabs-room-{$room->getId()}">
+                <table class="shc-view-contentTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 70%;">{lang var="acp.switchableManagement.elementTable.table.head.name"}</th>
+                            <th style="width: 20%;">{lang var="acp.switchableManagement.elementTable.table.head.type"}</th>
+                            <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$viewHelperEditor->getViewHelperForRoom($room->getId())->listElementsOrdered() item='element'}
+
+                        {* schaltbare Elemente *}
+                        {instanceof element=$element class='\SHC\Switchable\Switchable'}
+                        <tr>
+                            <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
+                            <td>
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                            </td>
+                            <td>
+                                {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
+                                {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
+                            </td>
+                        </tr>
+                        {/instanceof}
+
+                        {* lesbares Elemente *}
+                        {instanceof element=$element class='\SHC\Switchable\Readable'}
+                        <tr>
+                            <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
+                            <td>
+                                {instanceof element=$element class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
+                            </td>
+                            <td>
+                                {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
+                                {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
+                            </td>
+                        </tr>
+                        {/instanceof}
+
+                        {* Sensoren *}
+                        {instanceof element=$element class='\SHC\Sensor\Sensor'}
+                        <tr>
+                            <td>{if $element->isVisible() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isVisible() == false}</span>{/if}</td>
+                            <td>
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                            </td>
+                            <td>
+                                {editlink link='index.php?app=shc&ajax=editsensorform&id=' id=$element->getId()}
+                                {deletelink link='index.php?app=shc&ajax=deletesensor&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
+                            </td>
+                        </tr>
+                        {/instanceof}
+
+                        {* Boxen *}
+                        {instanceof element=$element class='\SHC\View\Room\ViewHelperBox'}
+                        <tr>
+                            <td colspan="3">
+                                <div class="shc-view-switchableManagement-innerTableBox">
+                                    <table class="shc-view-contentTable">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 70%;">{#$element->getName()}</th>
+                                                <th style="width: 20%;">{lang var="acp.switchableManagement.element.box"}</th>
+                                                <th style="width: 10%;">
+                                                    {editlink link='index.php?app=shc&ajax=editboxform&id=' id=$element->getBoxId()}
+                                                    {deletelink link='index.php?app=shc&ajax=deletebox&id=' id=$element->getBoxId() prompt='acp.switchableManagement.prompt.deleteBox' title='acp.switchableManagement.prompt.deleteBox.title'}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {foreach from=$element->listElementsOrdered() item='boxElement'}
+
+                                            {* schaltbare Elemente *}
+                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchable'}
+                                            <tr>
+                                                <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
+                                                <td>
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                                                </td>
+                                                <td>
+                                                    {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
+                                                    {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
+                                                </td>
+                                            </tr>
+                                            {/instanceof}
+
+                                            {* lesbare Elemente *}
+                                            {instanceof element=$boxElement class='\SHC\Switchable\Readable'}
+                                            <tr>
+                                                <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
+                                                <td>
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
+                                                </td>
+                                                <td>
+                                                    {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
+                                                    {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
+                                                </td>
+                                            </tr>
+                                            {/instanceof}
+
+                                            {* Sensoren *}
+                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensor'}
+                                            <tr>
+                                                <td>{if $boxElement->isVisible() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isVisible() == false}</span>{/if}</td>
+                                                <td>
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                                                </td>
+                                                <td>
+                                                    {editlink link='index.php?app=shc&ajax=editsensorform&id=' id=$boxElement->getId()}
+                                                    {deletelink link='index.php?app=shc&ajax=deletesensor&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
+                                                </td>
+                                            </tr>
+                                            {/instanceof}
+                                            {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        {/instanceof}
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+            {acpbutton link="index.php?app=shc&ajax=addelementform" text="acp.switchableManagement.button.addElement"}
+            {acpbutton link="index.php?app=shc&ajax=addboxform" text="acp.switchableManagement.button.addBox"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
+        $('#shc-view-switchableManagement-tabs').tabs();
+        $('.shc-view-buttonSet').buttonset();
+        $('.shc-view-buttons-add').tooltip();
+    });
+</script>

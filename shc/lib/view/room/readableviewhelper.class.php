@@ -30,12 +30,12 @@ class ReadableViewHelper {
 
         if ($readable instanceof ArduinoInput) {
 
-            return self::showActivity($readable, $ignoreShow);
+            return self::showArduinoInput($readable, $ignoreShow);
         } elseif ($readable instanceof RpiGpioInput) {
 
-            return self::showArduinoOutput($readable, $ignoreShow);
+            return self::showRpiGpioInput($readable, $ignoreShow);
         }
-        return '<span>Unbekannter schaltbares Element</span>';
+        return '<span>Unbekanntes lesbares Element</span>';
     }
 
     /**

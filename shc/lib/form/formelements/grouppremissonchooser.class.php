@@ -5,7 +5,6 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\FormElements\SelectMultipleWithEmptyElement;
-use RWF\User\User;
 use RWF\User\UserEditor;
 
 /**
