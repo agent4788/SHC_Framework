@@ -149,7 +149,7 @@ class SwitchableEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES);
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
 
         //Daten einlesen
         foreach ($xml->switchable as $switchable) {

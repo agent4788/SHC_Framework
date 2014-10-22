@@ -16,6 +16,8 @@ $l['global.tousandsSeparator'] = '.';
 $l['global.decimalSeparator'] = ',';
 $l['global.yes'] = 'ja';
 $l['global.no'] = 'nein';
+$l['global.on'] = 'an';
+$l['global.off'] = 'aus';
 
 //Datum
 $l['global.date.tomorrow'] = 'morgen';
@@ -28,6 +30,7 @@ $l['global.date.nextDays'] = 'in {1:i} Tagen';
 $l['global.button.back'] = 'zurück';
 $l['global.button.save'] = 'speichern';
 $l['global.button.edit'] = 'bearbeiten';
+$l['global.button.editlist'] = 'Liste bearbeiten';
 $l['global.button.delete'] = 'löschen';
 $l['global.button.yes'] = $l['global.yes'];
 $l['global.button.no'] = $l['global.no'];

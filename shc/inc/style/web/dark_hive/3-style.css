@@ -141,6 +141,13 @@ a.shc-view-buttons-remove {
     background: url(../../../img/buttons/remove.png) no-repeat;
 }
 
+a.shc-view-buttons-editlist {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../../../img/buttons/editlist.png) no-repeat;
+}
+
 /* Raum Ansicht */
 
 div.shc-contentbox-room {

@@ -89,6 +89,16 @@ class Countdown extends AbstractSwitchable {
     }
 
     /**
+     * gibt ein Array mit allen schaltbaren Elementen zurueck
+     *
+     * @return Array
+     */
+    public function listSwitchables() {
+
+        return $this->switchables;
+    }
+
+    /**
      * setzt den Zeitintervall fuer das ausschalten
      * 
      * @param  \DateInterval $intervall Zeitintervall

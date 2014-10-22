@@ -34,6 +34,12 @@
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
                             </td>
                             <td>
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}
+                                {editlist link='index.php?app=shc&ajax=manageswitchablecontainers&id=' id=$element->getId()}
+                                {/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}
+                                {editlist link='index.php?app=shc&ajax=manageswitchablecontainers&id=' id=$element->getId()}
+                                {/instanceof}
                                 {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
                                 {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
                             </td>
@@ -106,6 +112,12 @@
                                                     {instanceof element=$boxElement class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
                                                 </td>
                                                 <td>
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}
+                                                    {editlist link='index.php?app=shc&ajax=manageswitchablecontainers&id=' id=$boxElement->getId()}
+                                                    {/instanceof}
+                                                    {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}
+                                                    {editlist link='index.php?app=shc&ajax=manageswitchablecontainers&id=' id=$boxElement->getId()}
+                                                    {/instanceof}
                                                     {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
                                                     {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
                                                 </td>

@@ -16,15 +16,19 @@ $l['acp.switchableManagement.title'] = 'Schaltbare Elemente verwalten';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
+$l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
 $l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
 
 //Buttons
 $l['acp.switchableManagement.button.listBoxes'] = 'Boxen verwalten';
 $l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Raumlose Elemente';
+$l['acp.switchableManagement.button.toggleCommand'] = 'Befehl umkehren';
+$l['acp.switchableManagement.button.deleteFormContainer'] = 'entfernen';
 $l['acp.switchableManagement.button.addElement'] = 'Element erstellen';
 $l['acp.switchableManagement.button.addBox'] = 'Box erstellen';
 $l['acp.switchableManagement.button.next'] = 'weiter';
 $l['acp.switchableManagement.button.addToBox'] = 'Element hinzufügen';
+$l['acp.switchableManagement.button.addToSwitchableContainer'] = 'hinzufügen';
 
 //Typen
 $l['acp.switchableManagement.element.activity'] = 'Aktivität';
@@ -171,6 +175,8 @@ $l['acp.switchableManagement.form.box.elements.description'] = 'Elemente der Box
 
 //Meldungen
 $l['acp.switchableManagement.form.addActivity.success'] =  'Die Aktivität wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addElementToActivity.success'] =  'Das Element wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.deleteElementFromActivity.success'] =  'Das Element wurde erfolgreich entfernt';
 $l['acp.switchableManagement.form.editActivity.success'] =  'Die Aktivität wurde erfolgreich gespeichert';
 $l['acp.switchableManagement.form.addCountdown.success'] =  'Der Countdown wurde erfolgreich erstellt';
 $l['acp.switchableManagement.form.editCountdown.success'] =  'Der Countdown wurde erfolgreich gespeichert';
@@ -189,9 +195,12 @@ $l['acp.switchableManagement.form.deleteSensor.success'] =  'Der Sensor wurde er
 $l['acp.switchableManagement.form.deleteBox.success'] =  'Die Box wurde erfolgreich gelöscht';
 
 $l['acp.switchableManagement.form.error.id'] =  'Ungültige ID';
+$l['acp.switchableManagement.form.error.command'] =  'Ungültiger Befehl';
 $l['acp.switchableManagement.form.addActivity.error.1507'] =  'Der Name der Aktivität ist schon vergeben';
 $l['acp.switchableManagement.form.addActivity.error.1102'] =  'Die Aktivität konnte wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.switchableManagement.form.addActivity.error'] =  'Die Aktivität konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addElementToActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addElementToActivity.error'] =  'Das Element konnte nicht gespeichert werden';
 $l['acp.switchableManagement.form.addCountdown.error.1507'] =  'Der Name des Countdowns ist schon vergeben';
 $l['acp.switchableManagement.form.addCountdown.error.1102'] =  'Der Countdown konnte wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.switchableManagement.form.addCountdown.error'] =  'Der Countdown konnte nicht gespeichert werden';
@@ -216,3 +225,5 @@ $l['acp.switchableManagement.form.deleteSensor.error.1102'] =  'Der Sensor konnt
 $l['acp.switchableManagement.form.deleteSensor.error'] =  'Der Sensor konnte nicht gelöscht werden';
 $l['acp.switchableManagement.form.deleteBox.error.1102'] =  'Die Box konnte wegen fehlender Schreibrechte nicht gelöscht werden';
 $l['acp.switchableManagement.form.deleteBox.error'] =  'Die Box konnte nicht gelöscht werden';
+$l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht entfernt werden';
+$l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'Das Element konnte nicht entfernt werden';

@@ -73,6 +73,16 @@ class Activity extends AbstractSwitchable {
     }
 
     /**
+     * gibt ein Array mit allen schaltbaren Elementen zurueck
+     *
+     * @return Array
+     */
+    public function listSwitchables() {
+
+        return $this->switchables;
+    }
+
+    /**
      * schaltet das Objekt ein
      * 
      * @return Boolean
