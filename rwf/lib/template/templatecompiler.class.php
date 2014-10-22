@@ -24,7 +24,7 @@ class TemplateCompiler {
     /**
      * Template Objekt
      * 
-     * @var hf\system\template\Template
+     * @var \RWF\Template\Template
      */
     protected $template = null;
 
@@ -1306,7 +1306,7 @@ class TemplateCompiler {
 
                                 if ($oldStatus == 'bracketOpen') {
 
-                                    $result .= $operator;
+                                    $code .= $operator;
                                     break 2;
                                 } else {
 
