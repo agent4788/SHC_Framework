@@ -6,6 +6,7 @@ namespace SHC\Room;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 use RWF\Util\String;
+use SHC\View\Room\ViewHelperEditor;
 
 /**
  * Raumverwaltung
@@ -299,6 +300,16 @@ class RoomEditor {
 
                 //Daten Speichern
                 $xml->save();
+
+                //Boxen die dem Raum zugeordnet sind mit loeschen
+                $boxList = ViewHelperEditor::getInstance()->listBoxes(ViewHelperEditor::SORT_NOTHING);
+                foreach($boxList as $box) {
+
+                    if($box->getRoomId() == $id) {
+
+                        ViewHelperEditor::getInstance()->removeBox($box->getBoxId());
+                    }
+                }
                 return true;
             }
         }
