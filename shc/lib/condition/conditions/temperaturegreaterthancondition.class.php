@@ -18,7 +18,7 @@ use SHC\Sensor\Sensors\DS18x20;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class MoistureLowerThanCondition extends AbstractCondition {
+class TemperatureGreaterThanCondition extends AbstractCondition {
 
     /**
      * gibt an ob die Bedingung erfuellt ist
