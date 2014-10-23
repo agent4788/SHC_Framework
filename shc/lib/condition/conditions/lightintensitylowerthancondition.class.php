@@ -37,13 +37,14 @@ class LightIntensityLowerThanCondition extends AbstractCondition {
             throw new Exception('sensors und lightIntensity müssen angegeben werden', 1580);
         }
 
-        foreach ($this->data['sensors'] as $sensorId) {
+        $sensors = explode(',', $this->data['sensors']);
+        foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
             if ($sensor instanceof LDR) {
 
                 $humidity = $sensor->getValue();
-                if ($humidity <= $this->data['lightIntensity']) {
+                if ($humidity <= (float) $this->data['lightIntensity']) {
 
                     return true;
                 }

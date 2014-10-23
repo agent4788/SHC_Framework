@@ -39,13 +39,14 @@ class TemperatureLowerThanCondition extends AbstractCondition {
             throw new Exception('sensors und temperature müssen angegeben werden', 1580);
         }
 
-        foreach ($this->data['sensors'] as $sensorId) {
+        $sensors = explode(',', $this->data['sensors']);
+        foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
             if ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP) {
 
                 $humidity = $sensor->getValue();
-                if ($humidity <= $this->data['temperature']) {
+                if ($humidity <= (float) $this->data['temperature']) {
 
                     return true;
                 }

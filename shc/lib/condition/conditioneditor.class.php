@@ -460,6 +460,366 @@ class ConditionEditor {
     }
 
     /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $humidity  Luftfeuchte als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addHumidityGreaterThanCondition($name, array $sensorIds, $humidity, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'humidity'=> $humidity
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\HumidityGreaterThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id        ID
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $humidity  Luftfeuchte als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editHumidityGreaterThanCondition($id, $name = null, array $sensorIds = null, $humidity = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'humidity'=> $humidity
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $humidity  Luftfeuchte als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addHumidityLowerThanCondition($name, array $sensorIds, $humidity, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'humidity'=> $humidity
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\HumidityLowerThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id        ID
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $humidity  Luftfeuchte als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editHumidityLowerThanCondition($id, $name = null, array $sensorIds = null, $humidity = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'humidity'=> $humidity
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name            Name
+     * @param  Array   $sensorIds       Liste mit Sensoren
+     * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
+     * @param  Boolean $enabled         Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addLightIntensityGreaterThanCondition($name, array $sensorIds, $lightIntensity, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'lightIntensity'=> $lightIntensity
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\LightIntensityGreaterThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id              ID
+     * @param  String  $name            Name
+     * @param  Array   $sensorIds       Liste mit Sensoren
+     * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
+     * @param  Boolean $enabled         Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editLightIntensityGreaterThanCondition($id, $name = null, array $sensorIds = null, $lightIntensity = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'lightIntensity'=> $lightIntensity
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name            Name
+     * @param  Array   $sensorIds       Liste mit Sensoren
+     * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
+     * @param  Boolean $enabled         Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addLightIntensityLowerThanCondition($name, array $sensorIds, $lightIntensity, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'lightIntensity'=> $lightIntensity
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\LightIntensityLowerThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id              ID
+     * @param  String  $name            Name
+     * @param  Array   $sensorIds       Liste mit Sensoren
+     * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
+     * @param  Boolean $enabled         Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editLightIntensityLowerThanCondition($id, $name = null, array $sensorIds = null, $lightIntensity = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'lightIntensity'=> $lightIntensity
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $moisture  Feuchtigkeit als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addMoistureGreaterThanCondition($name, array $sensorIds, $moisture, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'moisture'=> $moisture
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\MoistureGreaterThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id        ID
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $moisture  Feuchtigkeit als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editMoistureGreaterThanCondition($id, $name = null, array $sensorIds = null, $moisture = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'moisture'=> $moisture
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $moisture  Feuchtigkeit als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addLMoistureLowerThanCondition($name, array $sensorIds, $moisture, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'moisture'=> $moisture
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\MoistureLowerThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id        ID
+     * @param  String  $name      Name
+     * @param  Array   $sensorIds Liste mit Sensoren
+     * @param  Integer $moisture  Feuchtigkeit als Grenzwert
+     * @param  Boolean $enabled   Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editMoistureLowerThanCondition($id, $name = null, array $sensorIds = null, $moisture = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'moisture'=> $moisture
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $sensorIds    Liste mit Sensoren
+     * @param  Float   $temperature  Temperatur als Grenzwert
+     * @param  Boolean $enabled      Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addTemperatureGreaterThanCondition($name, array $sensorIds, $temperature, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'temperature'=> $temperature
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\TemperatureGreaterThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  String  $name         Name
+     * @param  Array   $sensorIds    Liste mit Sensoren
+     * @param  Float   $temperature  Temperatur als Grenzwert
+     * @param  Boolean $enabled      Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editTemperatureGreaterThanCondition($id, $name = null, array $sensorIds = null, $temperature = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'temperature'=> $temperature
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Vergleichsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $sensorIds    Liste mit Sensoren
+     * @param  Float   $temperature  Temperatur als Grenzwert
+     * @param  Boolean $enabled      Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addTemperatureLowerThanCondition($name, array $sensorIds, $temperature, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => implode(',', $sensorIds),
+            'temperature'=> $temperature
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\TemperatureLowerThanCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Vergleichsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  String  $name         Name
+     * @param  Array   $sensorIds    Liste mit Sensoren
+     * @param  Float   $temperature  Temperatur als Grenzwert
+     * @param  Boolean $enabled      Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editTemperatureLowerThanCondition($id, $name = null, array $sensorIds = null, $temperature = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
+            'temperature'=> $temperature
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
      * loascht eine Bedingung
      * 
      * @param  Integer $id ID

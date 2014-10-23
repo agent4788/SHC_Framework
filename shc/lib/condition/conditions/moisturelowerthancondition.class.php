@@ -38,13 +38,14 @@ class MoistureLowerThanCondition extends AbstractCondition {
             throw new Exception('sensors und moisture müssen angegeben werden', 1580);
         }
 
-        foreach ($this->data['sensors'] as $sensorId) {
+        $sensors = explode(',', $this->data['sensors']);
+        foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
             if ($sensor instanceof RainSensor || $sensor instanceof Hygrometer) {
 
                 $humidity = $sensor->getValue();
-                if ($humidity <= $this->data['moisture']) {
+                if ($humidity <= (float) $this->data['moisture']) {
 
                     return true;
                 }
