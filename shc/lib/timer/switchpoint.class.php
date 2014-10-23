@@ -117,7 +117,7 @@ class SwitchPoint {
     /**
      * Gibt den Zeitstempel der letzten ausfuehrung zurueck
      * 
-     * @var RWF\Date\DateTime
+     * @var \RWF\Date\DateTime
      */
     protected $lastExecute = null;
 
@@ -246,6 +246,16 @@ class SwitchPoint {
 
         $this->conditions = array();
         return $this;
+    }
+
+    /**
+     * gibt eine Liste mit allen Bedingungen zurueck
+     *
+     * @return Array
+     */
+    public function listConditions() {
+
+        return $this->conditions;
     }
 
     /**
@@ -383,7 +393,7 @@ class SwitchPoint {
     /**
      * setzt den Zeitstempel der letzten ausfuehrung
      * 
-     * @param  RWF\Date\DateTime $lastExecute letzte ausfuehrung
+     * @param  \RWF\Date\DateTime $lastExecute letzte ausfuehrung
      * @return \SHC\Timer\SwitchPoint
      */
     public function setLastExecute(DateTime $lastExecute) {
@@ -393,8 +403,9 @@ class SwitchPoint {
     }
 
     /**
-     * 
-     * @return type
+     * gibt die Zeit der letzten ausfuehrung zurueck
+     *
+     * @return \RWF\Date\DateTime
      */
     public function getLastExecute() {
         
@@ -429,7 +440,17 @@ class SwitchPoint {
      * @return Boolean
      */
     public function isSatisfies() {
-        
+
+        $daysOfWeek = array(
+            0 => 'mon',
+            1 => 'tue',
+            2 => 'wed',
+            3 => 'thu',
+            4 => 'fri',
+            5 => 'sat',
+            6 => 'sun'
+        );
+
         //Pruefen ob Schaltpunkt aktiv
         if($this->enabled == false) {
             
@@ -452,46 +473,27 @@ class SwitchPoint {
         }
         
         //Tag pruefen
-        if(in_array($this->day[0], $this->daysOfWeek)) {
-            
-            //Wochentag
-            $found = false;
-            foreach($this->day as $day) {
-                
-                $weekDay = array_keys($this->daysOfWeek, $day);
-                if($now->getDayOfWeek() == $weekDay[0]) {
-                    $found = true;
-                    break;
-                }
-            }
-            
-            if($found === false) {
-                
-                return false;
-            }
-            
-        } elseif (($this->day[0] != '*' && !in_array($now->getDay(), $this->day))) {
+        if(($this->day[0] != '*' && (!in_array($daysOfWeek[$now->getDayOfWeek()], $this->day) || !in_array($now->getDay(), $this->day)))) {
 
-            //Tag im Monat
             return false;
         }
         
         //Kalenderwoche pruefen
         if ($this->week[0] != '*' && !in_array($now->getWeekOfYear(), $this->week)) {
 
-            $execute = false;
+            return false;
         }
 
         //Month pruefen
         if ($this->month[0] != '*' && !in_array($now->getMonth(), $this->month)) {
 
-            $execute = false;
+            return false;
         }
 
         //Year pruefen
         if ($this->year[0] != '*' && !in_array($now->getYear(), $this->year)) {
 
-            $execute = false;
+            return false;
         }
         
         //Bedingungen pruefen

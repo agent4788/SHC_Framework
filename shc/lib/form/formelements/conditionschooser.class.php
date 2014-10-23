@@ -4,6 +4,7 @@ namespace SHC\Form\FormElements;
 
 //Imports
 use RWF\Form\FormElements\SelectMultipleWithEmptyElement;
+use SHC\Condition\ConditionEditor;
 use SHC\Timer\SwitchPointEditor;
 
 /**
@@ -15,28 +16,28 @@ use SHC\Timer\SwitchPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class SwitchPointsChooser extends SelectMultipleWithEmptyElement {
+class ConditionsChooser extends SelectMultipleWithEmptyElement {
 
     /**
      * @param String $name         Feld Name
-     * @param Array  $switchPoints Ausgewaehlte IDs
+     * @param Array  $conditions   Ausgewaehlte IDs
      */
-    public function __construct($name, $switchPoints = array()) {
+    public function __construct($name, $conditions = array()) {
 
         $this->setName($name);
 
         //Liste mit IDs vorbereiten
-        $switchPointIds = array();
-        foreach($switchPoints as $switchPoint) {
+        $conditionsIDs = array();
+        foreach($conditions as $condition) {
 
-            $switchPointIds[] = $switchPoint->getId();
+            $conditionsIDs[] = $condition->getId();
         }
 
         //Optionen setzen
         $options = array(
             'emptySelected' => false
         );
-        if(!count($switchPointIds) || (isset($switchPointIds[0]) && $switchPointIds[0] == '')) {
+        if(!count($conditionsIDs) || (isset($conditionsIDs[0]) && $conditionsIDs[0] == '')) {
 
             $options['emptySelected'] = true;
         }
@@ -44,10 +45,10 @@ class SwitchPointsChooser extends SelectMultipleWithEmptyElement {
 
         //Daten laden
         $values = array();
-        $switchPointList = SwitchPointEditor::getInstance()->listSwitchPoints(SwitchPointEditor::SORT_BY_NAME);
-        foreach($switchPointList as $switchPoint) {
+        $conditionsList = ConditionEditor::getInstance()->listConditions(ConditionEditor::SORT_BY_NAME);
+        foreach($conditionsList as $condition) {
 
-            $values[$switchPoint->getId()] = array($switchPoint->getName(), (in_array($switchPoint->getId(), $switchPointIds) ? 1 : 0));
+            $values[$condition->getId()] = array($condition->getName(), (in_array($condition->getId(), $conditionsIDs) ? 1 : 0));
         }
         $this->setValues($values);
     }

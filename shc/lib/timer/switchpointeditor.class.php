@@ -3,6 +3,7 @@
 namespace SHC\Timer;
 
 //Imports
+use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
@@ -243,7 +244,7 @@ class SwitchPointEditor {
         $switchPoint->addChild('day', implode(',', $day));
         $switchPoint->addChild('hour', implode(',', $hour));
         $switchPoint->addChild('minute', implode(',', $minute));
-        $switchPoint->addChild('lasteExecute', '2000-01-01 00:00:00');
+        $switchPoint->addChild('lastExecute', '2000-01-01 00:00:00');
 
         //Daten Speichern
         $xml->save();
@@ -281,7 +282,7 @@ class SwitchPointEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Name der Bedingung schon belegt
-                    if (!$this->isSwitchPointNameAvailable($name)) {
+                    if ((string) $switchPoint->name != $name && !$this->isSwitchPointNameAvailable($name)) {
 
                         throw new \Exception('Der Name des Schaltpunktes ist schon vergeben', 1503);
                     }
@@ -292,7 +293,7 @@ class SwitchPointEditor {
                 //Aktiv
                 if ($enabled !== null) {
 
-                    $switchPoint->$enabled = ($enabled == true ? 1 : 0);
+                    $switchPoint->enabled = ($enabled == true ? 1 : 0);
                 }
                 
                 //Befehl
@@ -358,7 +359,7 @@ class SwitchPointEditor {
      * @return Boolean
      * @throws \RWF\Xml\Exception\XmlException
      */
-    public function removeSwitchPoint() {
+    public function removeSwitchPoint($id) {
 
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);

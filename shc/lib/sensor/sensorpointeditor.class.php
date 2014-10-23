@@ -781,7 +781,7 @@ class SensorPointEditor {
     public function listSensorsWithoutRoom($orderBy = 'Id') {
 
         $sensors = array();
-        foreach($this->listSensors(Self::SORT_NOTHING) as $sensor) {
+        foreach($this->listSensors(self::SORT_NOTHING) as $sensor) {
 
             if(!$sensor->getRoom() instanceof Room) {
 

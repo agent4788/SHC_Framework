@@ -9,6 +9,8 @@ use RWF\Core\RWF;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Form\FormElements\SwitchCommandChooser;
+use SHC\Form\FormElements\SwitchServerChooser;
 use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -276,11 +278,7 @@ class ManageSwitchableContainersAjax extends AjaxCommand {
                 $elementChooser->setValues($values);
 
                 //Schaltbefehl
-                $switchCommand = new Select('switchCommand');
-                $switchCommand->setValues(array(
-                    '1' => RWF::getLanguage()->get('global.on'),
-                    '0' => RWF::getLanguage()->get('global.off')
-                ));
+                $switchCommand = new SwitchCommandChooser('switchCommand');
 
                 //Elemente Liste Template Anzeigen
                 $tpl->assign('SwitchableContainer', $element);

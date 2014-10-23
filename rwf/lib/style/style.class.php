@@ -104,11 +104,13 @@ class Style {
     public function fetchHtmlHeaderTags() {
 
         $html = '';
+        sort($this->cssFiles);
         foreach ($this->cssFiles as $file) {
 
             $html .= '<link rel="stylesheet" type="text/css" href="'. $file .'" />' . "\n";
         }
-        
+
+        sort($this->jsFiles);
         foreach ($this->jsFiles as $file) {
 
             $html .= '<script type="text/javascript" src="'. $file .'"></script>' . "\n";
