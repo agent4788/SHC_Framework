@@ -39,12 +39,13 @@ class UserAtHomeCondition extends AbstractCondition {
         
         //Liste mit den Benutzern zu Hause holen
         $usersAtHome = UserAtHomeEditor::getInstance()->listUsersAtHome();
+        $usersAtHomeIds = explode(',', $this->data['users']);
         
         //Benutzer durchlaufen und Pruefen ob jemand Online
         foreach ($usersAtHome as $userAtHome) {
             
             /* @var $userAtHome \SHC\UserAtHome\UserAtHome */
-            if(in_array($userAtHome->getId(), $this->data['users']) && $userAtHome->getState() == UserAtHome::STATE_ONLINE) {
+            if(in_array($userAtHome->getId(), $usersAtHomeIds) && $userAtHome->getState() == UserAtHome::STATE_ONLINE) {
                 
                 return true;
             }

@@ -3,6 +3,7 @@
 namespace SHC\Condition;
 
 //Imports
+use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 
@@ -211,7 +212,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Bedingung
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @param  Array   $data    Zusatzdaten
@@ -232,7 +233,7 @@ class ConditionEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Name der Bedingung schon belegt
-                    if (!$this->isConditionNameAvailable($name)) {
+                    if ((string) $condition->name != $name && !$this->isConditionNameAvailable($name)) {
 
                         throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
                     }
@@ -291,7 +292,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Datumsbedingung
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  String  $start   Startdatum
      * @param  String  $end     Enddatum
@@ -336,7 +337,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Wochentagsbedingung
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  String  $start   Starttag
      * @param  String  $end     Endtag
@@ -381,7 +382,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Zeitbedingung
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  String  $start   Startzeit
      * @param  String  $end     Endzeit
@@ -418,7 +419,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Bedingung fuer den Zeitraum zwischen Sonnenauf- und Sonnenuntergang
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
@@ -447,7 +448,7 @@ class ConditionEditor {
     /**
      * bearbeitet eine Bedingung fuer den Zeitraum zwischen Sonnenunter- und Sonnenaufgang
      * 
-     * @param  Integre $id      ID
+     * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
@@ -457,6 +458,74 @@ class ConditionEditor {
         
         //Datensatz bearbeiten
         return $this->editCondition($id, $name, $enabled);
+    }
+
+    /**
+     * erstellt eine neue Bedingung die prueft das niemand zu Hause ist
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addNobodyAtHomeCondition($name, $enabled) {
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\NobodyAtHomeCondition', $name, $enabled);
+    }
+
+    /**
+     * bearbeitet eine Bedingung die prueft das niemand zu Hause ist
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editNobodyAtHomeCondition($id, $name = null, $enabled = null) {
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled);
+    }
+
+    /**
+     * erstellt eine neue Bedingung fuer den Zeitraum zwischen Sonnenunter- und Sonnenaufgang
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addUserAtHomeCondition($name, array $users, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'users' => implode(',', $users)
+        );
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\UserAtHomeCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Bedingung fuer den Zeitraum zwischen Sonnenunter- und Sonnenaufgang
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editUserAtHomeCondition($id, $name = null, array $users = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'users' => ($users !== null ? implode(',', $users) : null)
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
     }
 
     /**

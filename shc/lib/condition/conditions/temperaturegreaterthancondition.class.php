@@ -45,7 +45,7 @@ class TemperatureGreaterThanCondition extends AbstractCondition {
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
             if ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP) {
 
-                $humidity = $sensor->getValue();
+                $humidity = $sensor->getTemperature();
                 if ($humidity >= (float) $this->data['temperature']) {
 
                     return true;
