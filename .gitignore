@@ -4,4 +4,3 @@ rwf/data/storage/*.xml
 shc/data/storage/*.xml
 errors.txt
 todo.txt
-shc/data/commands/cli/test/testcli.class.php
