@@ -32,7 +32,7 @@ class DateTimeFunction implements TemplateFunction {
         //Zeitobjekt vorbereiten
         if($value[0] instanceof DateTime) {
 
-            $time = LanguageDateTime::createFromDatabaseDateTime($value[0]);
+            $time = LanguageDateTime::createFormObject($value[0]);
         } else {
 
             $time = LanguageDateTime::now();
