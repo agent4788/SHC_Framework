@@ -415,7 +415,7 @@ class SwitchPoint {
      * @return \RWF\Date\DateTime
      */
     public function getLastExecute() {
-        
+
         return $this->lastExecute;
     }
 

@@ -16,6 +16,8 @@ $l['acp.switchpointsManagment.title'] = 'Schaltpunkte verwalten';
 
 //Schaltpunkte Tabelle
 $l['acp.switchpointsManagment.switchPointList.table.head.name'] = 'Name';
+$l['acp.switchpointsManagment.switchPointList.table.head.lastExecute'] = 'letzte Ausführung';
+$l['acp.switchpointsManagment.switchPointList.table.head.lastExecute.never'] = 'nie Ausgeführt';
 
 //Tooltip
 $l['acp.switchpointsManagment.tooltip.command'] = 'Befehl';
