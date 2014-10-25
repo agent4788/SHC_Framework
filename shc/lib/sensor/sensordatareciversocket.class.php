@@ -6,6 +6,7 @@ namespace SHC\Sensor;
 use RWF\IO\SocketServer;
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
+use RWF\IO\UDPSocketServer;
 use RWF\Request\CliResponse;
 
 /**
@@ -36,7 +37,7 @@ class SensorDataReciverSocket {
     /**
      * Server Objekt
      * 
-     * @var RWF\IO\SocketServer 
+     * @var \RWF\IO\SocketServer
      */
     protected $server = null;
 
@@ -45,7 +46,6 @@ class SensorDataReciverSocket {
      * 
      * @param \RWF\Request\CliResponse $response Antwortobjekt
      * @param Boolean                  $debug    Debug Meldungen ausgeben
-     * @return type
      */
     public function run(CliResponse $response, $debug = false) {
 
@@ -54,7 +54,7 @@ class SensorDataReciverSocket {
         RWF::getLanguage()->loadModul('SensorReciver');
 
         //Server Starten
-        $this->server = new SocketServer(RWF::getSetting('shc.sensorReciver.ip'), RWF::getSetting('shc.sensorReciver.port'));
+        $this->server = new UDPSocketServer(RWF::getSetting('shc.sensorReciver.ip'), RWF::getSetting('shc.sensorReciver.port'));
         $this->server->startServer();
 
         //Startmeldung
@@ -71,8 +71,7 @@ class SensorDataReciverSocket {
         while (true) {
 
             //Daten epfangen
-            $socketServerClient = $this->server->accept();
-            $data = base64_decode($socketServerClient->read(4096));
+            $data = base64_decode($this->server->read(4096));
             $request = json_decode($data, true);
 
             //Debug Ausgabe

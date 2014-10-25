@@ -3,6 +3,7 @@
 namespace SHC\Command\CLI;
 
 //Imports
+use RWF\IO\UDPSocket;
 use RWF\Request\Commands\CliCommand;
 use SHC\Sensor\SensorDataReciverSocket;
 use RWF\Core\RWF;
@@ -109,7 +110,7 @@ class SensorDataReciverServerCli extends CliCommand {
      */
     protected function stop() {
 
-        $socket = new Socket(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'), 2);
+        $socket = new UDPSocket(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'), 2);
         $socket->open();
         $socket->write(base64_encode(json_encode(array(array('stop' => 1)))));
         $socket->close();

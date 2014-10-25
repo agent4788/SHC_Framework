@@ -5,6 +5,7 @@ namespace SHC\Sensor;
 //Imports
 use RWF\Core\RWF;
 use RWF\IO\Socket;
+use RWF\IO\UDPSocket;
 
 /**
  * Liest Sensordaten vom Arduino aus
@@ -25,7 +26,7 @@ class SensorDataTransmitter {
     protected function connect() {
 
         //Vebindung zum RPi Reader Server aufbauen
-        $sensorReciver = new Socket(RWF::getSetting('shc.sensorTransmitter.ip'), RWF::getSetting('shc.sensorTransmitter.port'), 2);
+        $sensorReciver = new UDPSocket(RWF::getSetting('shc.sensorTransmitter.ip'), RWF::getSetting('shc.sensorTransmitter.port'), 2);
         try {
 
             $sensorReciver->open();
@@ -49,6 +50,9 @@ class SensorDataTransmitter {
     public function transmitSensorData($debug = false) {
 
         while (true) {
+
+            //Verbinden
+            $sensorReciver = connect();
 
             //DS18x20 einlesen und an den Server senden
             if (file_exists('/sys/bus/w1/devices/')) {
@@ -83,17 +87,17 @@ class SensorDataTransmitter {
                         }
 
                         //Daten an den Sensor Reciver senden
-                        $sensorReciver = connect();
                         $sensorReciver->write(base64_encode(json_encode($data)));
-                        $sensorReciver->close();
-                        $sensorReciver = null;
                     }
                 }
             }
             
             //DHT
             //BMP
-            //MCP3008 oder MCP3208 fuer die Analogsensoren 
+            //MCP3008 oder MCP3208 fuer die Analogsensoren
+
+            $sensorReciver->close();
+            $sensorReciver = null;
         }
     }
 
