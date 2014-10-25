@@ -56,7 +56,7 @@ class XmlEditor extends \SimpleXMLElement {
         //Objekt erzeugen
         try {
 
-            return new XmlEditor($xmlString);
+            return new XmlEditor($xmlString, LIBXML_NOCDATA);
         } catch (\Exception $e) {
 
             throw new XmlException('Die XML Datei konnte nicht geladen werden', 1100, \libxml_get_errors());
@@ -83,7 +83,7 @@ class XmlEditor extends \SimpleXMLElement {
         //Objekt erzeugen
         try {
 
-            $xml = new XmlEditor(file_get_contents($file));
+            $xml = new XmlEditor($file, LIBXML_NOCDATA, true);
             $xml->setFileName($file);
             return $xml;
         } catch (\Exception $e) {
@@ -146,6 +146,36 @@ class XmlEditor extends \SimpleXMLElement {
     public function getFileName() {
 
         return $this->fileName;
+    }
+
+    /**
+     * fuegt einen Text in einem CDATA Bereich umfasst ein
+     *
+     * @param String $cdataContent Inhalt
+     */
+    public function addCData($cdataContent){
+
+        $node= dom_import_simplexml($this);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection(str_replace(']]>', '',$cdataContent)));
+    }
+
+    /**
+     * erstellt ein neues Tag und fuegt einen Text in einem CDATA Bereich umfasst ein
+     *
+     * @param String $cdataContent Inhalt
+     */
+    public function addChildWithCDATA($name, $cdataContent = NULL) {
+
+        $newChild = $this->addChild($name);
+
+        if ($newChild !== NULL) {
+            $node = dom_import_simplexml($newChild);
+            $no   = $node->ownerDocument;
+            $node->appendChild($no->createCDATASection(str_replace(']]>', '', $cdataContent)));
+        }
+
+        return $newChild;
     }
 
     /**
