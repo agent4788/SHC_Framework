@@ -3,6 +3,7 @@
 namespace SHC\View\Room;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Util\String;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Readables\ArduinoInput;
@@ -48,7 +49,7 @@ class ReadableViewHelper {
     protected static function showArduinoInput(ArduinoInput $readable, $ignoreShow = false) {
 
         $html = '';
-        if ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW)) {
+        if ($readable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW))) {
 
             $html = '<div class="shc-contentbox-body-row shc-view-readable">';
             $html .= '<span class="shc-contentbox-body-row-title">'. String::encodeHtml($readable->getName()) .'</span>';
@@ -69,7 +70,7 @@ class ReadableViewHelper {
     protected static function showRpiGpioInput(RpiGpioInput $readable, $ignoreShow = false) {
 
         $html = '';
-        if ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW)) {
+        if ($readable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW))) {
 
             $html = '<div class="shc-contentbox-body-row shc-view-readable">';
             $html .= '<span class="shc-contentbox-body-row-title">'. String::encodeHtml($readable->getName()) .'</span>';

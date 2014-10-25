@@ -331,7 +331,7 @@ abstract class AbstractReadable implements Readable {
         if (isset($this->allowedUserGroups[0]) && $this->allowedUserGroups[0] != '') {
 
             //Hauptgruppe pruefen
-            if (in_array($user->getMainGroup()->getId(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
+            if (in_array($user->getMainGroup(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
 
                 return true;
             }
@@ -339,7 +339,7 @@ abstract class AbstractReadable implements Readable {
             //Alle Benutzergruppen pruefen
             foreach ($user->listGroups() as $userGroup) {
 
-                if ($userGroup instanceof UserGroup && in_array($userGroup->getId(), $this->allowedUserGroups)) {
+                if ($userGroup instanceof UserGroup && in_array($userGroup, $this->allowedUserGroups)) {
 
                     return true;
                 }

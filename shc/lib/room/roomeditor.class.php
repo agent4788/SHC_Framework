@@ -3,6 +3,8 @@
 namespace SHC\Room;
 
 //Imports
+use RWF\User\UserEditor;
+use RWF\User\UserGroup;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 use RWF\Util\String;
@@ -68,9 +70,19 @@ class RoomEditor {
         //Daten einlesen
         foreach ($xml->room as $room) {
 
-            $this->rooms[(int) $room->id] = new Room(
-                    (int) $room->id, (string) $room->name, (int) $room->orderId, ((int) $room->enabled == 1 ? true : false), explode(',', (string) $room->allowedUserGroups)
+            $id = (int) $room->id;
+            $this->rooms[$id] = new Room(
+                $id, (string) $room->name, (int) $room->orderId, ((int) $room->enabled == 1 ? true : false)
             );
+
+            foreach(explode(',', (string) $room->allowedUserGroups) as $allowedGroupId) {
+
+                $group = UserEditor::getInstance()->getUserGroupById($allowedGroupId);
+                if($group instanceof UserGroup) {
+
+                    $this->rooms[$id]->addAllowedUserGroup($group);
+                }
+            }
         }
     }
 

@@ -26,10 +26,10 @@ class SrciptPrefilter implements TemplatePrefilter {
      */
     public function execute(TemplateCompiler $compiler, $content) {
 
-        $content = @preg_replace('#\{js\}(.*?)\{/js\}#ies', '$this->scriptJS(\'$1\')', $content);
-        $content = @preg_replace('#\{js\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', '$this->scriptJSSrc(\'$1\')', $content);
-        $content = @preg_replace('#\{css\}(.*?)\{/css\}#ies', '$this->css(\'$1\')', $content);
-        $content = @preg_replace('#\{css\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', '$this->cssSrc(\'$1\')', $content);
+        $content = @preg_replace('#\{js\}(.*?)\{/js\}#ies', 'self::scriptJS', $content);
+        $content = @preg_replace('#\{js\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', 'self::scriptJSSrc', $content);
+        $content = @preg_replace('#\{css\}(.*?)\{/css\}#ies', 'self::css', $content);
+        $content = @preg_replace('#\{css\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', 'self::cssSrc', $content);
 
         return $content;
     }
@@ -40,9 +40,9 @@ class SrciptPrefilter implements TemplatePrefilter {
      * @param  String $content Script Code
      * @return String          Code
      */
-    protected function scriptJS($content) {
+    protected function scriptJS($matches) {
 
-        return '<script type="text/javascript">{literal}' . $content . '{/literal}</script>';
+        return '<script type="text/javascript">{literal}' . $matches[1] . '\{/literal}</script>';
     }
 
     /**
@@ -51,9 +51,9 @@ class SrciptPrefilter implements TemplatePrefilter {
      * @param  String $src Quelle
      * @return String      Code
      */
-    protected function scriptJSSrc($src) {
+    protected function scriptJSSrc($matches) {
 
-        return '<script type="text/javascript" src="' . $src . '"></script>';
+        return '<script type="text/javascript" src="' . $matches[1] . '"></script>';
     }
 
     /**
@@ -62,9 +62,9 @@ class SrciptPrefilter implements TemplatePrefilter {
      * @param  String $content CSS Code
      * @return String          Code
      */
-    protected function css($content) {
+    protected function css($matches) {
 
-        return '<style type="text/css">{literal}' . $content . '{/literal}</style>';
+        return '<style type="text/css">{literal}' . $matches[1] . '{/literal}</style>';
     }
 
     /**
@@ -73,9 +73,9 @@ class SrciptPrefilter implements TemplatePrefilter {
      * @param  String $src Quelle
      * @return String      Code
      */
-    protected function cssSrc($src) {
+    protected function cssSrc($matches) {
 
-        return '<link rel="stylesheet" type="text/css" href="' . $src . '" />';
+        return '<link rel="stylesheet" type="text/css" href="' . $matches[1] . '" />';
     }
 
     /**

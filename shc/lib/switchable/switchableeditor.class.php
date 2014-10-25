@@ -254,7 +254,7 @@ class SwitchableEditor {
             }
 
             //Benutzergruppen
-            $userGroups = explode(',', (string) $switchable->allowedUserGrups);
+            $userGroups = explode(',', (string) $switchable->allowedUserGroups);
             foreach ($userGroups as $userGroupId) {
 
                 $userGroup = UserEditor::getInstance()->getUserGroupById($userGroupId);
@@ -734,7 +734,7 @@ class SwitchableEditor {
                         } elseif ($value !== null) {
 
                             //wenn kein Array als Tag Wert
-                            $switchable->addChild($tag, $value);
+                            $switchable->$tag = $value;
                         }
                     }
                 }

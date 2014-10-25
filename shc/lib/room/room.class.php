@@ -58,15 +58,13 @@ class Room {
      * @param String  $name              Name des Raums
      * @param Integer $orderId           Sortierungs ID
      * @param Boolean $enabled           Aktiviert
-     * @param Array   $allowedUserGroups Berechtigte Benutzergruppen
      */
-    public function __construct($id, $name, $orderId = 0, $enabled = true, array $allowedUserGroups = array()) {
+    public function __construct($id, $name, $orderId = 0, $enabled = true) {
         
         $this->id = $id;
         $this->name = $name;
         $this->orderId = $orderId;
         $this->enable($enabled);
-        $this->allowedUserGroups = $allowedUserGroups;
     }
     
     /**
@@ -218,7 +216,7 @@ class Room {
         if (isset($this->allowedUserGroups[0]) && $this->allowedUserGroups[0] != '') {
 
             //Hauptgruppe pruefen
-            if (in_array($user->getMainGroup()->getId(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
+            if (in_array($user->getMainGroup(), $this->allowedUserGroups) || ($user instanceof User && $user->isOriginator())) {
 
                 return true;
             }
@@ -226,7 +224,7 @@ class Room {
             //Alle Benutzergruppen pruefen
             foreach ($user->listGroups() as $userGroup) {
 
-                if ($userGroup instanceof UserGroup && in_array($userGroup->getId(), $this->allowedUserGroups)) {
+                if ($userGroup instanceof UserGroup && in_array($userGroup, $this->allowedUserGroups)) {
 
                     return true;
                 }

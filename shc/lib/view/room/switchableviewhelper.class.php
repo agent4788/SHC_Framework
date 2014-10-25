@@ -3,6 +3,7 @@
 namespace SHC\View\Room;
 
 //Imports
+use RWF\Core\RWF;
 use SHC\Core\SHC;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
@@ -64,7 +65,7 @@ class SwitchableViewHelper {
     protected static function showActivity(Activity $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
@@ -83,7 +84,7 @@ class SwitchableViewHelper {
     protected static function showArduinoOutput(ArduinoOutput $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
@@ -102,7 +103,7 @@ class SwitchableViewHelper {
     protected static function showCountdown(Countdown $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
@@ -121,7 +122,7 @@ class SwitchableViewHelper {
     protected static function showRadioSocket(RadioSocket $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
@@ -140,7 +141,7 @@ class SwitchableViewHelper {
     protected static function showRpiGpioOutput(RpiGpioOutput $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
@@ -159,7 +160,7 @@ class SwitchableViewHelper {
     protected static function showWakeOnLan(WakeOnLan $switchable, $ignoreShow = false) {
         
         $html = '';
-        if ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW)) {
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);

@@ -19,10 +19,10 @@ use RWF\User\UserEditor;
 class GroupPremissonChooser extends SelectMultipleWithEmptyElement {
 
     /**
-     * @param String $name        Feld Name
-     * @param Array  $selectedIds Ausgewaehlte IDs
+     * @param String $name           Feld Name
+     * @param Array  $selectedGroups Ausgewaehlte Gruppen
      */
-    public function __construct($name, $selectedIds = array()) {
+    public function __construct($name, $selectedGroups = array()) {
 
         $this->setName($name);
 
@@ -31,11 +31,18 @@ class GroupPremissonChooser extends SelectMultipleWithEmptyElement {
             'emptyLabel' => RWF::getLanguage()->get('acpindex.allUsers'),
             'emptySelected' => false
         );
-        if(!count($selectedIds) || (isset($selectedIds[0]) && $selectedIds[0] == '')) {
+        if(!count($selectedGroups) || (isset($selectedGroups[0]) && $selectedGroups[0] == '')) {
 
             $options['emptySelected'] = true;
         }
         $this->setOptions($options);
+
+        //IDs auflisten
+        $selectedIds = array();
+        foreach($selectedGroups as $group) {
+
+            $selectedIds[] = $group->getId();
+        }
 
         //Daten laden
         $values = array();
