@@ -211,7 +211,7 @@ class LanguageDateTime extends DateTime {
      * @return String
      */
     public function showDateTime($dateFormat = '', $timeFormat = '', $withDayNames = true, $timeOnlyThisDays = true) {
-        
+
         if($timeOnlyThisDays == true) {
             
             $diff = $this->DiffDaysFromToday();
