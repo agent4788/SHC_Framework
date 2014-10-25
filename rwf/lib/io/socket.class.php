@@ -167,7 +167,6 @@ class Socket {
     public function open() {
 
         //Socket erstellen
-        //TCP Socket
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
         socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => $this->getTimeout(), 'usec' => 0));
