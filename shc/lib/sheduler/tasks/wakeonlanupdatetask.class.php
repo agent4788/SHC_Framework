@@ -45,7 +45,7 @@ class WakeOnLanUpdateTask extends AbstractTask {
         //alle Elemente durchlaufen und Pruefen ob ausfuehrbar
         foreach ($switchables as $switchable) {
 
-            if($switchable instanceof WakeOnLan) {
+            if($switchable instanceof WakeOnLan && $switchable->isEnabled()) {
                 
                 //Ping senden
                 $state = exec(sprintf('ping -c 1 -W 1 %s', escapeshellarg($switchable->getIpAddress())), $res, $rval);

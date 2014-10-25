@@ -43,19 +43,25 @@ class UserAtHomeUpdateTask extends AbstractTask {
 
         //Pruefen ob Benutzer zu Hause
         foreach ($usersAtHome as $userAtHome) {
-            
-            //Ping senden
+
             /* @var $userAtHome \SHC\UserAtHome\UserAtHome */
-            $state = exec(sprintf('ping -c 1 -W 1 %s', escapeshellarg($userAtHome->getIpAddress())), $res, $rval);
 
-            if (strlen($state) > 0) {
+            //Pruefen ob Benutzer zu hause
+            if($userAtHome->isEnabled()) {
 
-                //online
-                $userAtHome->setState(Element::STATE_ON);
-            } else {
+                //Ping senden
+                $state = exec(sprintf('ping -c 1 -W 1 %s', escapeshellarg($userAtHome->getIpAddress())), $res, $rval);
 
-                //offline
-                $userAtHome->setState(Element::STATE_OFF);
+                //Auswerten
+                if (strlen($state) > 0) {
+
+                    //online
+                    $userAtHome->setState(Element::STATE_ON);
+                } else {
+
+                    //offline
+                    $userAtHome->setState(Element::STATE_OFF);
+                }
             }
         }
 

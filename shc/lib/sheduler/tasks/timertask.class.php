@@ -46,7 +46,7 @@ class TimerTask extends AbstractTask {
         //alle Elemente durchlaufen und Pruefen ob ausfuehrbar
         foreach ($switchables as $switchable) {
 
-            if($switchable instanceof Countdown) {
+            if($switchable instanceof Countdown && $switchable->isEnabled()) {
                 
                 //Pruefen ob Countdown abgelaufen
                 $switchOffTime = $switchable->getSwitchOffTime();
@@ -54,7 +54,7 @@ class TimerTask extends AbstractTask {
                     
                     $switchable->switchOff();
                 }                
-            } elseif($switchable instanceof Switchable) {
+            } elseif($switchable instanceof Switchable && $switchable->isEnabled()) {
 
                 //Pruefen ob Schaltpunkte ausfuehrbar sind
                 $switchable->execute();
