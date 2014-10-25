@@ -401,9 +401,25 @@ class AddConditionFormAjax extends AjaxCommand {
                         $startDate = $conditionForm->getElementByName('startDate')->getValue();
                         $endDate = $conditionForm->getElementByName('endDate')->getValue();
 
-                        //Datumsangaben pruefen
+
                         $message = new Message();
-                        if(preg_match('#\d\d\-\d\d#', $startDate) && preg_match('#\d\d\-\d\d#', $endDate)) {
+
+                        //Datumsangaben pruefen
+                        $valid = true;
+                        $matches = array();
+                        preg_match('#(\d\d)\-(\d\d)#', $startDate, $matches);
+                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+
+                            $valid = false;
+                        }
+
+                        $matches = array();
+                        preg_match('#(\d\d)\-(\d\d)#', $endDate, $matches);
+                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+
+                            $valid = false;
+                        }
+                        if($valid === true) {
 
                             //Speichern
                             try {

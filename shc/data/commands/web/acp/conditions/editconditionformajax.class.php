@@ -540,31 +540,55 @@ class EditConditionFormAjax extends AjaxCommand {
                 $startDate = $conditionForm->getElementByName('startDate')->getValue();
                 $endDate = $conditionForm->getElementByName('endDate')->getValue();
 
-                //Speichern
                 $message = new Message();
-                try {
 
-                    ConditionEditor::getInstance()->editDateCondition($conditionId, $name, $startDate, $endDate, $enabled);
-                    $message->setType(Message::SUCCESSFULLY);
-                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
-                } catch(\Exception $e) {
+                //Datumsangaben pruefen
+                $valid = true;
+                $matches = array();
+                preg_match('#(\d\d)\-(\d\d)#', $startDate, $matches);
+                if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
 
-                    if($e->getCode() == 1502) {
+                    $valid = false;
+                }
 
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
-                    } elseif($e->getCode() == 1102) {
+                $matches = array();
+                preg_match('#(\d\d)\-(\d\d)#', $endDate, $matches);
+                if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
 
-                        //fehlende Schreibrechte
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
-                    } else {
+                    $valid = false;
+                }
+                if($valid === true) {
 
-                        //Allgemeiner Fehler
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                    //Speichern
+                    try {
+
+                        ConditionEditor::getInstance()->editDateCondition($conditionId, $name, $startDate, $endDate, $enabled);
+                        $message->setType(Message::SUCCESSFULLY);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                    } catch(\Exception $e) {
+
+                        if($e->getCode() == 1502) {
+
+                            //Name schon vergeben
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                        } elseif($e->getCode() == 1102) {
+
+                            //fehlende Schreibrechte
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                        } else {
+
+                            //Allgemeiner Fehler
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                        }
                     }
+                } else {
+
+                    //ungueltige Daten angegeben
+                    $message->setType(Message::ERROR);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.invalidDate'));
                 }
                 $tpl->assign('message', $message);
             } else {
