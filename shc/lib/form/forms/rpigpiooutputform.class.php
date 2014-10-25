@@ -80,7 +80,7 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.active.description'));
@@ -88,7 +88,7 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $this->addFormElement($enabled);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.visibility.description'));

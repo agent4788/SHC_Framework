@@ -62,7 +62,7 @@ class TemperatureConditionForm extends DefaultHtmlForm {
         $this->addFormElement($temperature);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($condition !== null ? $condition->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($condition !== null ? $condition->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active.description'));

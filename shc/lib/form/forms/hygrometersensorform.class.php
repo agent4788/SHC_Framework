@@ -47,7 +47,7 @@ class HygrometerSensorForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($sensor instanceof Hygrometer ? $sensor->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($sensor instanceof Hygrometer ? $sensor->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility.description'));
@@ -55,7 +55,7 @@ class HygrometerSensorForm extends DefaultHtmlForm {
         $this->addFormElement($visibility);
 
         //Wetr Sichtbar
-        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof Hygrometer ? $sensor->isValueVisible() : false));
+        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof Hygrometer ? $sensor->isValueVisible() : true));
         $valueVisibility->setOnOffLabel();
         $valueVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility'));
         $valueVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility.description'));

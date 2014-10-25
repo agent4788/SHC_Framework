@@ -47,7 +47,7 @@ class DHTSensorForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($sensor instanceof DHT ? $sensor->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($sensor instanceof DHT ? $sensor->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility.description'));
@@ -55,7 +55,7 @@ class DHTSensorForm extends DefaultHtmlForm {
         $this->addFormElement($visibility);
 
         //Temperatur Sichtbar
-        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof DHT ? $sensor->isTemperatureVisible() : false));
+        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof DHT ? $sensor->isTemperatureVisible() : true));
         $temperatureVisibility->setOnOffLabel();
         $temperatureVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility'));
         $temperatureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility.description'));
@@ -63,7 +63,7 @@ class DHTSensorForm extends DefaultHtmlForm {
         $this->addFormElement($temperatureVisibility);
 
         //Luftdfeuchte sichtbar
-        $humidityVisibility = new OnOffOption('humidityVisibility', ($sensor instanceof DHT ? $sensor->isHumidityVisible() : false));
+        $humidityVisibility = new OnOffOption('humidityVisibility', ($sensor instanceof DHT ? $sensor->isHumidityVisible() : true));
         $humidityVisibility->setOnOffLabel();
         $humidityVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.humidityVisibility'));
         $humidityVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.humidityVisibility.description'));

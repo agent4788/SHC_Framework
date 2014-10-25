@@ -81,7 +81,7 @@ class TimeOfDayConditionForm extends DefaultHtmlForm {
         $this->addFormElement($endMinute);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($condition  instanceof TimeOfDayCondition ? $condition->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($condition  instanceof TimeOfDayCondition ? $condition->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active.description'));

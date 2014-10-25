@@ -53,7 +53,7 @@ class DateConditionForm extends DefaultHtmlForm {
         $this->addFormElement($endDate);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($condition  instanceof DateCondition ? $condition->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($condition  instanceof DateCondition ? $condition->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.conditionManagement.form.condition.active.description'));

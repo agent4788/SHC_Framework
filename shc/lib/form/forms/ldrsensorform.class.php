@@ -47,15 +47,15 @@ class LDRSensorForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($sensor instanceof LDR ? $sensor->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($sensor instanceof LDR ? $sensor->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility.description'));
         $visibility->requiredField(true);
         $this->addFormElement($visibility);
 
-        //Wetr Sichtbar
-        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof LDR ? $sensor->isValueVisible() : false));
+        //Wert Sichtbar
+        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof LDR ? $sensor->isValueVisible() : true));
         $valueVisibility->setOnOffLabel();
         $valueVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility'));
         $valueVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility.description'));

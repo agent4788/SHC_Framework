@@ -73,7 +73,7 @@ class WolForm extends DefaultHtmlForm {
         $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.active.description'));
@@ -81,7 +81,7 @@ class WolForm extends DefaultHtmlForm {
         $this->addFormElement($enabled);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.visibility.description'));

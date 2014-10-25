@@ -47,7 +47,7 @@ class DS18x20SensorForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($sensor instanceof DS18x20 ? $sensor->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($sensor instanceof DS18x20 ? $sensor->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility.description'));
@@ -55,7 +55,7 @@ class DS18x20SensorForm extends DefaultHtmlForm {
         $this->addFormElement($visibility);
 
         //Temperatur Sichtbar
-        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof DS18x20 ? $sensor->isTemperatureVisible() : false));
+        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof DS18x20 ? $sensor->isTemperatureVisible() : true));
         $temperatureVisibility->setOnOffLabel();
         $temperatureVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility'));
         $temperatureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility.description'));

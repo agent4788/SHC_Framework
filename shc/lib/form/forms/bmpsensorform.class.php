@@ -47,7 +47,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($sensor instanceof BMP ? $sensor->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($sensor instanceof BMP ? $sensor->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.visibility.description'));
@@ -55,7 +55,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($visibility);
 
         //Temperatur Sichtbar
-        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof BMP ? $sensor->isTemperatureVisible() : false));
+        $temperatureVisibility = new OnOffOption('temperatureVisibility', ($sensor instanceof BMP ? $sensor->isTemperatureVisible() : true));
         $temperatureVisibility->setOnOffLabel();
         $temperatureVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility'));
         $temperatureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility.description'));
@@ -63,7 +63,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($temperatureVisibility);
 
         //Luftdruck sichtbar
-        $pressureVisibility = new OnOffOption('pressureVisibility', ($sensor instanceof BMP ? $sensor->isPressureVisible() : false));
+        $pressureVisibility = new OnOffOption('pressureVisibility', ($sensor instanceof BMP ? $sensor->isPressureVisible() : true));
         $pressureVisibility->setOnOffLabel();
         $pressureVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureVisibility'));
         $pressureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureVisibility.description'));
@@ -71,7 +71,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($pressureVisibility);
 
         //Standorthoehe sichtbar
-        $altitudeVisibility = new OnOffOption('altitudeVisibility', ($sensor instanceof BMP ? $sensor->isAltitudeVisible() : false));
+        $altitudeVisibility = new OnOffOption('altitudeVisibility', ($sensor instanceof BMP ? $sensor->isAltitudeVisible() : true));
         $altitudeVisibility->setOnOffLabel();
         $altitudeVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.altitudeVisibility'));
         $altitudeVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.altitudeVisibility.description'));

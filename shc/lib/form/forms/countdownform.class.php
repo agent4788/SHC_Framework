@@ -71,7 +71,7 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($countdown instanceof Countdown ? $countdown->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($countdown instanceof Countdown ? $countdown->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.active.description'));
@@ -79,7 +79,7 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($enabled);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($countdown instanceof Countdown ? $countdown->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($countdown instanceof Countdown ? $countdown->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.visibility.description'));

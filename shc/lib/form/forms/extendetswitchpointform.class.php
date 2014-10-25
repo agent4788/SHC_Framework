@@ -135,7 +135,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
         $this->addFormElement($minute);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($switchPoint instanceof SwitchPoint ? $switchPoint->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($switchPoint instanceof SwitchPoint ? $switchPoint->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.active.decription'));

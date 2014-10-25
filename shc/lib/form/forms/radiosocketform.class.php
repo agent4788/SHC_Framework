@@ -86,7 +86,7 @@ class RadiosocketForm extends DefaultHtmlForm {
         $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($radioSocket instanceof RadioSocket ? $radioSocket->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($radioSocket instanceof RadioSocket ? $radioSocket->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.active.description'));
@@ -94,7 +94,7 @@ class RadiosocketForm extends DefaultHtmlForm {
         $this->addFormElement($enabled);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($radioSocket instanceof RadioSocket ? $radioSocket->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($radioSocket instanceof RadioSocket ? $radioSocket->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.visibility.description'));

@@ -64,7 +64,7 @@ class ActivityForm extends DefaultHtmlForm {
         $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($activity instanceof Activity ? $activity->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($activity instanceof Activity ? $activity->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.active.description'));
@@ -72,7 +72,7 @@ class ActivityForm extends DefaultHtmlForm {
         $this->addFormElement($enabled);
 
         //Sichtbarkeit
-        $visibility = new OnOffOption('visibility', ($activity instanceof Activity ? $activity->isVisible() : false));
+        $visibility = new OnOffOption('visibility', ($activity instanceof Activity ? $activity->isVisible() : true));
         $visibility->setOnOffLabel();
         $visibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.visibility'));
         $visibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.visibility.description'));

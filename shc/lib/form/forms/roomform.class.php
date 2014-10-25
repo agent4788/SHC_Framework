@@ -39,7 +39,7 @@ class RoomForm extends DefaultHtmlForm {
         $this->addFormElement($name);
 
         //Aktiv/Inaktiv
-        $enabled = new OnOffOption('enabled', ($room instanceof Room ? $room->isEnabled() : false));
+        $enabled = new OnOffOption('enabled', ($room instanceof Room ? $room->isEnabled() : true));
         $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.roomManagement.form.room.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.roomManagement.form.room.active.description'));
