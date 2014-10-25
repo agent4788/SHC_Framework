@@ -409,3 +409,10 @@ div.shc-view-buttons {
 div.shc-view-switchableManagement-innerTableBox {
     padding: 5px;
 }
+
+/* Tooltips */
+
+span.tooltip_strong {
+    font-weight: bold;
+    display: inline-block;
+}

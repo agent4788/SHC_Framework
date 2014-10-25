@@ -17,6 +17,21 @@ $l['acp.switchpointsManagment.title'] = 'Schaltpunkte verwalten';
 //Schaltpunkte Tabelle
 $l['acp.switchpointsManagment.switchPointList.table.head.name'] = 'Name';
 
+//Tooltip
+$l['acp.switchpointsManagment.tooltip.command'] = 'Befehl';
+$l['acp.switchpointsManagment.tooltip.condition'] = 'Bedingungen';
+$l['acp.switchpointsManagment.tooltip.condition.none'] = 'keine';
+$l['acp.switchpointsManagment.tooltip.year'] = 'Jahr';
+$l['acp.switchpointsManagment.tooltip.year.every'] = 'jedes Jahr';
+$l['acp.switchpointsManagment.tooltip.month'] = 'Monat';
+$l['acp.switchpointsManagment.tooltip.month.every'] = 'jeden Monat';
+$l['acp.switchpointsManagment.tooltip.day'] = 'Tag';
+$l['acp.switchpointsManagment.tooltip.day.every'] = 'jeden Tag';
+$l['acp.switchpointsManagment.tooltip.hour'] = 'Stunde';
+$l['acp.switchpointsManagment.tooltip.hour.every'] = 'jede Stunde';
+$l['acp.switchpointsManagment.tooltip.minute'] = 'Minute';
+$l['acp.switchpointsManagment.tooltip.minute.every'] = 'jede Minute';
+
 //Buttons
 $l['acp.switchpointsManagment.button.addSwitchPoint'] = 'neuer Schaltpunkt';
 $l['acp.switchpointsManagment.button.addSwitchPoint.extendetForm'] = 'erweitert';

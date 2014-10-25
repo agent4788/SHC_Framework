@@ -3,7 +3,14 @@
 namespace SHC\Timer;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Date\DateTime;
+use RWF\Util\String;
+use SHC\Condition\Conditions\HumidityGreaterThanCondition;
+use SHC\Condition\Conditions\HumidityLowerThanCondition;
+use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
+use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
+use SHC\Condition\Conditions\MoistureGreaterThanCondition;
 
 /**
  * Schaltpunkt
@@ -432,6 +439,172 @@ class SwitchPoint {
     public function getCommand() {
         
         return $this->command;
+    }
+
+    /**
+     * gibt ein HTML Fragment fuer ein Tooltip zurueck
+     *
+     * @return String
+     */
+    public function fetchTooltip()
+    {
+
+        $html = '';
+
+        //Befehl
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.command') . '</span>:';
+        $html .= '<span>';
+        $html .= ($this->command == 1 ? RWF::getLanguage()->get('global.on') : RWF::getLanguage()->get('global.coff'));
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Bedingungen
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.condition') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (count($this->conditions)) {
+
+            foreach ($this->conditions as $condition) {
+
+                /* @var $condition \SHC\Condition\Condition */
+                $html .= $comma . String::encodeHTML($condition->getName());
+                $comma = ', </br>';
+            }
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.condition.none');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Jahr
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.year') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (isset($this->year[0]) && $this->year[0] != '*') {
+
+            $html .= ' '. implode(', ', $this->year);
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.year.every');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Monat
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.month') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (isset($this->month[0]) && $this->month[0] != '*') {
+
+            $str = implode(', ', $this->month);
+            $str = str_replace(
+                array(
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
+                ), array(
+                    RWF::getLanguage()->get('global.date.month.1.short'),
+                    RWF::getLanguage()->get('global.date.month.2.short'),
+                    RWF::getLanguage()->get('global.date.month.3.short'),
+                    RWF::getLanguage()->get('global.date.month.4.short'),
+                    RWF::getLanguage()->get('global.date.month.5.short'),
+                    RWF::getLanguage()->get('global.date.month.6.short'),
+                    RWF::getLanguage()->get('global.date.month.7.short'),
+                    RWF::getLanguage()->get('global.date.month.8.short'),
+                    RWF::getLanguage()->get('global.date.month.9.short'),
+                    RWF::getLanguage()->get('global.date.month.10.short'),
+                    RWF::getLanguage()->get('global.date.month.11.short'),
+                    RWF::getLanguage()->get('global.date.month.12.short')
+                ), $str
+            );
+            $html .= ' '. $str;
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.month.every');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Tag
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.day') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (isset($this->day[0]) && $this->day[0] != '*') {
+
+            $str = implode(', ', $this->day);
+            $str = str_replace(
+                array(
+                    'mon',
+                    'tue',
+                    'wed',
+                    'thu',
+                    'fri',
+                    'sat',
+                    'sun'
+                ), array(
+                    RWF::getLanguage()->get('global.date.weekDay.mon.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.tue.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.wed.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.thu.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.fri.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.sat.short'),
+                    RWF::getLanguage()->get('global.date.weekDay.sun.short')
+                ), $str
+            );
+            $html .= ' '. $str;
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.day.every');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Stunde
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.hour') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (isset($this->hour[0]) && $this->hour[0] != '*') {
+
+            $html .= ' '. implode(', ', $this->hour);
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.hour.every');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        //Minute
+        $html .= '<div class="tootlip_row">';
+        $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.minute') . '</span>:';
+        $html .= '<span>';
+        $comma = ' ';
+        if (isset($this->minute[0]) && $this->minute[0] != '*') {
+
+            $html .= ' '. implode(', ', $this->minute);
+        } else {
+
+            $html .= RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.minute.every');
+        }
+        $html .= '</span>';
+        $html .= '</div>';
+
+        return $html;
     }
 
     /**

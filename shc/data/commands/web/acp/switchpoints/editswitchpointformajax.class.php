@@ -36,8 +36,7 @@ class EditSwitchPointFormAjax extends AjaxCommand {
     /**
      * Daten verarbeiten
      */
-    public function processData()
-    {
+    public function processData() {
 
         //Template Objekt holen
         $tpl = RWF::getTemplate();

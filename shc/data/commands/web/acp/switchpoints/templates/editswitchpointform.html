@@ -33,7 +33,7 @@
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchpointsManagment.title"}');
         $('.shc-view-buttonSet').buttonset();
 
-        {if $type == 'extendet' && $message|isset == false}
+        {if $type != 'extendet' && $message|isset == false}
         $('#shc-view-switchpointsManagment-extendetForm').click(function() {
 
             $.get("index.php?app=shc&ajax=editswitchpointform&type=extendet&id={$switchPoint->getId()}", function(data, textStatus, jqXHR) {

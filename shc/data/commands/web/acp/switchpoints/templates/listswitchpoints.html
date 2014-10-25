@@ -11,7 +11,23 @@
             <tbody>
             {foreach from=$switchPointsList item='switchPoint'}
             <tr>
-                <td>{if $switchPoint->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$switchPoint->getName()}{if $switchPoint->isEnabled() == false}</span>{/if}</td>
+                <td>
+                    <span style="cursor: pointer;" id="shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip" title="">{if $switchPoint->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$switchPoint->getName()}{if $switchPoint->isEnabled() == false}</span>{/if}</span>
+                    <div id="shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip-content" style="display: none;">
+                        {$switchPoint->fetchTooltip()}
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+
+                            $('#shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip').tooltip({
+                                content: function() {
+                                    return $('#shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip-content').html();
+                                },
+                                track: true
+                            });
+                        });
+                    </script>
+                </td>
                 <td>
                     {editlink link='index.php?app=shc&ajax=editswitchpointform&id=' id=$switchPoint->getId()}
                     {deletelink link='index.php?app=shc&ajax=deleteswitchpoint&id=' id=$switchPoint->getId() prompt='acp.switchpointsManagment.prompt.deleteSwitchPoint' title='acp.switchpointsManagment.prompt.deleteSwitchPoint.title'}
