@@ -301,6 +301,7 @@ class SensorPointEditor {
             if ((int) $xml->id != $sensorPoint->getId()) {
 
                 $xml->id = $sensorPoint->getId();
+                $xml->name = $sensorPoint->getName();
             }
 
             //Allgemeine Daten setzen
@@ -889,7 +890,7 @@ class SensorPointEditor {
             if ($name !== null) {
 
                 //Ausnahme wenn Elementname schon belegt
-                if (!$this->isSensorPointNameAvailable($name)) {
+                if ((string) $xml->name != $name && !$this->isSensorPointNameAvailable($name)) {
 
                     throw new \Exception('Der Name ist schon vergeben', 1507);
                 }

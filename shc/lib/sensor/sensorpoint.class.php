@@ -148,6 +148,10 @@ class SensorPoint {
      */
     public function getName() {
 
+        if($this->name == '') {
+
+            return 'SensorPoint-'. $this->getId();
+        }
         return $this->name;
     }
 

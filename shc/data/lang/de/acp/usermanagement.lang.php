@@ -100,3 +100,5 @@ $l['acp.userManagement.premissions.shc.acp.conditionsManagement'] =  'Bedingunge
 $l['acp.userManagement.premissions.shc.acp.conditionsManagement.description'] =  'der Benutzer kann Bedingungen erstellen und verwalten';
 $l['acp.userManagement.premissions.shc.acp.switchpointsManagement'] =  'Schaltpunkte verwalten';
 $l['acp.userManagement.premissions.shc.acp.switchpointsManagement.description'] =  'der Benutzer kann Schaltpunkte erstellen und verwalten';
+$l['acp.userManagement.premissions.shc.acp.sensorpointsManagement'] =  'Sensorpunkte verwalten';
+$l['acp.userManagement.premissions.shc.acp.sensorpointsManagement.description'] =  'der Benutzer kann Sensorpunkte verwalten';
