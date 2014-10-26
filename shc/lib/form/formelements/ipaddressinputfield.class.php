@@ -22,6 +22,10 @@ class IpAddressInputField extends TextField {
         //Allgemeine Daten
         $this->setName($name);
         $this->setValue($ipAddress);
+        $this->setOptions(array(
+            'minlength' => 7,
+            'maxlength' => 15
+        ));
     }
 
     /**

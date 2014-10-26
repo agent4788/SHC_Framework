@@ -1,0 +1,39 @@
+{* Liste aller Benutzer zu Hause *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width: 70%;">{lang var="acp.usersathomeManagement.userlist.table.head.name"}</th>
+                <th style="width: 20%;">{lang var="acp.usersathomeManagement.userlist.table.head.ip"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$userAtHomeList item='userAtHome'}
+            <tr>
+                <td>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</td>
+                <td>{#$userAtHome->getIpAddress()}</td>
+                <td>
+                    {editlink link='index.php?app=shc&ajax=edituserathomeform&id=' id=$userAtHome->getId()}
+                    {deletelink link='index.php?app=shc&ajax=deleteuserathome&id=' id=$userAtHome->getId() prompt='acp.usersathomeManagement.prompt.deleteUser' title='acp.usersathomeManagement.prompt.deleteUser.title'}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+            {acpbutton link="index.php?app=shc&ajax=adduserathomeform" text="acp.usersathomeManagement.button.addUser"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.usersathomeManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

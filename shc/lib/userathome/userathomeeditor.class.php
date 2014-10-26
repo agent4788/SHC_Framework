@@ -3,6 +3,7 @@
 namespace SHC\UserAtHome;
 
 //Imports
+use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 
@@ -241,7 +242,7 @@ class UserAtHomeEditor {
      * erstellt einen neuen Benutzer
      * 
      * @param  String  $name       Name
-     * @param  Strung  $ipAddress  IP Adresse
+     * @param  String  $ipAddress  IP Adresse
      * @param  Boolean $enabled    Aktiv
      * @param  Boolean $visibility Sichtbarkeit
      * @return Boolean
@@ -304,7 +305,7 @@ class UserAtHomeEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Name des Benutzers schon belegt
-                    if (!$this->isUserAtHomeNameAvailable($name)) {
+                    if ((string) $userAtHome->name != $name && !$this->isUserAtHomeNameAvailable($name)) {
 
                         throw new \Exception('Der Name ist schon vergeben', 1507);
                     }

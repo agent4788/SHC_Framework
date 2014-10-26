@@ -1,0 +1,31 @@
+{* Benutzer zu Hause erstellen Formular *}
+<div>
+    {if $userAtHomeForm|isset}
+    <div class="shc-view-content">
+        {$userAtHomeForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listusersathome"}
+            {resetbutton form="#shc-view-form-addUserAtHome"}
+            {submitbutton form="#shc-view-form-addUserAtHome" action="index.php?app=shc&ajax=adduserathomeform"}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listusersathome"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.usersathomeManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>
