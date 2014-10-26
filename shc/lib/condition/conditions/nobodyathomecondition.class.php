@@ -36,8 +36,15 @@ class NobodyAtHomeCondition extends AbstractCondition {
         
         //Benutzer durchlaufen und Pruefen ob jemand Online
         foreach ($usersAtHome as $userAtHome) {
-            
+
             /* @var $userAtHome \SHC\UserAtHome\UserAtHome */
+
+            //deaktivierte Benutzer ignorieren
+            if(!$userAtHome->isEnabled()) {
+
+                continue;
+            }
+
             if($userAtHome->getState() == UserAtHome::STATE_ONLINE) {
                 
                 return false;
