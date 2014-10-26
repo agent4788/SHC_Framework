@@ -393,7 +393,52 @@ class AddConditionFormAjax extends AjaxCommand {
                     $conditionForm = new DateConditionForm();
                     $conditionForm->addId('shc-view-form-addCondition');
 
-                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+                    //Formular Validieren
+                    $valid = true;
+                    if($conditionForm->isSubmitted()) {
+
+                        //Name
+                        if(!$conditionForm->validateByName('name')) {
+
+                            $valid = false;
+                        }
+
+                        //Aktiviert
+                        if(!$conditionForm->validateByName('enabled')) {
+
+                            $valid = false;
+                        }
+
+                        //Start Datum
+                        if(!$conditionForm->validateByName('startDate')) {
+
+                            $valid = false;
+                        }
+                        $startDate = $conditionForm->getElementByName('startDate');
+                        $matches = array();
+                        preg_match('#(\d\d)\-(\d\d)#', $startDate->getValue(), $matches);
+                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+
+                            $conditionForm->markElementAsInvalid('startDate', RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.invalidDate', $startDate->getTitle()));
+                            $valid = false;
+                        }
+
+                        //End Datum
+                        if(!$conditionForm->validateByName('startDate')) {
+
+                            $valid = false;
+                        }
+                        $endDate = $conditionForm->getElementByName('endDate');
+                        $matches = array();
+                        preg_match('#(\d\d)\-(\d\d)#', $endDate->getValue(), $matches);
+                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+
+                            $conditionForm->markElementAsInvalid('endDate', RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.invalidDate', $endDate->getTitle()));
+                            $valid = false;
+                        }
+                    }
+
+                    if($conditionForm->isSubmitted() && $valid === true) {
 
                         //Werte vorbereiten
                         $name = $conditionForm->getElementByName('name')->getValue();
@@ -402,55 +447,30 @@ class AddConditionFormAjax extends AjaxCommand {
                         $endDate = $conditionForm->getElementByName('endDate')->getValue();
 
 
+                        //Speichern
                         $message = new Message();
+                        try {
+                            ConditionEditor::getInstance()->addDateCondition($name, $startDate, $endDate, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch (\Exception $e) {
 
-                        //Datumsangaben pruefen
-                        $valid = true;
-                        $matches = array();
-                        preg_match('#(\d\d)\-(\d\d)#', $startDate, $matches);
-                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+                            if ($e->getCode() == 1502) {
 
-                            $valid = false;
-                        }
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif ($e->getCode() == 1102) {
 
-                        $matches = array();
-                        preg_match('#(\d\d)\-(\d\d)#', $endDate, $matches);
-                        if(!isset($matches[1]) || !isset($matches[2]) || (int) $matches[1] < 1 || (int) $matches[1] > 12 || (int) $matches[2] < 1 || (int) $matches[2] > 31) {
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
 
-                            $valid = false;
-                        }
-                        if($valid === true) {
-
-                            //Speichern
-                            try {
-
-                                ConditionEditor::getInstance()->addDateCondition($name, $startDate, $endDate, $enabled);
-                                $message->setType(Message::SUCCESSFULLY);
-                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
-                            } catch (\Exception $e) {
-
-                                if ($e->getCode() == 1502) {
-
-                                    //Name schon vergeben
-                                    $message->setType(Message::ERROR);
-                                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
-                                } elseif ($e->getCode() == 1102) {
-
-                                    //fehlende Schreibrechte
-                                    $message->setType(Message::ERROR);
-                                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
-                                } else {
-
-                                    //Allgemeiner Fehler
-                                    $message->setType(Message::ERROR);
-                                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
-                                }
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
-                        } else {
-
-                            //ungueltige Daten angegeben
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.invalidDate'));
                         }
                         $tpl->assign('message', $message);
                     } else {
