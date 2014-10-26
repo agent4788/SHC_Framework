@@ -302,7 +302,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
         $element = $this->getElementByName($name);
         if ($element instanceof FormElement) {
 
-            $element->addClass('invalidFormField');
+            $element->addClass('rwf-ui-form-content-invalid');
             $this->invalidElements[String::toLower($element->getName())] = $element;
 
             if ($message != '') {
