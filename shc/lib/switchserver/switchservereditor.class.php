@@ -3,6 +3,7 @@
 namespace SHC\SwitchServer;
 
 //Imports
+use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 
@@ -68,7 +69,8 @@ class SwitchServerEditor {
                     (int) $switchserver->radioSockets, 
                     (int) $switchserver->writeGpios, 
                     (int) $switchserver->readGpios, 
-                    (int) $switchserver->timeout
+                    (int) $switchserver->timeout,
+                    (int) $switchserver->enabled
             );
         }
     }
@@ -161,10 +163,11 @@ class SwitchServerEditor {
      * @param  Boolean $radioSockets Funksteckdosen schalten
      * @param  Boolean $writeGpios   GPIOs schalten
      * @param  Boolean $readGpios    GPIOs abfragen
+     * @param  Boolean $enabled      Aktviert
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addSwitchServer($name, $address, $port, $timeout, $model, $radioSockets, $writeGpios, $readGpios) {
+    public function addSwitchServer($name, $address, $port, $timeout, $model, $radioSockets, $writeGpios, $readGpios, $enabled) {
         
         //Ausnahme wenn Raumname schon belegt
         if (!$this->isSwitchServerNameAvailable($name)) {
@@ -186,9 +189,11 @@ class SwitchServerEditor {
         $switchServer->addChild('address', $address);
         $switchServer->addChild('port', $port);
         $switchServer->addChild('timeout', $timeout);
+        $switchServer->addChild('model', $model);
         $switchServer->addChild('radioSockets', ($radioSockets == true ? 1 : 0));
         $switchServer->addChild('writeGpios', ($writeGpios == true ? 1 : 0));
         $switchServer->addChild('readGpios', ($readGpios == true ? 1 : 0));
+        $switchServer->addChild('enabled', ($enabled == true ? 1 : 0));
 
         //Daten Speichern
         $xml->save();
@@ -207,10 +212,11 @@ class SwitchServerEditor {
      * @param  Boolean $radioSockets Funksteckdosen schalten
      * @param  Boolean $writeGpios   GPIOs schalten
      * @param  Boolean $readGpios    GPIOs abfragen
+     * @param  Boolean $enabled      Aktviert
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editSwitchServer($id, $name = null, $address = null, $port = null, $timeout = null, $model = null, $radioSockets = null, $writeGpios = null, $readGpios = null) {
+    public function editSwitchServer($id, $name = null, $address = null, $port = null, $timeout = null, $model = null, $radioSockets = null, $writeGpios = null, $readGpios = null, $enabled = null) {
         
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER, true);
@@ -224,7 +230,7 @@ class SwitchServerEditor {
                 if ($name !== null) {
 
                     //Ausnahme wenn Raumname schon belegt
-                    if (!$this->isSwitchServerNameAvailable($name)) {
+                    if ((string) $switchServer->name != $name && !$this->isSwitchServerNameAvailable($name)) {
 
                         throw new \Exception('Der Servername ist schon vergeben', 1501);
                     }
@@ -249,6 +255,12 @@ class SwitchServerEditor {
 
                     $switchServer->timeout = $timeout;
                 }
+
+                //Model
+                if ($model !== null) {
+
+                    $switchServer->model = $model;
+                }
                 
                 //Funksteckdosen schalten
                 if ($radioSockets !== null) {
@@ -266,6 +278,12 @@ class SwitchServerEditor {
                 if ($readGpios !== null) {
 
                     $switchServer->readGpios = ($readGpios == true ? 1 : 0);
+                }
+
+                //Aktiviert
+                if ($enabled !== null) {
+
+                    $switchServer->enabled = ($enabled == true ? 1 : 0);
                 }
 
                 //Daten Speichern
