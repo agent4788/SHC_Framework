@@ -4,6 +4,7 @@ namespace SHC\Form\FormElements;
 
 //Imports
 use RWF\Form\FormElements\Select;
+use RWF\Runtime\RaspberryPi;
 use RWF\User\User;
 use RWF\User\UserEditor;
 use SHC\SwitchServer\SwitchServerEditor;
@@ -29,7 +30,19 @@ class SwitchServerChooser extends Select {
         $values = array();
         foreach(SwitchServerEditor::getInstance()->listSwitchServers(SwitchServerEditor::SORT_BY_NAME) as $switchServer) {
 
-            $values[$switchServer->getId()] = array($switchServer->getName(), ($switchServer->getId() == $switchServerId ? 1 : 0));
+            /* @var $switchServer \SHC\SwitchServer\SwitchServer */
+            $model = '';
+            if($switchServer->getModel() == RaspberryPi::MODEL_A) {
+
+                $model = ' (Model A)';
+            } elseif($switchServer->getModel() == RaspberryPi::MODEL_B) {
+
+                $model = ' (Model B)';
+            } elseif($switchServer->getModel() == RaspberryPi::MODEL_B_PLUS) {
+
+                $model = ' (Model B+)';
+            }
+            $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
 
         }
         $this->setValues($values);
