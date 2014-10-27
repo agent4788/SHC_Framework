@@ -189,7 +189,7 @@ class Error {
                 $html .= 'body {background-color: #efefef; font-family: verdana, arial, sans-serif; color: #000000;}#error_box {width: 65%; margin: 0 auto; margin-top: 150px; background-color: #ffffff; border: 1px solid #e4e4e4; padding: 20px;}#';
                 $html .= 'content {border: 1px solid #b60101;}#ueberschrift {background-color: #b60101; color: #ffffff; font-size: 14px; font-weight: bold; padding: 4px;}#error {margin: 5px; font-size: 12px;}';
                 $html .= 'table {width: 100%;}table tr {margin-bottom: 3px;}table tr td {border-bottom: 1px solid #000000; padding: 2px;}table tr td:first-child {font-weight: bold; width: 50px;}</style>';
-                $html .= '</head><body><div id="error_box"><div id="content">';
+                $html .= '</head><body><div  style="color: #000000;" id="error_box"><div id="content">';
                 $html .= '<div id="ueberschrift">PHP ' . $this->html($errorName) . '</div>';
                 $html .= '<div id="error">';
                 $html .= '<p>' . $this->html($message) . '</p>';
@@ -306,7 +306,7 @@ class Error {
             } else {
 
                 $html = $this->createHtmlErrorHeader('System Exception - ' . $file . ' in Zeile ' . $e->getLine());
-                $html .= '<body><div id="error_box"><div id="content">';
+                $html .= '<body><div  style="color: #000000;" id="error_box"><div id="content">';
                 $html .= '<div id="ueberschrift">System Error</div>';
                 $html .= '<div id="error">';
                 $html .= '<p>' . $this->html($e->getMessage()) . '</p>';
@@ -431,7 +431,7 @@ class Error {
             } else {
 
                 $html = $this->createHtmlErrorHeader('XMLException - ' . $file . ' in Zeile ' . $e->getLine());
-                $html .= '<body><div id="error_box"><div id="content">';
+                $html .= '<body><div style="color: #000000;" id="error_box"><div id="content">';
                 $html .= '<div id="ueberschrift">XML Error</div>';
                 $html .= '<div id="error">';
                 $html .= '<p>' . $this->html($e->getMessage()) . '</p>';
@@ -577,7 +577,7 @@ class Error {
             } else {
 
                 $html = $this->createHtmlErrorHeader('SystemException - ' . $file . ' in Zeile ' . $e->getLine());
-                $html .= '<body><div id="error_box"><div id="content">';
+                $html .= '<body><div  style="color: #000000;" id="error_box"><div id="content">';
                 $html .= '<div id="ueberschrift">System Error</div>';
                 $html .= '<div id="error">';
                 $html .= '<p>' . $this->html($e->getMessage()) . '</p>';
@@ -620,7 +620,7 @@ class Error {
         } else {
 
             $html = $this->createHtmlErrorHeader('There was an error');
-            $html .= '<body><div id="error_box"><div id="content">';
+            $html .= '<body><div  style="color: #000000;" id="error_box"><div id="content">';
             $html .= '<div id="ueberschrift">There was an error</div>';
             $html .= '<div id="error">';
             $html .= '<p>It is an error occurred, we apologize for that, please try again later.</p>';
