@@ -26,6 +26,13 @@ use RWF\Template\Template;
 class RWF {
 
     /**
+     * Version
+     *
+     * @var String
+     */
+    const VERSION = '2.0.0';
+
+    /**
      * Einstellungen
      * 
      * @var \RWF\Settings\Settings 

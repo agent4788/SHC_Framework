@@ -18,7 +18,14 @@ use RWF\User\User;
  * @version    2.0.0-0
  */
 class SHC extends RWF {
-    
+
+    /**
+     * Version
+     *
+     * @var String
+     */
+    const VERSION = '2.0.0';
+
     /**
      * Raeume XML Datei
      * 
@@ -62,7 +69,9 @@ class SHC extends RWF {
     const XML_SWITCHABLES = 'switchables';
     
     /**
-     * 
+     * Benutzer zu Hause
+     *
+     * @var String
      */
     const XML_USERS_AT_HOME = 'usersathome';
     
