@@ -21,7 +21,35 @@ use SHC\SwitchServer\SwitchServerEditor;
  */
 class SwitchServerChooser extends Select {
 
-    public function __construct($name, $switchServerId = null) {
+    /**
+     * alle Schaltserver anzeigen
+     *
+     * @var Integer
+     */
+    const FILTER_ALL = 1;
+
+    /**
+     * nur Schaltserver anzeigen die Funksteckdosen schalten koennen
+     *
+     * @var Integer
+     */
+    const FILTER_RADIOSOCKETS = 2;
+
+    /**
+     * nur Schaltserver anzeigen deren GPIOs gelesen werden koennen
+     *
+     * @var Integer
+     */
+    const FILTER_WRITEGPIO = 4;
+
+    /**
+     * nur Schaltserver anzeigen deren GPIOs geschrieben werden koennen
+     *
+     * @var Integer
+     */
+    const FILTER_READGPIO = 8;
+
+    public function __construct($name, $switchServerId = null, $filter = self::FILTER_ALL) {
 
         //Allgemeine Daten
         $this->setName($name);
@@ -42,7 +70,22 @@ class SwitchServerChooser extends Select {
 
                 $model = ' (Model B+)';
             }
-            $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            if($filter & self::FILTER_ALL) {
+
+                $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            } elseif($filter & self::FILTER_ALL) {
+
+                $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            } elseif($filter & self::FILTER_RADIOSOCKETS && $switchServer->isRadioSocketsEnabled()) {
+
+                $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            } elseif($filter & self::FILTER_READGPIO && $switchServer->isReadGpiosEnabled()) {
+
+                $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            } elseif($filter & self::FILTER_WRITEGPIO && $switchServer->isWriteGpiosEnabled()) {
+
+                $values[$switchServer->getId()] = array($switchServer->getName() . $model, ($switchServer->getId() == $switchServerId ? 1 : 0));
+            }
 
         }
         $this->setValues($values);

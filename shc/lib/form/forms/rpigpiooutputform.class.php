@@ -59,7 +59,7 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Schaltserver Auswahl
-        $switchServer = new SwitchServerChooser('switchServer', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getSwitchServer() : 0));
+        $switchServer = new SwitchServerChooser('switchServer', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getSwitchServer() : 0), SwitchServerChooser::FILTER_WRITEGPIO);
         $switchServer->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchServer'));
         $switchServer->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchServer.description'));
         $switchServer->requiredField(true);
