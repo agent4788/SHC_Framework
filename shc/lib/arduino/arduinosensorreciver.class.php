@@ -67,6 +67,17 @@ class ArduinoSensorReciver {
         $interval = new \DateInterval('PT30S');
         $time->add($interval);
 
+        //Run Flag alle 60 Sekunden setzen
+        if(!isset($runTime)) {
+
+            $runTime = DateTime::now();
+        }
+        if($runTime <= DateTime::now()) {
+
+            file_put_contents(PATH_RWF_CACHE . 'arduinoSensorReciver.flag', DateTime::now()->getDatabaseDateTime());
+            $runTime->add(new \DateInterval('PT1M'));
+        }
+
         //Sensorpunkte aus XML Lesen
         SensorPointEditor::getInstance();
 

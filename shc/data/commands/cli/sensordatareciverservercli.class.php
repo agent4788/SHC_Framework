@@ -110,7 +110,7 @@ class SensorDataReciverServerCli extends CliCommand {
      */
     protected function stop() {
 
-        $socket = new UDPSocket(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'), 2);
+        $socket = new UDPSocket(RWF::getSetting('shc.sensorReciver.ip'), RWF::getSetting('shc.sensorReciver.port'), 2);
         $socket->open();
         $socket->write(base64_encode(json_encode(array(array('stop' => 1)))));
         $socket->close();

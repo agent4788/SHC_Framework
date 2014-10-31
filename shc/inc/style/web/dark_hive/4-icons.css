@@ -121,3 +121,22 @@ span#shc-view-acp-menu-switchservers {
 span#shc-view-acp-menu-info {
     background-image: url(../../../img/acpmenue/info.png);
 }
+
+/* einfache Icons */
+.shc-view-acp-simpleIcon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.shc-view-acp-simpleIcon-run {
+    background: url(../../../img/buttons/run.png) no-repeat;
+}
+
+.shc-view-acp-simpleIcon-stop {
+    background: url(../../../img/buttons/stop.png) no-repeat;
+}
+
+.shc-view-acp-simpleIcon-notActive {
+    background: url(../../../img/buttons/not_active.png) no-repeat;
+}

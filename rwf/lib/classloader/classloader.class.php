@@ -19,7 +19,7 @@ class ClassLoader {
     /**
      * Singleton Instanz
      * 
-     * @var RWF\ClassLoader\ClassLoader 
+     * @var \RWF\ClassLoader\ClassLoader
      */
     protected static $instance = null;
 
@@ -252,6 +252,10 @@ class ClassLoader {
         //Basis Namensraum
         $matches = array();
         preg_match('#^(\S+?)\\\\#', $class, $matches);
+        if(!isset($matches[1])) {
+
+            throw new ClassNotFoundException($class, 1000, 'Unbekannter Namensraum ""');
+        }
         $baseNamespace = strtolower($matches[1]);
 
         //Klasse

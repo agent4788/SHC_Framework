@@ -3,6 +3,7 @@
 namespace SHC\Sheduler;
 
 //Imports
+use RWF\Date\DateTime;
 
 /**
  * fuehrt Nacheinander alle Aufgaben (Tasks) aus
@@ -85,6 +86,17 @@ class Sheduler {
                 /* @var $task \SHC\Sheduler\Task */
                 $task->execute();
             }
+        }
+
+        //Run Flag alle 60 Sekunden setzen
+        if(!isset($time)) {
+
+            $time = DateTime::now();
+        }
+        if($time <= DateTime::now()) {
+
+            file_put_contents(PATH_RWF_CACHE . 'shedulerRun.flag', DateTime::now()->getDatabaseDateTime());
+            $time->add(new \DateInterval('PT1M'));
         }
     }
 

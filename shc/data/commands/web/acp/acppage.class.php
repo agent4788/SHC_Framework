@@ -8,7 +8,7 @@ use SHC\Core\SHC;
 
 /**
  * Startseite Administration
- * 
+ *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -16,25 +16,25 @@ use SHC\Core\SHC;
  * @version    2.0.0-0
  */
 class AcpPage extends PageCommand {
-    
+
     /**
      * Template
-     * 
+     *
      * @var String
      */
     protected $template = 'acppage.html';
-    
+
     /**
      * benoetigte Berechtigung
-     * 
-     * @var type 
+     *
+     * @var type
      */
     protected $requiredPremission = 'shc.acp.menu';
-    
+
     /**
      * Sprachpakete die geladen werden sollen
-     * 
-     * @var Array 
+     *
+     * @var Array
      */
     protected $languageModules = array('index', 'acpindex');
 

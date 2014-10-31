@@ -70,6 +70,17 @@ class SensorDataReciverSocket {
 
         while (true) {
 
+            //Run Flag alle 60 Sekunden setzen
+            if(!isset($runTime)) {
+
+                $runTime = DateTime::now();
+            }
+            if($runTime <= DateTime::now()) {
+
+                file_put_contents(PATH_RWF_CACHE . 'sensorDataReciver.flag', DateTime::now()->getDatabaseDateTime());
+                $runTime->add(new \DateInterval('PT1M'));
+            }
+
             //Daten epfangen
             $data = base64_decode($this->server->read(4096));
             $request = json_decode($data, true);

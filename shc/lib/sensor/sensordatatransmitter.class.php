@@ -4,6 +4,7 @@ namespace SHC\Sensor;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Date\DateTime;
 use RWF\IO\Socket;
 use RWF\IO\UDPSocket;
 
@@ -52,7 +53,7 @@ class SensorDataTransmitter {
         while (true) {
 
             //Verbinden
-            $sensorReciver = connect();
+            $sensorReciver = $this->connect();
 
             //DS18x20 einlesen und an den Server senden
             if (file_exists('/sys/bus/w1/devices/')) {
@@ -98,6 +99,17 @@ class SensorDataTransmitter {
 
             $sensorReciver->close();
             $sensorReciver = null;
+
+            //Run Flag alle 60 Sekunden setzen
+            if(!isset($time)) {
+
+                $time = DateTime::now();
+            }
+            if($time <= DateTime::now()) {
+
+                file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
+                $time->add(new \DateInterval('PT1M'));
+            }
         }
     }
 
