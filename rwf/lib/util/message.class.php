@@ -198,7 +198,8 @@ class Message {
                 $html .= '</ul>' . "\n";
             }
             $html .= '</div>' . "\n";
-            
+            $html .= '</div>' . "\n";
+
             return $html;
         }
         
