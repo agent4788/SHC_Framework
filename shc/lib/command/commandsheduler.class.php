@@ -90,11 +90,11 @@ class CommandSheduler {
             $gpioActive = false;
             $gpioSend = false;
 
+            //Request Initialisieren
+            $request = array();
+
             //alle Kommandos durchlaufen und Daten Aufbereiten
             foreach ($this->commands as $command) {
-
-                //Request Initialisieren
-                $request = array();
 
                 /* @var $command \SHC\Command\Command */
                 if ($command instanceof RadioSocketCommand) {
