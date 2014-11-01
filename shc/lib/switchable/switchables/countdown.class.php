@@ -165,6 +165,7 @@ class Countdown extends AbstractSwitchable {
         }
 
         $this->switchOffTime = DateTime::now()->add($this->intervall);
+        $this->state = self::STATE_ON;
         $this->stateModified = true;
         SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), $this->switchOffTime);
     }
@@ -191,8 +192,10 @@ class Countdown extends AbstractSwitchable {
                 $object->switchOn();
             }
         }
+        $this->state = self::STATE_OFF;
         $this->stateModified = true;
-        SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), new DateTime('2000-01-01 00:00:00'));
+        $this->switchOffTime = new DateTime('2000-01-01 00:00:00');
+        SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), $this->switchOffTime);
     }
 
 }

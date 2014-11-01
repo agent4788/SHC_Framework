@@ -211,18 +211,33 @@ abstract class AbstractSwitchable implements Switchable {
                     case SwitchPoint::SWITCH_ON:
 
                         //Einachalten
-                        return $this->switchOn();
+                        $this->switchOn();
+                        try {
+                            CommandSheduler::getInstance()->sendCommands();
+                        } catch(\Exception $e) {
+
+                        }
                         break;
                     case SwitchPoint::SWITCH_OFF:
 
                         //Ausschalten
-                        return $this->switchOff();
+                        $this->switchOff();
+                        try {
+                            CommandSheduler::getInstance()->sendCommands();
+                        } catch(\Exception $e) {
+
+                        }
                         break;
                     case SwitchPoint::SWITCH_TOGGLE:
                     default :
 
                         //Umschalten
-                        return $this->toggle();
+                        $this->toggle();
+                        try {
+                            CommandSheduler::getInstance()->sendCommands();
+                        } catch(\Exception $e) {
+
+                        }
                         break;
                 }
             }

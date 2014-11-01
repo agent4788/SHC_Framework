@@ -66,7 +66,7 @@ class ShedulerDeamonCli extends CliCommand {
             $sheduler->executeTasks();
 
             //Ruhezeut bis zum naechsten Durchlauf
-            sleep(5);
+            sleep(1);
         }
     }
 

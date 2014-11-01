@@ -19,16 +19,62 @@
         $('#shc-view-switchable-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
         {/if}
 
-        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+            $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
 
-            //An Button gedrueckt
-            return false;
-        });
-        $('#shc-view-switchable-{$switchable->getId()}-off').click(function() {
+                //An Button gedrueckt
+                $.getJSON(
+                        "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
 
-            //Aus Button gedrueckt
-            return false;
-        });
+                            if (data.success == true) {
+
+                                $("#shc-view-switchable-{$switchable->getId()}-off").button({ icons: { primary: "" } });
+                                $("#shc-view-switchable-{$switchable->getId()}-on").button({ icons: { primary: "ui-icon-check" } });
+                            } else {
+
+                                $('#shc-view-errorFrame').text(data.message);
+                                $('#shc-view-errorFrame').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    buttons: {
+                                        OK: function() {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                );
+                return false;
+            });
+            $('#shc-view-switchable-{$switchable->getId()}-off').click(function() {
+
+                //Aus Button gedrueckt
+                $.getJSON(
+                        "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=0&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            if (data.success == true) {
+
+                                $("#shc-view-switchable-{$switchable->getId()}-on").button({ icons: { primary: "" } });
+                                $("#shc-view-switchable-{$switchable->getId()}-off").button({ icons: { primary: "ui-icon-check" } });
+                            } else {
+
+                                $('#shc-view-errorFrame').text(data.message);
+                                $('#shc-view-errorFrame').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    buttons: {
+                                        OK: function() {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                );
+                return false;
+            });
         
         $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
             $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");

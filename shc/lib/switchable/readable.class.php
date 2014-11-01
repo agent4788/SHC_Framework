@@ -12,13 +12,16 @@ namespace SHC\Switchable;
  * @version    2.0.0-0
  */
 interface Readable extends Element {
-    
+
+    /**
+     * liest en aktuellen Status des Einganges ein
+     */
+    public function readState();
+
     /**
      * gibt den aktuellen geschaltenen Zustand zurueck
      * 
      * @return Integer
      */
     public function getState();
-    
-    
 }

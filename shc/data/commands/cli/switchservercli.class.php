@@ -122,7 +122,7 @@ class SwitchServerCli extends CliCommand {
     protected function executeCliCommand() {
 
         $switchServer = new SwitchServerSocket();
-        $switchServer->run($this->response);
+        $switchServer->run($this->response, $this->debug);
     }
 
 }

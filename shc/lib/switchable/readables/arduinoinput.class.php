@@ -83,7 +83,14 @@ class ArduinoInput extends AbstractReadable {
         
         return $this->pinNumber;
     }
-    
+
+    /**
+     * liest en aktuellen Status des Einganges ein
+     */
+    public function readState() {
+
+    }
+
     /**
      * gibt den aktuellen geschaltenen Zustand zurueck
      * 
@@ -91,6 +98,6 @@ class ArduinoInput extends AbstractReadable {
      */
     public function getState() {
         
-        
+        return $this->state;
     }
 }

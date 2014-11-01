@@ -65,7 +65,7 @@ class RadiosocketForm extends DefaultHtmlForm {
         $this->addFormElement($protocol);
 
         //Systemcode
-        $systemCode = new TextField('systemCode', ($radioSocket instanceof RadioSocket ? $radioSocket->getSystemCode() : ''), array('minlength' => 3, 'maxlength' => 15));
+        $systemCode = new TextField('systemCode', ($radioSocket instanceof RadioSocket ? $radioSocket->getSystemCode() : ''), array('minlength' => 1, 'maxlength' => 15));
         $systemCode->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.systemCode'));
         $systemCode->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.systemCode.description'));
         $systemCode->requiredField(true);

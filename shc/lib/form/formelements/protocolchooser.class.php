@@ -23,7 +23,7 @@ class ProtocolChooser extends Select {
 
         //Gruppen anmelden
         $values = array(
-            'elro' => array('Elro AB440', ($protocol == 'elro' ? 1 : 0))
+            'elro_he' => array('elro_he', ($protocol == 'elro_he' ? 1 : 0))
         );
         $this->setValues($values);
     }

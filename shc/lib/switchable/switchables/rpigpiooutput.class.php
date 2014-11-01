@@ -94,6 +94,7 @@ class RpiGpioOutput extends AbstractSwitchable {
     public function switchOn() {
         
         CommandSheduler::getInstance()->addCommand(new GpioOutputCommand($this->switchServer, $this->pinNumber, GpioOutputCommand::SWITCH_ON));
+        $this->state = self::STATE_ON;
         $this->stateModified = true;
     }
     
@@ -105,6 +106,7 @@ class RpiGpioOutput extends AbstractSwitchable {
     public function switchOff() {
         
         CommandSheduler::getInstance()->addCommand(new GpioOutputCommand($this->switchServer, $this->pinNumber, GpioOutputCommand::SWITCH_OFF));
+        $this->state = self::STATE_OFF;
         $this->stateModified = true;
     }
 

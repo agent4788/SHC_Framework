@@ -43,7 +43,7 @@ class SwitchServerSocket {
     /**
      * Server Objekt
      * 
-     * @var RWF\IO\SocketServer 
+     * @var \RWF\IO\SocketServer
      */
     protected $server = null;
 
@@ -148,7 +148,7 @@ class SwitchServerSocket {
         //Debug ausgabe
         if ($this->debug) {
 
-            $this->response->writeLnColored('sudo ' . $sendPath . ' ' . $request['protocol'] . ' ' . $request['systemCode'] . ' ' . $request['deviceCode'] . ' ' . $request['command'], 'light_blue');
+            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f'), 'light_blue');
         }
     }
 
@@ -162,14 +162,14 @@ class SwitchServerSocket {
         $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
         
         //Modus setzen
-        if (!in_array($gpio['pinNumber'], $this->gpioModeSet)) {
+        if (!in_array($request['pinNumber'], $this->gpioModeSet)) {
 
             @shell_exec($gpioPath . ' mode ' . $request['pinNumber'] . ' out');
             if ($this->debug) {
 
                 $this->response->writeLnColored($gpioPath . ' mode ' . $request['pinNumber'] . ' out', 'light_green');
             }
-            $this->gpioModeSet[] = $gpio['pinNumber'];
+            $this->gpioModeSet[] = $request['pinNumber'];
         }
 
         //Befehl ausfuehren
@@ -183,8 +183,8 @@ class SwitchServerSocket {
     /**
      * liest eine GPIO und sendet die Antwort an den Client
      * 
-     * @param RWF\IO\SocketServerClient $client  Client Objekt
-     * @param Array                     $request Anfrage
+     * @param \RWF\IO\SocketServerClient $client  Client Objekt
+     * @param Array                      $request Anfrage
      */
     protected function readGpio(SocketServerClient $client, array $request) {
 
@@ -205,11 +205,17 @@ class SwitchServerSocket {
         @exec($gpioPath . ' read ' . $request['pinNumber'], $data);
 
         //Daten Auswerten
-        $data = trim($data[0]);
-        $response = array();
-        if ((int) $data == 1) {
+        if(isset($data[0])) {
 
-            $response['state'] = 1;
+            $data = trim($data[0]);
+            $response = array();
+            if ((int)$data == 1) {
+
+                $response['state'] = 1;
+            } else {
+
+                $response['state'] = 0;
+            }
         } else {
 
             $response['state'] = 0;
@@ -225,7 +231,7 @@ class SwitchServerSocket {
         if ($this->debug) {
 
             $this->response->writeLnColored($gpioPath . ' read ' . $request['pinNumber'], 'light_green');
-            $this->response->writeLnColored($data, 'light_green');
+            $this->response->writeLnColored((isset($data[0]) ? $data[0] : 'null'), 'light_green');
         }
     }
 

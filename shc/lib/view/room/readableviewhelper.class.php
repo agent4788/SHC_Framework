@@ -72,6 +72,7 @@ class ReadableViewHelper {
         $html = '';
         if ($readable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW))) {
 
+            $readable->readState();
             $html = '<div class="shc-contentbox-body-row shc-view-readable">';
             $html .= '<span class="shc-contentbox-body-row-title">'. String::encodeHtml($readable->getName()) .'</span>';
             $html .= '<span class="shc-icon '. ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';

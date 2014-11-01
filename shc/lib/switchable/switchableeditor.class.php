@@ -547,6 +547,11 @@ class SwitchableEditor {
                     if((int) $xmlSwitchable->id == $id) {
                         
                         $xmlSwitchable->state = $switchable->getState();
+
+                        if($switchable instanceof Countdown) {
+
+                            $xmlSwitchable->switchOffTime = $switchable->getSwitchOffTime()->getDatabaseDateTime();
+                        }
                     }
                 }
             }

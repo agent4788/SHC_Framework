@@ -3,6 +3,7 @@
 namespace SHC\Sheduler\Tasks;
 
 //Imports
+use SHC\Command\CommandSheduler;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchable;
@@ -32,7 +33,7 @@ class TimerTask extends AbstractTask {
      * 
      * @var String 
      */
-    protected $interval = 'PT20S';
+    protected $interval = 'PT5S';
 
     /**
      * fuehrt die Aufgabe aus
@@ -41,6 +42,7 @@ class TimerTask extends AbstractTask {
     public function executeTask() {
 
         //Liste mit den Schaltbaren Elementen holen
+        SwitchableEditor::getInstance()->loadData();
         $switchables = SwitchableEditor::getInstance()->listElements();
 
         //alle Elemente durchlaufen und Pruefen ob ausfuehrbar
@@ -50,9 +52,14 @@ class TimerTask extends AbstractTask {
                 
                 //Pruefen ob Countdown abgelaufen
                 $switchOffTime = $switchable->getSwitchOffTime();
-                if($switchOffTime->isPast() || $switchOffTime == DateTime::now()) {
-                    
+                if($switchOffTime != new DateTime('2000-01-01 00:00:00') && ($switchOffTime->isPast() || $switchOffTime == DateTime::now())) {
+
                     $switchable->switchOff();
+                    try {
+                        CommandSheduler::getInstance()->sendCommands();
+                    } catch(\Exception $e) {
+
+                    }
                 }                
             } elseif($switchable instanceof Switchable && $switchable->isEnabled()) {
 
@@ -60,6 +67,9 @@ class TimerTask extends AbstractTask {
                 $switchable->execute();
             }
         }
+
+        //Status speichern
+        SwitchableEditor::getInstance()->updateState();
     }
 
 }

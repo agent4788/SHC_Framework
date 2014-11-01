@@ -3,7 +3,10 @@
 namespace SHC\Switchable\Readables;
 
 //Imports
+use SHC\Command\Commands\GpioInputCommand;
+use SHC\Command\CommandSheduler;
 use SHC\Switchable\AbstractReadable;
+use SHC\Switchable\SwitchableEditor;
 
 /**
  * Basisklasse eines Lesbaren Elements
@@ -83,15 +86,29 @@ class RpiGpioInput extends AbstractReadable {
         
         return $this->pinNumber;
     }
-    
+
+    /**
+     * liest en aktuellen Status des Einganges ein
+     */
+    public function readState() {
+
+        $command = new GpioInputCommand($this->switchServer, $this->pinNumber);
+        if(CommandSheduler::getInstance()->sendGPIOReadCommand($command)) {
+
+            $this->state = $command->getState();
+            $this->stateModified = true;
+            SwitchableEditor::getInstance()->updateState();
+        }
+    }
+
     /**
      * gibt den aktuellen geschaltenen Zustand zurueck
      * 
      * @return Integer
      */
     public function getState() {
-        
-        //noch nicht Implementiert
+
+        return $this->state;
     }
 
 }

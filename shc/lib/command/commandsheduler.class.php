@@ -70,6 +70,8 @@ class CommandSheduler {
 
     /**
      * Sendet die Kommandos an den jeweiligen Schaltserver
+     *
+     * @throws \Exception
      */
     public function sendCommands() {
 
@@ -77,9 +79,17 @@ class CommandSheduler {
         $switchServers = SwitchServerEditor::getInstance()->listSwitchServers();
 
         //alle Server durchlaufen und die Daten senden
+        $radioSocketsCount = 0;
         foreach ($switchServers as $switchServer) {
 
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
+
+            //Hilfsvariablen vorbereiten
+            $radioSocketsActive = false;
+            $radioSocketsSend = false;
+            $gpioActive = false;
+            $gpioSend = false;
+
             //alle Kommandos durchlaufen und Daten Aufbereiten
             foreach ($this->commands as $command) {
 
@@ -90,16 +100,20 @@ class CommandSheduler {
                 if ($command instanceof RadioSocketCommand) {
 
                     //Funksteckdose
+                    $radioSocketsActive = true;
                     if ($switchServer->isRadioSocketsEnabled()) {
 
                         $request[] = $command->getCommandData();
+                        $radioSocketsSend = true;
                     }
                 } elseif ($command instanceof GpioOutputCommand) {
 
                     //GPIO schalten
+                    $gpioActive = true;
                     if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
 
                         $request[] = $command->getCommandData();
+                        $gpioSend = true;
                     }
                 }
                 
@@ -111,11 +125,36 @@ class CommandSheduler {
             $data = json_encode($request);
             $data = base64_encode($data);
 
-            //mit Schalserver verbinden und Daten senden
-            $socket = $switchServer->getSocket();
-            $socket->open();
-            $socket->write($data);
-            $socket->close();
+            try {
+
+                //mit Schalserver verbinden und Daten senden
+                $socket = $switchServer->getSocket();
+                $socket->open();
+                $socket->write($data);
+                $socket->close();
+                //hochzaehlen wenn Funksteckdosen geschalten werden konnten
+                if($radioSocketsActive === true && $radioSocketsSend === true) {
+
+                    $radioSocketsCount++;
+                }
+            } catch(\Exception $e) {
+
+                if($gpioActive === true && $gpioSend === true) {
+
+                    //GPIO Schaltserver nicht errreicht
+                    throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
+                } elseif($gpioActive === true && $gpioSend === true) {
+
+                    //Schaltserver unterstuetzt kein GPIO schalten
+                    throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
+                }
+            }
+        }
+
+        //kein Schaltserver erreichbar
+        if($radioSocketsActive === true && $radioSocketsCount == 0) {
+
+            throw new \Exception('es konnte kein Schaltserver erreicht werden oder kein Schaltserver untersützt das schalten von Funksteckosen', 1512);
         }
     }
 
@@ -143,10 +182,17 @@ class CommandSheduler {
                 $data = json_encode($request);
                 $data = base64_encode($data);
 
-                //mit Schalserver verbinden und Daten senden
-                $socket = $switchServer->getSocket();
-                $socket->open();
-                $socket->write($data);
+                try {
+
+                    //mit Schalserver verbinden und Daten senden
+                    $socket = $switchServer->getSocket();
+                    $socket->open();
+                    $socket->write($data);
+                } catch(\Exception $e) {
+
+                    //Verbindungsfehler, abbruch
+                    return false;
+                }
                 
                 //Antwort Lesen
                 $rawData = base64_decode($socket->read(8192));

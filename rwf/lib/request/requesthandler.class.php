@@ -57,14 +57,14 @@ class RequestHandler {
     /**
      * Anfrageobjekt
      * 
-     * @var RWF\Request\Request
+     * @var \RWF\Request\Request
      */
     protected static $request = null;
 
     /**
      * Anfrageobjekt
      * 
-     * @var RWF\Request\Response
+     * @var \RWF\Request\Response
      */
     protected static $response = null;
 
@@ -93,10 +93,10 @@ class RequestHandler {
 
             //Tablet Ansicht
             define('RWF_DEVICE', 'tablet');
-        } elseif ($r->issetParam('g')) {
+        } elseif ($r->issetParam('a')) {
 
             //fuer alle Geraetetypen
-            define('RWF_DEVICE', 'global');
+            define('RWF_DEVICE', 'all');
         } else {
 
             //PC/Web Ansicht

@@ -30,7 +30,7 @@ class IndexPage extends PageCommand {
      * 
      * @var Array 
      */
-    protected $languageModules = array('index');
+    protected $languageModules = array('index', 'room');
 
     /**
      * Daten verarbeiten

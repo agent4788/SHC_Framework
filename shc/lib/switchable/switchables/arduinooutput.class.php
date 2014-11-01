@@ -92,6 +92,7 @@ class ArduinoOutput extends AbstractSwitchable {
     public function switchOn() {
 
         //nicht implementiert
+        $this->state = self::STATE_ON;
         $this->stateModified = true;
     }
 
@@ -103,6 +104,7 @@ class ArduinoOutput extends AbstractSwitchable {
     public function switchOff() {
 
         //nicht implementiert
+        $this->state = self::STATE_OFF;
         $this->stateModified = true;
     }
 
