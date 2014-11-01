@@ -38,17 +38,26 @@ class RadioSocket extends AbstractSwitchable {
      * @var String 
      */
     protected $deviceCode = '';
+
+    /**
+     * Anzahl der Sendevorgaenge
+     *
+     * @var Integer
+     */
+    protected $continuous = 1;
     
     /**
-     * @param String $protocol   Protokoll
-     * @param String $systemCode System Code
-     * @param String $deviceCode Geraete Code
+     * @param String  $protocol   Protokoll
+     * @param String  $systemCode System Code
+     * @param String  $deviceCode Geraete Code
+     * @param Integer $continuous Sendevorgaenge
      */
-    public function __construct($protocol = '', $systemCode = '',  $deviceCode = '') {
+    public function __construct($protocol = '', $systemCode = '',  $deviceCode = '', $continuous = 1) {
         
         $this->protocol = $protocol;
         $this->systemCode = $systemCode;
         $this->deviceCode = $deviceCode;
+        $this->continuous = $continuous;
     }
     
     /**
@@ -110,11 +119,33 @@ class RadioSocket extends AbstractSwitchable {
     /**
      * gibt den Geraetecode zurueck
      * 
-     * @return Stzring
+     * @return String
      */
     public function getDeviceCode() {
         
         return $this->deviceCode;
+    }
+
+    /**
+     * setzt die Anzahl der Sendevorgaenge
+     *
+     * @param  Integer $continuous ANzahl wie of der Sendebefehl ausgefuehrt werden soll
+     * @return \SHC\Switchable\Switchables\RadioSocket
+     */
+    public function setContinuous($continuous) {
+
+        $this->continuous = $continuous;
+        return $this;
+    }
+
+    /**
+     * gibt die Anzahl zurueck wieoft ein Steckdosenbefehl gesendet werden soll
+     *
+     * @return Integer
+     */
+    public function getContinuous() {
+
+        return $this->continuous;
     }
     
     /**
@@ -124,7 +155,7 @@ class RadioSocket extends AbstractSwitchable {
      */
     public function switchOn() {
         
-        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_ON));
+        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_ON, $this->continuous));
         $this->state = self::STATE_ON;
         $this->stateModified = true;
     }
@@ -136,7 +167,7 @@ class RadioSocket extends AbstractSwitchable {
      */
     public function switchOff() {
         
-        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_OFF));
+        CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_OFF, $this->continuous));
         $this->state = self::STATE_OFF;
         $this->stateModified = true;
     }

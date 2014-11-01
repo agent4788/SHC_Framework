@@ -143,12 +143,22 @@ class SwitchServerSocket {
     protected function send433MHzCommand(array $request) {
 
         $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
-        @shell_exec('sudo ' . $sendPath . ' ' . $request['protocol'] . ' ' . $request['systemCode'] . ' ' . $request['deviceCode'] . ' ' . $request['command']);
+        $firstContunue = true;
+        for($i = 0; $i < $request['continuous']; $i++) {
+
+            @shell_exec('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+            if($firstContunue === false) {
+
+                //1s Wartezeit zwichen den Sendevorgaengen
+                sleep(1);
+            }
+            $firstContunue = false;
+        }
 
         //Debug ausgabe
         if ($this->debug) {
 
-            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f'), 'light_blue');
+            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
         }
     }
 

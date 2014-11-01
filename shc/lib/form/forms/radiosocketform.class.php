@@ -6,6 +6,7 @@ namespace SHC\Form\Forms;
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
+use RWF\Form\FormElements\Select;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
@@ -77,6 +78,24 @@ class RadiosocketForm extends DefaultHtmlForm {
         $deviceCode->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.deviceCode.description'));
         $deviceCode->requiredField(true);
         $this->addFormElement($deviceCode);
+
+        //Anzahl Sendevorgaenge
+        $continuous = new Select('continuous');
+        $values = array();
+        foreach(range(1, 10) as $i) {
+
+            $selected = 0;
+            if(($radioSocket instanceof RadioSocket && $radioSocket->getContinuous() == $i) || (!$radioSocket instanceof RadioSocket && $i == 1)) {
+
+                $selected = 1;
+            }
+            $values[$i] = array($i, $selected);
+        }
+        $continuous->setValues($values);
+        $continuous->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.continuous'));
+        $continuous->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.continuous.description'));
+        $continuous->requiredField(true);
+        $this->addFormElement($continuous);
 
         //Schaltpunkte Auswahl
         $switchPoints = new SwitchPointsChooser('switchPoints', ($radioSocket instanceof RadioSocket ? $radioSocket->listSwitchPoints() : array()));

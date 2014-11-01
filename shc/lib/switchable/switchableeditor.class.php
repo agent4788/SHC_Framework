@@ -199,6 +199,7 @@ class SwitchableEditor {
                     $object->setProtocol((string) $switchable->protocol);
                     $object->setSystemCode((string) $switchable->systemCode);
                     $object->setDeviceCode((string) $switchable->deviceCode);
+                    $object->setContinuous((string) $switchable->continuous);
                     break;
                 case self::TYPE_RPI_GPIO_OUTPUT:
 
@@ -1158,18 +1159,20 @@ class SwitchableEditor {
      * @param  String  $protocol          Protokoll
      * @param  String  $systemCode        System Code
      * @param  String  $deviceCode        Geraete Code
+     * @param  Integer $continuous        Anzahl der Sendevorgaenge
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addRadioSocket($name, $enabled, $visibility, $icon, $room, $orderId, $protocol, $systemCode, $deviceCode, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addRadioSocket($name, $enabled, $visibility, $icon, $room, $orderId, $protocol, $systemCode, $deviceCode, $continuous, array $switchPoints = array(), array $allowedUserGroups = array()) {
         
         //Daten Vorbereiten
         $data = array(
             'protocol' => $protocol,
             'systemCode' => $systemCode,
-            'deviceCode' => $deviceCode
+            'deviceCode' => $deviceCode,
+            'continuous' => $continuous
         );
 
         //Datensatz erstellen
@@ -1189,18 +1192,20 @@ class SwitchableEditor {
      * @param  String  $protocol          Protokoll
      * @param  String  $systemCode        System Code
      * @param  String  $deviceCode        Geraete Code
+     * @param  Integer $continuous        Anzahl der Sendevorgaenge
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRadioSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $protocol = null, $systemCode = null, $deviceCode = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editRadioSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $protocol = null, $systemCode = null, $deviceCode = null, $continuous = null, array $switchPoints = null, array $allowedUserGroups = null) {
         
         //Daten Vorbereiten
         $data = array(
             'protocol' => $protocol,
             'systemCode' => $systemCode,
-            'deviceCode' => $deviceCode
+            'deviceCode' => $deviceCode,
+            'continuous' => $continuous
         );
 
         //Datensatz bearbeiten

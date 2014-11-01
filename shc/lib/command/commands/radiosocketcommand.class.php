@@ -36,19 +36,28 @@ class RadioSocketCommand extends AbstractCommand {
      * @var String 
      */
     protected $deviceCode = '';
+
+    /**
+     * Anzahl der Sendevorgaenge
+     *
+     * @var Integer
+     */
+    protected $continuous = 1;
     
     /**
      * @param String  $protocol   Protokoll
      * @param String  $systemCode Systemcode
      * @param String  $deviceCode Geraetecode
      * @param Integer $command    Kommando
+     * @param Integer $continuous Sendevorgaenge
      */
-    public function __construct($protocol, $systemCode, $deviceCode, $command) {
+    public function __construct($protocol, $systemCode, $deviceCode, $command, $continuous) {
         
         $this->protocol = $protocol;
         $this->systemCode = $systemCode;
         $this->deviceCode = $deviceCode;
         $this->command = $command;
+        $this->continuous = $continuous;
     }
     
     /**
@@ -116,6 +125,28 @@ class RadioSocketCommand extends AbstractCommand {
         
         return $this->deviceCode;
     }
+
+    /**
+     * setzt die Anzahl der Sendevorgaenge
+     *
+     * @param  Integer $continuous ANzahl wie of der Sendebefehl ausgefuehrt werden soll
+     * @return \SHC\Command\Commands\RadioSocketCommand
+     */
+    public function setContinuous($continuous) {
+
+        $this->continuous = $continuous;
+        return $this;
+    }
+
+    /**
+     * gibt die Anzahl zurueck wieoft ein Steckdosenbefehl gesendet werden soll
+     *
+     * @return Integer
+     */
+    public function getContinuous() {
+
+        return $this->continuous;
+    }
     
     /**
      * gibt ein Array mit den zu sendenen Daten zurueck
@@ -129,7 +160,8 @@ class RadioSocketCommand extends AbstractCommand {
             'protocol' => $this->protocol,
             'systemCode' => $this->systemCode,
             'deviceCode' => $this->deviceCode,
-            'command' => $this->command
+            'command' => $this->command,
+            'continuous' => $this->continuous
         );
     }
 

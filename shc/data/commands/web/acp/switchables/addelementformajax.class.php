@@ -183,6 +183,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $protocol = $radiosocketForm->getElementByName('protocol')->getValue();
                         $systemCode = $radiosocketForm->getElementByName('systemCode')->getValue();
                         $deviceCode = $radiosocketForm->getElementByName('deviceCode')->getValue();
+                        $continuous = $radiosocketForm->getElementByName('continuous')->getValue();
                         $switchPoints = $radiosocketForm->getElementByName('switchPoints')->getValues();
                         $enabled = $radiosocketForm->getElementByName('enabled')->getValue();
                         $visibility = $radiosocketForm->getElementByName('visibility')->getValue();
@@ -192,7 +193,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $roomId, $orderId, $protocol, $systemCode, $deviceCode, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $roomId, $orderId, $protocol, $systemCode, $deviceCode, $continuous, $switchPoints, $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.success'));
                         } catch(\Exception $e) {
