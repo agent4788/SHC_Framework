@@ -88,6 +88,8 @@ $l['acp.userManagement.form.error.group.del'] =  'Die Benutzergruppe konnte nich
 $l['acp.userManagement.form.error.id.group'] =  'Ungültige Gruppen ID';
 
 //Rechte
+$l['acp.userManagement.premissions.shc.ucp.viewUserAtHome'] =  'Benutzer zu Hause';
+$l['acp.userManagement.premissions.shc.ucp.viewUserAtHome.description'] =  'bekommt die Benutzer zu Hause auf der Indexseite angezeigt';
 $l['acp.userManagement.premissions.shc.acp.menu'] =  'ACP Menü';
 $l['acp.userManagement.premissions.shc.acp.menu.description'] =  'das ACP Menü betreten und die Funktionen verwenden die keine gesonderten Berechtigungen erfordern';
 $l['acp.userManagement.premissions.shc.acp.userManagement'] =  'Benutzerverwaltung';
@@ -104,3 +106,7 @@ $l['acp.userManagement.premissions.shc.acp.switchpointsManagement'] =  'Schaltpu
 $l['acp.userManagement.premissions.shc.acp.switchpointsManagement.description'] =  'der Benutzer kann Schaltpunkte erstellen und verwalten';
 $l['acp.userManagement.premissions.shc.acp.sensorpointsManagement'] =  'Sensorpunkte verwalten';
 $l['acp.userManagement.premissions.shc.acp.sensorpointsManagement.description'] =  'der Benutzer kann Sensorpunkte verwalten';
+$l['acp.userManagement.premissions.shc.acp.usersathomeManagement'] =  'Benutzer zu Hause verwalten';
+$l['acp.userManagement.premissions.shc.acp.usersathomeManagement.description'] =  'es können die Benutzer zu Hause verwaltet werden';
+$l['acp.userManagement.premissions.shc.acp.switchserverManagement'] =  'Schaltserver verwalten';
+$l['acp.userManagement.premissions.shc.acp.switchserverManagement.description'] =  'der Benutzer kann die Schaltserver verwalten';

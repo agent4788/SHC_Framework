@@ -19,6 +19,8 @@ $l['index.login.user'] = 'angemeldet als {1:s}';
 
 //Benutzer zu Hause
 $l['index.userAtHome.boxTitle'] = 'Benutzer zu Hause';
+$l['index.userAtHome.online'] = 'online';
+$l['index.userAtHome.offline'] = 'offline';
 
 //Login
 $l['index.login.boxTitle'] = 'Anmelden';

@@ -11,9 +11,11 @@
         {include file='headline.html'}
         <div id="shc-content">
             <div id="shc-view-errorFrame" style="display:none" title="{lang var='index.room.error.title'}"></div>
-            {contentbox name="index.userAtHome.boxTitle"}
-            comming Soon ...
-            {/contentbox}
+            {premission premission='shc.acp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
+                {contentbox name="index.userAtHome.boxTitle"}
+                    <div id="shc-view-usersAtHomeBox"></div>
+                {/contentbox}
+            {/premission}
             <div id="shc-content-tabs">
                 <ul>
                     {foreach from=$roomList item='room'}
@@ -24,13 +26,30 @@
                 </ul>
             </div>
         </div>
-        {literal}
         <script type="text/javascript">
             $(function () {
 
                 $('#shc-content-tabs').tabs();
-            })
+
+            });
+
+            {premission premission='shc.ucp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
+            function updateUserAtHome() {
+
+                $.get(
+                        "index.php?app=shc&ajax=userathomeupdate&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            //Wer ist Online Daten erneuern
+                            $('#shc-view-usersAtHomeBox').html(data);
+                        }
+                );
+
+                $('#shc-view-usersAtHomeBox').tooltip();
+                setTimeout('updateUserAtHome()', 15000);
+            };
+            updateUserAtHome();
+            {/premission}
         </script>
-        {/literal}
     </body>
 </html>

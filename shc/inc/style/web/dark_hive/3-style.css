@@ -416,3 +416,40 @@ span.tooltip_strong {
     font-weight: bold;
     display: inline-block;
 }
+
+/* Wer ist zu Hause */
+div#shc-view-usersAtHomeBox {
+    padding: 15px;
+    text-align: center;
+}
+
+div#shc-view-usersAtHomeBox div.shc-view-userAtHome-icon {
+    display: inline-block;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+div#shc-view-usersAtHomeBox div.shc-view-userAtHome-icon span.shc-view-userAtHome-icon-online {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin-right: 5px;
+    background-image: url(../../../img/usersathome/userOnline.png);
+}
+
+div#shc-view-usersAtHomeBox div.shc-view-userAtHome-icon span.shc-view-userAtHome-icon-offline {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin-right: 5px;
+    background-image: url(../../../img/usersathome/userOffline.png);
+}
+
+div#shc-view-usersAtHomeBox div.shc-view-userAtHome-icon span.shc-view-userAtHome-icon-text {
+    font-size: 1.1em;
+    display: inline-block;
+    max-width: 120px;
+    position: relative;
+    top: -20px;
+}
