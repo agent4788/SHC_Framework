@@ -24,10 +24,26 @@ abstract class SyncCommand extends AbstractCommand {
     protected $data = array();
 
     /**
+     * maximale Ausfuehrungszeit
+     *
+     * @var Integer
+     */
+    protected $maxExecutionTime = 30;
+
+    /**
      * fuehrt das Kommando aus
      */
     protected function executeCommand() {
 
+        //max Execution Time setzen
+        if(function_exists('set_time_limit')) {
+
+            set_time_limit($this->maxExecutionTime);
+        }
+        //direkte Ausgabe an den Browser
+        ob_implicit_flush();
+
+        //Daten verarbeiten
         $this->processData();
         $this->writeData();
     }
@@ -42,15 +58,7 @@ abstract class SyncCommand extends AbstractCommand {
      */
     public function writeData() {
 
-        if (is_array($this->data)) {
-
-            //als JSON senden
-            JSON::sendJSON($this->data, $this->response);
-        } else {
-
-            //als HTML oder Text Fragment senden
-            $this->response->write($this->data);
-        }
+        $this->response->flush();;
     }
 
 }

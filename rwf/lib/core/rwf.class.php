@@ -3,6 +3,8 @@
 namespace RWF\Core;
 
 //Imports
+use RWF\Request\Request;
+use RWF\Request\SSEResponse;
 use RWF\Settings\Settings;
 use RWF\Request\HttpRequest;
 use RWF\Request\HttpResponse;
@@ -127,11 +129,22 @@ class RWF {
 
         if (ACCESS_METHOD_HTTP) {
 
+            //HTTP Anfrageobjekt initialisieren
             self::$request = new HttpRequest();
-            self::$response = new HttpResponse();
+
+            if(self::$request->issetParam('sync', Request::GET)) {
+
+                //Server Sent Event Antwortobjekt initalisieren
+                self::$response = new SSEResponse();
+            } else {
+
+                //Standard HTTP Antwortobjekt initalisieren
+                self::$response = new HttpResponse();
+            }
             self::$response->addNoCacheHeader();
         } else {
 
+            //Kommandozeilen Anfrage und Antwort initalisieren
             self::$request = new CliRequest();
             self::$response = new CliResponse();
         }
