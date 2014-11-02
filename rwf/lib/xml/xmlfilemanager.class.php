@@ -54,14 +54,13 @@ class XmlFileManager {
     /**
      * Singleton Instanz
      * 
-     * @var RWF\XML\XmlFileManager
+     * @var \RWF\XML\XmlFileManager
      */
     protected static $instance = null;
 
     protected function __construct() {
 
         //RWF XML Dateien Registrieren
-        $this->registerXmlFile(self::XML_Version, PATH_RWF_STORAGE . 'version.xml', PATH_RWF_STORAGE . 'default/defaultVersion.xml');
         $this->registerXmlFile(self::XML_USERS, PATH_RWF_STORAGE . 'users.xml', PATH_RWF_STORAGE . 'default/defaultUsers.xml');
         $this->registerXmlFile(self::XML_SETTINGS, PATH_RWF_STORAGE . 'settings.xml', PATH_RWF_STORAGE . 'default/defaultSettings.xml');
     }

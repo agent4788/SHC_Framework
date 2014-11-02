@@ -89,15 +89,21 @@ class RpiGpioInput extends AbstractReadable {
 
     /**
      * liest en aktuellen Status des Einganges ein
+     *
+     * @param Boolean $save gibt an ob der gelesene Status gespeichert werden soll
      */
-    public function readState() {
+    public function readState($save = true) {
 
         $command = new GpioInputCommand($this->switchServer, $this->pinNumber);
         if(CommandSheduler::getInstance()->sendGPIOReadCommand($command)) {
 
             $this->state = $command->getState();
             $this->stateModified = true;
-            SwitchableEditor::getInstance()->updateState();
+
+            if($save == true) {
+
+                SwitchableEditor::getInstance()->updateState();
+            }
         }
     }
 

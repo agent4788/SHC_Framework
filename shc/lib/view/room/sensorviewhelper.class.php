@@ -187,7 +187,7 @@ abstract class SensorViewHelper {
             $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
             $html .= '<span class="shc-icon shc-icon-rain"></span>';
             $html .= '<div class="shc-contentbox-body-row-content">';
-            $html .= '<span id="shc-view-sensor-rain-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
+            $html .= '<span id="shc-view-sensor-analog-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
             $html .= '</div>';
             $html .= '</div>';
         }
@@ -210,7 +210,7 @@ abstract class SensorViewHelper {
             $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
             $html .= '<span class="shc-icon shc-icon-hygrometer"></span>';
             $html .= '<div class="shc-contentbox-body-row-content">';
-            $html .= '<span id="shc-view-sensor-hygrometer-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
+            $html .= '<span id="shc-view-sensor-analog-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
             $html .= '</div>';
             $html .= '</div>';
         }
@@ -233,7 +233,7 @@ abstract class SensorViewHelper {
             $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
             $html .= '<span class="shc-icon shc-icon-ldr"></span>';
             $html .= '<div class="shc-contentbox-body-row-content">';
-            $html .= '<span id="shc-view-sensor-ldr-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
+            $html .= '<span id="shc-view-sensor-analog-' . $sensor->getId() . '-value">' . String::formatInteger($sensor->getValue() * 100 / 1023) . '</span>%';
             $html .= '</div>';
             $html .= '</div>';
         }

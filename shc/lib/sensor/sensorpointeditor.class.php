@@ -124,6 +124,9 @@ class SensorPointEditor {
      */
     public function loadData() {
 
+        //alte daten loeschen
+        $this->sensorPoints = array();
+
         //Dateien durchlaufen
         foreach (FileUtil::listDirectoryFiles(PATH_SHC_STORAGE . 'sensorpoints/', false, false, true) as $file) {
 
@@ -132,7 +135,7 @@ class SensorPointEditor {
 
                 //XML Datei am Manager anmelden und XML Objekt laden
                 XmlFileManager::getInstance()->registerXmlFile($file['name'], PATH_SHC_STORAGE . 'sensorpoints/' . $file['name']);
-                $xml = XmlFileManager::getInstance()->getXmlObject($file['name']);
+                $xml = XmlFileManager::getInstance()->getXmlObject($file['name'], true);
 
                 //Sensorpunkt initalisieren
                 $sensorPoint = new SensorPoint();
@@ -732,6 +735,78 @@ class SensorPointEditor {
                 } else {
 
                     $sensors[] = $sensor;
+                }
+            }
+        }
+
+        if ($orderBy == 'id') {
+
+            //nach ID sortieren
+            ksort($sensors, SORT_NUMERIC);
+            return $sensors;
+        } elseif ($orderBy == 'orderId') {
+
+            //nach Sortierungs ID sortieren
+            ksort($sensors, SORT_NUMERIC);
+            return $sensors;
+        } elseif ($orderBy == 'name') {
+
+            //nach Namen sortieren
+            //Sortierfunktion
+            $orderFunction = function($a, $b) {
+
+                if ($a->getName() == $b->getName()) {
+
+                    return 0;
+                }
+
+                if ($a->getName() < $b->getName()) {
+
+                    return -1;
+                }
+                return 1;
+            };
+            usort($sensors, $orderFunction);
+            return $sensors;
+        }
+        return $sensors;
+    }
+
+    /**
+     * gibt eine Liste mit allen Sensoren zurueck
+     *
+     * @param  Integer $roomId  ID des Raumes
+     * @param  String  $orderBy Art der Sortierung (
+     *      id => nach ID sorieren,
+     *      name => nach Namen sortieren,
+     *      orderId => nach Sortierungs ID,
+     *      unsorted => unsortiert
+     *  )
+     * @return Array
+     */
+    public function listSensorsForRoom($roomId, $orderBy = 'id') {
+
+        //Alle Sensoren durchlaufen
+        $sensors = array();
+        foreach ($this->sensorPoints as $sensorPoint) {
+
+            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+            foreach ($sensorPoint->listSensors() as $sensor) {
+
+                /* @var $sensor \SHC\Sensor\Sensor */
+                $room = $sensor->getRoom();
+                if($room != null && $room->getId() == $roomId) {
+
+                    if ($orderBy == 'id') {
+
+                        $sensors[$sensor->getId()] = $sensor;
+                    } elseif ($orderBy == 'orderId') {
+
+                        $sensors[$sensor->getOrderId()] = $sensor;
+                    } else {
+
+                        $sensors[] = $sensor;
+                    }
                 }
             }
         }

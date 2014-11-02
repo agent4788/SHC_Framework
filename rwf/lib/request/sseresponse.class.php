@@ -73,6 +73,14 @@ class SSEResponse implements Response {
     }
 
     /**
+     * setzt den Statuscode auf No Coneten, dadurch verbindet sich der Browser nicht automatisch erneut
+     */
+    public function setNoReconnectHeader() {
+
+        $this->httpState = '204 No Content';
+    }
+
+    /**
      * setzt den MimeType der Antwort
      *
      * @param String $contentType MimeType
@@ -241,11 +249,17 @@ class SSEResponse implements Response {
      */
     public function addArrayAsJson(array $data) {
 
-        $this->addData('{');
-        foreach($data as $index => $value) {
-            $this->addData('"' . str_replace(array("\n", "\r", '"'), array('', '', '\"'), $index) . '" : "'. str_replace(array("\n", "\r", '"'), array('', '', '\"'), $value) . '"');
-        }
-        $this->addData('}');
+        $this->addData(json_encode($data));
+    }
+
+    /**
+     * gibt an ob es sich noch um den ersten durchlauf handelt
+     *
+     * @return Boolean
+     */
+    public function isFirstRun() {
+
+        return $this->firstRun;
     }
 
     /**
@@ -323,6 +337,7 @@ class SSEResponse implements Response {
         echo $this->httpBody . "\n";
 
         //Objekt zuruecksetzen
+        $this->firstRun = false;
         $this->httpBody = '';
         $this->i = 0;
 

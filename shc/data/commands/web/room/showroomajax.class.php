@@ -34,8 +34,13 @@ class ShowRoomAjax extends AjaxCommand {
 
         //Raum ID einlesen
         $roomId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
-        
+
+        //Template vorbereiten
+        $tpl = RWF::getTemplate();
+        $tpl->assign('roomId', $roomId);
+
         $this->data = ViewHelperEditor::getInstance()->getViewHelperForRoom($roomId)->showAll();
+        $this->data .= $tpl->fetchString('roomview.html');
     }
 
 }

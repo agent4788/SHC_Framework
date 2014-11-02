@@ -86,8 +86,10 @@ class ArduinoInput extends AbstractReadable {
 
     /**
      * liest en aktuellen Status des Einganges ein
+     *
+     * @param Boolean $save gibt an ob der gelesene Status gespeichert werden soll
      */
-    public function readState() {
+    public function readState($save = true) {
 
     }
 
