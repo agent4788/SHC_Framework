@@ -50,6 +50,62 @@ span.shc-icon-online {
     background-image: url(../../../img/switchables/wol_state_online.png);
 }
 
+span.shc-icon-waterBoiler {
+    background-image: url(../../../img/switchables/waterBoiler.png);
+}
+
+span.shc-icon-coffee {
+    background-image: url(../../../img/switchables/coffee.png);
+}
+
+span.shc-icon-clock {
+    background-image: url(../../../img/switchables/clock.png);
+}
+
+span.shc-icon-flashlight {
+    background-image: url(../../../img/switchables/flashlight.png);
+}
+
+span.shc-icon-power {
+    background-image: url(../../../img/switchables/power.png);
+}
+
+span.shc-icon-rhythmbox {
+    background-image: url(../../../img/switchables/rhythmbox.png);
+}
+
+span.shc-icon-monitor {
+    background-image: url(../../../img/switchables/monitor.png);
+}
+
+span.shc-icon-tv {
+    background-image: url(../../../img/switchables/tv.png);
+}
+
+span.shc-icon-nas {
+    background-image: url(../../../img/switchables/nas.png);
+}
+
+span.shc-icon-printer {
+    background-image: url(../../../img/switchables/printer.png);
+}
+
+span.shc-icon-christmasTree {
+    background-image: url(../../../img/switchables/christmasTree.png);
+}
+
+span.shc-icon-candles {
+    background-image: url(../../../img/switchables/candles.png);
+}
+
+span.shc-icon-christmasLights {
+    background-image: url(../../../img/switchables/christmasLights.png);
+}
+
+span.shc-icon-star {
+    background-image: url(../../../img/switchables/star.png);
+}
+
 /* Status Icons */
 span.shc-icon-high {
     display: inline-block;
