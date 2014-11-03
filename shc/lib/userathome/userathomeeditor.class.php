@@ -70,7 +70,7 @@ class UserAtHomeEditor {
      */
     public function loadData() {
         
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME);
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
         
         //Daten einlesen
         foreach($xml->user as $usersAtHome) {
