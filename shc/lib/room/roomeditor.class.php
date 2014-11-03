@@ -65,7 +65,15 @@ class RoomEditor {
 
     protected function __construct() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM);
+        $this->loadData();
+    }
+
+    /**
+     * laedt die XML Daten
+     */
+    public function loadData() {
+
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
 
         //Daten einlesen
         foreach ($xml->room as $room) {

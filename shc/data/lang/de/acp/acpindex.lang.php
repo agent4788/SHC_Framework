@@ -14,6 +14,8 @@ $l = array();
 //Allgemein
 $l['acpindex.text.acp'] = 'Administration';
 $l['acpindex.options'] = 'Optionen';
+$l['acpindex.sort'] = 'sortieren';
+$l['acpindex.save'] = 'speichern';
 $l['acpindex.allUsers'] = 'jede Gruppe';
 
 //Boxen

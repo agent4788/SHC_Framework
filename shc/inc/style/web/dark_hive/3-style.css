@@ -387,6 +387,15 @@ table.shc-view-contentTable td {
     padding: 5px;
 }
 
+tr.shc-view-contentTable-sortable-placeholder {
+    height: 25px;
+    padding: 5px;
+}
+
+tr.shc-view-contentTable-sortable-placeholder td {
+    border: 2px dotted #e02f43;
+}
+
 table.shc-view-contentTable tfoot td {
     background: #86b5d9 url(./images/ui-bg_highlight-soft_44_444444_1x100.png) repeat-x center;
     font-weight: bold;
