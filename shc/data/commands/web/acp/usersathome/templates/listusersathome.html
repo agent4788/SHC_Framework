@@ -38,6 +38,15 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    //Hilfsfunktion sortierung
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
     $(function() {
 
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.usersathomeManagement.title"}');
@@ -46,16 +55,19 @@
         //Sortierung
         $('#shc-view-button-sort').click(function() {
 
-            $("#shc-view-contentTable-sortable tbody tr").css('cursor', 'move');
-            $('#shc-view-contentTable-sortable').sortable({
-                containerSelector: 'table',
-                itemPath: '> tbody',
-                itemSelector: 'tr',
-                placeholder: '<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>',
-                onDrop: function() {
-
-                    $("#shc-view-contentTable-sortable tbody tr").css('cursor', 'move');
-                    $('#shc-view-contentTable-sortable').sortable();
+            $('#shc-view-contentTable-sortable tbody').sortable({
+                handle: "td",
+                cursor: 'move',
+                helper: fixHelper,
+                placeholder: {
+                    element: function(currentItem) {
+                        return $('<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>')[0];
+                    },
+                    update: function(container, p) {
+                        return;
+                    }
+                },
+                stop: function() {
 
                     //Sortierungs IDs in die versteckten Felder eintragen
                     $('#shc-view-contentTable-sortable').find('input').each(function(index) {
