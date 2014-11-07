@@ -146,7 +146,7 @@ class SwitchServerSocket {
         $firstContunue = true;
         for($i = 0; $i < $request['continuous']; $i++) {
 
-            @shell_exec('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+            @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
             if($firstContunue === false) {
 
                 //1s Wartezeit zwichen den Sendevorgaengen
@@ -158,7 +158,7 @@ class SwitchServerSocket {
         //Debug ausgabe
         if ($this->debug) {
 
-            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . $request['protocol'] . ' -s ' . $request['systemCode'] . ' -u ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
+            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
         }
     }
 
@@ -174,19 +174,19 @@ class SwitchServerSocket {
         //Modus setzen
         if (!in_array($request['pinNumber'], $this->gpioModeSet)) {
 
-            @shell_exec($gpioPath . ' mode ' . $request['pinNumber'] . ' out');
+            @shell_exec($gpioPath . ' mode ' . escapeshellarg($request['pinNumber']) . ' out');
             if ($this->debug) {
 
-                $this->response->writeLnColored($gpioPath . ' mode ' . $request['pinNumber'] . ' out', 'light_green');
+                $this->response->writeLnColored($gpioPath . ' mode ' . escapeshellarg($request['pinNumber']) . ' out', 'light_green');
             }
             $this->gpioModeSet[] = $request['pinNumber'];
         }
 
         //Befehl ausfuehren
-        @shell_exec($gpioPath . ' write ' . $request['pinNumber'] . ' ' . $request['command']);
+        @shell_exec($gpioPath . ' write ' . escapeshellarg($request['pinNumber']) . ' ' . escapeshellarg($request['command']));
         if ($this->debug) {
 
-            $this->response->writeLnColored($gpioPath . ' write ' . $request['pinNumber'] . ' ' . $request['command'], 'light_green');
+            $this->response->writeLnColored($gpioPath . ' write ' . escapeshellarg($request['pinNumber']) . ' ' . escapeshellarg($request['command']), 'light_green');
         }
     }
 
@@ -203,16 +203,16 @@ class SwitchServerSocket {
         //Modus setzen
         if (!in_array($request['pinNumber'], $this->gpioModeSet)) {
 
-            @shell_exec($gpioPath . ' mode ' . $request['pinNumber'] . ' in');
+            @shell_exec($gpioPath . ' mode ' . escapeshellarg($request['pinNumber']) . ' in');
             $this->gpioModeSet[] = $request['pinNumber'];
             if ($this->debug) {
 
-                $this->response->writeLnColored($gpioPath . ' mode ' . $request['pinNumber'] . ' in', 'light_green');
+                $this->response->writeLnColored($gpioPath . ' mode ' . escapeshellarg($request['pinNumber']) . ' in', 'light_green');
             }
         }
 
         //Befehl ausfuehren
-        @exec($gpioPath . ' read ' . $request['pinNumber'], $data);
+        @exec($gpioPath . ' read ' . escapeshellarg($request['pinNumber']), $data);
 
         //Daten Auswerten
         if(isset($data[0])) {
@@ -240,7 +240,7 @@ class SwitchServerSocket {
         //Debug ausgabe
         if ($this->debug) {
 
-            $this->response->writeLnColored($gpioPath . ' read ' . $request['pinNumber'], 'light_green');
+            $this->response->writeLnColored($gpioPath . ' read ' . escapeshellarg($request['pinNumber']), 'light_green');
             $this->response->writeLnColored((isset($data[0]) ? $data[0] : 'null'), 'light_green');
         }
     }
