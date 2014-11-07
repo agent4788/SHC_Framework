@@ -75,7 +75,7 @@ class ListRoomsAjax extends AjaxCommand {
                     RoomEditor::getInstance()->editRoomOrder($filteredOrder);
                     RoomEditor::getInstance()->loadData();
                     $message->setType(Message::SUCCESSFULLY);
-                    $message->setMessage(RWF::getLanguage()->get('acp.roomManagement.form.error.order'));
+                    $message->setMessage(RWF::getLanguage()->get('acp.roomManagement.form.success.orderRoom'));
                 } catch (\Exception $e) {
 
                     //Fehler beim speichern
