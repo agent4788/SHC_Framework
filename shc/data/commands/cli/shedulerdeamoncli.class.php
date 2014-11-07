@@ -3,6 +3,7 @@
 namespace SHC\Command\CLI;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
 use SHC\Sheduler\Sheduler;
 
@@ -42,7 +43,14 @@ class ShedulerDeamonCli extends CliCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     public function writeHelp() {
-        
+
+        $r = RWF::getResponse();
+        $r->writeLnColored('-sh oder --sheduler startet den Scheduler Daemon', 'green_u');
+        $r->writeLn('');
+        $r->writeLn('Der Timer Deamon ist einer der wichtigsten Dienste das SHC, er verwaltet die Zeitsteuerung, sucht regelmäßig nach bekannten Geräten im Netzwerk und verarbeitet die Ereignisse.');
+        $r->writeLn('Dieser Dienst muss in der SHC Hauptinstallation laufen (also auf dem RPi mit der SHC Weboberfläche), für alle zusätzlichen Dienste wird er nicht benötigt.');
+        $r->writeLn('In den Standardeinstellungen ist dieser Dienst aktiviert.');
+        $r->writeLn('');
     }
 
     /**

@@ -95,7 +95,23 @@ class SensorDataReciverServerCli extends CliCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     public function writeHelp() {
-        
+
+        $r = RWF::getResponse();
+        $r->writeLnColored('-sr oder --sensorreciver startet den Sensor Reciver Server', 'green_u');
+        $r->writeLn('');
+        $r->writeLn('Der Sensor Reciver Server empfängt die Sensordaten von Sensoren die am gleichen oder an anderen RPi angeschlossen sind.');
+        $r->writeLn('Dieser Dienst wird nur benötigt wenn Sensoren die an einem RPi angeschlossen sind verwendet werden.');
+        $r->writeLn('In den Standardeinstellungen ist dieser Dienst deaktiviert.');
+        $r->writeLn('');
+
+        $r->writeLnColored('Zusätzliche Optionen:', 'yellow_u');
+        $r->writeLnColored("\t" . '-c oder --config', 'yellow');
+        $r->writeLn("\t\t" . 'Hier kann die IP-Adresse und der Port des Servers festgelegt werden.');
+        $r->writeLnColored("\t" . '-s oder --stop', 'yellow');
+        $r->writeLn("\t\t" . 'Mit dieser Option kann ein Laufender Schaltserver gestoppt werden.');
+        $r->writeLnColored("\t" . '-d oder --debug', 'yellow');
+        $r->writeLn("\t\t" . 'Startet den Debug Modus, alle eingehenden Befehle werden auf der Kommandozeile ausgegeben.');
+        $r->writeLn('');
     }
 
     /**

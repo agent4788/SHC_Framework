@@ -87,7 +87,40 @@ class SensorDatatTransmitterCli extends CliCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     public function writeHelp() {
-        
+
+        $r = RWF::getResponse();
+        $r->writeLnColored('-st oder --sensortransmitter startet den Sensor Transmitter Daemon', 'green_u');
+        $r->writeLn('');
+        $r->writeLn('Der Sensor Transmitter sendet die Sensordaten der am RPi angeschlossenen Sensoren aun den Sensor Rceiver.');
+        $r->writeLn('Dieser Dienst wird nur benötigt wenn Sensoren die an einem RPi angeschlossen sind verwendet werden.');
+        $r->writeLn('In den Standardeinstellungen ist dieser Dienst deaktiviert.');
+        $r->writeLn('');
+
+        $r->writeLnColored('Zusätzliche Optionen:', 'yellow_u');
+        $r->writeLnColored("\t" . '-d oder --debug', 'yellow');
+        $r->writeLn("\t\t" . 'Startet den Debug Modus, alle eingehenden Befehle werden auf der Kommandozeile ausgegeben.');
+        $r->writeLnColored("\t" . '-c oder --config', 'yellow');
+        $r->writeLn("\t\t" . 'Hier kann die IP-Adresse und der Port des RPi Reader Servers sowie die Sensor Punkt ID, mit der sich der Writer am Reader meldet, festgelegt werden.');
+        $r->writeLn("\t\t" . 'DS18x20 Sensoren werden automatisch erkannt, DHT und BMP Sensoren müssen mit den folgenden Optionen registriert werden.');
+        $r->writeLnColored("\t" . '-listDHT', 'yellow');
+        $r->writeLn("\t\t" . 'gibt eine Liste mit allen registrierten DHT Sensoren aus.');
+        $r->writeLnColored("\t" . '-addDHT <Sensor-ID> <Typ> <GPIO-PIN>', 'yellow');
+        $r->writeLn("\t\t" . 'Registrier einen neuen DHT22 Sensor');
+        $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
+        $r->writeLn("\t\t" . '<Typ> 11 für DHT11 und 22 für DHT22');
+        $r->writeLn("\t\t" . '<GPIO-PIN> Wiring Pi Pin [0 - 20]');
+        $r->writeLnColored("\t" . '-removeDHT <Sensor-ID>', 'yellow');
+        $r->writeLn("\t\t" . 'löscht einen DHT Sensor');
+        $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
+        $r->writeLnColored("\t" . '-listBMP', 'yellow');
+        $r->writeLn("\t\t" . 'gibt eine Liste mit allen registrierten BMP Sensoren aus.');
+        $r->writeLnColored("\t" . '-addBMP <Sensor-ID>', 'yellow');
+        $r->writeLn("\t\t" . 'Registrier einen neuen BMP Sensor');
+        $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
+        $r->writeLnColored("\t" . '-removeBMP <Sensor-ID>', 'yellow');
+        $r->writeLn("\t\t" . 'löscht einen DHT Sensor');
+        $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
+        $r->writeLn('');
     }
 
     /**

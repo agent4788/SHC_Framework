@@ -94,7 +94,20 @@ class ArduinoSensorReciverDeamonCli extends CliCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     public function writeHelp() {
-        
+
+        $r = RWF::getResponse();
+        $r->writeLnColored('-ar oder --arduinoreciver startet den Arduino Reciver Daemon', 'green_u');
+        $r->writeLn('');
+        $r->writeLn('Der Arduino Reciver list die Sensordaten die von einem Arduino auf die Serielle Schnittstelle ausgegeben werden');
+        $r->writeLn('Dieser Dienst wird nur in Verbindung mit dem Sensornetzwerk benötigt und ist in den Standardeinstellungen daher deaktiviert.');
+        $r->writeLn('');
+
+        $r->writeLnColored('Zusätzliche Optionen:', 'yellow_u');
+        $r->writeLnColored("\t" . '-c oder --config', 'yellow');
+        $r->writeLn("\t\t" . 'Hier kann die Serielle Schnittstelle gewählt werden über die der Arduino und RPi kommunizieren');
+        $r->writeLnColored("\t" . '-d oder --debug', 'yellow');
+        $r->writeLn("\t\t" . 'Gibt die eingehenden Daten auf der Standartausgabe aus.');
+        $r->writeLn('');
     }
 
     /**

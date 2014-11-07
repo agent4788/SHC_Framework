@@ -95,7 +95,25 @@ class SwitchServerCli extends CliCommand {
      * gibt die Hilfe zu der Kommandozeilen Funktion auf die Kommandozeile aus
      */
     public function writeHelp() {
-        
+
+        $r = RWF::getResponse();
+        $r->writeLnColored('-ss oder --switchserver  startet den Schalt Server', 'green_u');
+        $r->writeLn('');
+        $r->writeLn('Der Schaltserver ist der 2. wichtige Dienst, er nimmt die Schaltaufgaben entgegen und sendet diese über den angeschlossenen 433MHz Sender an die Steckdosen.');
+        $r->writeLn('Zusätzlich schaltet der Schaltserver auch die einzelnen GPIOs des Raspberry Pi.');
+        $r->writeLn('');
+        $r->writeLn('Damit das SHC richtig Funktioniert muss mindestens ein Schaltserver erreichbar sein.');
+        $r->writeLn('In den Standardeinstellungen ist dieser Dienst aktiviert.');
+        $r->writeLn('');
+
+        $r->writeLnColored('Zusätzliche Optionen:', 'yellow_u');
+        $r->writeLnColored("\t" . '-c oder --config', 'yellow');
+        $r->writeLn("\t\t" . 'Hier kann die IP-Adresse und der Port des Servers festgelegt werden.');
+        $r->writeLnColored("\t" . '-s oder --stop', 'yellow');
+        $r->writeLn("\t\t" . 'Mit dieser Option kann ein Laufender Schaltserver gestoppt werden.');
+        $r->writeLnColored("\t" . '-d oder --debug', 'yellow');
+        $r->writeLn("\t\t" . 'Startet den Debug Modus, alle eingehenden Befehle werden auf der Kommandozeile ausgegeben.');
+        $r->writeLn('');
     }
 
     /**
