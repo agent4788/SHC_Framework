@@ -34,6 +34,14 @@ $l['global.button.editlist'] = 'Liste bearbeiten';
 $l['global.button.delete'] = 'löschen';
 $l['global.button.yes'] = $l['global.yes'];
 $l['global.button.no'] = $l['global.no'];
+$l['global.button.reboot'] = 'Neustart';
+$l['global.button.shutdown'] = 'Herunterfahren';
+
+//globale Prompts
+$l['global.prompt.reboot.title'] = 'Neustart';
+$l['global.prompt.reboot.text'] = 'willst du den Raspberry Pi wirklich neu starten?';
+$l['global.prompt.shutdown.title'] = 'Herunterfahren';
+$l['global.prompt.shutdown.text'] = 'willst du den Raspberry Pi wirklich Herunterfahren?';
 
 //Datum
 $l['global.date.month.1'] = 'Januar';
