@@ -229,3 +229,6 @@ $l['acp.switchableManagement.form.deleteBox.error.1102'] =  'Die Box konnte wege
 $l['acp.switchableManagement.form.deleteBox.error'] =  'Die Box konnte nicht gelöscht werden';
 $l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht entfernt werden';
 $l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'Das Element konnte nicht entfernt werden';
+
+$l['acp.switchableManagement.form.success.order'] =  'Die Sortierung wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.error.order'] =  'Die Sortierung konnte nicht gespeichert werden';

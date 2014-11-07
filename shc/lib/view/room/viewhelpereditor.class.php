@@ -88,7 +88,15 @@ class ViewHelperEditor {
 
     protected function __construct() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW);
+        $this->loadData();
+    }
+
+    /**
+     * laedt die Daten aus den XML Dateien
+     */
+    public function loadData() {
+
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
 
         //Daten EInlesen
         foreach ($xml->box as $box) {
