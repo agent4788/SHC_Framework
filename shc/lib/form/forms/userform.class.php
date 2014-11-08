@@ -11,6 +11,7 @@ use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\LanguageChooser;
 use SHC\Form\FormElements\UserGroupChooser;
 use SHC\Form\FormElements\UserMainGroupChooser;
+use SHC\Form\FormElements\WebStyleChooser;
 
 /**
  * Benutzer Formular
@@ -78,6 +79,13 @@ class UserForm extends DefaultHtmlForm {
         $lang->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.lang.description'));
         $lang->requiredField(true);
         $this->addFormElement($lang);
+
+        //Web Style
+        $webStyle = new WebStyleChooser('webStyle', ($user instanceof User ? $user->getWebStyle() : ''));
+        $webStyle->setTitle(RWF::getLanguage()->get('acp.userManagement.form.user.webStyle'));
+        $webStyle->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.webStyle.description'));
+        $webStyle->requiredField(true);
+        $this->addFormElement($webStyle);
 
         RWF::getLanguage()->enableAutoHtmlEndocde();
 

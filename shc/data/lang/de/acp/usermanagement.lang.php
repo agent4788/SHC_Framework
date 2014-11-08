@@ -47,6 +47,8 @@ $l['acp.userManagement.form.user.userGroups'] = 'Benutzergruppen';
 $l['acp.userManagement.form.user.userGroups.description'] = 'Benutzergruppen zu denen der Benutzer zugeordnet wird';
 $l['acp.userManagement.form.user.lang'] = 'Sprache';
 $l['acp.userManagement.form.user.lang.description'] = 'Sprache in der das SHC dem Benutzer angezeigt wird';
+$l['acp.userManagement.form.user.webStyle'] = 'Web Style';
+$l['acp.userManagement.form.user.webStyle.description'] = 'Style der Web Oberfläche';
 
 $l['acp.userManagement.form.group.tab1.title'] = 'Allgemeine Daten';
 $l['acp.userManagement.form.group.tab1.description'] = 'Allgemeine Daten der Gruppe';

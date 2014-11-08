@@ -107,11 +107,12 @@ class AddUserFormAjax extends AjaxCommand {
             $mainGroup = $userForm->getElementByName('mainGroup')->getValue();
             $userGroups = $userForm->getElementByName('userGroups')->getValues();
             $lang = $userForm->getElementByName('lang')->getValue();
+            $webStyle = $userForm->getElementByName('webStyle')->getValue();
 
             $message = new Message();
             try {
 
-                UserEditor::getInstance()->addUser($name, $password, $mainGroup, $userGroups, $lang);
+                UserEditor::getInstance()->addUser($name, $password, $mainGroup, $userGroups, $lang, $webStyle);
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.addUser'));
             } catch(\Exception $e) {

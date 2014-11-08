@@ -136,11 +136,12 @@ class EditUserFormAjax extends AjaxCommand {
             $mainGroup = $userForm->getElementByName('mainGroup')->getValue();
             $userGroups = $userForm->getElementByName('userGroups')->getValues();
             $lang = $userForm->getElementByName('lang')->getValue();
+            $webStyle = $userForm->getElementByName('webStyle')->getValue();
 
             $message = new Message();
             try {
 
-                UserEditor::getInstance()->editUser($userId, $name, $password, $mainGroup, $userGroups, $lang);
+                UserEditor::getInstance()->editUser($userId, $name, $password, $mainGroup, $userGroups, $lang, $webStyle);
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.editUser'));
             } catch(\Exception $e) {
