@@ -5,6 +5,7 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\FormElements\SelectMultiple;
+use SHC\Room\Room;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
@@ -79,7 +80,8 @@ class ElementsForBoxChooser extends SelectMultiple {
         foreach(SensorPointEditor::getInstance()->listSensors() as $sensor) {
 
             //pruefen ob der Sensor dem Raum zugeordnet ist
-            if($sensor->getRoom() === null || $sensor->getRoom()->getId() != $box->getRoomId()) {
+            /* @var $sensor \SHC\Sensor\Sensor  */
+            if(!$sensor->getRoom() instanceof Room || $sensor->getRoom()->getId() != $box->getRoomId()) {
 
                 continue;
             }
