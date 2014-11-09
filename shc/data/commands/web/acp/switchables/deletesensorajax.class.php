@@ -24,7 +24,7 @@ use SHC\Switchable\SwitchableEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteElementAjax extends AjaxCommand {
+class DeleteSensorAjax extends AjaxCommand {
 
     protected $premission = 'shc.acp.switchableManagement';
 
