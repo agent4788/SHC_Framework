@@ -73,7 +73,7 @@ class SensorDataTransmitter {
                         //Datenpaket vorbereiten
                         $data = array(
                             'succsess' => true,
-                            'sensorPointId' => PCC::getSettings()->getValue('sensorPiontId'),
+                            'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
                             'sensorTypeId' => 1,
                             'sensorId' => $file,
                             'sensorValues' => array(
@@ -110,6 +110,9 @@ class SensorDataTransmitter {
                 file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
                 $time->add(new \DateInterval('PT1M'));
             }
+
+            //wartezeit bis zum neachsten Sendevorgang
+            sleep(10);
         }
     }
 

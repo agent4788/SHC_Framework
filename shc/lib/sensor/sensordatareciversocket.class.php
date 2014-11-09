@@ -8,6 +8,12 @@ use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\IO\UDPSocketServer;
 use RWF\Request\CliResponse;
+use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\DHT;
+use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\Hygrometer;
+use SHC\Sensor\Sensors\LDR;
+use SHC\Sensor\Sensors\RainSensor;
 
 /**
  * Empfaent Sensordaten aus dem Netzwerk und speichert diese ab
@@ -197,9 +203,6 @@ class SensorDataReciverSocket {
      */
     protected function saveDS18x20($sensorPointId, $sensorId, $temparature) {
 
-        //Sensorwerte zurueckrechnen
-        $temparature /= 100;
-
         //Sensorpunkt suchen
         $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
         if ($sensorPoint instanceof SensorPoint) {
@@ -244,10 +247,6 @@ class SensorDataReciverSocket {
      * @param Integer $humidity      Luftfeuchtigkeit
      */
     protected function saveDHT($sensorPointId, $sensorId, $temparature, $humidity) {
-
-        //Sensorwerte zurueckrechnen
-        $temparature /= 100;
-        $humidity /= 100;
 
         //Sensorpunkt suchen
         $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
@@ -294,10 +293,6 @@ class SensorDataReciverSocket {
      * @param Integer $altitude      Standorthoehe
      */
     protected function saveBMP($sensorPointId, $sensorId, $temparature, $pressure, $altitude) {
-
-        $temparature /= 100;
-        $pressure /= 100;
-        $altitude /= 100;
 
         //Sensorpunkt suchen
         $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
