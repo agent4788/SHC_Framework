@@ -71,7 +71,7 @@
                 //DS18x20 Sensoren
                 $.each(data, function(index, value) {
 
-                    $('#shc-view-sensor-ds18x20-'+ index).text(value.temp);
+                    $('#shc-view-sensor-ds18x20-'+ index +'-temp').text(value.temp);
                 });
             });
             eventSource.addEventListener('syncDHT', function(e) {
