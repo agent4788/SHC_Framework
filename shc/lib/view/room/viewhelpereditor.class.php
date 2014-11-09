@@ -442,7 +442,7 @@ class ViewHelperEditor {
                 foreach($box->elements->element as $element) {
 
                     $attr = $element->attributes();
-                    if((int) $attr->type == $type && (int) $attr->id == $elementId) {
+                    if((string) $attr->type == $type && (string) $attr->id == $elementId) {
 
                         return true;
                     }

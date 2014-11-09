@@ -72,7 +72,7 @@ class EditBoxFormAjax extends AjaxCommand {
                     foreach($elements as $element) {
 
                         $matches = array();
-                        preg_match('#((element)-(\d+))|((sensor)-(\d+))#', $element, $matches);
+                        preg_match('#((element)-(\d+))|((sensor)-(.+))#', $element, $matches);
 
                         if(isset($matches[2]) && $matches[2] == 'element') {
 
@@ -107,16 +107,19 @@ class EditBoxFormAjax extends AjaxCommand {
                         } elseif(isset($matches[5]) && $matches[5] == 'sensor') {
 
                             //Sensor
-                            $id = (int) $matches[6];
-                            $sensorObj = SensorPointEditor::getInstance()->getSensorById($id);
-                            ViewHelperEditor::getInstance()->addToBox($boxId, ViewHelperEditor::TYPE_SENSOR, $id);
-                            //Element aus den anderen Boxen entfernen
-                            foreach($boxes as $listedBox) {
+                            if(preg_match('#^(\d+)|(\d\d-[\da-fA-F]{12})$#', $matches[6])) {
 
-                                //pruefen ob das Element in einer anderen Box registriert ist
-                                if($listedBox->isElementInBox($sensorObj) && $listedBox->getBoxId() != $box->getBoxId()) {
+                                $id = (string) $matches[6];
+                                $sensorObj = SensorPointEditor::getInstance()->getSensorById($id);
+                                ViewHelperEditor::getInstance()->addToBox($boxId, ViewHelperEditor::TYPE_SENSOR, $id);
+                                //Element aus den anderen Boxen entfernen
+                                foreach ($boxes as $listedBox) {
 
-                                    ViewHelperEditor::getInstance()->removeElementFromBox($listedBox->getBoxId(), ViewHelperEditor::TYPE_SENSOR, $id);
+                                    //pruefen ob das Element in einer anderen Box registriert ist
+                                    if ($listedBox->isElementInBox($sensorObj) && $listedBox->getBoxId() != $box->getBoxId()) {
+
+                                        ViewHelperEditor::getInstance()->removeElementFromBox($listedBox->getBoxId(), ViewHelperEditor::TYPE_SENSOR, $id);
+                                    }
                                 }
                             }
                         }

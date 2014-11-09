@@ -87,22 +87,22 @@ class ElementsForBoxChooser extends SelectMultiple {
             }
 
             $type = '';
-            if($element instanceof BMP) {
+            if($sensor instanceof BMP) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.BMP');
-            } elseif($element instanceof DHT) {
+            } elseif($sensor instanceof DHT) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.DHT');
-            } elseif($element instanceof DS18x20) {
+            } elseif($sensor instanceof DS18x20) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.DS18x20');
-            } elseif($element instanceof Hygrometer) {
+            } elseif($sensor instanceof Hygrometer) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.Hygrometer');
-            } elseif($element instanceof RainSensor) {
+            } elseif($sensor instanceof RainSensor) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.RainSensor');
-            } elseif($element instanceof LDR) {
+            } elseif($sensor instanceof LDR) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.LDR');
             }
