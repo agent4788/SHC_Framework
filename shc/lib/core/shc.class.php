@@ -74,6 +74,13 @@ class SHC extends RWF {
      * @var String
      */
     const XML_USERS_AT_HOME = 'usersathome';
+
+    /**
+     * Sensor Transmitter
+     *
+     * @var String
+     */
+    const XML_SENSOR_TRANSMITTER = 'sensortransmitter';
     
     /**
      * Style
@@ -114,6 +121,7 @@ class SHC extends RWF {
         $fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
         $fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
+        $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
     
     /**

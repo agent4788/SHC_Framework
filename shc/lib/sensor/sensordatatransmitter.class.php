@@ -52,9 +52,6 @@ class SensorDataTransmitter {
 
         while (true) {
 
-            //Verbinden
-            $sensorReciver = $this->connect();
-
             //DS18x20 einlesen und an den Server senden
             if (file_exists('/sys/bus/w1/devices/')) {
 
@@ -88,17 +85,80 @@ class SensorDataTransmitter {
                         }
 
                         //Daten an den Sensor Reciver senden
+                        $sensorReciver = $this->connect();
                         $sensorReciver->write(base64_encode(json_encode($data)));
+                        $sensorReciver->close();
+                        $sensorReciver = null;
                     }
                 }
             }
-            
-            //DHT
-            //BMP
-            //MCP3008 oder MCP3208 fuer die Analogsensoren
 
-            $sensorReciver->close();
-            $sensorReciver = null;
+            //DHT
+            $dhts = SensorEditor::getInstance()->listDHT();
+            foreach($dhts as $dht) {
+
+                $values = SensorEditor::getInstance()->readDHT($dht['id']);
+
+                if(!isset($values[0])) {
+
+                    //Datenpaket vorbereiten
+                    $data = array(
+                        'succsess' => true,
+                        'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                        'sensorTypeId' => 2,
+                        'sensorId' => $dht['id'],
+                        'sensorValues' => array(
+                            'temp' => $values['temp'],
+                            'hum' => $values['hum']
+                        )
+                    );
+
+                    //Debug Ausgabe
+                    if ($debug) {
+
+                        var_dump($data);
+                    }
+
+                    //Daten an den Sensor Reciver senden
+                    $sensorReciver = $this->connect();
+                    $sensorReciver->write(base64_encode(json_encode($data)));
+                    $sensorReciver->close();
+                    $sensorReciver = null;
+                }
+            }
+
+            //BMP
+            if(SensorEditor::getInstance()->isBMPenabled()) {
+
+                $values = SensorEditor::getInstance()->readBMP();
+
+                //Datenpaket vorbereiten
+                $data = array(
+                    'succsess' => true,
+                    'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                    'sensorTypeId' => 3,
+                    'sensorId' => SensorEditor::getInstance()->getBMPsensorId(),
+                    'sensorValues' => array(
+                        'temp' => $values['temp'],
+                        'press' => $values['press'],
+                        'alti' => $values['alti']
+                    )
+                );
+
+                //Debug Ausgabe
+                if ($debug) {
+
+                    var_dump($data);
+                }
+
+                //Daten an den Sensor Reciver senden
+                $sensorReciver = $this->connect();
+                $sensorReciver->write(base64_encode(json_encode($data)));
+                $sensorReciver->close();
+                $sensorReciver = null;
+            }
+
+            //MCP3008 oder MCP3208 fuer die Analogsensoren
 
             //Run Flag alle 60 Sekunden setzen
             if(!isset($time)) {
