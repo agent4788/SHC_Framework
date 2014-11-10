@@ -138,8 +138,8 @@
                                                 <tr>
                                                     <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                     <td>
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
+                                                        {instanceof element=$boxElement class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
+                                                        {instanceof element=$boxElement class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                                                     </td>
                                                     <td>
                                                         {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
