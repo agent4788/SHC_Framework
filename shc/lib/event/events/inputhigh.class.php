@@ -3,25 +3,32 @@
 namespace SHC\Event\Events;
 
 //Imports
-use RWF\Date\DateTime;
 use SHC\Event\AbstractEvent;
-use SHC\UserAtHome\UserAtHome;
-use SHC\UserAtHome\UserAtHomeEditor;
+use RWF\Date\DateTime;
+use SHC\Switchable\Readable;
+use SHC\Switchable\SwitchableEditor;
 
 /**
- * Ereignis Benutzer geht von zu hause
- * 
+ * Ereignis Eingang Statuswechsel von Low auf High
+ *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class UserLeavesHome extends AbstractEvent {
-    
+class InputHigh extends AbstractEvent {
+
+    /**
+     * Status
+     *
+     * @var Array
+     */
+    protected $state = array();
+
     /**
      * gibt an ob das Ereigniss erfuellt ist
-     * 
+     *
      * @return Boolean
      */
     public function isSatisfies() {
@@ -33,9 +40,9 @@ class UserLeavesHome extends AbstractEvent {
         }
 
         //noetige Parameter pruefen
-        if (!isset($this->data['users'])) {
+        if (!isset($this->data['inputs'])) {
 
-            throw new \Exception('Eine Liste mit den Benutzern zu Hause muss angegeben werden', 1580);
+            throw new \Exception('Eine Liste mit Eingängen muss angegeben werden', 1580);
         }
 
         //pruefen ob Warteintervall angegeben und noch nicht abgelaufen
@@ -53,29 +60,28 @@ class UserLeavesHome extends AbstractEvent {
 
         //pruefen ob der Ereigniszustand erfuellt ist
         $success = false;
-        $usersAtHome = UserAtHomeEditor::getInstance()->listUsersAtHome();
-        foreach($usersAtHome as $userAtHome) {
+        $readables = SwitchableEditor::getInstance()->listElements(SwitchableEditor::SORT_NOTHING);
+        foreach($readables as $readable) {
 
-            /* @var $userAtHome \SHC\UserAtHome\UseratHome */
-            if(in_array($userAtHome->getId(), $this->data['users'])) {
 
-                if(isset($this->state[$userAtHome->getId()])) {
+            if (in_array($readable->getId(), $this->data['inputs']) && $readable instanceof Readable) {
 
-                    //Status bekannt und unveraendert
-                    if($this->state[$userAtHome->getId()] != $userAtHome->getState() && $userAtHome->getState() == UserAtHome::STATE_OFFLINE) {
+                if (isset($this->state[$readable->getId()])) {
 
-                        //neuen Status speichern
-                        $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                    if ($this->state[$readable->getId()] != $readable->getState() && $readable->getState() == Readable::STATE_ON) {
+
+                        //Eingang bekannt
+                        $this->state[$readable->getId()] = $readable->getState();
                         $success = true;
                     } else {
 
-                        //Status Speichern
-                        $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                        //Eingang bekannt
+                        $this->state[$readable->getId()] = $readable->getState();
                     }
                 } else {
 
-                    //Status unbekannt -> Speichern
-                    $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                    //Eingang unbekannt
+                    $this->state[$readable->getId()] = $readable->getState();
                 }
             }
         }
@@ -101,4 +107,5 @@ class UserLeavesHome extends AbstractEvent {
         $this->time = DateTime::now();
         return true;
     }
+
 }

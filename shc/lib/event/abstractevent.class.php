@@ -5,6 +5,7 @@ namespace SHC\Event;
 //Imports
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
+use SHC\Switchable\Switchable;
 
 /**
  * Standard Ereignis
@@ -58,6 +59,13 @@ abstract class AbstractEvent implements Event {
      * @var Array 
      */
     protected $conditions = array();
+
+    /**
+     * liste aller Elemente die beim eintreten des Ereignisses geschalten werden sollen
+     *
+     * @var Array
+     */
+    protected $switchables = array();
     
     /**
      * @param Integer $id      ID
@@ -222,5 +230,79 @@ abstract class AbstractEvent implements Event {
 
         $this->conditions = array();
         return $this;
+    }
+
+    /**
+     * fuegt ein neues schaltbares Element hinzu
+     *
+     * @param  \SHC\Switchable\Switchable $switchable schaltbares Element
+     * @param  Integer                    $command    Kommando
+     * @return \SHC\Event\Event
+     */
+    public function addSwitchable(Switchable $switchable, $command) {
+
+        $this->switchables[] = array('object' => $switchable, 'command' => $command);
+        return $this;
+    }
+
+    /**
+     * loecht eine Bedingung
+     *
+     * @param  \SHC\Switchable\Switchable $switchable schaltbares Element
+     * @return \SHC\Event\Event
+     */
+    public function removeSwitchable(Switchable $switchable) {
+
+        foreach ($this->switchables as $index => $switchableObject) {
+
+            if ($switchableObject['object'] == $switchable) {
+
+                unset($this->switchables[$index]);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * loescht alle Bedingungen
+     *
+     * @return \SHC\Event\Event
+     */
+    public function removeAllSwitchables() {
+
+        $this->switchables = array();
+        return $this;
+    }
+
+    /**
+     * fuehrt die Aktionen aus
+     */
+    public function execute() {
+
+        foreach ($this->switchables as $switchable) {
+
+            /* @var $object \SHC\Switchable\Switchable */
+            $object = $switchable['object'];
+            $command = $switchable['command'];
+
+            if ($command == self::STATE_ON) {
+
+                $object->switchOn();
+            } else {
+
+                $object->switchOff();
+            }
+        }
+    }
+
+    /**
+     * prueft on das Ereignis gerade zutrifft und fuehrt wenn es Zutrifft die zugeordneten Befehle aus
+     */
+    public function run() {
+
+        if($this->isEnabled() && $this->isSatisfies()) {
+
+            $this->execute();
+        }
     }
 }

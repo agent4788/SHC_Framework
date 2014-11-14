@@ -3,25 +3,32 @@
 namespace SHC\Event\Events;
 
 //Imports
-use RWF\Date\DateTime;
 use SHC\Event\AbstractEvent;
-use SHC\UserAtHome\UserAtHome;
-use SHC\UserAtHome\UserAtHomeEditor;
+use SHC\Sensor\SensorPointEditor;
+use RWF\Date\DateTime;
+use SHC\Sensor\Sensors\LDR;
 
 /**
- * Ereignis Benutzer geht von zu hause
- * 
+ * Ereignis Lichtstaerke faellt unter Grenzsert
+ *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class UserLeavesHome extends AbstractEvent {
-    
+class LightIntensityFallBelow extends AbstractEvent {
+
+    /**
+     * Status
+     *
+     * @var Array
+     */
+    protected $state = array();
+
     /**
      * gibt an ob das Ereigniss erfuellt ist
-     * 
+     *
      * @return Boolean
      */
     public function isSatisfies() {
@@ -33,9 +40,13 @@ class UserLeavesHome extends AbstractEvent {
         }
 
         //noetige Parameter pruefen
-        if (!isset($this->data['users'])) {
+        if (!isset($this->data['sensors'])) {
 
-            throw new \Exception('Eine Liste mit den Benutzern zu Hause muss angegeben werden', 1580);
+            throw new \Exception('Eine Liste mit Temperatursensoren muss angegeben werden', 1580);
+        }
+        if (!isset($this->data['limit'])) {
+
+            throw new \Exception('Es muss ein Grenzwert angegeben werden', 1580);
         }
 
         //pruefen ob Warteintervall angegeben und noch nicht abgelaufen
@@ -51,31 +62,33 @@ class UserLeavesHome extends AbstractEvent {
             }
         }
 
+        //Limit vorbereiten (aus % einen Digitalwert errechnen
+        $limit = round(1023 * $this->data['limit'], 0);
+
         //pruefen ob der Ereigniszustand erfuellt ist
-        $success = false;
-        $usersAtHome = UserAtHomeEditor::getInstance()->listUsersAtHome();
-        foreach($usersAtHome as $userAtHome) {
+        $success  = false;
+        $sensors = SensorPointEditor::getInstance()->listSensors(SensorPointEditor::SORT_NOTHING);
+        foreach($sensors as $sensor) {
 
-            /* @var $userAtHome \SHC\UserAtHome\UseratHome */
-            if(in_array($userAtHome->getId(), $this->data['users'])) {
+            /* @var $sensor \SHC\Sensor\Sensors\LDR */
+            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof LDR) {
 
-                if(isset($this->state[$userAtHome->getId()])) {
+                if(isset($this->state[$sensor->getId()])) {
 
-                    //Status bekannt und unveraendert
-                    if($this->state[$userAtHome->getId()] != $userAtHome->getState() && $userAtHome->getState() == UserAtHome::STATE_OFFLINE) {
+                    if($this->state[$sensor->getId()] > $limit && $sensor->getValue() <= $limit) {
 
-                        //neuen Status speichern
-                        $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                        //Sensor bekannt, Sensorwert ist ueber Grenzwert gestiegen
+                        $this->state[$sensor->getId()] = $sensor->getValue();
                         $success = true;
                     } else {
 
-                        //Status Speichern
-                        $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                        //Sensor bekannt, Grenzwert aber nicht ueberschritten
+                        $this->state[$sensor->getId()] = $sensor->getValue();
                     }
                 } else {
 
-                    //Status unbekannt -> Speichern
-                    $this->state[$userAtHome->getId()] = $userAtHome->getState();
+                    //Sensor unbekannt => registrieren und aktuellen Sensorwert speichern
+                    $this->state[$sensor->getId()] = $sensor->getValue();
                 }
             }
         }
@@ -101,4 +114,5 @@ class UserLeavesHome extends AbstractEvent {
         $this->time = DateTime::now();
         return true;
     }
+
 }

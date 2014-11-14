@@ -3,7 +3,11 @@
 namespace SHC\Sheduler\Tasks;
 
 //Imports
+use SHC\Event\EventEditor;
+use SHC\Sensor\SensorPointEditor;
 use SHC\Sheduler\AbstractTask;
+use SHC\Switchable\SwitchableEditor;
+use SHC\UserAtHome\UserAtHomeEditor;
 
 /**
  * ueberwacht Statusaenderungen und loest ereignisse aus
@@ -33,7 +37,6 @@ class EventTask extends AbstractTask {
     public function __construct() {
         
         parent::__construct();
-        $this->userComeHome = new \SHC\Event\Events\UserComesHome(1, '123', array('users' => array(1)));
     }
 
     /**
@@ -42,7 +45,16 @@ class EventTask extends AbstractTask {
      */
     public function executeTask() {
 
-        
-        var_dump($this->userComeHome->isSatisfies());
+        //Daten aktualisieren
+        UserAtHomeEditor::getInstance()->loadData();
+        SensorPointEditor::getInstance()->loadData();
+        SwitchableEditor::getInstance()->loadData();
+        EventEditor::getInstance()->loadData();
+
+        foreach(EventEditor::getInstance()->listEvents(EventEditor::SORT_NOTHING) as $event) {
+
+            /* @var $event \SHC\Event\Event */
+            $event->run();
+        }
     }
 }

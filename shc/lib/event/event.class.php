@@ -5,6 +5,7 @@ namespace SHC\Event;
 //Imports
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
+use SHC\Switchable\Switchable;
 
 /**
  * Ereignis Schnittstelle
@@ -16,7 +17,21 @@ use RWF\Date\DateTime;
  * @version    2.0.0-0
  */
 interface Event {
-    
+
+    /**
+     * Status eingeschalten
+     *
+     * @var Integer
+     */
+    const STATE_OFF = 0;
+
+    /**
+     * Status Ausgeschalten
+     *
+     * @var Integer
+     */
+    const STATE_ON = 1;
+
     /**
      * setzt die ID
      * 
@@ -116,6 +131,30 @@ interface Event {
     public function removeAllConditions();
 
     /**
+     * fuegt ein neues schaltbares Element hinzu
+     *
+     * @param  \SHC\Switchable\Switchable $switchable schaltbares Element
+     * @param  Integer                    $command    Kommando
+     * @return \SHC\Event\Event
+     */
+    public function addSwitchable(Switchable $switchable, $command);
+
+    /**
+     * loecht eine Bedingung
+     *
+     * @param  \SHC\Switchable\Switchable $switchable schaltbares Element
+     * @return \SHC\Event\Event
+     */
+    public function removeSwitchable(Switchable $switchable);
+
+    /**
+     * loescht alle Bedingungen
+     *
+     * @return \SHC\Event\Event
+     */
+    public function removeAllSwitchables();
+
+    /**
      * gibt an ob das Ereigniss erfuellt ist
      * 
      * @return Boolean
@@ -126,4 +165,9 @@ interface Event {
      * fuehr die Aktionen aus
      */
     public function execute();
+
+    /**
+     * prueft on das Ereignis gerade zutrifft und fuehrt wenn es Zutrifft die zugeordneten Befehle aus
+     */
+    public function run();
 }
