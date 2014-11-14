@@ -23,7 +23,7 @@ class InputUpdateTask extends AbstractTask {
      *
      * @var Integer
      */
-    protected $priority = 50;
+    protected $priority = 10;
 
     /**
      * Wartezeit zwischen 2 durchläufen

@@ -26,7 +26,7 @@ class TimerTask extends AbstractTask {
      * 
      * @var Integer 
      */
-    protected $priority = 50;
+    protected $priority = 70;
 
     /**
      * Wartezeit zwischen 2 durchläufen

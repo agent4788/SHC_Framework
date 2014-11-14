@@ -23,7 +23,7 @@ class UserAtHomeUpdateTask extends AbstractTask {
      * 
      * @var Integer 
      */
-    protected $priority = 50;
+    protected $priority = 12;
 
     /**
      * Wartezeit zwischen 2 durchläufen

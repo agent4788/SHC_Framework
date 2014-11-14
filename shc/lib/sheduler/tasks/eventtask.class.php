@@ -25,7 +25,7 @@ class EventTask extends AbstractTask {
      * 
      * @var Integer 
      */
-    protected $priority = 90;
+    protected $priority = 71;
 
     /**
      * Wartezeit zwischen 2 durchläufen
