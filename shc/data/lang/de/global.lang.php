@@ -25,6 +25,12 @@ $l['global.date.totay'] = 'heute';
 $l['global.date.yesterday'] = 'gestern';
 $l['global.date.previousDays'] = 'vor {1:i} Tagen';
 $l['global.date.nextDays'] = 'in {1:i} Tagen';
+$l['global.date.oneHour'] = 'vor einer Stunde';
+$l['global.date.viewHours'] = 'vor {1:i} Stunden';
+$l['global.date.oneMinute'] = 'vor einer Minute';
+$l['global.date.viewMinutes'] = 'vor {1:i} Minuten';
+$l['global.date.oneSecond'] = 'vor einer Sekunde';
+$l['global.date.viewSeconds'] = 'vor {1:i} Minuten';
 
 //Allgemeine Buttons
 $l['global.button.back'] = 'zurück';

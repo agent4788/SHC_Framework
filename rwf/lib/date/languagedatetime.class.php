@@ -150,7 +150,7 @@ class LanguageDateTime extends DateTime {
             
             $format = RWF::getSetting('rwf.date.defaultDateFormat');
         }
-        
+
         //Datum Formatieren
         if($withDayNames == true) {
             
@@ -166,14 +166,49 @@ class LanguageDateTime extends DateTime {
                 
                 return RWF::getLanguage()->val('global.date.tomorrow');
             } elseif($diff == 0) {
-                
-                return RWF::getLanguage()->val('global.date.totay');
+
+                //Zeitdifferenz ermitteln
+                $timeDiff = self::now()->diff($this);
+                $time = '';
+                if($timeDiff->h > 0) {
+
+                    //mehr als eine Stunde
+                    if($timeDiff->h == 1) {
+
+                        $time = RWF::getLanguage()->get('global.date.oneHour');
+                    } else {
+
+                        $time = RWF::getLanguage()->get('global.date.viewHours', $timeDiff->h);
+                    }
+                } elseif($timeDiff->i > 0) {
+
+                    //mehr als eine Minute
+                    if($timeDiff->i == 1) {
+
+                        $time = RWF::getLanguage()->get('global.date.oneMinute');
+                    } else {
+
+                        $time = RWF::getLanguage()->get('global.date.viewMinutes', $timeDiff->i);
+                    }
+                } elseif($timeDiff->s > 0) {
+
+                    //Sekunden
+                    if($timeDiff->s == 1) {
+
+                        $time = RWF::getLanguage()->get('global.date.oneSecond');
+                    } else {
+
+                        $time = RWF::getLanguage()->get('global.date.viewSeconds', $timeDiff->s);
+                    }
+                }
+
+                return RWF::getLanguage()->val('global.date.totay') . ($time =! '' ? ', '. $time : '');
             } elseif($diff == -1) {
                 
-                return RWF::getLanguage()->val('global.date.tomorrow');
+                return RWF::getLanguage()->val('global.date.yesterday');
             } elseif($diff < -1 && $diff >= -14) {
                 
-                return RWF::getLanguage()->get('global.date.yesterday', abs($diff));
+                return RWF::getLanguage()->get('global.date.previousDays', abs($diff));
             } else {
                 
                 return $this->format($format);
@@ -191,13 +226,13 @@ class LanguageDateTime extends DateTime {
      * @return String
      */
     public function showTime($format = '') {
-        
+
         //Standard Format falls nicht uebergeben
         if($format == '') {
-            
+
             $format = RWF::getSetting('rwf.date.defaultTimeFormat');
         }
-        
+
         return $this->format($format);
     }
     
