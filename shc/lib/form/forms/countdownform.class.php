@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\GroupPremissonChooser;
@@ -57,7 +58,7 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Intervall
-        $interval = new TextField('interval', ($countdown instanceof Countdown ? 'To Do' : null));
+        $interval = new IntegerInputField('interval', ($countdown instanceof Countdown ? $countdown->getInterval() : 30), array('min' => 30, 'max' => 14400, 'step' => 5));
         $interval->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval'));
         $interval->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval.description'));
         $interval->requiredField(true);

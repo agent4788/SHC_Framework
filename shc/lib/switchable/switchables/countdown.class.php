@@ -101,21 +101,21 @@ class Countdown extends AbstractSwitchable {
     /**
      * setzt den Zeitintervall fuer das ausschalten
      * 
-     * @param  \DateInterval $intervall Zeitintervall
+     * @param  $interval Zeitintervall
      * @return \SHC\Switchable\Switchables\Countdown
      */
-    public function setIntervall(\DateInterval $intervall) {
+    public function setInterval($interval) {
 
-        $this->intervall = $intervall;
+        $this->intervall = $interval;
         return $this;
     }
 
     /**
-     * gibt den Zeitintervall fuer das Ausschalten 
+     * gibt den Zeitintervall fuer das Ausschalten (in Sekunden)
      * 
-     * @return \DateIntervall
+     * @return Integer
      */
-    public function getIntervall() {
+    public function getInterval() {
 
         return $this->intervall;
     }
@@ -164,7 +164,7 @@ class Countdown extends AbstractSwitchable {
             }
         }
 
-        $this->switchOffTime = DateTime::now()->add($this->intervall);
+        $this->switchOffTime = DateTime::now()->add(new \DateInterval('PT'. $this->intervall .'S'));
         $this->state = self::STATE_ON;
         $this->stateModified = true;
         SwitchableEditor::getInstance()->editCountdownSwitchOffTime($this->getId(), $this->switchOffTime);

@@ -180,7 +180,7 @@ class SwitchableEditor {
                 case self::TYPE_COUNTDOWN:
 
                     $object = new Countdown();
-                    $object->setIntervall(new \DateInterval((string) $switchable->intervall));
+                    $object->setInterval((string) $switchable->interval);
                     $object->setSwitchOffTime(DateTime::createFromDatabaseDateTime((string) $switchable->switchOffTime));
 
                     //Switchable IDs zwischenspeichern (erst nach dem Laden alle Objekte setzen)
@@ -994,17 +994,17 @@ class SwitchableEditor {
      * @param  String  $icon              Icon
      * @param  Integer $room              Raum ID
      * @param  Integer $orderId           Sortierungs ID
-     * @param  String  $intervall         Zeitintervall
+     * @param  String  $interval          Zeitintervall
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addCountdown($name, $enabled, $visibility, $icon, $room, $orderId, $intervall, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addCountdown($name, $enabled, $visibility, $icon, $room, $orderId, $interval, array $switchPoints = array(), array $allowedUserGroups = array()) {
         
         //Daten Vorbereiten
         $data = array(
-            'intervall' => $intervall,
+            'interval' => $interval,
             'switchOffTime' => '2000-01-01 00:00:00'
         );
 
@@ -1022,17 +1022,17 @@ class SwitchableEditor {
      * @param  String  $icon              Icon
      * @param  Integer $room              Raum ID
      * @param  Integer $orderId           Sortierungs ID
-     * @param  String  $intervall         Zeitintervall
+     * @param  String  $interval          Zeitintervall
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editCountdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $intervall = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editCountdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $interval = null, array $switchPoints = null, array $allowedUserGroups = null) {
         
         //Daten Vorbereiten
         $data = array(
-            'intervall' => $intervall
+            'interval' => $interval
         );
 
         //Datensatz bearbeiten
