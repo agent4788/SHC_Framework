@@ -3,6 +3,8 @@
 namespace SHC\Arduino;
 
 //Imports
+use RWF\Core\RWF;
+use RWF\IO\UDPSocket;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\SensorPoint;
 use SHC\Sensor\Sensors\DS18x20;
@@ -62,11 +64,6 @@ class ArduinoSensorReciver {
      */
     public function readDataEndless($debug = false) {
 
-        //Zeit des naechsten Speicherns
-        $time = new DateTime();
-        $interval = new \DateInterval('PT30S');
-        $time->add($interval);
-
         //Run Flag alle 60 Sekunden setzen
         if(!isset($runTime)) {
 
@@ -100,7 +97,22 @@ class ArduinoSensorReciver {
                 $sensorPointId = intval($match[1]);
                 $voltage = intval($match[2]) / 100;
 
-                //Sensorpunkt Spannung speichern
+                //Datenpaket vorbereiten
+                $data = array(
+                    'succsess' => true,
+                    'sensorPointId' => $sensorPointId,
+                    'sensorTypeId' => 999,
+                    'sensorId' => 999,
+                    'voltage' => $voltage
+                );
+
+                //Daten an den Sensor Reciver senden
+                $sensorReciver = $this->connect();
+                $sensorReciver->write(base64_encode(json_encode($data)));
+                $sensorReciver->close();
+                $sensorReciver = null;
+
+                /*//Sensorpunkt Spannung speichern
                 $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
                 if ($sensorPoint instanceof SensorPoint) {
 
@@ -117,7 +129,7 @@ class ArduinoSensorReciver {
 
                     //Sensorpunkt registrieren
                     SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-                }
+                }*/
             } elseif (preg_match('!#(\d{1,3})\+((10)|(22)|(28));([0-9a-f]{14});(\d{1,4})!i', $rawDate, $match)) {
 
                 //DS18x20 Sensor
@@ -163,20 +175,31 @@ class ArduinoSensorReciver {
                         break;
                 }
             }
-
-            //XML Daten speichern
-            if ($time < DateTime::now()) {
-
-                SensorPointEditor::getInstance()->writeData();
-                $time->add($interval);
-                
-                //Daten gespeichert
-                if ($debug) {
-
-                    SHC::getResponse()->writeLn('Sensordaten wurden gespeichert');
-                }
-            }
         }
+    }
+
+    /**
+     * verbindet sich mit dem Sensor Reciver
+     *
+     * @return \RWF\IO\Socket
+     */
+    protected function connect() {
+
+        //Vebindung zum RPi Reader Server aufbauen
+        $sensorReciver = new UDPSocket(RWF::getSetting('shc.arduinoReciver.ip'), RWF::getSetting('shc.arduinoReciver.port'), 2);
+        try {
+
+            $sensorReciver->open();
+        } catch (\Exception $e) {
+
+            $cli = new CommandLine();
+            $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('shc.arduinoReciver.ip') . ':' . RWF::getSetting('shc.arduinoReciver.port') . ') konnte nicht hergestellt werden', 'red');
+
+            //30 Sekunden warten dann wieder versuchen
+            sleep(30);
+        }
+
+        return $sensorReciver;
     }
 
     /**
@@ -191,39 +214,22 @@ class ArduinoSensorReciver {
         //Sensorwerte zurueckrechnen
         $temparature /= 100;
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_DS18X20,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'temp' => $temparature
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof DS18x20) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($temparature);
-        } else {
-
-            //neue Sensor
-            $sensor = new DS18x20();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($temparature);
-
-            //Sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**
@@ -240,39 +246,23 @@ class ArduinoSensorReciver {
         $temparature /= 100;
         $humidity /= 100;
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_DHT,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'temp' => $temparature,
+                'hum' => $humidity
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof DHT) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($temparature, $humidity);
-        } else {
-
-            //neue Sensor
-            $sensor = new DHT();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($temparature, $humidity);
-
-            //sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**
@@ -290,39 +280,24 @@ class ArduinoSensorReciver {
         $pressure /= 100;
         $altitude /= 100;
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_BMP,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'temp' => $temparature,
+                'press' => $pressure,
+                'alti' => $altitude
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof BMP) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($temparature, $pressure, $altitude);
-        } else {
-
-            //neue Sensor
-            $sensor = new BMP();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($temparature, $pressure, $altitude);
-
-            //sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**
@@ -337,39 +312,22 @@ class ArduinoSensorReciver {
         //Sensorwerte zurueckrechnen
         $analogValue = intval($analogValue);
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_RAIN,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'value' => $analogValue
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof RainSensor) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($analogValue);
-        } else {
-
-            //neue Sensor
-            $sensor = new RainSensor();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($analogValue);
-
-            //sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**
@@ -384,39 +342,22 @@ class ArduinoSensorReciver {
         //Sensorwerte zurueckrechnen
         $analogValue = intval($analogValue);
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_HYGROMETER,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'value' => $analogValue
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof Hygrometer) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($analogValue);
-        } else {
-
-            //neue Sensor
-            $sensor = new Hygrometer();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($analogValue);
-
-            //sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**
@@ -431,39 +372,22 @@ class ArduinoSensorReciver {
         //Sensorwerte zurueckrechnen
         $analogValue = intval($analogValue);
 
-        //Sensorpunkt suchen
-        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-        if ($sensorPoint instanceof SensorPoint) {
+        //Datenpaket vorbereiten
+        $data = array(
+            'succsess' => true,
+            'sensorPointId' => $sensorPointId,
+            'sensorTypeId' => SensorPointEditor::SENSOR_LDR,
+            'sensorId' => $sensorId,
+            'sensorValues' => array(
+                'value' => $analogValue
+            )
+        );
 
-            //Sensor Point ist schon bekannt
-            $sensorPoint->setTime(DateTime::now());
-        } else {
-
-            //neuen Sensorpunkt erzeigen
-            $sensorPoint = new SensorPoint();
-            $sensorPoint->setId($sensorPointId);
-            $sensorPoint->setTime(DateTime::now());
-
-            //Sensor Registrieren
-            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-        }
-
-        //Sensor suchen
-        $sensor = $sensorPoint->getSensorById($sensorId);
-        if ($sensor instanceof LDR) {
-
-            //Sensor ist schon bekannt
-            $sensor->pushValues($analogValue);
-        } else {
-
-            //neue Sensor
-            $sensor = new LDR();
-            $sensor->setId($sensorId);
-            $sensor->pushValues($analogValue);
-
-            //sensor am Sensorpunkt registrien
-            $sensorPoint->addSensor($sensor);
-        }
+        //Daten an den Sensor Reciver senden
+        $sensorReciver = $this->connect();
+        $sensorReciver->write(base64_encode(json_encode($data)));
+        $sensorReciver->close();
+        $sensorReciver = null;
     }
 
     /**

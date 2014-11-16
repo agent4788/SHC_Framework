@@ -107,7 +107,7 @@ class SensorDataReciverSocket {
             $sensorPointId = intval($request['sensorPointId']);
             $typeId = intval($request['sensorTypeId']);
             $sensorId = $request['sensorId'];
-            $values = $request['sensorValues'];
+
 
             switch ($typeId) {
 
@@ -180,6 +180,18 @@ class SensorDataReciverSocket {
                         $this->saveLightSensor($sensorPointId, $sensorId, $value);
                     }
                     break;
+                case 999:
+
+                    //Sensorpunkt Spannung
+                    if (isset($request['voltage'])) {
+
+                        //Spannung
+                        $voltgae = $request['voltage'];
+
+                        //Speichern
+                        $this->saveSensorPointVoltage($sensorPointId, $voltgae);
+                    }
+                    break;
                 default :
 
                     throw new Exception('Unbekannter Sensortyp', 1509);
@@ -190,6 +202,11 @@ class SensorDataReciverSocket {
 
                 SensorPointEditor::getInstance()->writeData();
                 $time->add($interval);
+
+                if($this->debug) {
+
+                    $response->writeLnColored('Sensordaten gespeichert', 'green');
+                }
             }
         }
     }
@@ -467,6 +484,34 @@ class SensorDataReciverSocket {
 
             //sensor am Sensorpunkt registrien
             $sensorPoint->addSensor($sensor);
+        }
+    }
+
+    /**
+     * speichert die Spannung des Sensorpunktes in der Objektstruktur
+     *
+     * @param Integer $sensorPointId Sensor Punkt ID
+     * @param Integer $voltage       Spannung
+     */
+    protected function saveSensorPointVoltage($sensorPointId, $voltage) {
+
+        //Sensorpunkt suchen
+        $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
+        if ($sensorPoint instanceof SensorPoint) {
+
+            //Sensor Point ist schon bekannt
+            $sensorPoint->setTime(DateTime::now());
+            $sensorPoint->setVoltage($voltage);
+        } else {
+
+            //neuen Sensorpunkt erzeigen
+            $sensorPoint = new SensorPoint();
+            $sensorPoint->setId($sensorPointId);
+            $sensorPoint->setTime(DateTime::now());
+            $sensorPoint->setVoltage($voltage);
+
+            //Sensor Registrieren
+            SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
         }
     }
 
