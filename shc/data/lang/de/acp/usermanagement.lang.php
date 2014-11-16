@@ -115,5 +115,7 @@ $l['acp.userManagement.premissions.shc.acp.sensorpointsManagement'] =  'Sensorpu
 $l['acp.userManagement.premissions.shc.acp.sensorpointsManagement.description'] =  'der Benutzer kann Sensorpunkte verwalten';
 $l['acp.userManagement.premissions.shc.acp.usersathomeManagement'] =  'Benutzer zu Hause verwalten';
 $l['acp.userManagement.premissions.shc.acp.usersathomeManagement.description'] =  'es können die Benutzer zu Hause verwaltet werden';
+$l['acp.userManagement.premissions.shc.acp.eventsManagement'] =  'Ereignisse verwalten';
+$l['acp.userManagement.premissions.shc.acp.eventsManagement.description'] =  'der Benutzer kann Ereignisse verwalten';
 $l['acp.userManagement.premissions.shc.acp.switchserverManagement'] =  'Schaltserver verwalten';
 $l['acp.userManagement.premissions.shc.acp.switchserverManagement.description'] =  'der Benutzer kann die Schaltserver verwalten';

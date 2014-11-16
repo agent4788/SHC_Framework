@@ -22,6 +22,90 @@ use SHC\Switchable\SwitchableEditor;
 class EventEditor {
 
     /**
+     * Ereignis Luftfeuchte steigt
+     *
+     * @var Integer
+     */
+    const EVENT_HUMIDITY_CLIMB = 1;
+
+    /**
+     * Ereignis Luftfeuchte faellt
+     *
+     * @var Integer
+     */
+    const EVENT_HUMIDITY_FALLS = 2;
+
+    /**
+     * Ereignis Eingang wechselt von LOW auf HIGH
+     *
+     * @var Integer
+     */
+    const EVENT_INPUT_HIGH = 4;
+
+    /**
+     * Ereignis EIngang wechselt von HIGH auf LOW
+     *
+     * @var Integer
+     */
+    const EVENT_INPUT_LOW = 8;
+
+    /**
+     * Ereignis Lichtstaerke steigt
+     *
+     * @var Integer
+     */
+    const EVENT_LIGHTINTENSITY_CLIMB = 16;
+
+    /**
+     * Ereignis Lichtsaerke faellt
+     *
+     * @var Integer
+     */
+    const EVENT_LIGHTINTENSITY_FALLS = 32;
+
+    /**
+     * Ereignis Feuchtigkeit steigt
+     *
+     * @var Integer
+     */
+    const EVENT_MOISTURE_CLIMB = 64;
+
+    /**
+     * Ereignis Feuchtigkeit steigt
+     *
+     * @var Integer
+     */
+    const EVENT_MOISTURE_FALLS = 128;
+
+    /**
+     * Ereignis Temperatur steigt
+     *
+     * @var Integer
+     */
+    const EVENT_TEMPERATURE_CLIMB = 256;
+
+    /**
+     * Ereignis Temperatur faellt
+     *
+     * @var Integer
+     */
+    const EVENT_TEMPERATURE_FALLS = 512;
+
+    /**
+     * Ereignis Benutzer kommt nach Hause
+     *
+     * @var Integer
+     */
+    const EVENT_USER_COMES_HOME = 1024;
+
+    /**
+     * Ereignis Benutzer verlaesst das Haus
+     *
+     * @var Integer
+     */
+    const EVENT_USER_LEAVE_HOME = 2048;
+
+    /**
      * nach ID sortieren
      *
      * @var String
@@ -69,7 +153,7 @@ class EventEditor {
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
 
         //Daten einlesen
-        foreach ($xml->events as $event) {
+        foreach ($xml->event as $event) {
 
             //Variablen Vorbereiten
             $class = (string) $event->class;
@@ -84,22 +168,25 @@ class EventEditor {
             }
 
             /* @var $event \SHC\Event\Event */
-            $event = new $class(
+            $eventObj = new $class(
                 (int) $event->id, (string) $event->name, $data, ((int) $event->enabled == 1 ? true : false)
             );
 
             //schaltbare Elemente Hinzufuegen
-            foreach($event->switchable as $switchable) {
+            if(isset($event->switchable)) {
 
-                $attr = $switchable->attributes();
-                $switchableObject = SwitchableEditor::getInstance()->getElementById($attr->id);
-                if($switchableObject instanceof Switchable) {
+                foreach ($event->switchable as $switchable) {
 
-                    $event->addSwitchable($switchableObject, (int) $attr->command);
+                    $attr = $switchable->attributes();
+                    $switchableObject = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
+                    if ($switchableObject instanceof Switchable) {
+
+                        $eventObj->addSwitchable($switchableObject, (int) $attr->command);
+                    }
                 }
             }
 
-            $this->events[(int) $event->id] = $event;
+            $this->events[(int) $event->id] = $eventObj;
         }
     }
 
@@ -109,7 +196,7 @@ class EventEditor {
      * @param  Integer ID $id Ereignis ID
      * @return \SHC\Event\Event
      */
-    public function getEventByID($id) {
+    public function getEventById($id) {
 
         if (isset($this->events[$id])) {
 
@@ -136,6 +223,8 @@ class EventEditor {
         }
         return true;
     }
+
+
 
     /**
      * gibt eine Liste mit allen Bedingungen zurueck
@@ -191,7 +280,7 @@ class EventEditor {
      * @throws \Exception
      * @throws \RWF\XML\Exception\XmlException
      */
-    protected function addEvent($class, $name, $enabled, array $data = array()) {
+    protected function addEvent($class, $name, array $data = array(), $enabled = true) {
 
         //Ausnahme wenn Name des Events schon belegt
         if (!$this->isEventNameAvailable($name)) {
@@ -232,13 +321,13 @@ class EventEditor {
      *
      * @param  Integer $id      ID
      * @param  String  $name    Name
-     * @param  Boolean $enabled Aktiv
      * @param  Array   $data    Zusatzdaten
+     * @param  Boolean $enabled Aktiv
      * @return Boolean
      * @throws \Exception
      * @throws \RWF\XML\Exception\XmlException
      */
-    protected function editEvent($id, $name, $enabled, array $data = array()) {
+    protected function editEvent($id, $name = null, array $data = null, $enabled = null) {
 
         //XML Daten Laden
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
@@ -332,7 +421,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -381,7 +470,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -430,7 +519,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -479,7 +568,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -528,7 +617,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -577,7 +666,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -626,7 +715,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -675,7 +764,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -720,7 +809,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -765,7 +854,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -810,7 +899,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**
@@ -855,7 +944,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent($id, $name, $data, $enabled);
+        return $this->editEvent($id, $name, $data, $enabled);
     }
 
     /**

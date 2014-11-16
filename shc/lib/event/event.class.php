@@ -155,6 +155,13 @@ interface Event {
     public function removeAllSwitchables();
 
     /**
+     * gibt eine Liste mit allen Elementen des Ereignisses zurueck
+     *
+     * @return Array
+     */
+    public function listSwitchables();
+
+    /**
      * gibt an ob das Ereigniss erfuellt ist
      * 
      * @return Boolean

@@ -275,6 +275,16 @@ abstract class AbstractEvent implements Event {
     }
 
     /**
+     * gibt eine Liste mit allen Elementen des Ereignisses zurueck
+     *
+     * @return Array
+     */
+    public function listSwitchables() {
+
+        return $this->switchables;
+    }
+
+    /**
      * fuehrt die Aktionen aus
      */
     public function execute() {

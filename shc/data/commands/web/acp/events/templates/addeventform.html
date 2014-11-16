@@ -1,0 +1,66 @@
+{* Element erstellen Formular *}
+
+{* Typauswahl *}
+{if $eventTypeChooser|isset}
+<div>
+    <div class="shc-view-content">
+        <form>
+            <div style="text-align: center;">
+                {$eventTypeChooser->fetch()}
+            </div>
+        </form>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
+            <button id="shc-view-eventsManagement-button-next">{lang var="acp.eventsManagement.button.next"}</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+        $('#shc-view-eventsManagement-button-next').click(function() {
+
+            $.get('index.php?app=shc&ajax=addeventform&type=' + $('select[name=type]').val(), function(data, textStatus, jqXHR) {
+                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+            });
+        });
+    });
+</script>
+
+{* Formular Anzeigen *}
+{else}
+<div>
+    {if $eventForm|isset}
+    <div class="shc-view-content">
+        {$eventForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
+            {resetbutton form="#shc-view-form-addEvent"}
+            {submitbutton form="#shc-view-form-addEvent" action="index.php?app=shc&ajax=addeventform"}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>
+{/if}
