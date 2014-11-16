@@ -111,25 +111,6 @@ class ArduinoSensorReciver {
                 $sensorReciver->write(base64_encode(json_encode($data)));
                 $sensorReciver->close();
                 $sensorReciver = null;
-
-                /*//Sensorpunkt Spannung speichern
-                $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($sensorPointId);
-                if ($sensorPoint instanceof SensorPoint) {
-
-                    //Spannung speichern
-                    $sensorPoint->setVoltage($voltage);
-                    $sensorPoint->setTime(DateTime::now());
-                } else {
-
-                    //Neuen Sensorpunkt erstellen und registrieren
-                    $sensorPoint = new SensorPoint();
-                    $sensorPoint->setId($sensorPointId);
-                    $sensorPoint->setVoltage($voltage);
-                    $sensorPoint->setTime(DateTime::now());
-
-                    //Sensorpunkt registrieren
-                    SensorPointEditor::getInstance()->addSensorPoint($sensorPoint);
-                }*/
             } elseif (preg_match('!#(\d{1,3})\+((10)|(22)|(28));([0-9a-f]{14});(\d{1,4})!i', $rawDate, $match)) {
 
                 //DS18x20 Sensor
