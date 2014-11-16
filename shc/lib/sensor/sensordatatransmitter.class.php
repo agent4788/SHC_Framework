@@ -34,7 +34,7 @@ class SensorDataTransmitter {
         } catch (\Exception $e) {
 
             $cli = new CommandLine();
-            $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('readerServerAddress') . ':' . RWF::getSetting('readerServerPort') . ') konnte nicht hergestellt werden', 'red');
+            $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('shc.sensorTransmitter.ip') . ':' . RWF::getSetting('shc.sensorTransmitter.port') . ') konnte nicht hergestellt werden', 'red');
 
             //30 Sekunden warten dann wieder versuchen
             sleep(30);
