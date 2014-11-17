@@ -198,7 +198,7 @@ class RWF {
     /**
      * gibt das Einstellungsobjekt zurueck
      * 
-     * @return \RWF\Setting\Settings
+     * @return \RWF\Settings\Settings
      */
     public static function getSettings() {
 
