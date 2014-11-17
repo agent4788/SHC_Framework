@@ -28,7 +28,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      *
      * @var String
      */
-    protected $formCssId = 'rwf-view-form-tabed';
+    protected $formCssId = 'rwf-view-form-tabbed';
 
     /**
      * setzt die CSS ID des Formulars
@@ -121,7 +121,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      *
      * @return Array
      */
-    public function getAllElements() {
+    public function listFormElements() {
 
         $return = array();
         foreach ($this->tabs as $tab) {

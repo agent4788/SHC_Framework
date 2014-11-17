@@ -325,6 +325,16 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
     }
 
     /**
+     * gibt eine Liste mit allen Formularelementen zurueck
+     *
+     * @return Array
+     */
+    public function listFormElements() {
+
+        return $this->elements;
+    }
+
+    /**
      * gibt an ob das Formular abgesendet wurde
      * 
      * @return Boolean

@@ -201,6 +201,13 @@ interface Form {
      * @return Array
      */
     public function listInvalidElements();
+
+    /**
+     * gibt eine Liste mit allen Formularelementen zurueck
+     *
+     * @return Array
+     */
+    public function listFormElements();
     
     /**
      * gibt an ob das Formular abgesendet wurde
