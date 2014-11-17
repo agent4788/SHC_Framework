@@ -147,12 +147,12 @@ class Settings {
                         return true;
                     case 'bool':
 
-                        if ($value === true || $value === false || $value === 1 || $value === 0) {
+                        if ($value === true || $value === false || $value === 1 || $value === 0 || $value === '1' || $value === '0') {
 
-                            $attributes->value = (($value === true || $value === 1) ? 'true' : 'false');
+                            $attributes->value = (($value === true || $value === 1 || $value === '1') ? 'true' : 'false');
                         } else {
 
-                            throw new Exception('Ungültiger Wert', 1120);
+                            throw new \Exception('Ungültiger Wert', 1120);
                         }
 
                         $this->chanched = true;
@@ -165,7 +165,7 @@ class Settings {
                             $attributes->value = (int) $value;
                         } else {
 
-                            throw new Exception('Ungültiger Wert', 1120);
+                            throw new \Exception('Ungültiger Wert', 1120);
                         }
 
                         $this->chanched = true;
