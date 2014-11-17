@@ -202,7 +202,11 @@ class LanguageDateTime extends DateTime {
                     }
                 }
 
-                return RWF::getLanguage()->val('global.date.totay') . ($time =! '' ? ', '. $time : '');
+                if($timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
+
+                    return RWF::getLanguage()->val('global.date.yesterday');
+                }
+                return $time;
             } elseif($diff == -1) {
                 
                 return RWF::getLanguage()->val('global.date.yesterday');
