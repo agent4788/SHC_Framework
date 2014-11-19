@@ -13,7 +13,7 @@
 
 .rwf-ui-form-content-textfield, .rwf-ui-form-content-passwordfield, select, textarea.rwf-ui-form-content-textarea {
     background-color: transparent;
-    color: #ffffff;
+    color: #000000;
     padding: 3px;
     font-size: 15px;
     width: 300px;

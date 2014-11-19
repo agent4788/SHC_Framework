@@ -33,7 +33,7 @@ img {
 
 div#shc-headline {
     height: 63px;
-    background: #86b5d9 url(./images/ui-bg_highlight-soft_44_444444_1x100.png) repeat-x center;	
+    background: #CF0E0E;
     position: relative;
     color: #ffffff;
 }
@@ -51,7 +51,9 @@ div#shc-headline-right div {
     margin-bottom: 3px;
 }
 
-div#shc-headline a {
+div#shc-headline a#shc-login-link, div#shc-headline a#shc-logout-link, div#shc-headline > a,
+div#shc-headline a#shc-login-link:visited, div#shc-headline a#shc-logout-link:visited, div#shc-headline > a:visited,
+div#shc-headline a#shc-login-link:active, div#shc-headline a#shc-logout-link:active, div#shc-headline > a:active {
     color: #ffffff;
     display: inline-block;
 }
@@ -64,6 +66,7 @@ div#shc-headline-left div#shc-headline-logo {
 }
 
 div#shc-headline-left div#shc-headline-logo a {
+    color: #ffffff;
     height: 63px;
     display: inline-block;
     font-size: 30px;
@@ -372,10 +375,10 @@ table.shc-view-contentTable {
 }
 
 table.shc-view-contentTable th {
-    background: #86b5d9 url(./images/ui-bg_highlight-soft_44_444444_1x100.png) repeat-x center;
+    background: #F2F2F2;
     border-right: 1px solid #E0E0E0;
     border-top: 1px solid #DDE1E5;
-    color: #ffffff;
+    color: #949494;
     font-weight: normal;
     padding: 5px;
     text-align: left;
@@ -397,7 +400,7 @@ tr.shc-view-contentTable-sortable-placeholder td {
 }
 
 table.shc-view-contentTable tfoot td {
-    background: #86b5d9 url(./images/ui-bg_highlight-soft_44_444444_1x100.png) repeat-x center;
+    background: #DCDCDC;
     font-weight: bold;
 }
 
@@ -408,7 +411,7 @@ div.shc-view-buttons {
     margin: 10px -8px -8px -8px;
     padding: 10px;
     border-top: solid #555555 1px;
-    background-color: #000000;
+    background-color: #cf0e0e;
     border-bottom-left-radius: 5px;;
     border-bottom-right-radius: 5px;
 }
