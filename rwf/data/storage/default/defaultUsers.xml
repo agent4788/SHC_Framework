@@ -28,6 +28,19 @@
         </group>
     </groups>
     <users>
-        <nextAutoIncrementId>1</nextAutoIncrementId>
+        <nextAutoIncrementId>2</nextAutoIncrementId>
+        <user>
+            <id>1</id>
+            <name></name>
+            <password></password>
+            <authCode></authCode>
+            <language>de</language>
+            <webStyle>redmond</webStyle>
+            <mobileStyle/>
+            <register></register>
+            <mainUserGroup>1</mainUserGroup>
+            <userGroups></userGroups>
+            <isOriginator>1</isOriginator>
+        </user>
     </users>
 </userStorage>
