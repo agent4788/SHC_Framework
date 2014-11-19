@@ -94,6 +94,7 @@ function randomStr($length = 10) {
 //Gruppenrechte vorbereiten
 foreach($usersXml->groups->group as $group) {
 
+    $group = $group->premissions;
     addPremission($group, 'shc.ucp.viewUserAtHome', '0');
     addPremission($group, 'shc.ucp.reboot', '0');
     addPremission($group, 'shc.ucp.shutdown', '0');
