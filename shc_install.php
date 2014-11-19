@@ -118,7 +118,7 @@ require_once('./rwf/lib/external/password/password.php');
 $user = $usersXml->users->user[0];
 $user->name = 'admin';
 $user->password = password_hash('admin', PASSWORD_DEFAULT);
-$user->authcode = randomStr(64);
+$user->authCode = randomStr(64);
 $user->register = (new DateTime('now'))->format('Y-m-d');
 
 //XML Speichern
