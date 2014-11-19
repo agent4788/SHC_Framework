@@ -31,6 +31,8 @@ $l['acp.settings.tabs.redirect.pc'] = 'Weboberfläche';
 $l['acp.settings.tabs.redirect.tablet'] = 'Tabletoberfläche';
 $l['acp.settings.tabs.redirect.smartphone'] = 'Smartphoneoberfläche';
 
+$l['acp.settings.form.title'] = 'Titel';
+$l['acp.settings.form.title.decription'] = 'Titel der in der Kopfzeile angezeit wird';
 $l['acp.settings.form.allowLongTimeLogin'] = 'Langzeit Login';
 $l['acp.settings.form.allowLongTimeLogin.decription'] = 'Benutzer können sich dauerhaft einlogge';
 $l['acp.settings.form.defaultStyle'] = 'Webstyle';

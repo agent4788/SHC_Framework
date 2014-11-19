@@ -37,6 +37,13 @@ class SettingsForm extends TabbedHtmlForm {
         //Allgemeine Einstellungen
         $this->addTab('global', RWF::getLanguage()->get('acp.settings.tabs.global'), RWF::getLanguage()->get('acp.settings.tabs.global.description'));
 
+        //Titelzeile
+        $title = new TextField('shc_title',RWF::getSetting('shc.title'), array('minlength' => 3, 'maxlength' => 35));
+        $title->setTitle(RWF::getLanguage()->get('acp.settings.form.title'));
+        $title->setDescription(RWF::getLanguage()->get('acp.settings.form.title.decription'));
+        $title->requiredField(true);
+        $this->addFormElementToTab('global', $title);
+
         //Langzeit Login erlauben
         $longTimeLogin = new OnOffOption('rwf_session_allowLongTimeLogin',RWF::getSetting('rwf.session.allowLongTimeLogin'));
         $longTimeLogin->setTitle(RWF::getLanguage()->get('acp.settings.form.allowLongTimeLogin'));
@@ -45,7 +52,7 @@ class SettingsForm extends TabbedHtmlForm {
         $this->addFormElementToTab('global', $longTimeLogin);
 
         //Style
-        $style = new WebStyleChooser('rwf_ui_defaultStyle',RWF::getSetting('rwf.ui.defaultStyle'));
+        $style = new WebStyleChooser('shc_defaultStyle',RWF::getSetting('shc.defaultStyle'));
         $style->setTitle(RWF::getLanguage()->get('acp.settings.form.defaultStyle'));
         $style->setDescription(RWF::getLanguage()->get('acp.settings.form.defaultStyle.decription'));
         $style->requiredField(true);
