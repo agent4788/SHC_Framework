@@ -1,0 +1,41 @@
+{* Benutzergruppen Liste *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width: 70%;">{lang var="acp.userManagement.groupList.table.head.name"}</th>
+                <th style="width: 20%;">{lang var="acp.userManagement.groupList.table.head.sysGroup"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$groupList item='group'}
+            <tr>
+                <td>{#$group->getName()}</td>
+                <td>{if $group->isSystemGroup() === true}{lang var="global.yes"}{else}{lang var="global.no"}{/if}</td>
+                <td>
+                    {editlink link='index.php?app=shc&ajax=editgroupform&id=' id=$group->getId()}
+                    {if $group->isSystemGroup() == false}
+                    {deletelink link='index.php?app=shc&ajax=deletegroup&id=' id=$group->getId() prompt='acp.userManagement.prompt.deleteGroup' title='acp.userManagement.prompt.deleteGroup.title'}
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listusers"}
+            {acpbutton link="index.php?app=shc&ajax=addgroupform" text="acp.userManagement.button.addGroup"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.userManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

@@ -1,0 +1,101 @@
+/* Formulare */
+
+.rwf-ui-form-description-text {
+    border-bottom: 1px solid #ADD1FF;
+    color: #555;
+    padding: 5px 10px;
+    margin: 10px 0px;
+}
+
+.rwf-ui-form-content-invalid {
+    border: 1px solid #d00101 !important;
+}
+
+.rwf-ui-form-content-textfield, .rwf-ui-form-content-passwordfield, select, textarea.rwf-ui-form-content-textarea {
+    background-color: transparent;
+    color: #444;
+    padding: 3px;
+    font-size: 15px;
+    width: 300px;
+    border: 1px solid #0f5c8e;
+    margin: 5px 5px 5px 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+textarea.rwf-ui-form-content-textarea {
+    height: 80px;
+}
+
+select {
+    padding: 3px;
+    font-size: 15px;
+    width: 300px;
+    border: 1px solid #0f5c8e;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.ui-spinner {
+    font-size: 15px;
+    width: 305px;
+    border: 1px solid #0f5c8e;
+    margin: 5px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+form div.rwf-ui-form-content {
+    margin-bottom: 10px;
+}
+
+form div.rwf-ui-form-content-title {
+    display: inline-block;
+    width: 20%;
+    text-align: right;
+    font-size: 1.1em;
+}
+
+form span.rwf-ui-form-content-required {
+    color: #ff0000;
+}
+
+form div.rwf-ui-form-content-element {
+    display: inline-block;
+    width: 70%;
+}
+
+form div.rwf-ui-form-content-description {
+    display: inline-block;
+    width: 70%;
+    margin: 0 0 0 22%;
+    color: #797979;
+    font-size: 0.95em;
+}
+
+.rwf-ui-form-content-on-off-chooser {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.rwf-ui-form-content-on-off-chooser .yes {
+    background: #d6eca6;
+    font-size: 1em;
+    color:#666666;
+}
+
+.rwf-ui-form-content-on-off-chooser .no {
+    background: #eca6d6;
+    font-size: 1em;
+    color:#666666;
+}
+
+.rwf-ui-form-content-on-off-chooser .ui-state-active {
+    font-weight: bold;
+    font-size: 1.2em;
+    color:#000000;
+}

@@ -1,0 +1,31 @@
+{* Raum bearbeiten Formular *}
+<div>
+    {if $sensorPointForm|isset}
+    <div class="shc-view-content">
+        {$sensorPointForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listsensorpoints"}
+            {resetbutton form="#shc-view-form-editSensorPoint"}
+            {submitbutton form="#shc-view-form-editSensorPoint" action="index.php?app=shc&ajax=editsensorpointform" id=$sensorPoint->getId()}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listsensorpoints"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.sensorpointsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

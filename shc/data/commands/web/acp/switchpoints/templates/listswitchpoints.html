@@ -1,0 +1,55 @@
+{* Liste aller Schaltpunkte *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width: 70%;">{lang var="acp.switchpointsManagment.switchPointList.table.head.name"}</th>
+                <th style="width: 20%;">{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$switchPointsList item='switchPoint'}
+            <tr>
+                <td>
+                    <span style="cursor: pointer;" id="shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip" title="">{if $switchPoint->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$switchPoint->getName()}{if $switchPoint->isEnabled() == false}</span>{/if}</span>
+                    <div id="shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip-content" style="display: none;">
+                        {$switchPoint->fetchTooltip()}
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+
+                            $('#shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip').tooltip({
+                                content: function() {
+                                    return $('#shc-view-switchpointsManagment-{$switchPoint->getId()}-tooltip-content').html();
+                                },
+                                track: true
+                            });
+                        });
+                    </script>
+                </td>
+                <td>{if $switchPoint->getLastExecute()|datetime != '01.01.2000'}{$switchPoint->getLastExecute()|datetime}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}</td>
+                <td>
+                    {editlink link='index.php?app=shc&ajax=editswitchpointform&id=' id=$switchPoint->getId()}
+                    {deletelink link='index.php?app=shc&ajax=deleteswitchpoint&id=' id=$switchPoint->getId() prompt='acp.switchpointsManagment.prompt.deleteSwitchPoint' title='acp.switchpointsManagment.prompt.deleteSwitchPoint.title'}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+            {acpbutton link="index.php?app=shc&ajax=addswitchpointform" text="acp.switchpointsManagment.button.addSwitchPoint"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchpointsManagment.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>
