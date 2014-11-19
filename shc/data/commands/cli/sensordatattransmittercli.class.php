@@ -4,6 +4,8 @@ namespace SHC\Command\CLI;
 
 //Imports
 use RWF\Request\Commands\CliCommand;
+use RWF\Util\CliUtil;
+use RWF\Util\String;
 use SHC\Sensor\SensorDataTransmitter;
 use RWF\Core\RWF;
 use SHC\Sensor\SensorEditor;
@@ -53,13 +55,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         ob_implicit_flush();
 
         //Sprache einbinden
-        RWF::getLanguage()->loadModul('SensorTransmitter');
-
-        //pruefen on Server aktiviert
-        if (!RWF::getSetting('shc.sensorTransmitter.active')) {
-
-            throw new Exception('Der Sensor Transmitter wurde deaktiviert', 1600);
-        }
+        RWF::getLanguage()->loadModul('SensorTransmitterDaemon');
 
         //Debug aktivieren
         if (in_array('-d', $argv) || in_array('--debug', $argv)) {
@@ -259,13 +255,212 @@ class SensorDatatTransmitterCli extends CliCommand {
      * konfiguriert das CLI Kommando
      */
     protected function config() {
-        
+
+        $cli = new CliUtil();
+        $response = $this->response;
+
+        //Dienst aktiv
+        $n = 0;
+        $valid = true;
+        $valid_active = false;
+        $active_not_change = false;
+        while ($n < 5) {
+
+            $sender = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.active', (RWF::getSetting('shc.sensorTransmitter.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+
+            //Port nicht aendern
+            if (String::length($sender) == 0) {
+
+                $active_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if (!preg_match('#^('. RWF::getLanguage()->get('global.yes') .')|('. RWF::getLanguage()->get('global.yes.short') .')|('. RWF::getLanguage()->get('global.no') .')|('. RWF::getLanguage()->get('global.no.short') .')$#i', $sender)) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.active.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            }
+
+            if ($valid === true && preg_match('#^('. RWF::getLanguage()->get('global.yes') .')|('. RWF::getLanguage()->get('global.yes.short') .')$#i', $sender)) {
+
+                $valid_active = true;
+                break;
+            } elseif ($valid === true && preg_match('#^('. RWF::getLanguage()->get('global.no') .')|('. RWF::getLanguage()->get('global.no.short') .')$#i', $sender)) {
+
+                $valid_active = false;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.active.invalid.repeated'), 'red');
+            exit(1);
+        }
+
+        //IP Adresse
+        $n = 0;
+        $valid = true;
+        $valid_address = '';
+        $address_not_change = false;
+        while ($n < 5) {
+
+            $address = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.ip', RWF::getSetting('shc.sensorTransmitter.ip')));
+
+            //Adresse nicht aendern
+            if (String::length($address) == 0) {
+
+                $address_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            //Adresse pruefen
+            $parts = explode('.', $address);
+            for ($i = 0; $i < 3; $i++) {
+
+                if (isset($parts[$i]) && (int) $parts[$i] >= 0 && (int) $parts[$i] <= 255) {
+
+                    continue;
+                }
+
+                $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.ip.invalid'), 'red');
+                $n++;
+                $valid = false;
+                break;
+            }
+
+            if ($valid === true) {
+
+                $valid_address = $address;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.ip.invalid.repeated'), 'red');
+            exit(1);
+        }
+
+        //Port
+        $n = 0;
+        $valid = true;
+        $valid_port = '';
+        $port_not_change = false;
+        while ($n < 5) {
+
+            $port = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.port', RWF::getSetting('shc.sensorTransmitter.port')));
+
+            //Port nicht aendern
+            if (String::length($port) == 0) {
+
+                $port_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if (!preg_match('#^[0-9]{1,5}$#', $port) || (int) $port <= 0 || (int) $port >= 65000) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.port.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            }
+
+            if ($valid === true) {
+
+                $valid_port = $port;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.port.invalid.repeated'), 'red');
+            exit(1);
+        }
+
+        //Sensorpunkt ID
+        $n = 0;
+        $valid = true;
+        $valid_sp = '';
+        $sp_not_change = false;
+        while ($n < 5) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId.info'), 'yellow');
+            $id = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId', RWF::getSetting('shc.sensorTransmitter.pointId')));
+
+            //Port nicht aendern
+            if (String::length($id) == 0) {
+
+                $sp_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if ((int) $id <= 0 || (int) $id >= 999) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            }
+
+            if ($valid === true) {
+
+                $valid_sp = $id;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId.invalid.repeated'), 'red');
+            exit(1);
+        }
+
+        //Speichern
+        if($active_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.sensorTransmitter.active', $valid_active);
+        }
+        if($address_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.sensorTransmitter.ip', $valid_address);
+        }
+        if($port_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.sensorTransmitter.port', $valid_port);
+        }
+        if($sp_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.sensorTransmitter.pointId', $valid_sp);
+        }
+
+        try {
+
+            RWF::getSettings()->saveAndReload();
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.save.success'), 'green');
+        } catch(\Exception $e) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.save.error'), 'red');
+        }
     }
 
     /**
      * fuehrt das CLI Kommando aus
      */
     protected function executeCliCommand() {
+
+        //pruefen on Server aktiviert
+        if (!RWF::getSetting('shc.sensorTransmitter.active')) {
+
+            throw new Exception('Der Sensor Transmitter wurde deaktiviert', 1600);
+        }
         
         $sensorTransmitter = new SensorDataTransmitter();
         $sensorTransmitter->transmitSensorData($this->debug);

@@ -5,6 +5,8 @@ namespace SHC\Command\CLI;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
+use RWF\Util\CliUtil;
+use RWF\Util\String;
 use SHC\Sheduler\Sheduler;
 
 /**
@@ -44,6 +46,9 @@ class ShedulerDeamonCli extends CliCommand {
      */
     public function writeHelp() {
 
+        //Sprache einbinden
+        RWF::getLanguage()->loadModul('shedulerdaemon');
+
         $r = RWF::getResponse();
         $r->writeLnColored('-sh oder --sheduler startet den Scheduler Daemon', 'green_u');
         $r->writeLn('');
@@ -57,13 +62,79 @@ class ShedulerDeamonCli extends CliCommand {
      * konfiguriert das CLI Kommando
      */
     protected function config() {
-        
+
+        $cli = new CliUtil();
+        $response = $this->response;
+        RWF::getLanguage()->loadModul('shedulerdaemon');
+
+        //Dienst aktiv
+        $n = 0;
+        $valid = true;
+        $valid_active = false;
+        $active_not_change = false;
+        while ($n < 5) {
+
+            $sender = $cli->input(RWF::getLanguage()->get('shedulerDaemon.input.active', (RWF::getSetting('shc.shedulerDaemon.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+
+            //Port nicht aendern
+            if (String::length($sender) == 0) {
+
+                $active_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if (!preg_match('#^('. RWF::getLanguage()->get('global.yes') .')|('. RWF::getLanguage()->get('global.yes.short') .')|('. RWF::getLanguage()->get('global.no') .')|('. RWF::getLanguage()->get('global.no.short') .')$#i', $sender)) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.active.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            }
+
+            if ($valid === true && preg_match('#^('. RWF::getLanguage()->get('global.yes') .')|('. RWF::getLanguage()->get('global.yes.short') .')$#i', $sender)) {
+
+                $valid_active = true;
+                break;
+            } elseif ($valid === true && preg_match('#^('. RWF::getLanguage()->get('global.no') .')|('. RWF::getLanguage()->get('global.no.short') .')$#i', $sender)) {
+
+                $valid_active = false;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.active.invalid.repeated'), 'red');
+            exit(1);
+        }
+
+        //Speichern
+        if($active_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.shedulerDaemon.active', $valid_active);
+        }
+
+        try {
+
+            RWF::getSettings()->saveAndReload();
+            $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.save.success'), 'green');
+        } catch(\Exception $e) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.save.error'), 'red');
+        }
     }
 
     /**
      * fuehrt das CLI Kommando aus
      */
     protected function executeCliCommand() {
+
+        //pruefen on Server aktiviert
+        if (!RWF::getSetting('shc.shedulerDaemon.active')) {
+
+            throw new \Exception('Der Sheduler Dienst wurde deaktiviert', 1600);
+        }
 
         //Sheduler Initialisieren
         $sheduler = new Sheduler();

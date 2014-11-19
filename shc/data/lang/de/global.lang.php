@@ -16,6 +16,8 @@ $l['global.tousandsSeparator'] = '.';
 $l['global.decimalSeparator'] = ',';
 $l['global.yes'] = 'ja';
 $l['global.no'] = 'nein';
+$l['global.yes.short'] = 'j';
+$l['global.no.short'] = 'n';
 $l['global.on'] = 'an';
 $l['global.off'] = 'aus';
 
