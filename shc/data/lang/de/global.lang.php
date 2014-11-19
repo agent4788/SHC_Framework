@@ -32,7 +32,7 @@ $l['global.date.viewHours'] = 'vor {1:i} Stunden';
 $l['global.date.oneMinute'] = 'vor einer Minute';
 $l['global.date.viewMinutes'] = 'vor {1:i} Minuten';
 $l['global.date.oneSecond'] = 'vor einer Sekunde';
-$l['global.date.viewSeconds'] = 'vor {1:i} Minuten';
+$l['global.date.viewSeconds'] = 'vor {1:i} Sekunden';
 
 //Allgemeine Buttons
 $l['global.button.back'] = 'zurück';
