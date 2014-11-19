@@ -298,7 +298,7 @@ class SensorPointEditor {
 
             //XML Objekt erstrellen
             XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPoint->getId(), PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml', PATH_SHC_STORAGE . 'default/defaultSensorpoint.xml');
-            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPoint->getId());
+            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPoint->getId(), true);
 
             //ID behandeln
             if ((int) $xml->id != $sensorPoint->getId()) {
