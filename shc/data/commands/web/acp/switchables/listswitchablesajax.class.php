@@ -63,55 +63,61 @@ class ListSwitchablesAjax extends AjaxCommand {
             $switchableOrder = $r->getParam('switchableOrder', Request::POST);
             $switchableFilteredOrder = array();
             $valid = true;
-            foreach($switchableOrder as $id => $orderId) {
+            if(count($switchableOrder)) {
+                foreach ($switchableOrder as $id => $orderId) {
 
-                $switchable = SwitchableEditor::getInstance()->getElementById($id);
-                if($switchable instanceof Element) {
+                    $switchable = SwitchableEditor::getInstance()->getElementById($id);
+                    if ($switchable instanceof Element) {
 
-                    $switchableFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
-                } else {
+                        $switchableFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
+                    } else {
 
-                    //Fehlerhafte Eingaben
-                    $valid = false;
-                    $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
-                    break;
+                        //Fehlerhafte Eingaben
+                        $valid = false;
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
+                        break;
+                    }
                 }
             }
             //Sensoren
             $sensorOrder = $r->getParam('sensorOrder', Request::POST);
             $sensorFilteredOrder = array();
-            foreach($sensorOrder as $id => $orderId) {
+            if(count($sensorOrder)) {
+                foreach ($sensorOrder as $id => $orderId) {
 
-                $sensor = SensorPointEditor::getInstance()->getSensorById($id);
-                if($sensor instanceof Sensor) {
+                    $sensor = SensorPointEditor::getInstance()->getSensorById($id);
+                    if ($sensor instanceof Sensor) {
 
-                    $sensorFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
-                } else {
+                        $sensorFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
+                    } else {
 
-                    //Fehlerhafte Eingaben
-                    $valid = false;
-                    $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
-                    break;
+                        //Fehlerhafte Eingaben
+                        $valid = false;
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
+                        break;
+                    }
                 }
             }
             //Boxen
             $boxOrder = $r->getParam('boxOrder', Request::POST);
             $boxFilteredOrder = array();
-            foreach($boxOrder as $id => $orderId) {
+            if(count($sensorOrder)) {
+                foreach ($boxOrder as $id => $orderId) {
 
-                $box = ViewHelperEditor::getInstance()->getBoxById($id);
-                if($box instanceof ViewHelperBox) {
+                    $box = ViewHelperEditor::getInstance()->getBoxById($id);
+                    if ($box instanceof ViewHelperBox) {
 
-                    $boxFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
-                } else {
+                        $boxFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
+                    } else {
 
-                    //Fehlerhafte Eingaben
-                    $valid = false;
-                    $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
-                    break;
+                        //Fehlerhafte Eingaben
+                        $valid = false;
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
+                        break;
+                    }
                 }
             }
 
