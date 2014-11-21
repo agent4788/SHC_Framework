@@ -103,7 +103,7 @@ class ListSwitchablesAjax extends AjaxCommand {
             //Boxen
             $boxOrder = $r->getParam('boxOrder', Request::POST);
             $boxFilteredOrder = array();
-            if(count($sensorOrder)) {
+            if(count($boxOrder)) {
                 foreach ($boxOrder as $id => $orderId) {
 
                     $box = ViewHelperEditor::getInstance()->getBoxById($id);

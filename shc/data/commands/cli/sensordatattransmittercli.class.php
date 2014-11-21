@@ -459,7 +459,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         //pruefen on Server aktiviert
         if (!RWF::getSetting('shc.sensorTransmitter.active')) {
 
-            throw new Exception('Der Sensor Transmitter wurde deaktiviert', 1600);
+            throw new \Exception('Der Sensor Transmitter wurde deaktiviert', 1600);
         }
         
         $sensorTransmitter = new SensorDataTransmitter();

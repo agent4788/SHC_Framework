@@ -343,7 +343,7 @@ class ArduinoSensorReciverDeamonCli extends CliCommand {
         //pruefen on Server aktiviert
         if (!RWF::getSetting('shc.arduinoReciver.active')) {
 
-            throw new Exception('Der Arduino Reciver wurde deaktiviert', 1600);
+            throw new \Exception('Der Arduino Reciver wurde deaktiviert', 1600);
         }
 
         $arduinoReciver = new ArduinoSensorReciver(RWF::getSetting('shc.arduinoReciver.interface'), RWF::getSetting('shc.arduinoReciver.baudRate'));
