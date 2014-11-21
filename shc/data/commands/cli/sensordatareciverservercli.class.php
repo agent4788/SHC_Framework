@@ -286,7 +286,7 @@ class SensorDataReciverServerCli extends CliCommand {
         //pruefen on Server aktiviert
         if (!RWF::getSetting('shc.sensorReciver.active')) {
 
-            throw new Exception('Der Sensor Reciver wurde deaktiviert', 1600);
+            throw new \Exception('Der Sensor Reciver wurde deaktiviert', 1600);
         }
 
         $sensorReciver = new SensorDataReciverSocket();
