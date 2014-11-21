@@ -44,7 +44,7 @@ class InfoAjax extends AjaxCommand {
         $tpl->assign('php', PHP_VERSION);
         $data = array();
         $match = array();
-        @exec('gpio -v', $data);
+        @exec('/usr/local/bin/gpio -v', $data);
         if(isset($data[0]) && preg_match('#gpio\s+version:\s+(.*)#i', $data[0], $match)) {
 
             $tpl->assign('wiringPi', trim($match[1]));
