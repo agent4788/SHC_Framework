@@ -87,51 +87,55 @@ class SwitchServerSocket {
             $rawData = base64_decode($client->read(8192));
             $requests = json_decode($rawData, true);
 
-            //Status LED ein
-            if ($sendGpio >= 0) {
+            //leere Anfragen ignorieren
+            if(count($request)) {
 
-                @shell_exec($gpioPath . ' write ' . $sendGpio . ' 1');
-            }
+                //Status LED ein
+                if ($sendGpio >= 0) {
 
-            //Anfragen bearbeiten
-            foreach ($requests as $request) {
-
-                if ($senderActive && isset($request['type']) && $request['type'] == 'radiosocket') {
-
-                    //Funksteckdosen schalten
-                    $this->send433MHzCommand($request);
-                } elseif ($writeGPIO && isset($request['type']) && $request['type'] == 'gpiooutput') {
-
-                    //GPIO schreiben
-                    $this->writeGpio($request);
-                } elseif ($readGPIO && isset($request['type']) && $request['type'] == 'gpioinput') {
-
-                    //GPIO lesen
-                    $this->readGpio($client, $request);
-                } elseif (isset($request['stop']) && $request['stop'] == 1) {
-
-                    //Server Stoppen
-                    $client->close();
-                    $this->stop();
-
-                    //Status LED aus
-                    if ($sendGpio >= 0) {
-
-                        @shell_exec($gpioPath . ' write ' . $sendGpio . ' 0');
-                    }
-
-                    return;
+                    @shell_exec($gpioPath . ' write ' . $sendGpio . ' 1');
                 }
+
+                //Anfragen bearbeiten
+                foreach ($requests as $request) {
+
+                    if ($senderActive && isset($request['type']) && $request['type'] == 'radiosocket') {
+
+                        //Funksteckdosen schalten
+                        $this->send433MHzCommand($request);
+                    } elseif ($writeGPIO && isset($request['type']) && $request['type'] == 'gpiooutput') {
+
+                        //GPIO schreiben
+                        $this->writeGpio($request);
+                    } elseif ($readGPIO && isset($request['type']) && $request['type'] == 'gpioinput') {
+
+                        //GPIO lesen
+                        $this->readGpio($client, $request);
+                    } elseif (isset($request['stop']) && $request['stop'] == 1) {
+
+                        //Server Stoppen
+                        $client->close();
+                        $this->stop();
+
+                        //Status LED aus
+                        if ($sendGpio >= 0) {
+
+                            @shell_exec($gpioPath . ' write ' . $sendGpio . ' 0');
+                        }
+
+                        return;
+                    }
+                }
+
+                //Status LED aus
+                if ($sendGpio >= 0) {
+
+                    @shell_exec($gpioPath . ' write ' . $sendGpio . ' 0');
+                }
+
+                //bearbeitung abgeschlossen
+                $client->close();
             }
-
-            //Status LED aus
-            if ($sendGpio >= 0) {
-
-                @shell_exec($gpioPath . ' write ' . $sendGpio . ' 0');
-            }
-
-            //bearbeitung abgeschlossen
-            $client->close();
         }
     }
 
