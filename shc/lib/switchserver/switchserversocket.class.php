@@ -88,7 +88,7 @@ class SwitchServerSocket {
             $requests = json_decode($rawData, true);
 
             //leere Anfragen ignorieren
-            if(count($request)) {
+            if(count($requests)) {
 
                 //Status LED ein
                 if ($sendGpio >= 0) {
