@@ -230,7 +230,13 @@ class RequestHandler {
             if (in_array($cliCommand->getShortParam(), $argv) || in_array($cliCommand->getFullParam(), $argv)) {
 
                 //Objekt gefunden
-                $cliCommand->execute(self::$request, self::$response);
+                try {
+
+                    $cliCommand->execute(self::$request, self::$response);
+                } catch(\Exception $e) {
+
+                    self::$response->writeLnColored('Fehler: '. $e->getMessage() .'; Code: '. $e->getCode(), 'red');
+                }
                 //Daten Senden
                 self::$response->flush();
                 return;
