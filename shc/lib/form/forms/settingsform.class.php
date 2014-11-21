@@ -4,6 +4,7 @@ namespace SHC\Form\Forms;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Date\DateTime;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\Select;
@@ -94,14 +95,14 @@ class SettingsForm extends TabbedHtmlForm {
         //Offset Sunenaufgang
         $sunriseOffset = new IntegerInputField('rwf_date_sunriseOffset',RWF::getSetting('rwf.date.sunriseOffset'), array('min' => -90, 'max' => 90));
         $sunriseOffset->setTitle(RWF::getLanguage()->get('acp.settings.form.sunriseOffset'));
-        $sunriseOffset->setDescription(RWF::getLanguage()->get('acp.settings.form.sunriseOffset.decription'));
+        $sunriseOffset->setDescription(RWF::getLanguage()->get('acp.settings.form.sunriseOffset.decription', DateTime::now()->getSunrise()->format('H:i')));
         $sunriseOffset->requiredField(true);
         $this->addFormElementToTab('dateTime', $sunriseOffset);
 
         //Offset Sonnenuntergang
         $sunsetOffset = new IntegerInputField('rwf_date_sunsetOffset',RWF::getSetting('rwf.date.sunsetOffset'), array('min' => -90, 'max' => 90));
         $sunsetOffset->setTitle(RWF::getLanguage()->get('acp.settings.form.sunsetOffset'));
-        $sunsetOffset->setDescription(RWF::getLanguage()->get('acp.settings.form.sunsetOffset.decription'));
+        $sunsetOffset->setDescription(RWF::getLanguage()->get('acp.settings.form.sunsetOffset.decription', DateTime::now()->getSunset()->format('H:i')));
         $sunsetOffset->requiredField(true);
         $this->addFormElementToTab('dateTime', $sunsetOffset);
 
