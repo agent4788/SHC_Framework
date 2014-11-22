@@ -82,6 +82,17 @@ class SwitchServerSocket {
         //auf Anfragen warten
         while (true) {
 
+            //Run Flag alle 60 Sekunden setzen
+            if(!isset($runTime)) {
+
+                $runTime = DateTime::now();
+            }
+            if($runTime <= DateTime::now()) {
+
+                file_put_contents(PATH_RWF_CACHE . 'switchServer.flag', DateTime::now()->getDatabaseDateTime());
+                $runTime->add(new \DateInterval('PT1M'));
+            }
+
             //Anfragen vom Server holen
             $client = $this->server->accept();
             $rawData = base64_decode($client->read(8192));
