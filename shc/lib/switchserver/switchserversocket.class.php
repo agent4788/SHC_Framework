@@ -153,7 +153,7 @@ class SwitchServerSocket {
 
             if($request['protocol'] == 'elro_rc') {
 
-                @shell_exec('sudo ' . $sendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
+                @shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
             }  else {
 
                 @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
@@ -171,7 +171,7 @@ class SwitchServerSocket {
 
             if($request['protocol'] == 'elro_rc') {
 
-                $this->response->writeLnColored('sudo ' . $sendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
+                $this->response->writeLnColored('sudo ' . $rcSendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
             }  else {
 
                 $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
