@@ -12,6 +12,7 @@ use RWF\Form\FormElements\TextField;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\HumidityClimbOver;
 use SHC\Event\Events\HumidityFallsBelow;
+use SHC\Form\FormElements\ConditionsChooser;
 use SHC\Form\FormElements\SensorChooser;
 
 /**
@@ -47,6 +48,13 @@ class HumidityEventForm extends DefaultHtmlForm {
         $name->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.name.description'));
         $name->requiredField(true);
         $this->addFormElement($name);
+
+        //Bedingungen
+        $conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
+        $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
+        $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
+        $conditions->requiredField(true);
+        $this->addFormElement($conditions);
 
         //Sensoren
         $sensors = new SensorChooser('sensors', ($event !== null ? explode(',', $event->getData()['sensors']) : array()), SensorChooser::HUMDITY);

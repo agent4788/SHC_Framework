@@ -72,6 +72,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -80,7 +81,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editHumidityClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editHumidityClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -119,6 +120,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -127,7 +129,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editHumidityFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editHumidityFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -166,6 +168,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $inputs = $eventForm->getElementByName('inputs')->getValues();
                 $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -173,7 +176,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editInputHighEvent($eventId, $name, $enabled, $inputs, $interval);
+                    EventEditor::getInstance()->editInputHighEvent($eventId, $name, $enabled, $inputs, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -212,6 +215,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $inputs = $eventForm->getElementByName('inputs')->getValues();
                 $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -219,7 +223,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editInputLowEvent($eventId, $name, $enabled, $inputs, $interval);
+                    EventEditor::getInstance()->editInputLowEvent($eventId, $name, $enabled, $inputs, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -258,6 +262,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -266,7 +271,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editLightIntensityClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editLightIntensityClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -305,6 +310,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -313,7 +319,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editLightIntensityFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editLightIntensityFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -352,6 +358,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -360,7 +367,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editMoistureClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editMoistureClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -399,6 +406,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -407,7 +415,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editMoistureFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editMoistureFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -446,6 +454,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -454,7 +463,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editTemperatureClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editTemperatureClimbOverEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -493,6 +502,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $sensors = $eventForm->getElementByName('sensors')->getValues();
                 $limit = $eventForm->getElementByName('limit')->getValue();
                 $interval = $eventForm->getElementByName('interval')->getValue();
@@ -501,7 +511,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editTemperatureFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval);
+                    EventEditor::getInstance()->editTemperatureFallsBelowEvent($eventId, $name, $enabled, $sensors, $limit, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -540,6 +550,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $users = $eventForm->getElementByName('users')->getValues();
                 $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -547,7 +558,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editUserComesHomeEvent($eventId, $name, $enabled, $users, $interval);
+                    EventEditor::getInstance()->editUserComesHomeEvent($eventId, $name, $enabled, $users, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {
@@ -586,6 +597,7 @@ class EditEventFormAjax extends AjaxCommand
                 //Werte vorbereiten
                 $name = $eventForm->getElementByName('name')->getValue();
                 $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
                 $users = $eventForm->getElementByName('users')->getValues();
                 $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -593,7 +605,7 @@ class EditEventFormAjax extends AjaxCommand
                 $message = new Message();
                 try {
 
-                    EventEditor::getInstance()->editUserLeavesHomeEvent($eventId, $name, $enabled, $users, $interval);
+                    EventEditor::getInstance()->editUserLeavesHomeEvent($eventId, $name, $enabled, $users, $interval, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {

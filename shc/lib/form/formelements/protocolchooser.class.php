@@ -33,6 +33,7 @@ class ProtocolChooser extends Select {
             'elro_ad' => array('Elro Home Easy Advanced Switches (elro_ad)', ($protocol == 'elro_ad' ? 1 : 0)),
             'elro_hc' => array('Elro Home Control Switches (elro_hc)', ($protocol == 'elro_hc' ? 1 : 0)),
             'elro_he' => array('Elro Home Easy Switches (elro_he)', ($protocol == 'elro_he' ? 1 : 0)),
+            'elro_rc' => array('Elro mit rcswitch-pi', ($protocol == 'elro_rc' ? 1 : 0)),
             'home_easy_old' => array('Old Home Easy Switches (home_easy_old)', ($protocol == 'home_easy_old' ? 1 : 0)),
             'impuls' => array('Impuls Switches (impuls)', ($protocol == 'impuls' ? 1 : 0)),
             'intertechno_old ' => array('Old Intertechno Switches (intertechno_old )', ($protocol == 'intertechno_old ' ? 1 : 0)),

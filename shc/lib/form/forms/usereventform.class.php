@@ -11,6 +11,7 @@ use RWF\Form\FormElements\TextField;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\UserComesHome;
 use SHC\Event\Events\UserLeavesHome;
+use SHC\Form\FormElements\ConditionsChooser;
 use SHC\Form\FormElements\InputChooser;
 use SHC\Form\FormElements\UsersAtHomeChooser;
 
@@ -47,6 +48,13 @@ class UserEventForm extends DefaultHtmlForm {
         $name->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.name.description'));
         $name->requiredField(true);
         $this->addFormElement($name);
+
+        //Bedingungen
+        $conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
+        $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
+        $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
+        $conditions->requiredField(true);
+        $this->addFormElement($conditions);
 
         //Benutzer
         $sensors = new UsersAtHomeChooser('users', ($event !== null ? explode(',', $event->getData()['users']) : array()));
