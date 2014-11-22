@@ -235,7 +235,13 @@ class RequestHandler {
                     $cliCommand->execute(self::$request, self::$response);
                 } catch(\Exception $e) {
 
-                    self::$response->writeLnColored('Fehler: '. $e->getMessage() .'; Code: '. $e->getCode(), 'red');
+                    if($e->getCode() == 1600) {
+
+                        self::$response->writeLnColored('Fehler: '. $e->getMessage() .'; Code: '. $e->getCode(), 'red');
+                    } else {
+
+                        throw $e;
+                    }
                 }
                 //Daten Senden
                 self::$response->flush();
@@ -253,7 +259,13 @@ class RequestHandler {
                     $cliCommand->execute(self::$request, self::$response);
                 } catch(\Exception $e) {
 
-                    self::$response->writeLnColored('Fehler: '. $e->getMessage() .'; Code: '. $e->getCode(), 'red');
+                    if($e->getCode() == 1600) {
+
+                        self::$response->writeLnColored('Fehler: '. $e->getMessage() .'; Code: '. $e->getCode(), 'red');
+                    } else {
+
+                        throw $e;
+                    }
                 }
                 //Daten Senden
                 self::$response->flush();

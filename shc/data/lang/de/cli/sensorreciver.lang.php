@@ -12,7 +12,7 @@
 $l = array();
 
 //Eingaben
-$l['sensorReciver.input.active'] = 'Sheduler Dienst aktiviert ({1:s}): ';
+$l['sensorReciver.input.active'] = 'Sensor EMpfänger aktiviert ({1:s}): ';
 $l['sensorReciver.input.active.invalid'] = 'Ungültige Eingabe';
 $l['sensorReciver.input.active.invalid.repeated'] = 'du hast zu oft eine ungültige Angaben eingegeben';
 $l['sensorReciver.input.ip'] = 'IP Adresse ({1:s}): ';
