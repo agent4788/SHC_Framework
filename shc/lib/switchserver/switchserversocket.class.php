@@ -147,10 +147,17 @@ class SwitchServerSocket {
     protected function send433MHzCommand(array $request) {
 
         $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
+        $rcSendPath = RWF::getSetting('shc.switchServer.rcswitchPiCommand');
         $firstContunue = true;
         for($i = 0; $i < $request['continuous']; $i++) {
 
-            @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+            if($request['protocol'] == 'elro_rc') {
+
+                @shell_exec('sudo ' . $sendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
+            }  else {
+
+                @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+            }
             if($firstContunue === false) {
 
                 //1s Wartezeit zwichen den Sendevorgaengen
@@ -162,7 +169,13 @@ class SwitchServerSocket {
         //Debug ausgabe
         if ($this->debug) {
 
-            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
+            if($request['protocol'] == 'elro_rc') {
+
+                $this->response->writeLnColored('sudo ' . $sendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
+            }  else {
+
+                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
+            }
         }
     }
 

@@ -34,6 +34,7 @@ addSetting('shc.switchServer.port', '9274', TYPE_STRING);
 addSetting('shc.switchServer.senderActive', 'true', TYPE_BOOLEAN);
 addSetting('shc.switchServer.sendCommand', '/usr/local/bin/pilight-send', TYPE_STRING);
 addSetting('shc.switchServer.gpioCommand', '/usr/local/bin/gpio', TYPE_STRING);
+addSetting('shc.switchServer.rcswitchPiCommand', '/opt/rcswitch-pi/send', TYPE_STRING);
 addSetting('shc.switchServer.sendLedPin', '-1', TYPE_INTEGER);
 addSetting('shc.switchServer.writeGpio', 'true', TYPE_BOOLEAN);
 addSetting('shc.switchServer.readGpio', 'true', TYPE_BOOLEAN);
