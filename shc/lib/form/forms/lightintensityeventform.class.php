@@ -13,6 +13,7 @@ use SHC\Event\AbstractEvent;
 use SHC\Event\Events\LightIntensityClimbOver;
 use SHC\Event\Events\LightIntensityFallBelow;
 use SHC\Event\Events\LightIntensityFallsBelow;
+use SHC\Form\FormElements\ConditionsChooser;
 use SHC\Form\FormElements\SensorChooser;
 
 /**
@@ -48,6 +49,13 @@ class LightIntensityEventForm extends DefaultHtmlForm {
         $name->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.name.description'));
         $name->requiredField(true);
         $this->addFormElement($name);
+
+        //Bedingungen
+        $conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
+        $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
+        $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
+        $conditions->requiredField(true);
+        $this->addFormElement($conditions);
 
         //Sensoren
         $sensors = new SensorChooser('sensors', ($event !== null ? explode(',', $event->getData()['sensors']) : array()), SensorChooser::LINGTH_INTENSIVITY);

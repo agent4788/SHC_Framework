@@ -45,6 +45,8 @@ $l['acp.eventsManagement.events.UserLeavesHome'] = 'Benutzer verlässt das Haus'
 //Formulare
 $l['acp.eventsManagement.form.event.name'] = 'Name';
 $l['acp.eventsManagement.form.event.name.description'] = 'Name des Ereignisses';
+$l['acp.eventsManagement.form.event.condition'] = 'Bedingungen';
+$l['acp.eventsManagement.form.event.condition.decription'] = 'Bedingungen die erfüllt sein müssen damit das Ereigniss ausgeführt wird';
 $l['acp.eventsManagement.form.event.sensors'] = 'Sensoren';
 $l['acp.eventsManagement.form.event.sensors.description'] = 'Sensoren welche vom Ereignis überwacht werden sollen';
 $l['acp.eventsManagement.form.event.limit'] = 'Grenzwert';

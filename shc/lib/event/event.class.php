@@ -131,6 +131,13 @@ interface Event {
     public function removeAllConditions();
 
     /**
+     * gibt eine Liste mit allen Bedingungen zurueck
+     *
+     * @return Array
+     */
+    public function listConditions();
+
+    /**
      * fuegt ein neues schaltbares Element hinzu
      *
      * @param  \SHC\Switchable\Switchable $switchable schaltbares Element

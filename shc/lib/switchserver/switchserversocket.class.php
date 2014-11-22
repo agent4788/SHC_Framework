@@ -156,7 +156,7 @@ class SwitchServerSocket {
                 //1s Wartezeit zwichen den Sendevorgaengen
                 sleep(1);
             }
-            
+
             if($request['protocol'] == 'elro_rc') {
 
                 @shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));

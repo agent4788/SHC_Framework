@@ -233,6 +233,16 @@ abstract class AbstractEvent implements Event {
     }
 
     /**
+     * gibt eine Liste mit allen Bedingungen zurueck
+     *
+     * @return Array
+     */
+    public function listConditions() {
+
+        return $this->conditions;
+    }
+
+    /**
      * fuegt ein neues schaltbares Element hinzu
      *
      * @param  \SHC\Switchable\Switchable $switchable schaltbares Element
