@@ -151,17 +151,18 @@ class SwitchServerSocket {
         $firstContunue = true;
         for($i = 0; $i < $request['continuous']; $i++) {
 
+            if($firstContunue === false) {
+
+                //1s Wartezeit zwichen den Sendevorgaengen
+                sleep(1);
+            }
+            
             if($request['protocol'] == 'elro_rc') {
 
                 @shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
             }  else {
 
                 @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
-            }
-            if($firstContunue === false) {
-
-                //1s Wartezeit zwichen den Sendevorgaengen
-                sleep(1);
             }
             $firstContunue = false;
         }
