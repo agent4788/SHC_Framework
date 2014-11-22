@@ -104,7 +104,7 @@ class Session {
             $now = new \DateTime('now');
             $now->sub(new \DateInterval('PT15M'));
             $time = new \DateTime();
-            $time->setTimestamp(@filemtime(SESSION . $file));
+            $time->setTimestamp(@filemtime(PATH_RWF_SESSION . $this->sid . '.session.dat'));
             if ($time < $now) {
 
                 @unlink(SESSION . $file);
@@ -209,7 +209,7 @@ class Session {
     /**
      * gibt die Meldung zurueck
      * 
-     * @return utils\Message
+     * @return \RWF\Util\Message
      */
     public function getMessage() {
 
