@@ -7,6 +7,7 @@ use RWF\Util\String;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 use SHC\Room\Room;
+use SHC\Sensor\Sensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -98,7 +99,7 @@ class ViewHelperEditor {
 
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
 
-        //Daten EInlesen
+        //Daten Einlesen
         foreach ($xml->box as $box) {
 
             $boxObject = new ViewHelperBox();
@@ -112,13 +113,25 @@ class ViewHelperEditor {
                 $attr = $element->attributes();
                 if ((int) $attr->type == self::TYPE_READABLE) {
 
-                    $boxObject->addReadable(SwitchableEditor::getInstance()->getElementById((int) $attr->id));
+                    $element = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
+                    if($element instanceof Readable) {
+
+                        $boxObject->addReadable($element);
+                    }
                 } elseif ((int) $attr->type == self::TYPE_SWITCHABLE) {
 
-                    $boxObject->addSwitchable(SwitchableEditor::getInstance()->getElementById((int) $attr->id));
+                    $element = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
+                    if($element instanceof Switchable) {
+
+                        $boxObject->addSwitchable($element);
+                    }
                 } elseif ((int) $attr->type == self::TYPE_SENSOR) {
 
-                    $boxObject->addSensor(SensorPointEditor::getInstance()->getSensorById((string) $attr->id));
+                    $element = SensorPointEditor::getInstance()->getSensorById((string) $attr->id);
+                    if($element instanceof Sensor) {
+
+                        $boxObject->addSensor($element);
+                    }
                 }
             }
             $this->boxes[(int) $box->id] = $boxObject;
