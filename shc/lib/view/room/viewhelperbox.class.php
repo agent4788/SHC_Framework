@@ -297,12 +297,21 @@ class ViewHelperBox {
      * @return String
      */
     protected function fetchStartTag() {
-        
-        $html = '<div class="shc-contentbox shc-contentbox-room ui-tabs ui-widget ui-widget-content ui-corner-all">';
-        $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
-        $html .= String::encodeHtml($this->getName());
-        $html .= '</div>';
-        $html .= '<div class="shc-contentbox-body">';
+
+        $html = '';
+        if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+            //Mobilansicht
+            $html .= '<li data-role="list-divider" role="heading">'. String::encodeHtml($this->getName()) .'</li>';
+        } else {
+
+            //Webansicht
+            $html .= '<div class="shc-contentbox shc-contentbox-room ui-tabs ui-widget ui-widget-content ui-corner-all">';
+            $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
+            $html .= String::encodeHtml($this->getName());
+            $html .= '</div>';
+            $html .= '<div class="shc-contentbox-body">';
+        }
         return $html;
     }
     
@@ -312,8 +321,18 @@ class ViewHelperBox {
      * @return String
      */
     protected function fetchEndTag() {
-        
-        return '</div></div>';
+
+        $html = '';
+        if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+            //Mobilansicht
+            $html .= '<li data-role="list-divider" role="heading"></li>';
+        } else {
+
+            //Webansicht
+            $html .= '</div></div>';
+        }
+        return $html;
     }
     
 }

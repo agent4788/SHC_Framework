@@ -104,7 +104,6 @@ class SHC extends RWF {
         //Basisklasse initalisieren
         parent::__construct();
 
-
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
 
@@ -136,16 +135,32 @@ class SHC extends RWF {
      * initialisiert den Style
      */
     protected function initStyle() {
-        
-        $webStyle = '';
-        if(self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
-            
-            $webStyle = self::$visitor->getWebStyle();
-        } else {
-            
-            $webStyle = self::getSetting('shc.defaultStyle');
+
+        if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+            //Mobilen Style laden
+            $mobileStyle = '';
+            if (self::$visitor instanceof User && self::$visitor->getMobileStyle() != '') {
+
+                $mobileStyle = self::$visitor->getMobileStyle();
+            } else {
+
+                $mobileStyle = self::getSetting('shc.defaultMobileStyle');
+            }
+            self::$style = StyleEditor::getInstance()->getMobileStyle($mobileStyle);
+        } elseif(defined('RWF_DEVICE') && RWF_DEVICE == 'web') {
+
+            //Webstyle laden
+            $webStyle = '';
+            if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
+
+                $webStyle = self::$visitor->getWebStyle();
+            } else {
+
+                $webStyle = self::getSetting('shc.defaultStyle');
+            }
+            self::$style = StyleEditor::getInstance()->getWebStyle($webStyle);
         }
-        self::$style = StyleEditor::getInstance()->getWebStyle($webStyle);       
     }
 
     /**

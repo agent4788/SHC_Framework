@@ -141,7 +141,7 @@ class StyleEditor {
             }
 
             //Allgemeine Style Daten laden
-            if($appAllStyles !== false) {
+            if($appAllStyles != false) {
 
                 foreach($appAllStyles as $file) {
 

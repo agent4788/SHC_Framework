@@ -52,7 +52,7 @@ class SwitchableViewHelper {
 
             return self::showWakeOnLan($switchable, $ignoreShow);
         }
-        return '<span>Unbekannter schaltbares Element</span>';
+        return '<span>Unbekanntes schaltbares Element</span>';
     }
     
     /**
@@ -63,13 +63,20 @@ class SwitchableViewHelper {
      * @return String
      */
     protected static function showActivity(Activity $switchable, $ignoreShow = false) {
-        
+
         $html = '';
         if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('activity.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileActivity.html');
+            } else {
+                    //Web Ansicht
+                $html = $tpl->fetchString('activity.html');
+            }
         }
         return $html;
     }
@@ -88,7 +95,14 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('arduinoOutput.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileArduinoOutput.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('arduinoOutput.html');
+            }
         }
         return $html;
     }
@@ -107,7 +121,14 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('countdown.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileCountdown.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('countdown.html');
+            }
         }
         return $html;
     }
@@ -126,7 +147,14 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('radiosocket.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileRadiosocket.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('radiosocket.html');
+            }
         }
         return $html;
     }
@@ -145,7 +173,14 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('rpiGpioOutput.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileRpiGpioOutput.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('rpiGpioOutput.html');
+            }
         }
         return $html;
     }
@@ -164,7 +199,14 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
-            $html = $tpl->fetchString('wakeOnLan.html');
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileWakeOnLan.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('wakeOnLan.html');
+            }
         }
         return $html;
     }

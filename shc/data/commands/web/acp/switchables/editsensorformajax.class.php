@@ -55,7 +55,7 @@ class EditSensorFormAjax extends AjaxCommand {
         $tpl = RWF::getTemplate();
 
         //Sensor Objekt laden
-        $sensorId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
+        $sensorId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::STRING);
         $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
 
         //Formulare je nach Objekttyp erstellen

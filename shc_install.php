@@ -52,14 +52,15 @@ addSetting('shc.sensorReciver.ip', '127.0.0.1', TYPE_STRING);
 addSetting('shc.sensorReciver.port', '9275', TYPE_STRING);
 
 //Sensor Transmitter
-addSetting('shc.sensorReciver.active', 'false', TYPE_BOOLEAN);
-addSetting('shc.sensorReciver.ip', '127.0.0.1', TYPE_STRING);
-addSetting('shc.sensorReciver.port', '9275', TYPE_STRING);
-addSetting('shc.sensorReciver.pointId', '-1', TYPE_INTEGER);
+addSetting('shc.sensorTransmitter.active', 'false', TYPE_BOOLEAN);
+addSetting('shc.sensorTransmitter.ip', '127.0.0.1', TYPE_STRING);
+addSetting('shc.sensorTransmitter.port', '9275', TYPE_STRING);
+addSetting('shc.sensorTransmitter.pointId', '-1', TYPE_INTEGER);
 
 //Allgemeine SHC Einstellungen
 addSetting('shc.title', 'SHC%202.0', TYPE_STRING);
 addSetting('shc.defaultStyle', 'redmond', TYPE_STRING);
+addSetting('shc.defaultMobileStyle', 'default', TYPE_STRING);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');

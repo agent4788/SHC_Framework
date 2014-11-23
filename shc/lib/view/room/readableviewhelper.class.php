@@ -51,11 +51,31 @@ class ReadableViewHelper {
         $html = '';
         if ($readable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW))) {
 
-            $html = '<div class="shc-contentbox-body-row shc-view-readable">';
-            $html .= '<span class="shc-contentbox-body-row-title">'. String::encodeHtml($readable->getName()) .'</span>';
-            $html .= '<span id="shc-view-readable-'. $readable->getId() .'" class="shc-icon '. ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
-            $html .= '<div class="shc-contentbox-body-row-content"></div>';
-            $html .= '</div>';
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                $html .= '<div data-role="controlgroup" data-type="horizontal">';
+                if($readable->getState() == Readable::STATE_ON) {
+
+                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
+                } else {
+
+                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
+                }
+                $html .= '</div>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html = '<div class="shc-contentbox-body-row shc-view-readable">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHtml($readable->getName()) . '</span>';
+                $html .= '<span id="shc-view-readable-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content"></div>';
+                $html .= '</div>';
+            }
         }
         return $html;
     }
@@ -72,11 +92,31 @@ class ReadableViewHelper {
         $html = '';
         if ($readable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($readable->isEnabled() && $readable->isVisible() == Readable::SHOW))) {
 
-            $html = '<div class="shc-contentbox-body-row shc-view-readable">';
-            $html .= '<span class="shc-contentbox-body-row-title">'. String::encodeHtml($readable->getName()) .'</span>';
-            $html .= '<span id="shc-view-readable-'. $readable->getId() .'" class="shc-icon '. ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
-            $html .= '<div class="shc-contentbox-body-row-content"></div>';
-            $html .= '</div>';
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                $html .= '<div data-role="controlgroup" data-type="horizontal">';
+                if($readable->getState() == Readable::STATE_ON) {
+
+                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
+                } else {
+
+                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
+                }
+                $html .= '</div>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html = '<div class="shc-contentbox-body-row shc-view-readable">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHtml($readable->getName()) . '</span>';
+                $html .= '<span id="shc-view-readable-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content"></div>';
+                $html .= '</div>';
+            }
         }
         return $html;
     }
