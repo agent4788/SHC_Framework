@@ -59,9 +59,9 @@ class UserAtHomeUpdateAjax extends AjaxCommand {
             $html .= $online;
             $html .= '<li data-role="list-divider">'. RWF::getLanguage()->get('index.userAtHome.offline') .'</li>';
             $html .= $offline;
-            $data['data'] = $html;
-            $data['success'] = true;
         }
+        $data['data'] = $html;
+        $data['success'] = true;
         $this->data = $data;
     }
 
