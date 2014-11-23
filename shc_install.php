@@ -60,6 +60,7 @@ addSetting('shc.sensorReciver.pointId', '-1', TYPE_INTEGER);
 //Allgemeine SHC Einstellungen
 addSetting('shc.title', 'SHC%202.0', TYPE_STRING);
 addSetting('shc.defaultStyle', 'redmond', TYPE_STRING);
+addSetting('shc.defaultMobileStyle', 'default', TYPE_STRING);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');
