@@ -104,10 +104,10 @@ class Session {
             $now = new \DateTime('now');
             $now->sub(new \DateInterval('PT15M'));
             $time = new \DateTime();
-            $time->setTimestamp(@filemtime(PATH_RWF_SESSION . $this->sid . '.session.dat'));
+            $time->setTimestamp(@filemtime(PATH_RWF_SESSION . $file));
             if ($time < $now) {
 
-                @unlink(SESSION . $file);
+                @unlink(PATH_RWF_SESSION . $file);
             }
         }
     }
