@@ -84,25 +84,6 @@ class RequestHandler {
         self::$request = $r = RWF::getRequest();
         self::$response = RWF::getResponse();
 
-        //Angeforderten Geraetetyp ermitteln
-        if ($r->issetParam('m')) {
-
-            //Smartphone Ansicht
-            define('RWF_DEVICE', 'smartphone');
-        } elseif ($r->issetParam('t')) {
-
-            //Tablet Ansicht
-            define('RWF_DEVICE', 'tablet');
-        } elseif ($r->issetParam('a')) {
-
-            //fuer alle Geraetetypen
-            define('RWF_DEVICE', 'all');
-        } else {
-
-            //PC/Web Ansicht
-            define('RWF_DEVICE', 'web');
-        }
-
         //Anfragetyp ermitteln
         if ($r->issetParam(self::PAGE) && ACCESS_METHOD_HTTP) {
 

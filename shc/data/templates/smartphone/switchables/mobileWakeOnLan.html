@@ -1,0 +1,34 @@
+<li>
+    {#$switchable->getName()}:
+    <div data-role="controlgroup" data-type="horizontal">
+        <a id="shc-view-switchable-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-power" style="width: 6em;">{lang var='index.room.button.start'}</a>
+    </div>
+</li>
+<script type="text/javascript">
+    $(function () {
+
+        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+
+            //An Button gedrueckt
+            $.getJSON(
+                    "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                    function(data) {
+
+                        if (data.success == true) {
+
+                            $("#shc-view-switchable-{$switchable->getId()}-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
+                        } else {
+
+                            $('#errorMessage').text(data.message);
+                            $.mobile.changePage("#errorDialog", { role: "dialog" });
+                        }
+                    }
+            );
+            return false;
+        });
+        
+        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+        });
+    });
+</script>

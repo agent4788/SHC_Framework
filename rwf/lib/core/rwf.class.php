@@ -131,6 +131,24 @@ class RWF {
 
             //HTTP Anfrageobjekt initialisieren
             self::$request = new HttpRequest();
+            //Angeforderten Geraetetyp ermitteln
+            if (self::$request->issetParam('m')) {
+
+                //Smartphone Ansicht
+                define('RWF_DEVICE', 'smartphone');
+            } elseif (self::$request->issetParam('t')) {
+
+                //Tablet Ansicht
+                define('RWF_DEVICE', 'tablet');
+            } elseif (self::$request->issetParam('a')) {
+
+                //fuer alle Geraetetypen
+                define('RWF_DEVICE', 'all');
+            } else {
+
+                //PC/Web Ansicht
+                define('RWF_DEVICE', 'web');
+            }
 
             if(self::$request->issetParam('sync', Request::GET)) {
 

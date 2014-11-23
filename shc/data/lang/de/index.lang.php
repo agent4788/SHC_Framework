@@ -15,7 +15,9 @@ $l['index.button.acpMenu'] = 'Administration';
 $l['index.button.ucp'] = 'Benutzer Bereich';
 $l['index.button.login'] = 'anmelden';
 $l['index.button.logout'] = 'abmelden';
+$l['index.button.back'] = 'zurück';
 $l['index.login.user'] = 'angemeldet als {1:s}';
+$l['index.specialFunctions'] = 'Sonderfunktionen';
 
 //Benutzer zu Hause
 $l['index.userAtHome.boxTitle'] = 'Benutzer zu Hause';
