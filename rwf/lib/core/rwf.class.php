@@ -210,7 +210,19 @@ class RWF {
      */
     protected function initTemplate() {
 
-        self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, APP_NAME . '_', DEVELOPMENT_MODE);
+        $prefix = 'web_';
+        if(RWF_DEVICE == 'smartphone') {
+
+            $prefix = 'smartphone_';
+        } elseif(RWF_DEVICE == 'tablet') {
+
+            $prefix = 'tablet_';
+        } elseif(RWF_DEVICE == 'all') {
+
+            $prefix = 'all_';
+        }
+
+        self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, $prefix, DEVELOPMENT_MODE);
     }
 
     /**
