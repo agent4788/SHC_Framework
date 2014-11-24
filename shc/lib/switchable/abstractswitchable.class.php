@@ -3,7 +3,9 @@
 namespace SHC\Switchable;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\User\Visitor;
+use SHC\Command\CommandSheduler;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
 use RWF\User\User;
@@ -199,7 +201,7 @@ abstract class AbstractSwitchable implements Switchable {
      * @return Boolean
      */
     public function execute() {
-        
+
         //Schaltpunkte durchlaufen und pruefen ob Ausfuhrungsbereit
         foreach ($this->switchPoints as $switchPoint) {
 
@@ -216,6 +218,7 @@ abstract class AbstractSwitchable implements Switchable {
                             CommandSheduler::getInstance()->sendCommands();
                         } catch(\Exception $e) {
 
+                            RWF::getResponse()->writeLnColored('Fehler beim Senden : '. $e->getMessage() .' - '. $e->getCode(), 'red');
                         }
                         break;
                     case SwitchPoint::SWITCH_OFF:
@@ -225,7 +228,7 @@ abstract class AbstractSwitchable implements Switchable {
                         try {
                             CommandSheduler::getInstance()->sendCommands();
                         } catch(\Exception $e) {
-
+                            RWF::getResponse()->writeLnColored('Fehler beim Senden : '. $e->getMessage() .' - '. $e->getCode(), 'red');
                         }
                         break;
                     case SwitchPoint::SWITCH_TOGGLE:
@@ -236,7 +239,7 @@ abstract class AbstractSwitchable implements Switchable {
                         try {
                             CommandSheduler::getInstance()->sendCommands();
                         } catch(\Exception $e) {
-
+                            RWF::getResponse()->writeLnColored('Fehler beim Senden : '. $e->getMessage() .' - '. $e->getCode(), 'red');
                         }
                         break;
                 }

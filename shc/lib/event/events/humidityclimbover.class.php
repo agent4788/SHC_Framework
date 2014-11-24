@@ -44,6 +44,7 @@ class HumidityClimbOver extends AbstractEvent {
 
             throw new \Exception('Eine Liste mit Temperatursensoren muss angegeben werden', 1580);
         }
+        $this->data['sensors'] = explode(',', $this->data['sensors']);
         if (!isset($this->data['limit'])) {
 
             throw new \Exception('Es muss ein Grenzwert angegeben werden', 1580);
@@ -53,7 +54,7 @@ class HumidityClimbOver extends AbstractEvent {
         if(isset($this->data['interval'])) {
 
             $date = DateTime::now();
-            $date->sub(new \DateInterval($this->data['interval']));
+            $date->sub(new \DateInterval('PT'. $this->data['interval'] .'S'));
 
             if($this->time instanceof DateTime && $this->time > $date) {
 
