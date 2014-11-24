@@ -44,12 +44,13 @@ class UserComesHome extends AbstractEvent {
 
             throw new \Exception('Eine Liste mit den Benutzern zu Hause muss angegeben werden', 1580);
         }
-        
+        $this->data['users'] = explode(',', $this->data['users']);
+
         //pruefen ob Warteintervall angegeben und noch nicht abgelaufen
         if(isset($this->data['interval'])) {
             
             $date = DateTime::now();
-            $date->sub(new \DateInterval($this->data['interval']));
+            $date->sub(new \DateInterval('PT'. $this->data['interval'] .'S'));
             
             if($this->time instanceof DateTime && $this->time > $date) {
                 
@@ -62,7 +63,7 @@ class UserComesHome extends AbstractEvent {
         $success = false;
         $usersAtHome = UserAtHomeEditor::getInstance()->listUsersAtHome();
         foreach($usersAtHome as $userAtHome) {
-            
+
             /* @var $userAtHome \SHC\UserAtHome\UseratHome */
             if(in_array($userAtHome->getId(), $this->data['users'])) {
                 

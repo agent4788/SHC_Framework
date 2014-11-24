@@ -44,12 +44,13 @@ class InputLow extends AbstractEvent {
 
             throw new \Exception('Eine Liste mit Eingängen muss angegeben werden', 1580);
         }
+        $this->data['inputs'] = explode(',', $this->data['inputs']);
 
         //pruefen ob Warteintervall angegeben und noch nicht abgelaufen
         if(isset($this->data['interval'])) {
 
             $date = DateTime::now();
-            $date->sub(new \DateInterval($this->data['interval']));
+            $date->sub(new \DateInterval('PT'. $this->data['interval'] .'S'));
 
             if($this->time instanceof DateTime && $this->time > $date) {
 
