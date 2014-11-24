@@ -24,15 +24,22 @@ $l['global.off'] = 'aus';
 //Datum
 $l['global.date.tomorrow'] = 'morgen';
 $l['global.date.totay'] = 'heute';
+$l['global.date.now'] = 'gerade eben';
 $l['global.date.yesterday'] = 'gestern';
 $l['global.date.previousDays'] = 'vor {1:i} Tagen';
-$l['global.date.nextDays'] = 'in {1:i} Tagen';
-$l['global.date.oneHour'] = 'vor einer Stunde';
-$l['global.date.viewHours'] = 'vor {1:i} Stunden';
-$l['global.date.oneMinute'] = 'vor einer Minute';
-$l['global.date.viewMinutes'] = 'vor {1:i} Minuten';
-$l['global.date.oneSecond'] = 'vor einer Sekunde';
-$l['global.date.viewSeconds'] = 'vor {1:i} Sekunden';
+$l['global.date.nextDaysAgo'] = 'in {1:i} Tagen';
+$l['global.date.oneHourAgo'] = 'vor einer Stunde';
+$l['global.date.viewHoursAgo'] = 'vor {1:i} Stunden';
+$l['global.date.oneMinuteAgo'] = 'vor einer Minute';
+$l['global.date.viewMinutesAgo'] = 'vor {1:i} Minuten';
+$l['global.date.oneSecondAgo'] = 'vor einer Sekunde';
+$l['global.date.viewSecondsAgo'] = 'vor {1:i} Sekunden';
+$l['global.date.oneHour'] = 'in einer Stunde';
+$l['global.date.viewHours'] = 'in {1:i} Stunden';
+$l['global.date.oneMinute'] = 'in einer Minute';
+$l['global.date.viewMinutes'] = 'in {1:i} Minuten';
+$l['global.date.oneSecond'] = 'in einer Sekunde';
+$l['global.date.viewSeconds'] = 'in {1:i} Sekunden';
 
 //Allgemeine Buttons
 $l['global.button.back'] = 'zurück';

@@ -37,12 +37,7 @@ class TimeLineFunction implements TemplateFunction {
             $time = LanguageDateTime::now();
         }
 
-        if (isset($value[1])) {
-
-            return $time->showDate($value[1]);
-        }
-
-        return $time->showDate();
+        return $time->showTimeline();
     }
 
 }
