@@ -29,7 +29,7 @@
                         });
                     </script>
                 </td>
-                <td>{if $switchPoint->getLastExecute()|datetime != '01.01.2000'}{$switchPoint->getLastExecute()|datetime}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}</td>
+                <td>{if $switchPoint->getLastExecute()|datetime != '01.01.2000'}{$switchPoint->getLastExecute()|timeline}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}</td>
                 <td>
                     {editlink link='index.php?app=shc&ajax=editswitchpointform&id=' id=$switchPoint->getId()}
                     {deletelink link='index.php?app=shc&ajax=deleteswitchpoint&id=' id=$switchPoint->getId() prompt='acp.switchpointsManagment.prompt.deleteSwitchPoint' title='acp.switchpointsManagment.prompt.deleteSwitchPoint.title'}
