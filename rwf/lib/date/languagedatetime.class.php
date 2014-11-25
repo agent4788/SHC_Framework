@@ -144,82 +144,158 @@ class LanguageDateTime extends DateTime {
      * @return String
      */
     public function showDate($format = '', $withDayNames = true) {
-        
+
         //Standard Format falls nicht uebergeben
         if($format == '') {
-            
+
             $format = RWF::getSetting('rwf.date.defaultDateFormat');
         }
 
         //Datum Formatieren
         if($withDayNames == true) {
-            
-            $diff = $this->DiffDaysFromToday();
-            
-            if($diff > 14) {
-                
+
+            $timeDiff = self::now()->diff($this);
+
+            if($timeDiff->invert == 0 && $timeDiff->d > 14) {
+
                 return $this->format($format);
-            } elseif($diff > 1 && $diff <= 14) {
-                
-                return RWF::getLanguage()->get('global.date.nextDays', abs($diff));
-            } elseif($diff == 1) {
-                
+            } elseif($timeDiff->invert == 0 && $timeDiff->d > 1 && $timeDiff->d <= 14) {
+
+                return RWF::getLanguage()->get('global.date.nextDays', $timeDiff->d);
+            } elseif($timeDiff->invert == 0 && $timeDiff->d == 1) {
+
                 return RWF::getLanguage()->val('global.date.tomorrow');
-            } elseif($diff == 0) {
+            } elseif($timeDiff->d == 0) {
 
-                //Zeitdifferenz ermitteln
-                $timeDiff = self::now()->diff($this);
-                $time = '';
-                if($timeDiff->h > 0) {
-
-                    //mehr als eine Stunde
-                    if($timeDiff->h == 1) {
-
-                        $time = RWF::getLanguage()->get('global.date.oneHour');
-                    } else {
-
-                        $time = RWF::getLanguage()->get('global.date.viewHours', $timeDiff->h);
-                    }
-                } elseif($timeDiff->i > 0) {
-
-                    //mehr als eine Minute
-                    if($timeDiff->i == 1) {
-
-                        $time = RWF::getLanguage()->get('global.date.oneMinute');
-                    } else {
-
-                        $time = RWF::getLanguage()->get('global.date.viewMinutes', $timeDiff->i);
-                    }
-                } elseif($timeDiff->s > 0) {
-
-                    //Sekunden
-                    if($timeDiff->s == 1) {
-
-                        $time = RWF::getLanguage()->get('global.date.oneSecond');
-                    } else {
-
-                        $time = RWF::getLanguage()->get('global.date.viewSeconds', $timeDiff->s);
-                    }
-                }
-
-                if($timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
+                if($timeDiff->invert == 1 && $timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
 
                     return RWF::getLanguage()->val('global.date.yesterday');
+                } elseif($timeDiff->invert == 0 && $timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
+
+                    return RWF::getLanguage()->val('global.date.tomorrow');
                 }
-                return $time;
-            } elseif($diff == -1) {
-                
+                return RWF::getLanguage()->val('global.date.totay');
+            } elseif($timeDiff->invert == 1 && $timeDiff->d == 1) {
+
                 return RWF::getLanguage()->val('global.date.yesterday');
-            } elseif($diff < -1 && $diff >= -14) {
-                
-                return RWF::getLanguage()->get('global.date.previousDays', abs($diff));
+            } elseif($timeDiff->invert == 1 && $timeDiff->d < -1 && $timeDiff->d >= 14) {
+
+                return RWF::getLanguage()->get('global.date.yesterday', $timeDiff->d);
             } else {
-                
+
                 return $this->format($format);
             }
         } else {
-            
+
             return $this->format($format);
+        }
+    }
+
+    /**
+     * formatiert ein Datum zur Anzeige
+     *
+     * @return String
+     */
+    public function showTimeline() {
+
+        $format = RWF::getSetting('rwf.date.defaultDateFormat') .' '. RWF::getSetting('rwf.date.defaultTimeFormat');
+
+        $timeDiff = self::now()->diff($this);
+        if($timeDiff->invert == 0 && $timeDiff->d > 14) {
+
+            return $this->format($format);
+        } elseif($timeDiff->invert == 0 && $timeDiff->d > 1 && $timeDiff->d <= 14) {
+
+            return RWF::getLanguage()->get('global.date.nextDays', $timeDiff->d);
+        } elseif($timeDiff->invert == 0 && $timeDiff->d == 1) {
+
+            return RWF::getLanguage()->val('global.date.tomorrow') .' '. $this->format(RWF::getSetting('rwf.date.defaultTimeFormat'));
+        } elseif($timeDiff->d == 0) {
+
+            //Zeitdifferenz ermitteln
+            $time = '';
+            if($timeDiff->invert == 1 && $timeDiff->h > 0) {
+
+                //mehr als eine Stunde
+                if($timeDiff->h == 1) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneHourAgo');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewHoursAgo', $timeDiff->h);
+                }
+            } elseif($timeDiff->invert == 1 && $timeDiff->i > 0) {
+
+                //mehr als eine Minute
+                if($timeDiff->i == 1) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneMinuteAgo');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewMinutesAgo', $timeDiff->i);
+                }
+            } elseif($timeDiff->invert == 1 && $timeDiff->s > 0) {
+
+                //Sekunden
+                if($timeDiff->s == 1) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneSecondAgo');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewSecondsAgo', $timeDiff->s);
+                }
+            } elseif($timeDiff->invert == 0 && $timeDiff->h > 0) {
+
+                //mehr als eine Stunde
+                if($timeDiff->h == 1) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneHour');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewHours', $timeDiff->h);
+                }
+            } elseif($timeDiff->invert == 0 && $timeDiff->i > 0) {
+
+                //mehr als eine Minute
+                if($timeDiff->i == 1) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneMinute');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewMinutes', $timeDiff->i);
+                }
+            } elseif($timeDiff->invert == 0 && $timeDiff->s > 0) {
+
+                //Sekunden
+                if($timeDiff->s == 0) {
+
+                    $time = RWF::getLanguage()->get('global.date.oneSecond');
+                } else {
+
+                    $time = RWF::getLanguage()->get('global.date.viewSeconds', $timeDiff->s);
+                }
+            } elseif($timeDiff->s == 0 && $timeDiff->i == 0 && $timeDiff->h == 0) {
+
+                $time = RWF::getLanguage()->get('global.date.now');
+            }
+
+            if($timeDiff->invert == 1 && $timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
+
+                return RWF::getLanguage()->val('global.date.yesterday') .' '. $this->format(RWF::getSetting('rwf.date.defaultTimeFormat'));
+            } elseif($timeDiff->invert == 0 && $timeDiff->d < 1 && self::now()->format('d') != $this->format('d')) {
+
+                return RWF::getLanguage()->val('global.date.tomorrow') .' '. $this->format(RWF::getSetting('rwf.date.defaultTimeFormat'));
+            }
+            return $time;
+        } elseif($timeDiff->invert == 1 && $timeDiff->d == 1) {
+
+            return RWF::getLanguage()->val('global.date.yesterday') .' '. $this->format(RWF::getSetting('rwf.date.defaultTimeFormat'));
+        } elseif($timeDiff->invert == 1 && $timeDiff->d < -1 && $timeDiff->d >= 14) {
+
+            return RWF::getLanguage()->get('global.date.previousDays', $timeDiff->d);
+        } else {
+
+           return $this->format($format);
         }
     }
     
