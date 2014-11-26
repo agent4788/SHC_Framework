@@ -91,6 +91,21 @@ interface Event {
      * @return Array 
      */
     public function getData();
+
+    /**
+     * gibt den Objektstatus zurueck
+     *
+     * @return Array
+     */
+    public function getState();
+
+    /**
+     * setzt den Objektstatus
+     *
+     * @param array $state
+     * @return \SHC\Event\Event
+     */
+    public function setState(array $state);
     
     /**
      * Aktiviert/Deaktiviert das Ereignis

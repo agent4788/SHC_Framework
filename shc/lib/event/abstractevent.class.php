@@ -3,6 +3,7 @@
 namespace SHC\Event;
 
 //Imports
+use SHC\Command\CommandSheduler;
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
 use SHC\Switchable\Switchable;
@@ -66,6 +67,13 @@ abstract class AbstractEvent implements Event {
      * @var Array
      */
     protected $switchables = array();
+
+    /**
+     * Status
+     *
+     * @var Array
+     */
+    protected $state = array();
     
     /**
      * @param Integer $id      ID
@@ -168,7 +176,29 @@ abstract class AbstractEvent implements Event {
         
         return $this->data;
     }
-    
+
+    /**
+     * gibt den Objektstatus zurueck
+     *
+     * @return Array
+     */
+    public function getState() {
+
+        return $this->state;
+    }
+
+    /**
+     * setzt den Objektstatus
+     *
+     * @param array $state
+     * @return \SHC\Event\Event
+     */
+    public function setState(array $state) {
+
+        $this->state = $state;
+        return $this;
+    }
+
     /**
      * Aktiviert/Deaktiviert das Ereignis
      * 
@@ -312,6 +342,13 @@ abstract class AbstractEvent implements Event {
 
                 $object->switchOff();
             }
+        }
+
+        //Befehle senden
+        try {
+            CommandSheduler::getInstance()->sendCommands();
+        } catch(\Exception $e) {
+            RWF::getResponse()->writeLnColored('Fehler beim Senden : '. $e->getMessage() .' - '. $e->getCode(), 'red');
         }
     }
 

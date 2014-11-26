@@ -22,13 +22,6 @@ use RWF\Date\DateTime;
 class TemperatureClimbOver extends AbstractEvent {
 
     /**
-     * Status
-     *
-     * @var Array
-     */
-    protected $state = array();
-
-    /**
      * gibt an ob das Ereigniss erfuellt ist
      *
      * @return Boolean

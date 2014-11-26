@@ -20,13 +20,6 @@ use RWF\Date\DateTime;
 class HumidityClimbOver extends AbstractEvent {
 
     /**
-     * Status
-     *
-     * @var Array
-     */
-    protected $state = array();
-
-    /**
      * gibt an ob das Ereigniss erfuellt ist
      *
      * @return Boolean
