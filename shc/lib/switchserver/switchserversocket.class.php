@@ -109,12 +109,13 @@ class SwitchServerSocket {
                 }
 
                 //Anfragen bearbeiten
+                $sendRequests = array();
                 foreach ($requests as $request) {
 
                     if ($senderActive && isset($request['type']) && $request['type'] == 'radiosocket') {
 
                         //Funksteckdosen schalten
-                        $this->send433MHzCommand($request);
+                        $sendRequests[] = $request;
                     } elseif ($writeGPIO && isset($request['type']) && $request['type'] == 'gpiooutput') {
 
                         //GPIO schreiben
@@ -139,6 +140,13 @@ class SwitchServerSocket {
                     }
                 }
 
+                //433MHz Signale senden
+                if(count($sendRequests) > 0) {
+
+
+                    $this->send433MHzCommand($sendRequests);
+                }
+
                 //Status LED aus
                 if ($sendGpio >= 0) {
 
@@ -154,41 +162,96 @@ class SwitchServerSocket {
     /**
      * sendet einen 433MHz Befehl
      * 
-     * @param Array   $request Anfrage
+     * @param Array $request Liste mit allen Anfragen
      */
-    protected function send433MHzCommand(array $request) {
+    protected function send433MHzCommand(array $requests) {
 
         $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
         $rcSendPath = RWF::getSetting('shc.switchServer.rcswitchPiCommand');
-        $firstContunue = true;
-        for($i = 0; $i < $request['continuous']; $i++) {
 
-            if($firstContunue === false) {
+        //Anfragen solange durchlaufen bis auch alle mehrfach gesendeten Befehle versndet sind
+        $requestData = array();
+        $firstRun = true;
+        while(true) {
 
-                //1s Wartezeit zwichen den Sendevorgaengen
-                sleep(1);
+            //pruefen ob alle Anfragen abgearbeitet
+            if($firstRun === false) {
+
+                $successfull = true;
+                foreach ($requestData as $reqData) {
+
+                    if ($reqData['continuous'] > 0) {
+
+                        $successfull = false;
+                    }
+                }
+                if ($successfull === true) {
+
+                    //alle Befehle gesendet
+                    return;
+                }
             }
 
-            if($request['protocol'] == 'elro_rc') {
+            //Alle Anfragen durchlaufen
+            for($i = 0; $i < count($requests); $i++) {
 
-                @shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
-            }  else {
+                //geloeschten Index ueberspringen
+                if(!isset($requests[$i])) {
 
-                @shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+                    continue;
+                }
+                $request = $requests[$i];
+                $firstRun = false;
+
+                //Pruefen ob weitere Sendevorgaenge anstehen
+                if (isset($requestData[$i]['continuous']) && $requestData[$i]['continuous'] > 0 || !isset($requestData[$i]['continuous'])) {
+
+                    //Wartezeit falls notwendig
+                    if(isset($requestData[$i]['time'])) {
+
+                        $timeDiff = microtime(true) - $requestData[$i]['time'];
+                        if($timeDiff < 1000) {
+
+                            //min 1s Wartezeit zwischen 2 sende Befehlen
+                            usleep($timeDiff * 1000);
+                        }
+                    } else {
+
+                        //Erster durchlauf -> Daten anlegen
+                        $requestData[$i]['continuous'] = $request['continuous'];
+                        $requestData[$i]['time'] = 0.0;
+                    }
+
+                    if ($request['protocol'] == 'elro_rc') {
+
+                        shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
+                        //Debug ausgabe
+                        if ($this->debug) {
+
+                            $this->response->writeLnColored('sudo ' . $rcSendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'), 'light_blue');
+                        }
+                    } else {
+
+                        usleep(1000000); //100ms Wartezeit vor pilight-send Befehlen
+                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+                        usleep(1000000); //100ms Wartezeit nach pilight-send Befehlen
+                        //Debug ausgabe
+                        if ($this->debug) {
+
+                            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                        }
+                    }
+
+                    //Decrement
+                    $requestData[$i]['continuous']--;
+                    $requestData[$i]['time'] = microtime(true);
+                } else {
+
+                    unset($requests[$i]);
+                }
+
             }
-            $firstContunue = false;
-        }
 
-        //Debug ausgabe
-        if ($this->debug) {
-
-            if($request['protocol'] == 'elro_rc') {
-
-                $this->response->writeLnColored('sudo ' . $rcSendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
-            }  else {
-
-                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f') . ' ' . $request['continuous'] . ' mal gesendet' , 'light_blue');
-            }
         }
     }
 
