@@ -20,13 +20,6 @@ use RWF\Date\DateTime;
 class UserComesHome extends AbstractEvent {
     
     /**
-     * Status
-     * 
-     * @var Array 
-     */
-    protected $state = array();
-    
-    /**
      * gibt an ob das Ereigniss erfuellt ist
      * 
      * @return Boolean
@@ -66,9 +59,9 @@ class UserComesHome extends AbstractEvent {
 
             /* @var $userAtHome \SHC\UserAtHome\UseratHome */
             if(in_array($userAtHome->getId(), $this->data['users'])) {
-                
+
                 if(isset($this->state[$userAtHome->getId()])) {
-                    
+
                     //Status bekannt und unveraendert
                     if($this->state[$userAtHome->getId()] != $userAtHome->getState() && $userAtHome->getState() == UserAtHome::STATE_ONLINE) {
                         
@@ -81,7 +74,7 @@ class UserComesHome extends AbstractEvent {
                         $this->state[$userAtHome->getId()] = $userAtHome->getState();
                     }
                 } else {
-                    
+
                     //Status unbekannt -> Speichern
                     $this->state[$userAtHome->getId()] = $userAtHome->getState();
                 }

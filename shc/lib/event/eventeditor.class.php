@@ -154,6 +154,10 @@ class EventEditor {
 
         $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
 
+        //Daten Vorbereiten
+        $oldEvents = $this->events;
+        $this->events = array();
+
         //Daten einlesen
         foreach ($xml->event as $event) {
 
@@ -198,6 +202,11 @@ class EventEditor {
                 }
             }
 
+            //Objekt status vom alten Objekt ins neue übertragen
+            if(isset($oldEvents[(int) $event->id])) {
+
+                $eventObj->setState($oldEvents[(int) $event->id]->getState());
+            }
             $this->events[(int) $event->id] = $eventObj;
         }
     }
