@@ -154,7 +154,7 @@ class RadioSocket extends AbstractSwitchable {
      * @return Boolean
      */
     public function switchOn() {
-        
+
         CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_ON, $this->continuous));
         $this->state = self::STATE_ON;
         $this->stateModified = true;
@@ -166,7 +166,7 @@ class RadioSocket extends AbstractSwitchable {
      * @return Boolean
      */
     public function switchOff() {
-        
+
         CommandSheduler::getInstance()->addCommand(new RadioSocketCommand($this->protocol, $this->systemCode, $this->deviceCode, RadioSocketCommand::SWITCH_OFF, $this->continuous));
         $this->state = self::STATE_OFF;
         $this->stateModified = true;
