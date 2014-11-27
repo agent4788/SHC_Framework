@@ -121,6 +121,9 @@ class CommandSheduler {
                 $command->executed();
             }
 
+            //Kommandos loeschen
+            $this->commands = array();
+
             //Daten zum versenden aufbereiten
             $data = json_encode($request);
             $data = base64_encode($data);
