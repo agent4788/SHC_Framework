@@ -33,13 +33,18 @@ class Error {
 
     /**
      * Fehlerbehandlung initialisieren
+     *
+     * @param Boolean $initAsErrorHandler sich selbst fuer die Fehlerbehandlung anmelden
      */
-    public function __construct() {
+    public function __construct($initAsErrorHandler = true) {
 
         //Fehlerfunktionen registrieren
-        set_error_handler(array(&$this, 'handlePhpError'));
-        set_exception_handler(array(&$this, 'handleException'));
-        libxml_use_internal_errors(true);
+        if($initAsErrorHandler == true) {
+
+            set_error_handler(array(&$this, 'handlePhpError'));
+            set_exception_handler(array(&$this, 'handleException'));
+            libxml_use_internal_errors(true);
+        }
     }
 
     /**
@@ -79,8 +84,9 @@ class Error {
      * @param String  $message
      * @param String  $file
      * @param Integer $line
+     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    public function handlePhpError($type, $message, $file, $line) {
+    public function handlePhpError($type, $message, $file, $line, $logFile = 'error.log') {
 
         //Fehler mit vorrangestelltem @ ignorieren
         if (ini_get('error_reporting') == 0) {
@@ -213,7 +219,7 @@ class Error {
         //Loggen
         if ($this->logErrors === true) {
 
-            $this->logError('error.log', $errorName, $file, $line, $message, $type, $trace);
+            $this->logError($logFile, $errorName, $file, $line, $message, $type, $trace);
         }
 
         //Bearbeitung abbrechen
@@ -224,8 +230,9 @@ class Error {
      * Ausnahmen behandeln
      * 
      * @param Exception $e
+     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    public function handleException(\Exception $e) {
+    public function handleException(\Exception $e, $logFile = 'exception.log') {
 
         //XML Fehler
         if ($e instanceof XmlException) {
@@ -332,7 +339,7 @@ class Error {
         //Loggen
         if ($this->logErrors) {
 
-            $this->logError('exception.log', 'System Exception', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('Klasse' => get_class($e)));
+            $this->logError($logFile, 'System Exception', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('Klasse' => get_class($e)));
         }
 
         exit(1);
@@ -342,11 +349,13 @@ class Error {
      * Ausnahmen behandeln
      * 
      * @param Exception $e
+     * @param Boolean   $logOnly nur Log Eintrag erzeugen
+     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    public function handleXMLException(XMLException $e) {
+    public function handleXMLException(XMLException $e, $logOnly = false, $logFile = 'xml.log') {
 
         //Anzeigen
-        if ($this->displayErrors) {
+        if ($this->displayErrors && $logOnly == false) {
 
             //Hilfsvariablen vorbereiten
             $file = str_replace(PATH_RWF, '', $e->getFile());
@@ -470,13 +479,13 @@ class Error {
 
                 echo utf8_encode($html);
             }
-        } else {
+        } elseif($logOnly == false) {
 
             $this->displayDefaultError();
         }
 
         //Loggen
-        if ($this->logErrors) {
+        if ($this->logErrors || $logOnly == true) {
 
             $first = true;
             $data = '';
@@ -498,18 +507,22 @@ class Error {
                 }
             }
 
-            $this->logError('xml.log', 'XML Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('XML Fehler' => $data));
+            $this->logError($logFile, 'XML Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('XML Fehler' => $data));
         }
 
-        exit(1);
+        if($logOnly == false) {
+
+            exit(1);
+        }
     }
     
     /**
      * behandelt alle Fehler vom ClassLoader
      * 
      * @param \RWF\ClassLoader\Exception\ClassNotFoundException $e
+     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    protected function handelClassNotFoundException(ClassNotFoundException $e) {
+    protected function handelClassNotFoundException(ClassNotFoundException $e, $logFile = 'exception.log') {
         
         //Anzeigen
         if ($this->displayErrors) {
@@ -603,7 +616,7 @@ class Error {
         //Loggen
         if ($this->logErrors) {
 
-            $this->logError('exception.log', 'Autoload Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('Klasse' => $e->getClass()));
+            $this->logError($logFile, 'Autoload Fehler', $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), $e->getTrace(), array('Klasse' => $e->getClass()));
         }
 
         exit(1);

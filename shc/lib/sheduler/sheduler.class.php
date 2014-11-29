@@ -3,7 +3,10 @@
 namespace SHC\Sheduler;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Date\DateTime;
+use RWF\Error\Error;
+use RWF\XML\Exception\XmlException;
 
 /**
  * fuehrt Nacheinander alle Aufgaben (Tasks) aus
@@ -84,7 +87,18 @@ class Sheduler {
             foreach($objects as $task) {
                 
                 /* @var $task \SHC\Sheduler\Task */
-                $task->execute();
+                try {
+
+                    $task->execute();
+                } catch(XmlException $e) {
+
+                    //Ausgabe auf Kommandozeile
+                    RWF::getResponse()->writeLnColored($e->getCode() .': '. $e->getMessage(), 'red');
+                    //Log Eintrag erzeugen
+                    $error = new Error(false);
+                    $error->handleXMLException($e, true, 'shedulerXmlError.log');
+                    continue;
+                }
             }
         }
 
