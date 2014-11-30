@@ -98,6 +98,7 @@ class AddSwitchPointFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.error'));
                     }
                 }
+                $tpl->assign('message', $message);
             } elseif ($switchPointForm instanceof ExtendetSwitchPointForm) {
 
                 //Erweitertes Formular Speichern
