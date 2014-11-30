@@ -247,7 +247,7 @@ class SwitchServerSocket {
                         }
 
                         usleep(1000000); //100ms Wartezeit vor pilight-send Befehlen
-                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
                         usleep(1000000); //100ms Wartezeit nach pilight-send Befehlen
                         //Debug ausgabe
                         if ($this->debug) {
