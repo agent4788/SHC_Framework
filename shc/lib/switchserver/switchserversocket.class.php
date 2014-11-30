@@ -232,8 +232,22 @@ class SwitchServerSocket {
                         }
                     } else {
 
+                        //Binaerzahl in Dezimalzahl unrechnen
+                        if(preg_match('#^[01]{5}$#', $request['systemCode'])) {
+
+                            $systemCode = 0;
+                            for($i=0; $i < strlen($request['systemCode']); $i++) {
+
+                                $bin_tmp = substr($request['systemCode'], $i, 1);
+                                $systemCode += $bin_tmp * (pow(2, $i));
+                            }
+                        } else {
+
+                            $systemCode = $request['systemCode'];
+                        }
+
                         usleep(1000000); //100ms Wartezeit vor pilight-send Befehlen
-                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
+                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '-t' : '-f'));
                         usleep(1000000); //100ms Wartezeit nach pilight-send Befehlen
                         //Debug ausgabe
                         if ($this->debug) {
