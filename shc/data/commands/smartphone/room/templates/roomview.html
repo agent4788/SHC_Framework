@@ -32,7 +32,6 @@
             </div>
         </div>
         <script type="text/javascript">
-            $(function() {
 
                 if (!!window.EventSource) {
 
@@ -149,9 +148,85 @@
 
                 } else {
 
-                    // Browser unterstuetzt kein SSE
+                    function sync() {
+
+                        // Browser unterstuetzt kein SSE -> Ajax Fallback
+                        $.getJSON(
+                                "index.php?app=shc&a&ajax=roomsync&id={$room->getId()}&hash=" + Math.floor(Math.random() * 11),
+                                function (data) {
+                                    if (data.success == true) {
+
+                                        //schaltbare Elemente Sychronisieren
+                                        $.each(data.switchables, function (index, value) {
+
+                                            if(value == 1) {
+
+                                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                            } else {
+
+                                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                            }
+                                        });
+
+                                        //Wake on Lan Sychronisieren
+                                        $.each(data.wol, function (index, value) {
+
+                                            if(value == 1) {
+
+                                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
+                                            } else {
+
+                                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-arrow-r ui-btn-b').addClass('ui-icon-power ui-btn-c');
+                                            }
+                                        });
+
+                                        //lesbare Elemente Sychronisieren
+                                        $.each(data.readables, function (index, value) {
+
+                                            if(value == 1) {
+
+                                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-delete').addClass('ui-icon-check');
+                                            } else {
+
+                                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-check').addClass('ui-icon-delete');
+                                            }
+                                        });
+
+                                        //DS18x20 Sensoren
+                                        $.each(data.ds18x20, function (index, value) {
+
+                                            $('#shc-view-sensor-ds18x20-'+ index +'-temp').text(value.temp);
+                                        });
+
+                                        //DHT Sensoren
+                                        $.each(data.dht, function (index, value) {
+
+                                            $('#shc-view-sensor-dht-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-dht-'+ index +'-hum').text(value.hum);
+                                        });
+
+                                        //BMP Sensoren
+                                        $.each(data.bmp, function (index, value) {
+
+                                            $('#shc-view-sensor-bmp-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-bmp-'+ index +'-press').text(value.press);
+                                            $('#shc-view-sensor-bmp-'+ index +'-alti').text(value.alti);
+                                        });
+
+                                        //Analog Sensoren
+                                        $.each(data.analog, function (index, value) {
+
+                                            $('#shc-view-sensor-analog-'+ index +'-value').text(value.value);
+                                        });
+                                    }
+                                }
+                        );
+                        setTimeout("sync()", 5000);
+                    }
+                    sync();
                 }
-            });
         </script>
     </body>
 </html>
