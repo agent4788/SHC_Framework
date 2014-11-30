@@ -171,6 +171,19 @@ class Settings {
                         $this->chanched = true;
                         $this->saved = false;
                         return true;
+                    case 'float':
+
+                        if ((float) $value == $value) {
+
+                            $attributes->value = (float) $value;
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
                 }
             }
         }
