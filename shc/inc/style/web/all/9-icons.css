@@ -1,0 +1,198 @@
+/* Sensoren Icons */
+
+span.shc-icon-ds18x20 {
+    background-image: url(../../../img/sensor/ds18x20.png);
+}
+
+span.shc-icon-dht {
+    background-image: url(../../../img/sensor/dht.png);
+}
+
+span.shc-icon-bmp {
+    background-image: url(../../../img/sensor/bmp.png);
+}
+
+span.shc-icon-rain {
+    background-image: url(../../../img/sensor/rain.png);
+}
+
+span.shc-icon-hygrometer {
+    background-image: url(../../../img/sensor/hygrometer.png);
+}
+
+span.shc-icon-ldr {
+    background-image: url(../../../img/sensor/ldr.png);
+}
+
+/* Icons fuer Schaltbare Elemente */
+
+span.shc-icon-chip {
+    background-image: url(../../../img/switchables/chip.png);
+}
+
+span.shc-icon-countdown {
+    background-image: url(../../../img/switchables/countdown.png);
+}
+
+span.shc-icon-lamp {
+    background-image: url(../../../img/switchables/lamp.png);
+}
+
+span.shc-icon-socket {
+    background-image: url(../../../img/switchables/socket.png);
+}
+
+span.shc-icon-offline {
+    background-image: url(../../../img/switchables/wol_state_offline.png);
+}
+
+span.shc-icon-online {
+    background-image: url(../../../img/switchables/wol_state_online.png);
+}
+
+span.shc-icon-waterBoiler {
+    background-image: url(../../../img/switchables/waterBoiler.png);
+}
+
+span.shc-icon-coffee {
+    background-image: url(../../../img/switchables/coffee.png);
+}
+
+span.shc-icon-clock {
+    background-image: url(../../../img/switchables/clock.png);
+}
+
+span.shc-icon-flashlight {
+    background-image: url(../../../img/switchables/flashlight.png);
+}
+
+span.shc-icon-power {
+    background-image: url(../../../img/switchables/power.png);
+}
+
+span.shc-icon-rhythmbox {
+    background-image: url(../../../img/switchables/rhythmbox.png);
+}
+
+span.shc-icon-monitor {
+    background-image: url(../../../img/switchables/monitor.png);
+}
+
+span.shc-icon-tv {
+    background-image: url(../../../img/switchables/tv.png);
+}
+
+span.shc-icon-nas {
+    background-image: url(../../../img/switchables/nas.png);
+}
+
+span.shc-icon-printer {
+    background-image: url(../../../img/switchables/printer.png);
+}
+
+span.shc-icon-christmasTree {
+    background-image: url(../../../img/switchables/christmasTree.png);
+}
+
+span.shc-icon-candles {
+    background-image: url(../../../img/switchables/candles.png);
+}
+
+span.shc-icon-christmasLights {
+    background-image: url(../../../img/switchables/christmasLights.png);
+}
+
+span.shc-icon-star {
+    background-image: url(../../../img/switchables/star.png);
+}
+
+/* Status Icons */
+span.shc-icon-high {
+    display: inline-block;
+    width: 48px;
+    heigt: 48px;
+    border: #006907 solid 1px;
+    background-color: #006907;;
+    border-radius: 24px;
+}
+
+span.shc-icon-low {
+    display: inline-block;
+    width: 48px;
+    heigt: 48px;
+    border: #d00101 solid 1px;
+    background-color: #d00101;;
+    border-radius: 24px;
+}
+
+/* ACP Menue Icons */
+span#shc-view-acp-menu-usermanagement {
+    background-image: url(../../../img/acpmenue/usermanagement.png);
+}
+
+span#shc-view-acp-menu-settings {
+    background-image: url(../../../img/acpmenue/settings.png);
+}
+
+span#shc-view-acp-menu-backup {
+    background-image: url(../../../img/acpmenue/backup.png);
+}
+
+span#shc-view-acp-menu-rooms {
+    background-image: url(../../../img/acpmenue/rooms.png);
+}
+
+span#shc-view-acp-menu-switchfunctions {
+    background-image: url(../../../img/acpmenue/switchfunctions.png);
+}
+
+span#shc-view-acp-menu-sensorpoints {
+    background-image: url(../../../img/acpmenue/sensorpoints.png);
+}
+
+span#shc-view-acp-menu-usersathome {
+    background-image: url(../../../img/acpmenue/usersathome.png);
+}
+
+span#shc-view-acp-menu-conditions {
+    background-image: url(../../../img/acpmenue/conditions.png);
+}
+
+span#shc-view-acp-menu-switchpoints {
+    background-image: url(../../../img/acpmenue/switchpoints.png);
+}
+
+span#shc-view-acp-menu-events {
+    background-image: url(../../../img/acpmenue/events.png);
+}
+
+span#shc-view-acp-menu-serverstate {
+    background-image: url(../../../img/acpmenue/serserstate.png);
+}
+
+span#shc-view-acp-menu-switchservers {
+    background-image: url(../../../img/acpmenue/switchservers.png);
+}
+
+span#shc-view-acp-menu-info {
+    background-image: url(../../../img/acpmenue/info.png);
+}
+
+/* einfache Icons */
+.shc-view-acp-simpleIcon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.shc-view-acp-simpleIcon-run {
+    background: url(../../../img/buttons/run.png) no-repeat;
+}
+
+.shc-view-acp-simpleIcon-stop {
+    background: url(../../../img/buttons/stop.png) no-repeat;
+}
+
+.shc-view-acp-simpleIcon-notActive {
+    background: url(../../../img/buttons/not_active.png) no-repeat;
+}

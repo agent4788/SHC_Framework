@@ -1,0 +1,31 @@
+{* Raum bearbeiten Formular *}
+<div>
+    {if $roomForm|isset}
+    <div class="shc-view-content">
+        {$roomForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listrooms"}
+            {resetbutton form="#shc-view-form-editRoom"}
+            {submitbutton form="#shc-view-form-editRoom" action="index.php?app=shc&ajax=editroomform" id=$room->getId()}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listrooms"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.roomManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

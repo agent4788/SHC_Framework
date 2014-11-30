@@ -1,0 +1,38 @@
+{* Liste aller Backups *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width:890%;">{lang var="acp.backupsManagement.backupList.table.head.name"}</th>
+                <th style="width: 10%;">{lang var="acp.backupsManagement.backupList.table.head.size"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$backupList item='backup'}
+            <tr>
+                <td><a href="index.php?app=shc&ajax=loadbackup&id={$backup->getHash()}">{#$backup->getFileName()}</a></td>
+                <td>{$backup->getSize()|filesizebinary}</td>
+                <td>
+                    {deletelink link='index.php?app=shc&ajax=deletebackup&id=' id=$backup->getHash() prompt='acp.backupsManagement.prompt.deleteBackup' title='acp.backupsManagement.prompt.deleteBackup.title'}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+            {acpbutton link="index.php?app=shc&ajax=makebackup" text="acp.backupsManagement.button.makeBackup"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.backupsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

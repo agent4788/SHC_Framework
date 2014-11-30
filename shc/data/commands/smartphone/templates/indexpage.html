@@ -1,0 +1,101 @@
+{* mobile Startseite *}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+    <div data-role="page" id="home">
+        {include file='mobileHeadlineIndex.html'}
+        <div data-role="content">
+            {premission premission='shc.acp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
+            <ul data-role="listview" data-theme="c" data-divider-theme="a" data-inset="true" id="whoIsAtHomeList"></ul>
+            <script type="text/javascript">
+
+                function updateWhoIsAtHome() {
+
+                    $.getJSON(
+                            "index.php?m&app=shc&ajax=userathomeupdate&hash=" + Math.floor(Math.random() * 11),
+                            function(data) {
+
+                                if (data.success == true) {
+
+                                    //Wer ist Online Daten erneuern
+                                    $('#whoIsAtHomeList').html(data.data).listview("refresh");
+                                } else {
+
+                                    //Fehlermeldung
+                                    $('#errorMessage').text(data.message);
+                                    $.mobile.changePage("#errorDialog", { role: "dialog" });
+                                }
+                            }
+                    );
+
+                    setTimeout("updateWhoIsAtHome()", 15000);
+                }
+                updateWhoIsAtHome();
+            </script>
+            {/premission}
+            <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                <li data-role="list-divider" role="heading">{lang var='index.room.title'}</li>
+                {foreach from=$roomList item='room'}
+                {if $room->isUserEntitled($user) == true && $room->isEnabled() == true}
+                <li data-theme="c">
+                    <a href="index.php?app=shc&m&page=showroom&id={$room->getId()}" data-transition="slide">
+                        {#$room->getName()}
+                    </a>
+                </li>
+                {/if}
+                {/foreach}
+            </ul>
+            {if $user->checkPremission('') || $user->checkPremission('')}
+            <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                <li data-role="list-divider" role="heading">{lang var='index.specialFunctions'}</li>
+                {premission premission='shc.ucp.reboot'}
+                <li data-theme="c">
+                    <a href="#securityDialogReboot" data-rel="dialog">
+                        {lang var='global.button.reboot'}
+                    </a>
+                </li>
+                {/premission}
+                {premission premission='shc.ucp.shutdown'}
+                <li data-theme="c">
+                    <a href="#securityDialogShutdown" data-rel="dialog">
+                        {lang var='global.button.shutdown'}
+                    </a>
+                </li>
+                {/premission}
+            </ul>
+            {/if}
+        </div>
+    </div>
+    {premission premission='shc.ucp.reboot'}
+    <!-- Sicherheitsabfrage Neustart Dialog -->
+    <div data-role="page" id="securityDialogReboot">
+        <div data-role="header">
+            <h2>{lang var="global.prompt.reboot.title"}</h2>
+        </div>
+        <div data-role="content">
+            {lang var='global.prompt.reboot.text'}
+            <a href="index.php?m&shc=app&action=reboot" data-role="button" data-theme="b">{lang var="global.yes"}</a>
+            <a href="#home" data-role="button">{lang var="global.no"}</a>
+        </div>
+    </div>
+    {/premission}
+    {premission premission='shc.ucp.shutdown'}
+    <!-- Sicherheitsabfrage Neustart Dialog -->
+    <div data-role="page" id="securityDialogShutdown">
+        <div data-role="header">
+            <h2>{lang var="global.prompt.shutdown.title"}</h2>
+        </div>
+        <div data-role="content">
+            {lang var='global.prompt.shutdown.text'}
+            <a href="index.php?m&shc=app&action=shutdown" data-role="button" data-theme="b">{lang var="global.yes"}</a>
+            <a href="#home" data-role="button">{lang var="global.no"}</a>
+        </div>
+    </div>
+    {/premission}
+    </body>
+</html>

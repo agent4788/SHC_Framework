@@ -1,0 +1,18 @@
+{* Backup erstellen *}
+<div>
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listbackups"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.backupsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

@@ -1,0 +1,40 @@
+{* Liste aller Sensorpunkte *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width: 60%;">{lang var="acp.sensorpointsManagement.roomList.table.head.name"}</th>
+                <th style="width: 15%;">{lang var="acp.sensorpointsManagement.roomList.table.head.lastConnect"}</th>
+                <th style="width: 15%;">{lang var="acp.sensorpointsManagement.roomList.table.head.voltage"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$sensorPointsList item='sensorPoint'}
+            <tr>
+                <td>{#$sensorPoint->getName()}</td>
+                <td>{$sensorPoint->getTime()|timeline}</td>
+                <td>{@$sensorPoint->getVoltage()}V</td>
+                <td>
+                    {editlink link='index.php?app=shc&ajax=editsensorpointform&id=' id=$sensorPoint->getId()}
+                    {deletelink link='index.php?app=shc&ajax=deletesensorpoint&id=' id=$sensorPoint->getId() prompt='acp.sensorpointsManagement.prompt.deleteSensorPoint' title='acp.sensorpointsManagement.prompt.deleteSensorPoint.title'}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.sensorpointsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

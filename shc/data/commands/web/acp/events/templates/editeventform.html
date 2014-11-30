@@ -1,0 +1,30 @@
+<div>
+    {if $eventForm|isset}
+    <div class="shc-view-content">
+        {$eventForm->showForm()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
+            {resetbutton form="#shc-view-form-editEvent"}
+            {submitbutton form="#shc-view-form-editEvent" action="index.php?app=shc&ajax=editeventform" id=$event->getId()}
+        </div>
+    </div>
+    {elseif $message|isset}
+    <div class="shc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>

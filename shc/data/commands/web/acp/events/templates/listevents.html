@@ -1,0 +1,53 @@
+{* Liste aller Ereignisse *}
+<div>
+    <div class="shc-view-content">
+        <table class="shc-view-contentTable">
+            <thead>
+            <tr>
+                <th style="width: 70%;">{lang var="acp.eventsManagement.eventList.table.head.name"}</th>
+                <th style="width: 20%;">{lang var="acp.eventsManagement.eventList.table.head.type"}</th>
+                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$eventList item='event'}
+            <tr>
+                <td>{if $event->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$event->getName()}{if $event->isEnabled() == false}</span>{/if}</td>
+                <td>
+                    {instanceof element=$event class='\SHC\Event\Events\HumidityClimbOver'}{lang var="acp.eventsManagement.events.HumidityClimbOver"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\HumidityFallsBelow'}{lang var="acp.eventsManagement.events.HumidityFallsBelow"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\InputHigh'}{lang var="acp.eventsManagement.events.InputHigh"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\InputLow'}{lang var="acp.eventsManagement.events.InputLow"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\LightIntensityClimbOver'}{lang var="acp.eventsManagement.events.LightIntensityClimbOver"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\LightIntensityFallBelow'}{lang var="acp.eventsManagement.events.LightIntensityFallBelow"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\MoistureClimbOver'}{lang var="acp.eventsManagement.events.MoistureClimbOver"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\MoistureFallsBelow'}{lang var="acp.eventsManagement.events.MoistureFallsBelow"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\TemperatureClimbOver'}{lang var="acp.eventsManagement.events.TemperatureClimbOver"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\TemperatureFallsBelow'}{lang var="acp.eventsManagement.events.TemperatureFallsBelow"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\UserComesHome'}{lang var="acp.eventsManagement.events.UserComesHome"}{/instanceof}
+                    {instanceof element=$event class='\SHC\Event\Events\UserLeavesHome'}{lang var="acp.eventsManagement.events.UserLeavesHome"}{/instanceof}
+                </td>
+                <td>
+                    {editlist link='index.php?app=shc&ajax=manageswitchablesinevents&id=' id=$event->getId()}
+                    {editlink link='index.php?app=shc&ajax=editeventform&id=' id=$event->getId()}
+                    {deletelink link='index.php?app=shc&ajax=deleteevent&id=' id=$event->getId() prompt='acp.eventsManagement.prompt.deleteEvent' title='acp.eventsManagement.prompt.deleteEvent.title'}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton location="index.php?app=shc&page=acp"}
+            {acpbutton link="index.php?app=shc&ajax=addeventform" text="acp.eventsManagement.button.addEvent"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+    });
+</script>
