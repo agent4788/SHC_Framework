@@ -204,7 +204,7 @@ class SwitchServerSocket {
                 $firstRun = false;
 
                 //Pruefen ob weitere Sendevorgaenge anstehen
-                if (isset($requestData[$i]['continuous']) && $requestData[$i]['continuous'] > 0 || !isset($requestData[$i]['continuous'])) {
+                if ((isset($requestData[$i]['continuous']) && $requestData[$i]['continuous'] > 0) || !isset($requestData[$i]['continuous'])) {
 
                     //Wartezeit falls notwendig
                     if(isset($requestData[$i]['time'])) {
@@ -213,7 +213,7 @@ class SwitchServerSocket {
                         if($timeDiff < 1000) {
 
                             //min 1s Wartezeit zwischen 2 sende Befehlen
-                            usleep($timeDiff * 1000);
+                            usleep((1000 - $timeDiff) * 1000);
                         }
                     } else {
 
