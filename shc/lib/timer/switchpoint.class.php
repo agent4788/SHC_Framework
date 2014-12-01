@@ -6,11 +6,7 @@ namespace SHC\Timer;
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Util\String;
-use SHC\Condition\Conditions\HumidityGreaterThanCondition;
-use SHC\Condition\Conditions\HumidityLowerThanCondition;
-use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
-use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
-use SHC\Condition\Conditions\MoistureGreaterThanCondition;
+use SHC\Condition\Condition;
 
 /**
  * Schaltpunkt
