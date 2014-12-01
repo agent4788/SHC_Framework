@@ -71,6 +71,7 @@ class TimerTask extends AbstractTask {
         }
 
         //Status speichern
+        SwitchPointEditor::getInstance()->updateSwitchPoints();
         SwitchableEditor::getInstance()->updateState();
     }
 

@@ -118,6 +118,13 @@ class SwitchPoint {
     protected $minute = array('*');
 
     /**
+     * gibt an ob der Schaltpunkt ausgefuehrt wurde
+     *
+     * @var Boolean
+     */
+    protected $executed = false;
+
+    /**
      * Gibt den Zeitstempel der letzten ausfuehrung zurueck
      * 
      * @var \RWF\Date\DateTime
@@ -396,12 +403,17 @@ class SwitchPoint {
     /**
      * setzt den Zeitstempel der letzten ausfuehrung
      * 
-     * @param  \RWF\Date\DateTime $lastExecute letzte ausfuehrung
+     * @param  \RWF\Date\DateTime $lastExecute   letzte ausfuehrung
+     * @param  Boolean            $resetExecuted den Ausgefuehrt Status zuruecksetzen
      * @return \SHC\Timer\SwitchPoint
      */
-    public function setLastExecute(DateTime $lastExecute) {
+    public function setLastExecute(DateTime $lastExecute, $resetExecuted = false) {
         
         $this->lastExecute = $lastExecute;
+        if($resetExecuted == true) {
+
+            $this->executed = false;
+        }
         return $this;
     }
 
@@ -438,12 +450,21 @@ class SwitchPoint {
     }
 
     /**
+     * gibt an ob der Schaltpunkt ausgefuehrt wurde
+     *
+     * @return Boolean
+     */
+    public function isExecuted() {
+
+        return $this->executed;
+    }
+
+    /**
      * gibt ein HTML Fragment fuer ein Tooltip zurueck
      *
      * @return String
      */
-    public function fetchTooltip()
-    {
+    public function fetchTooltip() {
 
         $html = '';
 
@@ -682,10 +703,9 @@ class SwitchPoint {
             //Schaltpunkt wurde schon ausgefuehrt
             return false;
         }
-        $this->lastExecute = $now;
-        
+
         //alle Schaltpunkte und Bedingungen sind wahr
-        SwitchPointEditor::getInstance()->editExecutionTime($this->getId(), DateTime::now());
+        $this->executed = true;
         return true;
     }
 

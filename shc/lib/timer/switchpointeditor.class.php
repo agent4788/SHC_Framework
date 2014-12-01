@@ -63,7 +63,7 @@ class SwitchPointEditor {
 
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS);
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
 
         //Daten einlesen
         foreach ($xml->switchPoint as $switchPoint) {
@@ -198,6 +198,41 @@ class SwitchPointEditor {
             }
         }
         return false;
+    }
+
+    /**
+     * speichert den Status der Schaltpunkte
+     *
+     * @return Boolean
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    public function updateSwitchPoints() {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+
+        //Schaltpunkte suchen
+        foreach($this->switchPoints as $switchPoint) {
+
+            /* @var $switchPoint \SHC\Timer\SwitchPoint */
+            if($switchPoint->isExecuted() === true) {
+
+                $switchPoint->setLastExecute(DateTime::now(), true);
+
+                //XML Daten update
+                foreach ($xml->switchPoint as $xmlSwitchPoint) {
+
+                    if ((int) $xmlSwitchPoint->id == $switchPoint->getId()) {
+
+                        $xmlSwitchPoint->lastExecute = $switchPoint->getLastExecute()->getDatabaseDateTime();
+                    }
+                }
+            }
+        }
+
+        //speichern
+        $xml->save();
+        return true;
     }
 
     /**
