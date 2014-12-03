@@ -236,10 +236,10 @@ class SwitchServerSocket {
                         if(preg_match('#^[01]{5}$#', $request['systemCode'])) {
 
                             $systemCode = 0;
-                            for($i=0; $i < strlen($request['systemCode']); $i++) {
+                            for($j = 0; $j < strlen($request['systemCode']); $j++) {
 
-                                $bin_tmp = substr($request['systemCode'], $i, 1);
-                                $systemCode += $bin_tmp * (pow(2, $i));
+                                $bin_tmp = substr($request['systemCode'], $j, 1);
+                                $systemCode += $bin_tmp * (pow(2, $j));
                             }
                         } else {
 
