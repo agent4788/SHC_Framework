@@ -472,7 +472,7 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.command') . '</span>:';
         $html .= '<span>';
-        $html .= ($this->command == 1 ? RWF::getLanguage()->get('global.on') : RWF::getLanguage()->get('global.coff'));
+        $html .= ($this->command == 1 ? RWF::getLanguage()->get('global.on') : RWF::getLanguage()->get('global.off'));
         $html .= '</span>';
         $html .= '</div>';
 

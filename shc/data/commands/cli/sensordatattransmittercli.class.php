@@ -93,8 +93,8 @@ class SensorDatatTransmitterCli extends CliCommand {
 
             if(!isset($argv[4]) || !isset($argv[5]) || !isset($argv[6])) {
 
-                $this->response->writeLnColored('Fasches Format, verwende folgendes Format:', 'red');
-                $this->response->writeLnColored('php index.php app=shc -addDHT <id (0-999)> <typ (11|22|2302)> <pin (wiringpi)>', 'yellow');
+                $this->response->writeLnColored('Falsches Format, verwende folgendes Format:', 'red');
+                $this->response->writeLnColored('php index.php app=shc -addDHT <id (0-999)> <typ (11|22|2302)> <pin (BCMP Pin Nummer)>', 'yellow');
                 return;
             }
 
@@ -106,7 +106,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             if($id < 0 || $id > 999 || !in_array($type, array(11, 22, 2302)) || $pin < 0 || $pin > 20) {
 
                 $this->response->writeLnColored('Fasches Format, verwende folgendes Format:', 'red');
-                $this->response->writeLnColored('php index.php app=shc -addDHT <id (0-999)> <typ (11|22|2302)> <pin (wiringpi)>', 'yellow');
+                $this->response->writeLnColored('php index.php app=shc -addDHT <id (0-999)> <typ (11|22|2302)> <pin (BCMP Pin Nummer)>', 'yellow');
                 return;
             }
 
