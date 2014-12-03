@@ -49,6 +49,33 @@ class SwitchServerSocket {
     protected $server = null;
 
     /**
+     * Liste mit den Protokollen welche eine ID benoetigen Statt einem Systemcode
+     *
+     * @var Array
+     */
+    protected $protocolsWithId = array(
+        'clarus_switch',
+        'cogex',
+        'kaku_switch_old',
+        'intertechno_old',
+        'duwi',
+        'cleverwatts',
+        'coco_switch',
+        'dio_switch',
+        'intertechno_switch',
+        'kaku_switch',
+        'nexa_switch',
+        'quigg_switch',
+        'silvercrest',
+        'unitech',
+        'rev_v1',
+        'rev_v2',
+        'rev_v3',
+        'techlico_switch',
+        'X10'
+    );
+
+    /**
      * startet den Server und wartet auf Anfragen
      * 
      * @param \RWF\Request\CliResponse $response Antwortobjekt
@@ -246,13 +273,28 @@ class SwitchServerSocket {
                             $systemCode = $request['systemCode'];
                         }
 
-                        usleep(1000000); //100ms Wartezeit vor pilight-send Befehlen
-                        shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
-                        usleep(1000000); //100ms Wartezeit nach pilight-send Befehlen
+                        usleep(500000); //50ms Wartezeit vor pilight-send Befehlen
+
+                        //Sende Befehl ausfuehren
+                        if(in_array($request['protocol'], $this->protocolsWithId)) {
+
+                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -i ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
+                        } else {
+
+                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($systemCode) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
+                        }
+                        usleep(500000); //50ms Wartezeit nach pilight-send Befehlen
+
                         //Debug ausgabe
                         if ($this->debug) {
 
-                            $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                            if(in_array($request['protocol'], $this->protocolsWithId)) {
+
+                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -i ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                            } else {
+
+                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' -s ' . escapeshellarg($request['systemCode']) . ' -u ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                            }
                         }
                     }
 
