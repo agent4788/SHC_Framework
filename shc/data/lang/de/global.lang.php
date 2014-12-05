@@ -20,6 +20,7 @@ $l['global.yes.short'] = 'j';
 $l['global.no.short'] = 'n';
 $l['global.on'] = 'an';
 $l['global.off'] = 'aus';
+$l['global.toggle'] = 'umschalten';
 
 //Datum
 $l['global.date.tomorrow'] = 'morgen';
