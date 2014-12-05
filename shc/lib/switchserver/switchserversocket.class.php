@@ -276,10 +276,10 @@ class SwitchServerSocket {
                         //Sende Befehl ausfuehren
                         if(in_array($request['protocol'], $this->protocolsWithId)) {
 
-                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --id ' . escapeshellarg($systemCode) . ' --unit ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
+                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --id=' . escapeshellarg($systemCode) . ' --unit=' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
                         } else {
 
-                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --systemcode ' . escapeshellarg($systemCode) . ' --unitcode ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
+                            shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --systemcode=' . escapeshellarg($systemCode) . ' --unitcode=' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
                         }
 
                         //Debug ausgabe
@@ -287,10 +287,10 @@ class SwitchServerSocket {
 
                             if(in_array($request['protocol'], $this->protocolsWithId)) {
 
-                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --id ' . escapeshellarg($systemCode) . ' --unit ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --id=' . escapeshellarg($systemCode) . ' --unit=' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
                             } else {
 
-                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --systemcode ' . escapeshellarg($systemCode) . ' --unitcode ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
+                                $this->response->writeLnColored('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --systemcode=' . escapeshellarg($systemCode) . ' --unitcode=' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off') , 'light_blue');
                             }
                         }
                     }
