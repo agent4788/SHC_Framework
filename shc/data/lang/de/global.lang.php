@@ -20,6 +20,7 @@ $l['global.yes.short'] = 'j';
 $l['global.no.short'] = 'n';
 $l['global.on'] = 'an';
 $l['global.off'] = 'aus';
+$l['global.toggle'] = 'umschalten';
 
 //Datum
 $l['global.date.tomorrow'] = 'morgen';
@@ -95,7 +96,7 @@ $l['global.date.weekDay.sun'] = 'Sonntag';
 
 $l['global.date.weekDay.mon.short'] = 'Mo';
 $l['global.date.weekDay.tue.short'] = 'Di';
-$l['global.date.weekDay.wed.short'] = 'Mih';
+$l['global.date.weekDay.wed.short'] = 'Mi';
 $l['global.date.weekDay.thu.short'] = 'Do';
 $l['global.date.weekDay.fri.short'] = 'Fr';
 $l['global.date.weekDay.sat.short'] = 'Sa';
