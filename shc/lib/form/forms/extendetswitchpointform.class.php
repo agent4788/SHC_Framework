@@ -6,13 +6,11 @@ namespace SHC\Form\Forms;
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Form\DefaultHtmlForm;
-use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
-use RWF\Form\FormElements\RadioButtons;
 use RWF\Form\FormElements\SelectMultiple;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\ConditionsChooser;
-use SHC\Form\FormElements\SwitchCommandChooser;
+use SHC\Form\FormElements\SwitchPointCommandChooser;
 use SHC\Timer\SwitchPoint;
 
 /**
@@ -44,7 +42,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
         $this->addFormElement($name);
 
         //Befehl auswählen
-        $command = new SwitchCommandChooser('command', ($switchPoint instanceof SwitchPoint ? $switchPoint->getCommand() : null));
+        $command = new SwitchPointCommandChooser('command', ($switchPoint instanceof SwitchPoint ? $switchPoint->getCommand() : null));
         $command->setTitle(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.command'));
         $command->setDescription(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.command.decription'));
         $command->requiredField(true);

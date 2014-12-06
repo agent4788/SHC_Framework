@@ -25,35 +25,6 @@ class SensorEditor {
     protected $sensors = array('dht' => array(), 'bmp' => array());
 
     /**
-     * wiring Pi Pin Nummern zu BCMP Pin Nummern
-     *
-     * @var array
-     */
-    protected $pins = array(
-        0 => 17,
-        1 => 18,
-        2 => 27,
-        3 => 22,
-        4 => 23,
-        5 => 24,
-        6 => 25,
-        7 => 4,
-        8 => 2,
-        9 => 3,
-        10 => 8,
-        11 => 7,
-        12 => 10,
-        13 => 9,
-        14 => 11,
-        15 => 14,
-        16 => 15,
-        17 => 28,
-        18 => 29,
-        19 => 30,
-        20 => 31
-    );
-
-    /**
      * Singleton Instanz
      *
      * @var \SHC\Sensor\SensorEditor

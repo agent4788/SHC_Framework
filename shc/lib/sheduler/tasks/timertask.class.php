@@ -9,6 +9,7 @@ use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Countdown;
 use RWF\Date\DateTime;
+use SHC\Timer\SwitchPointEditor;
 
 /**
  * Timer Task prueft regelmäßig ob Schaltpunkte zur ausfuehrung bereit stehen
@@ -42,6 +43,7 @@ class TimerTask extends AbstractTask {
     public function executeTask() {
 
         //Liste mit den Schaltbaren Elementen holen
+        SwitchPointEditor::getInstance()->loadData();
         SwitchableEditor::getInstance()->loadData();
         $switchables = SwitchableEditor::getInstance()->listElements();
 
@@ -69,6 +71,7 @@ class TimerTask extends AbstractTask {
         }
 
         //Status speichern
+        SwitchPointEditor::getInstance()->updateSwitchPoints();
         SwitchableEditor::getInstance()->updateState();
     }
 
