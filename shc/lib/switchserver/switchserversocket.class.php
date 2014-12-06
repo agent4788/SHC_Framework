@@ -273,6 +273,8 @@ class SwitchServerSocket {
                             $systemCode = $request['systemCode'];
                         }
 
+                        usleep(50000); //50ms vor dem Schaltbefehl warten
+
                         //Sende Befehl ausfuehren
                         if(in_array($request['protocol'], $this->protocolsWithId)) {
 
@@ -281,6 +283,8 @@ class SwitchServerSocket {
 
                             shell_exec('sudo ' . $sendPath . ' -p ' . escapeshellarg($request['protocol']) . ' --systemcode=' . escapeshellarg($systemCode) . ' --unitcode=' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '--on' : '--off'));
                         }
+
+                        usleep(50000); //50ms nach dem Schaltbefehl warten
 
                         //Debug ausgabe
                         if ($this->debug) {
