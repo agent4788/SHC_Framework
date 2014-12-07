@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.0-0
+ * @version    2.0.2-0
  */
 $l = array();
 
@@ -42,6 +42,7 @@ $l['acp.conditionManagement.condition.DayOfWeekCondition'] = 'Wochentage';
 $l['acp.conditionManagement.condition.TimeOfDayCondition'] = 'Zeitbereich';
 $l['acp.conditionManagement.condition.SunriseSunsetCondition'] = 'Tag';
 $l['acp.conditionManagement.condition.SunsetSunriseCondition'] = 'Nacht';
+$l['acp.conditionManagement.condition.FileExistsCondition'] = 'Datei vorhanden/nicht vorhanden';
 
 //Formulare
 $l['acp.conditionManagement.form.condition.name'] = 'Name';
@@ -73,9 +74,17 @@ $l['acp.conditionManagement.form.condition.startHour.description'] = 'Startstund
 $l['acp.conditionManagement.form.condition.startMinute'] = 'Start Minute';
 $l['acp.conditionManagement.form.condition.startMinute.description'] = 'Startminute des Zeitbereiches';
 $l['acp.conditionManagement.form.condition.endHour'] = 'End Stunde';
-$l['acp.conditionManagement.form.condition.endHour.description'] = 'Endstunde des Zeitbereiches';;
+$l['acp.conditionManagement.form.condition.endHour.description'] = 'Endstunde des Zeitbereiches';
 $l['acp.conditionManagement.form.condition.endMinute'] = 'End Minute';
 $l['acp.conditionManagement.form.condition.endMinute.description'] = 'Endminute des Zeitbereiches';
+$l['acp.conditionManagement.form.condition.path'] = 'Pfad';
+$l['acp.conditionManagement.form.condition.path.description'] = 'Absoluter Pfad zu Datei';
+$l['acp.conditionManagement.form.condition.wait'] = 'Verzögerungszeit';
+$l['acp.conditionManagement.form.condition.wait.description'] = 'Wartezeit bis zur ausführung der Bedingung (Achtung: für diese Zeit wird der Sheduler gestoppt und führt keine anderen Operationen aus)';
+$l['acp.conditionManagement.form.condition.delete'] = 'Datei löschen';
+$l['acp.conditionManagement.form.condition.delete.description'] = 'soll die Datei nach dem ausführen gelöscht werden?';
+$l['acp.conditionManagement.form.condition.invert'] = 'Invertieren';
+$l['acp.conditionManagement.form.condition.invert.description'] = 'soll geprüft werden ob die detei nicht Vorhanden ist?';
 
 //Meldungen
 $l['acp.conditionManagement.form.condition.success'] = 'Die Bedingung wurde erfolgreich gespeichert';

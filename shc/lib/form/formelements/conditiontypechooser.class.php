@@ -13,7 +13,7 @@ use RWF\Form\FormElements\Select;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.0-0
+ * @version    2.0.2-0
  */
 class ConditionTypeChooser extends Select {
 
@@ -39,7 +39,8 @@ class ConditionTypeChooser extends Select {
             12 => RWF::getLanguage()->get('acp.conditionManagement.condition.DayOfWeekCondition'),
             13 => RWF::getLanguage()->get('acp.conditionManagement.condition.TimeOfDayCondition'),
             14 => RWF::getLanguage()->get('acp.conditionManagement.condition.SunriseSunsetCondition'),
-            15 => RWF::getLanguage()->get('acp.conditionManagement.condition.SunsetSunriseCondition')
+            15 => RWF::getLanguage()->get('acp.conditionManagement.condition.SunsetSunriseCondition'),
+            16 => RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition')
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);
