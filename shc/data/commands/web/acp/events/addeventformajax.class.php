@@ -14,6 +14,7 @@ use SHC\Form\Forms\HumidityEventForm;
 use SHC\Form\Forms\InputEventForm;
 use SHC\Form\Forms\LightIntensityEventForm;
 use SHC\Form\Forms\MoistureEventForm;
+use SHC\Form\Forms\SunriseEventForm;
 use SHC\Form\Forms\TemperatureEventForm;
 use SHC\Form\Forms\UserEventForm;
 
@@ -385,6 +386,63 @@ class AddEventFormAjax extends AjaxCommand {
                             } elseif ($type == EventEditor::EVENT_USER_LEAVE_HOME) {
 
                                 EventEditor::getInstance()->addUserLeavesHomeEvent($name, $enabled, $users, $interval, $conditions);
+                            } else {
+
+                                //Typfehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.addEvent'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                        }
+                        $tpl->assign('message', $message);
+                    } else {
+
+                        $tpl->assign('eventForm', $eventForm);
+                    }
+                    break;
+                case EventEditor::EVENT_SUNRISE:
+                case EventEditor::EVENT_SUNSET:
+
+                    //Sonnenauf- und -ntergang
+                    $eventForm = new SunriseEventForm();
+                    $eventForm->addId('shc-view-form-addEvent');
+
+                    if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $eventForm->getElementByName('name')->getValue();
+                        $enabled = $eventForm->getElementByName('enabled')->getValue();
+                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+
+                        //speichern
+                        $message = new Message();
+                        try {
+
+                            if ($type == EventEditor::EVENT_SUNRISE) {
+
+                                EventEditor::getInstance()->addSunriseEvent($name, $enabled, $conditions);
+                            } elseif ($type == EventEditor::EVENT_SUNSET) {
+
+                                EventEditor::getInstance()->addSunsetEvent($name, $enabled, $conditions);
                             } else {
 
                                 //Typfehler

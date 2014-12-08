@@ -41,6 +41,8 @@ $l['acp.eventsManagement.events.TemperatureClimbOver'] = 'Temperatur steigt';
 $l['acp.eventsManagement.events.TemperatureFallsBelow'] = 'Temperatur fällt';
 $l['acp.eventsManagement.events.UserComesHome'] = 'Benutzer kommt nach Hause';
 $l['acp.eventsManagement.events.UserLeavesHome'] = 'Benutzer verlässt das Haus';
+$l['acp.eventsManagement.events.Sunrise'] = 'Sonnenaufgang';
+$l['acp.eventsManagement.events.Sunset'] = 'Sonnenuntergang';
 
 //Formulare
 $l['acp.eventsManagement.form.event.name'] = 'Name';
