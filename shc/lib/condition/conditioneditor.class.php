@@ -14,7 +14,7 @@ use RWF\XML\XmlFileManager;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.0-0
+ * @version    2.0.2-0
  */
 class ConditionEditor {
 
@@ -882,6 +882,59 @@ class ConditionEditor {
         $data = array(
             'sensors' => ($sensorIds !== null ? implode(',', $sensorIds) : null),
             'temperature'=> $temperature
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Dateibedingung
+     *
+     * @param  String  $name         Name
+     * @param  String  $path         Pfad zur Datei
+     * @param  Boolean $invert       Invertiert
+     * @param  Integer $wait         Wartezeit
+     * @param  Boolean $delete       loeschen
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addFileExistsCondition($name, $path, $invert, $wait, $delete, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'path' => $path,
+            'invert'=> ($invert == true ? 1 : 0),
+            'wait'=> $wait,
+            'delete'=> ($delete == true ? 1 : 0)
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\FileExistsCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Dateibedingung
+     *
+     * @param  Integer $id           ID
+     * @param  String  $name         Name
+     * @param  String  $path         Pfad zur Datei
+     * @param  Boolean $invert       Invertiert
+     * @param  Integer $wait         Wartezeit
+     * @param  Boolean $delete       loeschen
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editFileExistsCondition($id, $name, $path, $invert, $wait, $delete, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'path' => $path,
+            'invert'=> ($invert === null ? null : ($invert == true ? 1 : 0)),
+            'wait'=> $wait,
+            'delete'=> ($delete === null ? null : ($delete == true ? 1 : 0))
         );
 
         //Datensatz bearbeiten

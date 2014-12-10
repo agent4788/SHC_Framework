@@ -35,6 +35,20 @@ class RaspberryPi {
      * @var Integer
      */
     const MODEL_B_PLUS = 4;
+
+    /**
+     * Schaltserver auf einem Model A+
+     *
+     * @var Integer
+     */
+    const MODEL_A_PLUS = 8;
+
+    /**
+     * Schaltserver auf einem Compute Module
+     *
+     * @var Integer
+     */
+    const MODEL_COMPUTE_MODULE = 16;
     
     /**
      * CPU Info
@@ -361,6 +375,8 @@ class RaspberryPi {
         //'000e' => 'Model B Revision 2.0 512MB', (Sony)
         //'000f' => 'Model B Revision 2.0 512MB', (Qisda)
         //'0010' => 'Model B+ Revision 2.0 512MB', (Sony)
+        //'0011' => 'Compute Module Revision 1.0 512MB', (Sony)
+        //'0012' => 'Model A+ Revision 1.0 256MB', (Sony)
         if (!isset($this->cache['rpiRevision'])) {
 
             $match = array();
@@ -375,7 +391,12 @@ class RaspberryPi {
         }
         return $this->cache['rpiRevision'];
     }
-    
+
+    /**
+     * gibt die Model ID des Raspberry Pi zurueck
+     *
+     * @return Integer
+     */
     public function getModel() {
         
         $rev = $this->getRpiRevision();
@@ -385,6 +406,12 @@ class RaspberryPi {
         } elseif($rev >= 7 && $rev <= 9) {
             
             return self::MODEL_A;
+        } elseif($rev == 17) {
+
+            return self::MODEL_COMPUTE_MODULE;
+        } elseif($rev == 18) {
+
+            return self::MODEL_A_PLUS;
         }
         return self::MODEL_B_PLUS;
     }
@@ -414,7 +441,7 @@ class RaspberryPi {
             }
 
             //512 MB RPi
-            if ($rev == 13 || $rev == 14 || $rev == 15 || $rev == 16) {
+            if ($rev == 13 || $rev == 14 || $rev == 15 || $rev == 16 || $rev == 17) {
 
                 if (isset($gpuMem[2])) {
 

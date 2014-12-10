@@ -663,7 +663,7 @@ class SwitchPoint {
         }
         
         //Tag pruefen
-        if(($this->day[0] != '*' && (!in_array($daysOfWeek[$now->getDayOfWeek()], $this->day) || !in_array($now->getDay(), $this->day)))) {
+        if(($this->day[0] != '*' && !in_array($daysOfWeek[$now->getDayOfWeek()], $this->day) && !in_array($now->getDay(), $this->day))) {
 
             return false;
         }

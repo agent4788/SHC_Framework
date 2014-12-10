@@ -17,6 +17,7 @@ use SHC\Event\Events\LightIntensityClimbOver;
 use SHC\Event\Events\LightIntensityFallsBelow;
 use SHC\Event\Events\MoistureClimbOver;
 use SHC\Event\Events\MoistureFallsBelow;
+use SHC\Event\Events\Sunrise;
 use SHC\Event\Events\TemperatureClimbOver;
 use SHC\Event\Events\TemperatureFallsBelow;
 use SHC\Event\Events\UserComesHome;
@@ -25,6 +26,7 @@ use SHC\Form\Forms\HumidityEventForm;
 use SHC\Form\Forms\InputEventForm;
 use SHC\Form\Forms\LightIntensityEventForm;
 use SHC\Form\Forms\MoistureEventForm;
+use SHC\Form\Forms\SunriseEventForm;
 use SHC\Form\Forms\TemperatureEventForm;
 use SHC\Form\Forms\UserEventForm;
 
@@ -606,6 +608,96 @@ class EditEventFormAjax extends AjaxCommand
                 try {
 
                     EventEditor::getInstance()->editUserLeavesHomeEvent($eventId, $name, $enabled, $users, $interval, $conditions);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('event', $event);
+                $tpl->assign('eventForm', $eventForm);
+            }
+        } elseif($event instanceof Sunrise) {
+
+            //Sonnenaufgang
+            $eventForm = new SunriseEventForm($event);
+            $eventForm->addId('shc-view-form-editEvent');
+
+            if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $eventForm->getElementByName('name')->getValue();
+                $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
+
+                //speichern
+                $message = new Message();
+                try {
+
+                    EventEditor::getInstance()->editSunriseEvent($eventId, $name, $enabled, $conditions);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('event', $event);
+                $tpl->assign('eventForm', $eventForm);
+            }
+        } elseif($event instanceof Sunrise) {
+
+            //Sonnenuntergang
+            $eventForm = new SunriseEventForm($event);
+            $eventForm->addId('shc-view-form-editEvent');
+
+            if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $eventForm->getElementByName('name')->getValue();
+                $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $conditions = $eventForm->getElementByName('conditions')->getValues();
+
+                //speichern
+                $message = new Message();
+                try {
+
+                    EventEditor::getInstance()->editSunsetEvent($eventId, $name, $enabled, $conditions);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {

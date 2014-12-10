@@ -20,7 +20,7 @@ $l['acpindex.allUsers'] = 'jede Gruppe';
 
 //Boxen
 $l['acpindex.box.overview'] = 'Übersicht';
-$l['acpindex.box.acpMenue'] = 'Andminsitrations Menü';
+$l['acpindex.box.acpMenue'] = 'Administrationsmenü';
 
 //Buttons Hauptmenue
 $l['acpindex.menu.group.main'] = 'Allgemein';
