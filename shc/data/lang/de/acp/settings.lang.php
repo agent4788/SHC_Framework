@@ -15,7 +15,7 @@ $l = array();
 $l['acp.settings.title'] = 'Einstellungen';
 
 //Meldungen
-$l['acp.settings.form.success'] = 'Die EInstellungen wurden erfolgreich gespeichert';
+$l['acp.settings.form.success'] = 'Die Einstellungen wurden erfolgreich gespeichert';
 $l['acp.settings.form.error.1102'] = 'Die Einstellungen konnten wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.settings.form.error'] = 'Die Einstellungen konnten nicht gespeichert werden';
 
