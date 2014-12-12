@@ -8,6 +8,7 @@ use RWF\Date\DateTime;
 use RWF\IO\SocketServer;
 use RWF\IO\SocketServerClient;
 use RWF\Request\CliResponse;
+use RWF\Util\FileUtil;
 
 /**
  * Schaltserver
@@ -117,6 +118,10 @@ class SwitchServerSocket {
             }
             if($runTime <= DateTime::now()) {
 
+                if(!file_exists(PATH_RWF_CACHE . 'switchServer.flag')) {
+
+                    FileUtil::createFile(PATH_RWF_CACHE . 'switchServer.flag', 0777, true);
+                }
                 file_put_contents(PATH_RWF_CACHE . 'switchServer.flag', DateTime::now()->getDatabaseDateTime());
                 $runTime->add(new \DateInterval('PT1M'));
             }
