@@ -25,6 +25,10 @@ class UserGroupChooser extends SelectMultipleWithEmptyElement {
 
         //Allgemeine Daten
         $this->setName($name);
+        $this->setOptions(array(
+            'emptySelected' => false,
+            'size' => 5
+        ));
 
         //Gruppen Liste Vorbereiten
         $groups = array();
@@ -42,7 +46,7 @@ class UserGroupChooser extends SelectMultipleWithEmptyElement {
         //leeres Element selektieren
         if(!$user instanceof User || count($groups) < 1) {
 
-            $this->setOptions(array('emptySelected' => true));
+            $this->options['emptySelected'] = true;
         }
 
         //Gruppen anmelden

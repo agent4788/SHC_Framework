@@ -29,7 +29,8 @@ class GroupPremissonChooser extends SelectMultipleWithEmptyElement {
         //Optionen setzen
         $options = array(
             'emptyLabel' => RWF::getLanguage()->get('acpindex.allUsers'),
-            'emptySelected' => false
+            'emptySelected' => false,
+            'size' => 5
         );
         if(!count($selectedGroups) || (isset($selectedGroups[0]) && $selectedGroups[0] == '')) {
 

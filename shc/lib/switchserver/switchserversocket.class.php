@@ -256,11 +256,17 @@ class SwitchServerSocket {
 
                     if ($request['protocol'] == 'elro_rc') {
 
-                        shell_exec('sudo ' . $rcSendPath . ' ' . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'));
+                        if(!preg_match('#^[01]{5}$#', $request['systemCode']) || $request['deviceCode'] < 0 || $request['deviceCode'] > 5) {
+
+                            $this->response->writeLnColored('fehlerhafte Argumente für rcswitch-pi', 'red');
+                            continue;
+                        }
+
+                        shell_exec('sudo ' . $rcSendPath . ' ' . $request['systemCode'] . ' ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '1' : '0'));
                         //Debug ausgabe
                         if ($this->debug) {
 
-                            $this->response->writeLnColored('sudo ' . $rcSendPath . escapeshellarg($request['systemCode']) . ' ' . escapeshellarg($request['deviceCode']) . ' ' . ($request['command'] == 1 ? '1' : '0'), 'light_blue');
+                            $this->response->writeLnColored('sudo '  . $rcSendPath  . ' ' . $request['systemCode'] . ' ' . $request['deviceCode'] . ' ' . ($request['command'] == 1 ? '1' : '0'), 'light_blue');
                         }
                     } else {
 

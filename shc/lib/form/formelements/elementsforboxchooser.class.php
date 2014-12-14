@@ -39,7 +39,9 @@ class ElementsForBoxChooser extends SelectMultiple {
 
         //Allgemeine Daten
         $this->setName($name);
-        $this->setOptions(array('size' => 10));
+        $this->setOptions(array(
+            'size' => 10
+        ));
 
         //Auswahl
         $values = array();

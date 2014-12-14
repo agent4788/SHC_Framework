@@ -16,7 +16,7 @@
     color: #444;
     padding: 3px;
     font-size: 15px;
-    width: 300px;
+    width: 95%;
     border: 1px solid #0f5c8e;
     margin: 5px 5px 5px 10px;
     border-radius: 5px;
@@ -25,13 +25,13 @@
 }
 
 textarea.rwf-ui-form-content-textarea {
-    height: 80px;
+    height: 120px;
 }
 
 select {
     padding: 3px;
     font-size: 15px;
-    width: 300px;
+    width: 96%;
     border: 1px solid #0f5c8e;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -40,9 +40,10 @@ select {
 
 .ui-spinner {
     font-size: 15px;
-    width: 305px;
+    width: 96%;
     border: 1px solid #0f5c8e;
     margin: 5px;
+    margin-left: 10px;
     background-color: #ffffff;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -98,4 +99,8 @@ form div.rwf-ui-form-content-description {
     font-weight: bold;
     font-size: 1.2em;
     color:#000000;
+}
+
+.rwf-ui-form-content-element-checkboxes {
+    margin-left: 10px;
 }

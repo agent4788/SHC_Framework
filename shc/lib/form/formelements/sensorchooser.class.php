@@ -80,6 +80,9 @@ class SensorChooser extends SelectMultiple {
     public function __construct($name, $sensors = array(), $filter = self::ALL) {
 
         $this->setName($name);
+        $this->setOptions(array(
+            'size' => 10
+        ));
 
         //Daten laden
         $values = array();
