@@ -5,8 +5,9 @@ namespace SHC\Sensor;
 //Imports
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
-use RWF\IO\Socket;
 use RWF\IO\UDPSocket;
+use RWF\Util\CliUtil;
+use RWF\Util\FileUtil;
 
 /**
  * Liest Sensordaten vom Arduino aus
@@ -33,7 +34,7 @@ class SensorDataTransmitter {
             $sensorReciver->open();
         } catch (\Exception $e) {
 
-            $cli = new CommandLine();
+            $cli = new CliUtil();
             $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('shc.sensorTransmitter.ip') . ':' . RWF::getSetting('shc.sensorTransmitter.port') . ') konnte nicht hergestellt werden', 'red');
 
             //30 Sekunden warten dann wieder versuchen
@@ -167,6 +168,10 @@ class SensorDataTransmitter {
             }
             if($time <= DateTime::now()) {
 
+                if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
+
+                    FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
+                }
                 file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
                 $time->add(new \DateInterval('PT1M'));
             }

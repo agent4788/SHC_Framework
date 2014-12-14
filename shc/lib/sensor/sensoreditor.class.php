@@ -136,7 +136,7 @@ class SensorEditor {
         if(isset($this->sensors['dht'][$id])) {
 
             //Sensor auslesen
-            exec('sudo ' . PATH_SHC_CLASSES . 'external/python/dht.py ' . escapeshellcmd($this->sensors['dht'][$id]['type']) . ' ' . escapeshellcmd($this->pins[$this->sensors['dht'][$id]['pin']]), $data);
+            exec('sudo ' . PATH_SHC_CLASSES . 'external/python/dht.py ' . escapeshellcmd($this->sensors['dht'][$id]['type']) . ' ' . escapeshellcmd($this->sensors['dht'][$id]['pin']), $data);
 
             //Daten verarbeiten
             if($data != 'error') {

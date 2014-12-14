@@ -15,7 +15,7 @@ $l = array();
 $l['acp.settings.title'] = 'Einstellungen';
 
 //Meldungen
-$l['acp.settings.form.success'] = 'Die EInstellungen wurden erfolgreich gespeichert';
+$l['acp.settings.form.success'] = 'Die Einstellungen wurden erfolgreich gespeichert';
 $l['acp.settings.form.error.1102'] = 'Die Einstellungen konnten wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.settings.form.error'] = 'Die Einstellungen konnten nicht gespeichert werden';
 
@@ -49,9 +49,9 @@ $l['acp.settings.form.sunriseOffset'] = 'Offset Sonnenaufgang';
 $l['acp.settings.form.sunriseOffset.decription'] = 'mit dieser Einstellung kann der errechnete Sonnenaufgang verschoben werden (heutiger Sonnenaufgang mit Offset: {1:s} Uhr)';
 $l['acp.settings.form.sunsetOffset'] = 'Offset Sonnenuntergang';
 $l['acp.settings.form.sunsetOffset.decription'] = 'mit dieser Einstellung kann der errechnete Sonnenuntergang verschoben werden (heutiger Sonnenuntergang mit Offset: {1:s} Uhr)';
-$l['acp.settings.form.Latitude'] = 'Längengrad';
+$l['acp.settings.form.Latitude'] = 'Breitengrad';
 $l['acp.settings.form.Latitude.decription'] = 'Geodaten für die Berechnung von Sonnenauf- und untergang';
-$l['acp.settings.form.Longitude'] = 'Breitengrad';
+$l['acp.settings.form.Longitude'] = 'Längengrad';
 $l['acp.settings.form.Longitude.decription'] = 'Geodaten für die Berechnung von Sonnenauf- und untergang';
 $l['acp.settings.form.redirectActive'] = 'Umleitung Aktiv';
 $l['acp.settings.form.redirectActive.decription'] = 'ist die Umleitung anktiv werden PCs, Tablets und Smartphones auf die EIngestellten Oberflächen umgeleitet';

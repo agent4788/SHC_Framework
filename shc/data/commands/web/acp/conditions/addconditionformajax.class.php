@@ -12,6 +12,7 @@ use SHC\Condition\ConditionEditor;
 use SHC\Form\FormElements\ConditionTypeChooser;
 use SHC\Form\Forms\DateConditionForm;
 use SHC\Form\Forms\DayOfWeekConditionForm;
+use SHC\Form\Forms\FileExistsConditionForm;
 use SHC\Form\Forms\HumidityConditionForm;
 use SHC\Form\Forms\LightIntensityConditionForm;
 use SHC\Form\Forms\MoistureConditionForm;
@@ -29,7 +30,7 @@ use SHC\Form\Forms\UserAtHomeConditionForm;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.0-0
+ * @version    2.0.2-0
  */
 class AddConditionFormAjax extends AjaxCommand {
 
@@ -633,6 +634,54 @@ class AddConditionFormAjax extends AjaxCommand {
                         try {
 
                             ConditionEditor::getInstance()->addSunsetSunriseCondition($name, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        $tpl->assign('message', $message);
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 16:
+
+                    //Datei vorhanden/nicht vorhanden
+                    $conditionForm = new FileExistsConditionForm();
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $path = $conditionForm->getElementByName('path')->getValue();
+                        $wait = $conditionForm->getElementByName('wait')->getValue();
+                        $delete = $conditionForm->getElementByName('delete')->getValue();
+                        $invert = $conditionForm->getElementByName('invert')->getValue();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addFileExistsCondition($name, $path, $invert, $wait, $delete, $enabled);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
                         } catch(\Exception $e) {

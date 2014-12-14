@@ -6,6 +6,7 @@ namespace SHC\Sheduler;
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Error\Error;
+use RWF\Util\FileUtil;
 use RWF\XML\Exception\XmlException;
 
 /**
@@ -109,6 +110,10 @@ class Sheduler {
         }
         if($time <= DateTime::now()) {
 
+            if(!file_exists(PATH_RWF_CACHE . 'shedulerRun.flag')) {
+
+                FileUtil::createFile(PATH_RWF_CACHE . 'shedulerRun.flag', 0777, true);
+            }
             file_put_contents(PATH_RWF_CACHE . 'shedulerRun.flag', DateTime::now()->getDatabaseDateTime());
             $time->add(new \DateInterval('PT1M'));
         }

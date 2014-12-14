@@ -108,6 +108,20 @@ class EventEditor {
     const EVENT_USER_LEAVE_HOME = 2048;
 
     /**
+     * Ereignis Sonnenaufgang
+     *
+     * @var Integer
+     */
+    const EVENT_SUNRISE = 4096;
+
+    /**
+     * Ereignis Sonnenuntergang
+     *
+     * @var Integer
+     */
+    const EVENT_SUNSET = 8192;
+
+    /**
      * nach ID sortieren
      *
      * @var String
@@ -999,6 +1013,64 @@ class EventEditor {
 
         //Speichern
         return $this->editEvent($id, $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein neuen Event Sonnenaufgang
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  Array   $conditions Liste der Bedingunen
+     * @throws \Exception
+     */
+    public function addSunriseEvent($name, $enabled, array $conditions = null) {
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\Sunrise', $name, array(), $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Event Sonnenaufgang
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  Array   $conditions Liste der Bedingunen
+     * @throws \Exception
+     */
+    public function editSunriseEvent($id, $name = null, $enabled = null, array $conditions = null) {
+
+        //Speichern
+        return $this->editEvent($id, $name, array(), $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein neuen Event Sonnenuntergang
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  Array   $conditions Liste der Bedingunen
+     * @throws \Exception
+     */
+    public function addSunsetEvent($name, $enabled, array $conditions = null) {
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\Sunset', $name, array(), $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Event Sonnenuntergang
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  Array   $conditions Liste der Bedingunen
+     * @throws \Exception
+     */
+    public function editSunsetEvent($id, $name = null, $enabled = null, array $conditions = null) {
+
+        //Speichern
+        return $this->editEvent($id, $name, array(), $enabled, $conditions);
     }
 
     /**

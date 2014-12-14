@@ -36,7 +36,7 @@ class IconChooser extends Select {
             'shc-icon-printer' => array('shc-icon-printer', ($icon == 'shc-icon-printer' ? 1 : 0)),
             'shc-icon-tv' => array('shc-icon-tv', ($icon == 'shc-icon-tv' ? 1 : 0)),
             'shc-icon-waterBoiler' => array('shc-icon-waterBoiler', ($icon == 'shc-icon-waterBoiler' ? 1 : 0)),
-            'shc-icon-coffee ' => array('shc-icon-coffee ', ($icon == 'shc-icon-coffee ' ? 1 : 0)),
+            'shc-icon-coffee' => array('shc-icon-coffee', ($icon == 'shc-icon-coffee' ? 1 : 0)),
             'shc-icon-rhythmbox' => array('shc-icon-rhythmbox', ($icon == 'shc-icon-rhythmbox' ? 1 : 0)),
             'shc-icon-christmasTree' => array('shc-icon-christmasTree', ($icon == 'shc-icon-christmasTree' ? 1 : 0)),
             'shc-icon-candles' => array('shc-icon-candles', ($icon == 'shc-icon-candles' ? 1 : 0)),

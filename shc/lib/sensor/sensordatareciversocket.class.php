@@ -8,6 +8,7 @@ use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\IO\UDPSocketServer;
 use RWF\Request\CliResponse;
+use RWF\Util\FileUtil;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -83,6 +84,10 @@ class SensorDataReciverSocket {
             }
             if($runTime <= DateTime::now()) {
 
+                if(!file_exists(PATH_RWF_CACHE . 'sensorDataReciver.flag')) {
+
+                    FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataReciver.flag', 0777, true);
+                }
                 file_put_contents(PATH_RWF_CACHE . 'sensorDataReciver.flag', DateTime::now()->getDatabaseDateTime());
                 $runTime->add(new \DateInterval('PT1M'));
             }
