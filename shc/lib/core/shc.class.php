@@ -15,7 +15,7 @@ use RWF\User\User;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.1-0
+ * @version    2.0.2-0
  */
 class SHC extends RWF {
 
@@ -24,7 +24,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.0.1';
+    const VERSION = '2.0.2';
 
     /**
      * Raeume XML Datei
