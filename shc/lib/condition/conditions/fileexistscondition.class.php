@@ -36,7 +36,7 @@ class FileExistsCondition extends AbstractCondition {
         }
 
         //Daten vorbereiten
-        $path = FileUtil::addTrailigSlash(\trim($this->data['path']));
+        $path = FileUtil::addLeadingSlash(\trim($this->data['path']));
         $wait = (isset($this->data['wait']) && $this->data['wait'] > 0 ? intval($this->data['wait']) : 0);
         $delete = (isset($this->data['delete']) && $this->data['delete'] == 1 ? true : false);
         $invert = (isset($this->data['invert']) && $this->data['invert'] == 1 ? true : false);
