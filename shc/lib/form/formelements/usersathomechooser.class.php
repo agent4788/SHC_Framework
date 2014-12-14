@@ -22,6 +22,9 @@ class UsersAtHomeChooser extends SelectMultiple {
 
         //Allgemeine Daten
         $this->setName($name);
+        $this->setOptions(array(
+            'size' => 10
+        ));
 
         //Gruppen anmelden
         $values = array();
