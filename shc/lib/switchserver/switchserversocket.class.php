@@ -72,6 +72,9 @@ class SwitchServerSocket {
         'rev_v1',
         'rev_v2',
         'rev_v3',
+        'rev1_switch',
+        'rev2_switch',
+        'rev3_switch',
         'techlico_switch',
         'X10'
     );
