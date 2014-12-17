@@ -18,6 +18,7 @@ use SHC\Event\Events\LightIntensityFallsBelow;
 use SHC\Event\Events\MoistureClimbOver;
 use SHC\Event\Events\MoistureFallsBelow;
 use SHC\Event\Events\Sunrise;
+use SHC\Event\Events\Sunset;
 use SHC\Event\Events\TemperatureClimbOver;
 use SHC\Event\Events\TemperatureFallsBelow;
 use SHC\Event\Events\UserComesHome;
@@ -680,7 +681,7 @@ class EditEventFormAjax extends AjaxCommand
                 $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
-        } elseif($event instanceof Sunrise) {
+        } elseif($event instanceof Sunset) {
 
             //Sonnenuntergang
             $eventForm = new SunriseEventForm($event);

@@ -594,7 +594,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent('\SHC\Event\Events\LightIntensityFallBelow', $name, $data, $enabled, $conditions);
+        return $this->addEvent('\SHC\Event\Events\LightIntensityFallsBelow', $name, $data, $enabled, $conditions);
     }
 
     /**
@@ -696,7 +696,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent('\SHC\Event\Events\MoistureFallBelow', $name, $data, $enabled, $conditions);
+        return $this->addEvent('\SHC\Event\Events\MoistureFallsBelow', $name, $data, $enabled, $conditions);
     }
 
     /**
@@ -798,7 +798,7 @@ class EventEditor {
         );
 
         //Speichern
-        return $this->addEvent('\SHC\Event\Events\TemperatureFallBelow', $name, $data, $enabled, $conditions);
+        return $this->addEvent('\SHC\Event\Events\TemperatureFallsBelow', $name, $data, $enabled, $conditions);
     }
 
     /**

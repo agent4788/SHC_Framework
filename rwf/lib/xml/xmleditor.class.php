@@ -3,6 +3,7 @@
 namespace RWF\XML;
 
 //Imports
+use RWF\Util\FileUtil;
 use RWF\XML\Exception\XmlException;
 
 /**
@@ -74,22 +75,19 @@ class XmlEditor extends \SimpleXMLElement {
         //initialisieren
         self::initLibXml();
 
-        //pruefen ob die Datei existiert
-        if (!is_file($file)) {
+        //Daten einlesen
+        $xmlData = FileUtil::fileGetContentsWithLock($file);
 
-            throw new XmlException('Die XML Datei "' . $file . '" konnte nicht gefunden werden', 1101);
+        //fehlerpruefung
+        if ($xmlData === false) {
+
+            throw new XmlException('Fehler beim einlesen der Datei "' . $file . '"', 1101);
         }
 
         //Objekt erzeugen
-        try {
-
-            $xml = new XmlEditor($file, LIBXML_NOCDATA, true);
-            $xml->setFileName($file);
-            return $xml;
-        } catch (\Exception $e) {
-
-            throw new XmlException('Die XML Datei konnte nicht geladen werden', 1100, \libxml_get_errors());
-        }
+        $xmlEditor = self::createFromString($xmlData);
+        $xmlEditor->setFileName($file);
+        return $xmlEditor;
     }
 
     /**
@@ -198,7 +196,7 @@ class XmlEditor extends \SimpleXMLElement {
             //versuchen die Datei zu speichern
             $fileName = $this->fileName .'';
             unset($this->fileName);
-            if (!$this->asXML($fileName)) {
+            if (FileUtil::filePutContentsWithLock($fileName, $this->asXML()) === false) {
 
                 throw new XmlException('Die XML Datei konntenicht gespeichert werden', 1103, \libxml_get_errors());
             }

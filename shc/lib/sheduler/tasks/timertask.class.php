@@ -50,23 +50,25 @@ class TimerTask extends AbstractTask {
         //alle Elemente durchlaufen und Pruefen ob ausfuehrbar
         foreach ($switchables as $switchable) {
 
-            if($switchable instanceof Countdown && $switchable->isEnabled()) {
-                
-                //Pruefen ob Countdown abgelaufen
-                $switchOffTime = $switchable->getSwitchOffTime();
-                if($switchOffTime != new DateTime('2000-01-01 00:00:00') && ($switchOffTime->isPast() || $switchOffTime == DateTime::now())) {
-
-                    $switchable->switchOff();
-                    try {
-                        CommandSheduler::getInstance()->sendCommands();
-                    } catch(\Exception $e) {
-
-                    }
-                }                
-            } elseif($switchable instanceof Switchable && $switchable->isEnabled()) {
+            if($switchable instanceof Switchable && $switchable->isEnabled()) {
 
                 //Pruefen ob Schaltpunkte ausfuehrbar sind
                 $switchable->execute();
+
+                //Countdown pruefen ob abgelaufen
+                if($switchable instanceof Countdown) {
+
+                    $switchOffTime = $switchable->getSwitchOffTime();
+                    if($switchOffTime != new DateTime('2000-01-01 00:00:00') && ($switchOffTime->isPast() || $switchOffTime == DateTime::now())) {
+
+                        $switchable->switchOff();
+                        try {
+                            CommandSheduler::getInstance()->sendCommands();
+                        } catch(\Exception $e) {
+
+                        }
+                    }
+                }
             }
         }
 
