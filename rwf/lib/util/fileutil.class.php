@@ -9,7 +9,7 @@ namespace RWF\Util;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.0-0
+ * @version    2.0.3-0
  */
 class FileUtil {
 
@@ -845,6 +845,100 @@ class FileUtil {
 
         @closedir($dir);
         return null;
+    }
+
+    /**
+     * liest den Kompletten Inhalt einer Datei als Zeichenkette aus unter Verwendung von Locks
+     *
+     * @param  String  $file       Datei
+     * @param  Integer $maxRetries Maximale Anzahl an versuchen
+     * @return String
+     */
+    public static function fileGetContentsWithLock($file, $maxRetries = 100) {
+
+        //Initialisieren
+        $fileHandle = fopen($file, 'r');
+        $retries = 0;
+
+        //Fehler beim oeffnen
+        if($fileHandle === false) {
+
+            return false;
+        }
+
+        //auf Lock warten
+        if(!flock($fileHandle, LOCK_SH)) {
+
+            if($retries <= $maxRetries) {
+
+                usleep(rand(1, 10000));
+                $retries += 1;
+            } else {
+
+                //Lock nicht erhalten nach mehr als $maxRetries durchlaeufen
+                return false;
+            }
+        }
+
+        //Daten Lesen
+        $data = '';
+        while($row = fread($fileHandle, 2048)) {
+
+            $data .= $row;
+        }
+
+        //Lock loesen
+        flock($fileHandle, LOCK_UN);
+        fclose($fileHandle);
+
+        //Daten zurueckgeben
+        return $data;
+    }
+
+    /**
+     * schreibt den Inhalt einer Datei als Zeichenkette aus unter Verwendung von Locks
+     *
+     * @param  String  $file       Datei
+     * @param  String  $content    Inhalt
+     * @param  Integer $maxRetries Maximale Anzahl an versuchen
+     * @return Boolean
+     */
+    public static function filePutContentsWithLock($file, $content, $maxRetries = 100) {
+
+        //Initialisieren
+        $fileHandle = fopen($file, 'w');
+        $retries = 0;
+
+        //Fehler beim oeffnen
+        if($fileHandle === false) {
+
+            return false;
+        }
+
+        //auf Lock warten
+        if(!flock($fileHandle, LOCK_EX)) {
+
+            if($retries <= $maxRetries) {
+
+                usleep(rand(1, 10000));
+                $retries += 1;
+            } else {
+
+                //Lock nicht erhalten nach mehr als $maxRetries durchlaeufen
+                return false;
+            }
+        }
+
+        //Daten schreiben
+        ftruncate($fileHandle, 0);
+        fwrite($fileHandle, $content);
+
+        //Lock loesen
+        flock($fileHandle, LOCK_UN);
+        fclose($fileHandle);
+
+        //Daten zurueckgeben
+        return true;
     }
 
 }
