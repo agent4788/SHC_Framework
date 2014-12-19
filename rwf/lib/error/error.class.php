@@ -84,9 +84,10 @@ class Error {
      * @param String  $message
      * @param String  $file
      * @param Integer $line
-     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
+     * @param Array   $context
+     * @param String  $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    public function handlePhpError($type, $message, $file, $line, $logFile = 'error.log') {
+    public function handlePhpError($type, $message, $file, $line, $context = array(), $logFile = 'error.log') {
 
         //Fehler mit vorrangestelltem @ ignorieren
         if (ini_get('error_reporting') == 0) {
