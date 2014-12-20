@@ -29,6 +29,7 @@ $l['acp.acpinfo.box.version.jQuery'] = 'jQuery';
 $l['acp.acpinfo.box.version.jQueryUi'] = 'jQuery Ui';
 $l['acp.acpinfo.box.version.jQueryMobile'] = 'jQuery Mobile';
 $l['acp.acpinfo.box.version.mobileDetect'] = 'Mobile Detect';
+$l['acp.acpinfo.box.version.jQueryCookie'] = 'jQuery Cookie';
 
 //Schreibrechte
 $l['acp.acpinfo.box.writePremissions.allowed'] = 'schreibbar';
