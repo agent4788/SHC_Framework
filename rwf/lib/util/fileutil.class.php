@@ -867,7 +867,7 @@ class FileUtil {
         }
 
         //auf Lock warten
-        if(!flock($fileHandle, LOCK_SH | LOCK_NB)) {
+        while(!flock($fileHandle, LOCK_SH | LOCK_NB)) {
 
             if($retries <= $maxRetries) {
 
@@ -916,7 +916,7 @@ class FileUtil {
         }
 
         //auf Lock warten
-        if(!flock($fileHandle, LOCK_EX | LOCK_NB)) {
+        while(!flock($fileHandle, LOCK_EX | LOCK_NB)) {
 
             if($retries <= $maxRetries) {
 

@@ -236,7 +236,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $r->writeLn("\t\t" . 'Registrier einen neuen DHT22 Sensor');
         $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
         $r->writeLn("\t\t" . '<Typ> 11 für DHT11 und 22 für DHT22');
-        $r->writeLn("\t\t" . '<GPIO-PIN> Wiring Pi Pin [0 - 20]');
+        $r->writeLn("\t\t" . '<GPIO-PIN> BCMP Pin Nummer');
         $r->writeLn("\t\t" . '<Name> Optionale Name des Sensors');
         $r->writeLnColored("\t" . '-removeDHT <Sensor-ID>', 'yellow');
         $r->writeLn("\t\t" . 'löscht einen DHT Sensor');

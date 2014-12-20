@@ -13,17 +13,24 @@ $l = array();
 
 //Allgemein
 $l['acp.switchableManagement.title'] = 'Schaltbare Elemente verwalten';
+$l['acp.switchableManagement.radioSockets'] = 'Funksteckdosen';
+$l['acp.switchableManagement.gpios'] = 'GPIO\'s';
+$l['acp.switchableManagement.gpios.switchserver'] = 'Schaltserver:';
+$l['acp.switchableManagement.radioSockets.sysCode'] = 'Systemcode/Unit ID:';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
 $l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
 $l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
+$l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Gerätecode/ID';
+$l['acp.switchableManagement.elementTable.table.head.pin'] = 'Pin';
 
 //Buttons
 $l['acp.switchableManagement.button.listBoxes'] = 'Boxen verwalten';
 $l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Raumlose Elemente';
 $l['acp.switchableManagement.button.toggleCommand'] = 'Befehl umkehren';
 $l['acp.switchableManagement.button.deleteFormContainer'] = 'entfernen';
+$l['acp.switchableManagement.button.assignment'] = 'Belegung';
 $l['acp.switchableManagement.button.addElement'] = 'Element erstellen';
 $l['acp.switchableManagement.button.addBox'] = 'Box erstellen';
 $l['acp.switchableManagement.button.next'] = 'weiter';

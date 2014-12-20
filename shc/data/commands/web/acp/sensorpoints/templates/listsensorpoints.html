@@ -27,14 +27,28 @@
     </div>
     <div class="shc-view-buttons">
         <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
+            <button id="shc-view-button-back">{lang var="global.button.back"}</button>
+            <button id="shc-view-button-reload">{lang var="acpindex.reload"}</button>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
+    function onLoad() {
 
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.sensorpointsManagement.title"}');
         $('.shc-view-buttonSet').buttonset();
-    });
+
+        $('#shc-view-button-back').click(function() {
+            window.location = 'index.php?app=shc&page=acp';
+        });
+
+        $('#shc-view-button-reload').unbind( "click" );
+        $('#shc-view-button-reload').click(function() {
+            $.get("index.php?app=shc&ajax=listsensorpoints&hash=" + Math.floor(Math.random() * 11), function(data, textStatus, jqXHR) {
+                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                onLoad();
+            });
+        });
+    }
+    $(onLoad);
 </script>
