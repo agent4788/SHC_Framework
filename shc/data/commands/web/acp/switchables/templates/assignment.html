@@ -30,6 +30,8 @@
                         </table>
                         {/if}
                     {/foreach}
+                {foreachelse}
+                    <h2>{lang var='acpindex.emptyList'}</h2>
                 {/foreach}
             </div>
             <div id="shc-view-gpios">
@@ -59,6 +61,8 @@
                             </table>
                         {/if}
                     {/foreach}
+                {foreachelse}
+                    <h2>{lang var='acpindex.emptyList'}</h2>
                 {/foreach}
             </div>
         </div>
