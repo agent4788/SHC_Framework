@@ -3,6 +3,7 @@
 namespace SHC\Event;
 
 //Imports
+use RWF\Date\DateTime;
 use RWF\Util\String;
 use RWF\XML\XmlFileManager;
 use SHC\Condition\Condition;
@@ -189,7 +190,7 @@ class EventEditor {
 
             /* @var $eventObj \SHC\Event\Event */
             $eventObj = new $class(
-                (int) $event->id, (string) $event->name, $data, ((int) $event->enabled == 1 ? true : false)
+                (int) $event->id, (string) $event->name, $data, ((int) $event->enabled == 1 ? true : false), DateTime::createFromDatabaseDateTime((string) $event->lastExecute)
             );
 
             //Bedingungen anhaengen
@@ -338,6 +339,7 @@ class EventEditor {
         $condition->addChild('name', $name);
         $condition->addChild('enabled', ($enabled == true ? 1 : 0));
         $condition->addChild('conditions', implode(',', $conditions));
+        $condition->addChild('lastExecute', '2000-01-01 00:00:00');
 
         //Daten hinzufuegen
         foreach ($data as $tag => $value) {
@@ -410,6 +412,34 @@ class EventEditor {
                         }
                     }
                 }
+
+                //Daten Speichern
+                $xml->save();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Speichert den Zeitpunkt der letzten Ausfuehrung fuer ein Ereignis
+     *
+     * @param  Integer            $id          Ereignis ID
+     * @param  \RWF\Date\DateTime $lastExecute letzte Ausfuehrung
+     * @return Boolean
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    public function updateLastExecute($id, DateTime $lastExecute) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+
+        //Server Suchen
+        foreach ($xml->event as $event) {
+
+            if ((int) $event->id == $id) {
+
+                $event->lastExecute = $lastExecute->getDatabaseDateTime();
 
                 //Daten Speichern
                 $xml->save();

@@ -74,19 +74,28 @@ abstract class AbstractEvent implements Event {
      * @var Array
      */
     protected $state = array();
+
+    /**
+     * Zeitpunkt ver letzten Ausfuehrung
+     *
+     * @var \RWF\Date\DateTime
+     */
+    protected $lastExecute = null;
     
     /**
-     * @param Integer $id      ID
-     * @param String  $name    Name
-     * @param Array   $data    Daten
-     * @param Boolean $enabled Aktiv
+     * @param Integer            $id          ID
+     * @param String             $name        Name
+     * @param Array              $data        Daten
+     * @param Boolean            $enabled     Aktiv
+     * @param \RWF\Date\DateTime $lastExecute letzte Ausfuehrung
      */
-    public function __construct($id, $name, array $data = array(), $enabled = true) {
+    public function __construct($id, $name, array $data = array(), $enabled = true, DateTime $lastExecute = null) {
         
         $this->id = $id;
         $this->name = $name;
         $this->data = $data;
         $this->enable($enabled);
+        $this->lastExecute = $lastExecute;
     }
     
     /**
@@ -226,6 +235,26 @@ abstract class AbstractEvent implements Event {
 
         return $this->enabled;
     }
+
+    /**
+     * setzt den Zeitpunkt der letzten Ausfuehrung
+     *
+     * @param \RWF\Date\DateTime $lastExecute
+     */
+    public function setLastExecute(DateTime $lastExecute) {
+
+        $this->lastExecute = $lastExecute;
+    }
+
+    /**
+     * gibt den Zeitpunkt der letzten Ausfuehrung zuruck
+     *
+     * @return \RWF\Date\DateTime
+     */
+    public function getLastExecute() {
+
+        return $this->lastExecute;
+    }
     
     /**
      * fuegt eine Bedingung hinzu
@@ -347,6 +376,8 @@ abstract class AbstractEvent implements Event {
         //Befehle senden
         try {
             CommandSheduler::getInstance()->sendCommands();
+            $this->lastExecute = DateTime::now();
+            EventEditor::getInstance()->updateLastExecute($this->getId(), $this->getLastExecute());
         } catch(\Exception $e) {
             RWF::getResponse()->writeLnColored('Fehler beim Senden : '. $e->getMessage() .' - '. $e->getCode(), 'red');
         }

@@ -17,6 +17,8 @@ $l['acp.eventsManagement.title'] = 'Ereignisse verwalten';
 //Ereignisse uebersicht
 $l['acp.eventsManagement.eventList.table.head.name'] = 'Name';
 $l['acp.eventsManagement.eventList.table.head.type'] = 'Typ';
+$l['acp.eventsManagement.eventList.table.head.lastExecute'] = 'letzte Ausführung';
+$l['acp.eventsManagement.eventList.table.head.never'] = 'nie';
 
 //Buttons
 $l['acp.eventsManagement.button.next'] = 'weiter';
