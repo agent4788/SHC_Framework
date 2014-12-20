@@ -38,6 +38,7 @@
         $('#shc-view-button-backup').click(function() {
 
             //Progressbar Anzeigen solange das Backup erstellt wird
+            $('#shc-view-button-backup').css('display', 'none');
             $('#shc-view-backupContent').html('<div id="shc-view-runningDialog-progress"></div>');
             $("#shc-view-runningDialog-progress").progressbar({
                 value: false
