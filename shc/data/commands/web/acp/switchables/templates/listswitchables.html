@@ -168,6 +168,10 @@
                                                     </td>
                                                 </tr>
                                                 {/instanceof}
+                                                {foreachelse}
+                                                <tr>
+                                                    <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                                                </tr>
                                                 {/foreach}
                                             </tbody>
                                         </table>
@@ -175,6 +179,10 @@
                                 </td>
                             </tr>
                             {/instanceof}
+                            {foreachelse}
+                            <tr>
+                                <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                            </tr>
                             {/foreach}
                         </tbody>
                     </table>
@@ -205,8 +213,16 @@
 
     $(function() {
 
+        $("#shc-view-switchableManagement-tabs").tabs({
+            active   : $.cookie('activeTabSwitchables'),
+            activate : function( event, ui ){
+                $.cookie( 'activeTabSwitchables', ui.newTab.index(),{
+                    expires : 10
+                });
+            }
+        });
+
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
-        $('#shc-view-switchableManagement-tabs').tabs();
         $('.shc-view-buttonSet').buttonset();
         $('.shc-view-buttons-add').tooltip();
 
