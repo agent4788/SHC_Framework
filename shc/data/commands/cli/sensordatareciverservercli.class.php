@@ -33,7 +33,7 @@ class SensorDataReciverServerCli extends CliCommand {
      * 
      * @var String 
      */
-    protected $fullParam = '--sensorreciver';
+    protected $fullParam = '--sensorreceiver';
 
     /**
      * Debug Modus aktiv
@@ -55,7 +55,7 @@ class SensorDataReciverServerCli extends CliCommand {
         ob_implicit_flush();
 
         //Sprache einbinden
-        RWF::getLanguage()->loadModul('SensorReciver');
+        RWF::getLanguage()->loadModul('SensorReceiver');
 
         //Debug aktivieren
         if (in_array('-d', $argv) || in_array('--debug', $argv)) {
@@ -93,9 +93,9 @@ class SensorDataReciverServerCli extends CliCommand {
     public function writeHelp() {
 
         $r = RWF::getResponse();
-        $r->writeLnColored('-sr oder --sensorreciver startet den Sensor Reciver Server', 'green_u');
+        $r->writeLnColored('-sr oder --sensorreceiver startet den Sensor Receiver Server', 'green_u');
         $r->writeLn('');
-        $r->writeLn('Der Sensor Reciver Server empfängt die Sensordaten von Sensoren die am gleichen oder an anderen RPi angeschlossen sind.');
+        $r->writeLn('Der Sensor Receiver Server empfängt die Sensordaten von Sensoren die am gleichen oder an anderen RPi angeschlossen sind.');
         $r->writeLn('Dieser Dienst wird nur benötigt wenn Sensoren die an einem RPi angeschlossen sind verwendet werden.');
         $r->writeLn('In den Standardeinstellungen ist dieser Dienst deaktiviert.');
         $r->writeLn('');
@@ -286,7 +286,7 @@ class SensorDataReciverServerCli extends CliCommand {
         //pruefen on Server aktiviert
         if (!RWF::getSetting('shc.sensorReciver.active')) {
 
-            throw new \Exception('Der Sensor Reciver wurde deaktiviert', 1600);
+            throw new \Exception('Der Sensor Receiver wurde deaktiviert', 1600);
         }
 
         $sensorReciver = new SensorDataReciverSocket();
