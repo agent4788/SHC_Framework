@@ -9,7 +9,9 @@
                 {foreach from=$radioSockets item='radioSocketGroup'}
                     {foreach from=$radioSocketGroup item='radioSocket' name='radioSockets'}
                         {if $tpl.foreach.radioSockets.first}
+                        <br/>
                         <h2>{lang var='acp.switchableManagement.radioSockets.sysCode'} {$radioSocket.sysCodeBin} ({$radioSocket.sysCodeDec})</h2>
+                        <hr/>
                         <table class="shc-view-contentTable">
                             <thead>
                                 <tr>
@@ -34,7 +36,9 @@
                 {foreach from=$gpios item='gpioGroup'}
                     {foreach from=$gpioGroup item='gpio' name='gpios'}
                         {if $tpl.foreach.gpios.first}
+                            <br/>
                             <h2>{lang var='acp.switchableManagement.gpios.switchserver'} {#$gpio.switchServer}</h2>
+                            <hr/>
                             <table class="shc-view-contentTable">
                                 <thead>
                                     <tr>
