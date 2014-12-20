@@ -29,7 +29,14 @@
         <script type="text/javascript">
             $(function () {
 
-                $('#shc-content-tabs').tabs();
+                $("#shc-content-tabs").tabs({
+                    active   : $.cookie('activeTabMainView'),
+                    activate : function( event, ui ){
+                        $.cookie( 'activeTabMainView', ui.newTab.index(),{
+                            expires : 10
+                        });
+                    }
+                });
 
             });
 

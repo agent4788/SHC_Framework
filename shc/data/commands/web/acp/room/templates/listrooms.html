@@ -22,6 +22,10 @@
                         <input type="hidden" name="roomOrder[{$room->getId()}]" value="{$room->getOrderId()}" />
                     </td>
                 </tr>
+                {foreachelse}
+                <tr>
+                    <td colspan="2">{lang var='acpindex.emptyList'}</td>
+                </tr>
                 {/foreach}
                 </tbody>
             </table>

@@ -188,7 +188,7 @@ class BackupEditor {
 
                 if(file_exists($this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '_' . $i . '.zip')) {
 
-                    continue;;
+                    continue;
                 } else {
 
                     $filename = $this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '_' . $i . '.zip';
@@ -206,7 +206,7 @@ class BackupEditor {
         }
 
         $zip = new \ZipArchive();
-        if ($zip->open($filename, \ZIPARCHIVE::CREATE) === true) {
+        if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
 
             if($this->addDir($zip, PATH_BASE, '', $ignoreHiddenFiles)) {
 
@@ -227,7 +227,7 @@ class BackupEditor {
      * @return Boolean
      */
     protected function addDir($zip, $path, $innerArchivePath = '', $ignoreHiddenFiles = false) {
-
+;
         //Ordner existiert nicht
         if (!@is_dir($path) || FileUtil::addTrailigSlash($innerArchivePath) == FileUtil::addTrailigSlash(str_replace(PATH_BASE, '', $this->backupPath))) {
 

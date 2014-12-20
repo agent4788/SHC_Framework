@@ -62,6 +62,10 @@
                         </td>
                     </tr>
                     {/instanceof}
+                    {foreachelse}
+                    <tr>
+                        <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                    </tr>
                     {/foreach}
                     </tbody>
                 </table>

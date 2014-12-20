@@ -57,6 +57,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
 
         //Jahr
         $year = new SelectMultiple('year');
+        $year->setOptions(array('size' => 8));
         $values = array();
         $values['*'] = array(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.year.every'), (($switchPoint instanceof SwitchPoint && in_array('*', $switchPoint->getYear())) || !$switchPoint instanceof SwitchPoint ? 1 : 0));
         foreach(range(DateTime::now()->getYear(), DateTime::now()->getYear() + 20) as $i) {
@@ -71,6 +72,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
 
         //Monat
         $month = new SelectMultiple('month');
+        $month->setOptions(array('size' => 8));
         $values = array();
         $values['*'] = array(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.month.every'), (($switchPoint instanceof SwitchPoint && in_array('*', $switchPoint->getMonth())) || !$switchPoint instanceof SwitchPoint ? 1 : 0));
         foreach(range(1, 12) as $i) {
@@ -85,6 +87,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
 
         //Tag
         $day = new SelectMultiple('day');
+        $day->setOptions(array('size' => 8));
         $values = array();
         $values['*'] = array(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.day.every'), (($switchPoint instanceof SwitchPoint && in_array('*', $switchPoint->getDay())) || !$switchPoint instanceof SwitchPoint ? 1 : 0));
         $values['mon'] = array(RWF::getLanguage()->get('global.date.weekDay.mon'), ($switchPoint instanceof SwitchPoint && in_array('mon', $switchPoint->getDay())? 1 : 0));
@@ -106,6 +109,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
 
         //Stunde
         $hour = new SelectMultiple('hour');
+        $hour->setOptions(array('size' => 8));
         $values = array();
         $values['*'] = array(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.hour.every'), (($switchPoint instanceof SwitchPoint && in_array('*', $switchPoint->getHour())) || !$switchPoint instanceof SwitchPoint ? 1 : 0));
         foreach(range(0, 23) as $i) {
@@ -120,6 +124,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
 
         //Minute
         $minute = new SelectMultiple('minute');
+        $minute->setOptions(array('size' => 8));
         $values = array();
         $values['*'] = array(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.minute.every'), (($switchPoint instanceof SwitchPoint && in_array('*', $switchPoint->getMinute())) || !$switchPoint instanceof SwitchPoint ? 1 : 0));
         foreach(range(0, 59) as $i) {

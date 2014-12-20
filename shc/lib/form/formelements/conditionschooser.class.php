@@ -35,7 +35,8 @@ class ConditionsChooser extends SelectMultipleWithEmptyElement {
 
         //Optionen setzen
         $options = array(
-            'emptySelected' => false
+            'emptySelected' => false,
+            'size' => 10
         );
         if(!count($conditionsIDs) || (isset($conditionsIDs[0]) && $conditionsIDs[0] == '')) {
 

@@ -34,7 +34,8 @@ class SwitchPointsChooser extends SelectMultipleWithEmptyElement {
 
         //Optionen setzen
         $options = array(
-            'emptySelected' => false
+            'emptySelected' => false,
+            'size' => 10
         );
         if(!count($switchPointIds) || (isset($switchPointIds[0]) && $switchPointIds[0] == '')) {
 

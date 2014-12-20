@@ -103,7 +103,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $type = intval($argv[5]);
             $pin = intval($argv[6]);
 
-            if($id < 0 || $id > 999 || !in_array($type, array(11, 22, 2302)) || $pin < 0 || $pin > 20) {
+            if($id < 0 || $id > 999 || !in_array($type, array(11, 22, 2302)) || $pin < 0 || $pin > 50) {
 
                 $this->response->writeLnColored('Fasches Format, verwende folgendes Format:', 'red');
                 $this->response->writeLnColored('php index.php app=shc -addDHT <id (0-999)> <typ (11|22|2302)> <pin (BCMP Pin Nummer)>', 'yellow');
@@ -236,7 +236,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $r->writeLn("\t\t" . 'Registrier einen neuen DHT22 Sensor');
         $r->writeLn("\t\t" . '<Sensor-ID> Eindeutige Sensor ID');
         $r->writeLn("\t\t" . '<Typ> 11 für DHT11 und 22 für DHT22');
-        $r->writeLn("\t\t" . '<GPIO-PIN> Wiring Pi Pin [0 - 20]');
+        $r->writeLn("\t\t" . '<GPIO-PIN> BCMP Pin Nummer');
         $r->writeLn("\t\t" . '<Name> Optionale Name des Sensors');
         $r->writeLnColored("\t" . '-removeDHT <Sensor-ID>', 'yellow');
         $r->writeLn("\t\t" . 'löscht einen DHT Sensor');

@@ -1,0 +1,83 @@
+<div>
+    <div class="shc-view-content">
+        <div id="shc-view-tabs">
+            <ul>
+                <li><a href="#shc-view-radioSockets">{lang var='acp.switchableManagement.radioSockets'}</a></li>
+                <li><a href="#shc-view-gpios">{lang var='acp.switchableManagement.gpios'}</a></li>
+            </ul>
+            <div id="shc-view-radioSockets">
+                {foreach from=$radioSockets item='radioSocketGroup'}
+                    {foreach from=$radioSocketGroup item='radioSocket' name='radioSockets'}
+                        {if $tpl.foreach.radioSockets.first}
+                        <br/>
+                        <h2>{lang var='acp.switchableManagement.radioSockets.sysCode'} {$radioSocket.sysCodeBin} ({$radioSocket.sysCodeDec})</h2>
+                        <hr/>
+                        <table class="shc-view-contentTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">{lang var='acp.switchableManagement.elementTable.table.head.devCode'}</th>
+                                    <th style="width: 80%;">{lang var='acp.switchableManagement.elementTable.table.head.name'}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/if}
+                                <tr>
+                                    <td>{$radioSocket.devCode}</td>
+                                    <td>{#$radioSocket.name} ({#$radioSocket.room})</td>
+                                </tr>
+                                {if $tpl.foreach.radioSockets.last}
+                            </tbody>
+                        </table>
+                        {/if}
+                    {/foreach}
+                {foreachelse}
+                    <h2>{lang var='acpindex.emptyList'}</h2>
+                {/foreach}
+            </div>
+            <div id="shc-view-gpios">
+                {foreach from=$gpios item='gpioGroup'}
+                    {foreach from=$gpioGroup item='gpio' name='gpios'}
+                        {if $tpl.foreach.gpios.first}
+                            <br/>
+                            <h2>{lang var='acp.switchableManagement.gpios.switchserver'} {#$gpio.switchServer}</h2>
+                            <hr/>
+                            <table class="shc-view-contentTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">{lang var='acp.switchableManagement.elementTable.table.head.pin'}</th>
+                                        <th style="width: 20%;">{lang var='acp.switchableManagement.elementTable.table.head.type'}</th>
+                                        <th style="width: 60%;">{lang var='acp.switchableManagement.elementTable.table.head.name'}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        {/if}
+                                    <tr>
+                                        <td>{$gpio.pin}</td>
+                                        <td>{#$gpio.type}</td>
+                                        <td>{#$gpio.name} ({#$gpio.room})</td>
+                                    </tr>
+                        {if $tpl.foreach.gpios.last}
+                                </tbody>
+                            </table>
+                        {/if}
+                    {/foreach}
+                {foreachelse}
+                    <h2>{lang var='acpindex.emptyList'}</h2>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="shc-view-buttons">
+        <div class="shc-view-buttonSet">
+            {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
+        $('.shc-view-buttonSet').buttonset();
+        $('#shc-view-tabs').tabs();
+    });
+</script>

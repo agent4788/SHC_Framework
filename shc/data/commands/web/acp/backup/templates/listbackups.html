@@ -1,6 +1,6 @@
 {* Liste aller Backups *}
 <div>
-    <div class="shc-view-content">
+    <div class="shc-view-content" id="shc-view-backupContent">
         <table class="shc-view-contentTable">
             <thead>
             <tr>
@@ -18,6 +18,10 @@
                     {deletelink link='index.php?app=shc&ajax=deletebackup&id=' id=$backup->getHash() prompt='acp.backupsManagement.prompt.deleteBackup' title='acp.backupsManagement.prompt.deleteBackup.title'}
                 </td>
             </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="3">{lang var='acpindex.emptyList'}</td>
+            </tr>
             {/foreach}
             </tbody>
         </table>
@@ -25,7 +29,7 @@
     <div class="shc-view-buttons">
         <div class="shc-view-buttonSet">
             {acpbackbutton location="index.php?app=shc&page=acp"}
-            {acpbutton link="index.php?app=shc&ajax=makebackup" text="acp.backupsManagement.button.makeBackup"}
+            <button id="shc-view-button-backup">{lang var="acp.backupsManagement.button.makeBackup"}</button>
         </div>
     </div>
 </div>
@@ -34,5 +38,20 @@
 
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.backupsManagement.title"}');
         $('.shc-view-buttonSet').buttonset();
+
+        $('#shc-view-button-backup').click(function() {
+
+            //Progressbar Anzeigen solange das Backup erstellt wird
+            $('#shc-view-button-backup').css('display', 'none');
+            $('#shc-view-backupContent').html('<div id="shc-view-runningDialog-progress"></div>');
+            $("#shc-view-runningDialog-progress").progressbar({
+                value: false
+            });
+
+            //Ajax Anfrage Senden
+            $.get("index.php?app=shc&ajax=makebackup", function(data, textStatus, jqXHR) {
+                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+            });
+        });
     });
 </script>

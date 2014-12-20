@@ -34,7 +34,7 @@ class MakeBackupAjax extends AjaxCommand {
     public function processData() {
 
         $message = new Message();
-        if(BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP)->makeBackup(false)) {
+        if(BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP)->makeBackup(true)) {
 
             $message->setType(Message::SUCCESSFULLY);
             $message->setMessage(RWF::getLanguage()->get('acp.backupsManagement.success.makeBackup'));
