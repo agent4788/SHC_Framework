@@ -210,16 +210,16 @@ class RWF {
      */
     protected function initTemplate() {
 
-        $prefix = 'web_';
+        $prefix = APP_NAME . '_web_';
         if(RWF_DEVICE == 'smartphone') {
 
-            $prefix = 'smartphone_';
+            $prefix = APP_NAME . '_smartphone_';
         } elseif(RWF_DEVICE == 'tablet') {
 
-            $prefix = 'tablet_';
+            $prefix = APP_NAME . '_tablet_';
         } elseif(RWF_DEVICE == 'all') {
 
-            $prefix = 'all_';
+            $prefix = APP_NAME . '_all_';
         }
 
         self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, $prefix, DEVELOPMENT_MODE);
