@@ -1,0 +1,29 @@
+/* Systemzeit */
+span.pcc-icon-time {
+     background-image: url(../../../img/icons/uptime.png);
+}
+
+span.pcc-icon-bootTime {
+    background-image: url(../../../img/icons/bootTime.png);
+}
+
+/* System */
+span.pcc-icon-coreAvg {
+    background-image: url(../../../img/icons/coreAvg.png);
+}
+
+span.pcc-icon-coreClock {
+    background-image: url(../../../img/icons/coreClock.png);
+}
+
+span.pcc-icon-coreTemp {
+    background-image: url(../../../img/icons/coreTemp.png);
+}
+
+span.pcc-icon-memory {
+    background-image: url(../../../img/icons/memory.png);
+}
+
+span.pcc-icon-swap {
+    background-image: url(../../../img/icons/swap.png);
+}

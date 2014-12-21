@@ -375,10 +375,20 @@ table.pcc-view-contentTable {
 }
 
 table.pcc-view-contentTable th {
-    background: #86b5d9 url(./images/ui-bg_highlight-soft_44_444444_1x100.png) repeat-x center;
+    background: #86b5d9 url(./images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) repeat-x center;
     border-right: 1px solid #E0E0E0;
     border-top: 1px solid #DDE1E5;
     color: #ffffff;
+    font-weight: normal;
+    padding: 5px;
+    text-align: left;
+}
+
+table.pcc-view-contentTable-sys th {
+    background: #F2F2F2;
+    border-right: 1px solid #E0E0E0;
+    border-top: 1px solid #DDE1E5;
+    color: #949494;
     font-weight: normal;
     padding: 5px;
     text-align: left;
@@ -402,6 +412,26 @@ tr.pcc-view-contentTable-sortable-placeholder td {
 table.pcc-view-contentTable tfoot td {
     background: #86b5d9 url(./images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) repeat-x center;
     font-weight: bold;
+}
+
+table.pcc-view-contentTable-sys tfoot td {
+    background: #DCDCDC;
+    font-weight: bold;
+}
+
+div.storage_progress {
+    height: 15px;
+    width: 200px;
+    display: inline-block;
+    margin: 2px;
+}
+
+div.content_box_collapsable_progress {
+    height: 20px;
+    width: 250px;
+    display: inline-block;
+    position: relative;
+    top: 6px;
 }
 
 /* Buttonleiste */

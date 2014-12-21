@@ -10,7 +10,26 @@
     <body>
         {include file='headline.html'}
         <div id="pcc-content">
-
+            <div id="pcc-content-tabs">
+                <ul>
+                    <li><a href="index.php?app=pcc&ajax=state">{lang var='index.tabs.state'}</a></li>
+                    <li><a href="index.php?app=pcc&ajax=data">{lang var='index.tabs.data'}</a></li>
+                </ul>
+            </div>
         </div>
+        <script type="text/javascript">
+            $(function () {
+
+                $("#pcc-content-tabs").tabs({
+                    active   : $.cookie('activeTabMainViewPCC'),
+                    activate : function( event, ui ){
+                        $.cookie( 'activeTabMainViewPCC', ui.newTab.index(),{
+                            expires : 10
+                        });
+                    }
+                });
+
+            });
+        </script>
     </body>
 </html>
