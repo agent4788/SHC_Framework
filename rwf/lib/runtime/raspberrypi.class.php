@@ -3,6 +3,8 @@
 namespace RWF\Runtime;
 
 //Imports
+use RWF\Util\FileUtil;
+use RWF\Util\String;
 
 /**
  * liest Raspberry Pi spezifische Daten vom System aus
@@ -927,7 +929,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['osName'])) {
 
-            $files = FileUtil::listDirFiles('/etc');
+            $files = FileUtil::listDirectoryFiles('/etc');
 
             foreach ($files as $file) {
 

@@ -21,6 +21,7 @@ $l['global.no.short'] = 'n';
 $l['global.on'] = 'an';
 $l['global.off'] = 'aus';
 $l['global.toggle'] = 'umschalten';
+$l['global.unknown'] = 'unbekannt';
 
 //Datum
 $l['global.date.tomorrow'] = 'morgen';

@@ -69,3 +69,35 @@ $l['index.box.wlan.speed'] = 'Übertragungsrate';
 $l['index.box.wlan.quality'] = 'Signalstärke';
 $l['index.box.wlan.notConnected'] = 'nicht Verbunden';
 
+$l['index.box.os.title'] = 'Betriebssytem';
+$l['index.box.os.os'] = 'Betriebssytem';
+$l['index.box.os.kernel'] = 'Kernel Version';
+$l['index.box.os.firmware'] = 'Firmware Version';
+$l['index.box.os.hostname'] = 'Hostanme';
+$l['index.box.os.ramSplit'] = 'Speicheraufteilung';
+$l['index.box.os.ramSplit.ram'] = 'System';
+$l['index.box.os.ramSplit.video'] = 'Video';
+
+$l['index.box.data.title'] = 'Systemdaten';
+$l['index.box.data.core'] = 'CPU';
+$l['index.box.data.overclock'] = 'Overclock';
+$l['index.box.data.overclock.cpu'] = 'CPU';
+$l['index.box.data.overclock.gpu'] = 'GPU';
+$l['index.box.data.overclock.ram'] = 'Ram';
+$l['index.box.data.overclock.voltage'] = 'Spannung';
+$l['index.box.data.coreFeatures'] = 'CPU Eigenschaften';
+$l['index.box.data.serial'] = 'Seriennummer';
+$l['index.box.data.revision'] = 'Revision';
+$l['index.box.data.usbCurrent'] = 'USB Strom';
+
+$l['index.box.video.title'] = 'Video Lizenzen';
+$l['index.box.video.h264'] = 'h264';
+$l['index.box.video.mpeg2'] = 'MPEG2';
+$l['index.box.video.vc1'] = 'VC-1';
+$l['index.box.video.active'] = 'aktiviert';
+$l['index.box.video.inactive'] = 'deaktiviert';
+
+$l['index.box.usb.title'] = 'USB Geräte';
+$l['index.box.usb.count'] = 'Anzahl';
+$l['index.box.usb.class'] = 'Geräte Klasse';
+$l['index.box.usb.current'] = 'max. Stromaufnahme';

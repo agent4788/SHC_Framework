@@ -27,3 +27,56 @@ span.pcc-icon-memory {
 span.pcc-icon-swap {
     background-image: url(../../../img/icons/swap.png);
 }
+
+/* Daten */
+span.pcc-icon-os {
+    background-image: url(../../../img/icons/os.png);
+}
+
+span.pcc-icon-kernel {
+    background-image: url(../../../img/icons/kernel.png);
+}
+
+span.pcc-icon-firmware {
+    background-image: url(../../../img/icons/firmware.png);
+}
+
+span.pcc-icon-hostname {
+    background-image: url(../../../img/icons/hostname.png);
+}
+
+span.pcc-icon-ramSplit {
+    background-image: url(../../../img/icons/ramSplit.png);
+}
+
+/* Systemdaten */
+
+span.pcc-icon-core {
+    background-image: url(../../../img/icons/core.png);
+}
+
+span.pcc-icon-overclock {
+    background-image: url(../../../img/icons/overcklock.png);
+}
+
+span.pcc-icon-coreFeatures {
+    background-image: url(../../../img/icons/coreFeatures.png);
+}
+
+span.pcc-icon-serial {
+    background-image: url(../../../img/icons/serial.png);
+}
+
+span.pcc-icon-revision {
+    background-image: url(../../../img/icons/revision.png);
+}
+
+span.pcc-icon-usbCurrent {
+    background-image: url(../../../img/icons/usbCurrent.png);
+}
+
+/* Video Lizenzen*/
+
+span.pcc-icon-video {
+    background-image: url(../../../img/icons/video.png);
+}
