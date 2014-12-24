@@ -1,0 +1,18 @@
+{* Benutzer loeschen Formular *}
+<div>
+    <div class="pcc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="pcc-view-buttons">
+        <div class="pcc-view-buttonSet">
+            {acpbackbutton link="index.php?app=pcc&ajax=listusers"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#pcc-view-acp-contentBox .pcc-contentbox-header').text('{lang var="acp.userManagement.title"}');
+        $('.pcc-view-buttonSet').buttonset();
+    });
+</script>

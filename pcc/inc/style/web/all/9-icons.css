@@ -80,3 +80,12 @@ span.pcc-icon-usbCurrent {
 span.pcc-icon-video {
     background-image: url(../../../img/icons/video.png);
 }
+
+/* ACP Menue */
+span#pcc-view-acp-menu-usermanagement {
+    background-image: url(../../../img/acpmenue/usermanagement.png);
+}
+
+span#pcc-view-acp-menu-settings {
+    background-image: url(../../../img/acpmenue/settings.png);
+}

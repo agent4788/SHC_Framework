@@ -21,7 +21,7 @@ class RebootAction extends ActionCommand {
      *
      * @var String
      */
-    protected $requiredPremission = 'shc.ucp.reboot';
+    protected $requiredPremission = 'pcc.ucp.reboot';
 
     /**
      * Ziel nach dem ausfuehren

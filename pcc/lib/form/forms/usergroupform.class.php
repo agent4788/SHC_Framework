@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Form\Forms;
+namespace PCC\Form\Forms;
 
 //Imports
 use RWF\Core\RWF;
@@ -57,14 +57,14 @@ class UserGroupForm extends TabbedHtmlForm {
         //Rechte Ja/Nein Auswahl erstellen
         foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
-            if(preg_match('#^shc\.#', $premissionName)) {
+            if(preg_match('#^pcc\.#', $premissionName)) {
 
                 $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPremission($premissionName) : false));
                 $yesNoOption->setTitle(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName));
                 $yesNoOption->setDescription(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName .'.description'));
                 $yesNoOption->requiredField(true);
 
-                if(preg_match('#^shc\.ucp.#', $premissionName)) {
+                if(preg_match('#^pcc\.ucp\.#', $premissionName)) {
 
                     $this->addFormElementToTab('userPremissions', $yesNoOption);
                 } else {

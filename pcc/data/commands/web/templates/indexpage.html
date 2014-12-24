@@ -12,8 +12,12 @@
         <div id="pcc-content">
             <div id="pcc-content-tabs">
                 <ul>
+                    {premission premission='pcc.ucp.viewSysState'}
                     <li><a href="index.php?app=pcc&ajax=state">{lang var='index.tabs.state'}</a></li>
+                    {/premission}
+                    {premission premission='pcc.ucp.viewSysData'}
                     <li><a href="index.php?app=pcc&ajax=data">{lang var='index.tabs.data'}</a></li>
+                    {/premission}
                 </ul>
             </div>
         </div>

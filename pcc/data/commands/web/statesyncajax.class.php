@@ -23,7 +23,7 @@ use RWF\Util\TimeUtil;
  */
 class StateSyncAjax extends AjaxCommand {
 
-    protected $premission = '';
+    protected $premission = 'pcc.ucp.viewSysState';
 
     /**
      * Sprachpakete die geladen werden sollen
