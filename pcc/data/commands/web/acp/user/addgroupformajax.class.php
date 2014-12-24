@@ -39,7 +39,7 @@ class AddGroupFormAjax extends AjaxCommand {
 
         //Formular erstellen
         $groupForm = new UserGroupForm();
-        $groupForm->addId('shc-view-form-addGroup');
+        $groupForm->addId('pcc-view-form-addGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 

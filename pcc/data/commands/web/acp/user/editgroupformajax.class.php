@@ -54,7 +54,7 @@ class EditGroupFormAjax extends AjaxCommand {
 
         //Formular erstellen
         $groupForm = new UserGroupForm($group);
-        $groupForm->addId('shc-view-form-editGroup');
+        $groupForm->addId('pcc-view-form-editGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 

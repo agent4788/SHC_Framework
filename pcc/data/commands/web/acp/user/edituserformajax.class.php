@@ -55,7 +55,7 @@ class EditUserFormAjax extends AjaxCommand {
 
         //Formular erstellen
         $userForm = new UserForm($user);
-        $userForm->addId('shc-view-form-editUser');
+        $userForm->addId('pcc-view-form-editUser');
         $userForm->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.editDescription'));
 
         //Eingaben pruefen

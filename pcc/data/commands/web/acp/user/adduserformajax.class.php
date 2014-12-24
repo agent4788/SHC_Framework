@@ -36,7 +36,7 @@ class AddUserFormAjax extends AjaxCommand {
     public function processData() {
 
         $userForm = new UserForm();
-        $userForm->addId('shc-view-form-addUser');
+        $userForm->addId('pcc-view-form-addUser');
 
         //Eingaben pruefen
         $valid = true;
