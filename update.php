@@ -34,7 +34,7 @@ if(file_exists(__DIR__ .'/shc/data/storage/events.xml')) {
 // Update v2.0.3 auf v2.2.0 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $content = file_get_contents('./shc/app.json');
-str_replace('"installed": false', '"installed": true', $content);
+str_replace('false', 'true', $content);
 file_put_contents('./shc/app.json', $content);
 
 print("Update erfolgreich\n");

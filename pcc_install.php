@@ -21,6 +21,16 @@ function addSetting($name, $value, $type) {
 
     global $settingsXml;
 
+    //pruefen ob Einstellung schon vorhanden
+    foreach($settingsXml->setting as $setting) {
+
+        $attr = $setting->attributes();
+        if($attr->name == $name) {
+
+            return;
+        }
+    }
+
     $setting = $settingsXml->addChild('setting');
     $setting->addAttribute('name', $name);
     $setting->addAttribute('value', $value);
@@ -28,6 +38,16 @@ function addSetting($name, $value, $type) {
 }
 
 function addPremission($xml, $name, $value) {
+
+    //pruefen ob Recht schon vorhanden
+    foreach($xml->premission as $premission) {
+
+        $attr = $premission->attributes();
+        if($attr->name == $name) {
+
+            return;
+        }
+    }
 
     $premission = $xml->addChild('premission');
     $premission->addAttribute('name', $name);
@@ -120,7 +140,7 @@ if($newXml === true) {
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $content = file_get_contents('./pcc/app.json');
-str_replace('"installed": false', '"installed": true', $content);
+str_replace('false', 'true', $content);
 file_put_contents('./pcc/app.json', $content);
 
 print("PCC erfolgreich installiert\n");
