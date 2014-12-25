@@ -186,7 +186,7 @@ $usersXml->asXML('./rwf/data/storage/users.xml');
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $content = file_get_contents('./shc/app.json');
-str_replace('false', 'true', $content);
+$content = str_replace('"installed": false', '"installed": true', $content);
 file_put_contents('./shc/app.json', $content);
 
 print("SHC erfolgreich installiert\n");

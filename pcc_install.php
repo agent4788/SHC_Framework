@@ -140,7 +140,7 @@ if($newXml === true) {
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $content = file_get_contents('./pcc/app.json');
-str_replace('false', 'true', $content);
+$content = str_replace('"installed": false', '"installed": true', $content);
 file_put_contents('./pcc/app.json', $content);
 
 print("PCC erfolgreich installiert\n");
