@@ -89,3 +89,7 @@ span#pcc-view-acp-menu-usermanagement {
 span#pcc-view-acp-menu-settings {
     background-image: url(../../../img/acpmenue/settings.png);
 }
+
+span#pcc-view-acp-menu-info {
+    background-image: url(../../../img/acpmenue/info.png);
+}

@@ -28,3 +28,6 @@ $l['acpindex.box.acpMenue'] = 'Administrationsmenü';
 $l['acpindex.menu.group.main'] = 'Allgemein';
 $l['acpindex.menu.users'] = 'Benutzer';
 $l['acpindex.menu.settings'] = 'Einstellungen';
+
+$l['acpindex.menu.group.other'] = 'Sonstiges';
+$l['acpindex.menu.info'] = 'info';
