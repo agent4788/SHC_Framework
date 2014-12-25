@@ -87,7 +87,7 @@ addSetting('shc.ui.redirectPcTo', '1', TYPE_INTEGER);
 addSetting('shc.ui.redirectTabletTo', '1', TYPE_INTEGER);
 addSetting('shc.ui.redirectSmartphoneTo', '1', TYPE_INTEGER);
 addSetting('shc.ui.index.showUsersAtHome', 'true', TYPE_BOOLEAN);
-addSetting('shc.title', 'SHC%202.0', TYPE_STRING);
+addSetting('shc.title', 'SHC%202.2', TYPE_STRING);
 addSetting('shc.defaultStyle', 'redmond', TYPE_STRING);
 addSetting('shc.defaultMobileStyle', 'default', TYPE_STRING);
 

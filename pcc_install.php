@@ -67,7 +67,7 @@ addSetting('pcc.ui.redirectActive', 'true', TYPE_BOOLEAN);
 addSetting('pcc.ui.redirectPcTo', '1', TYPE_INTEGER);
 addSetting('pcc.ui.redirectTabletTo', '1', TYPE_INTEGER);
 addSetting('pcc.ui.redirectSmartphoneTo', '1', TYPE_INTEGER);
-addSetting('pcc.title', 'PCC%202.0', TYPE_STRING);
+addSetting('pcc.title', 'PCC%202.2', TYPE_STRING);
 addSetting('pcc.defaultStyle', 'redmond', TYPE_STRING);
 addSetting('pcc.defaultMobileStyle', 'default', TYPE_STRING);
 
