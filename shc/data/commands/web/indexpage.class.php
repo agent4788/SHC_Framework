@@ -37,6 +37,7 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
 
+        SHC::getTemplate()->assign('apps', SHC::listApps());
         SHC::getTemplate()->assign('style', SHC::getStyle());
         SHC::getTemplate()->assign('user', SHC::getVisitor());
         SHC::getTemplate()->assign('roomList', RoomEditor::getInstance()->listRooms(RoomEditor::SORT_BY_ORDER_ID));

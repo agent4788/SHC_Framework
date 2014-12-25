@@ -101,3 +101,26 @@ $l['global.date.weekDay.thu.short'] = 'Do';
 $l['global.date.weekDay.fri.short'] = 'Fr';
 $l['global.date.weekDay.sat.short'] = 'Sa';
 $l['global.date.weekDay.sun.short'] = 'So';
+
+$l['global.date.time.jear'] = 'Jahr';
+$l['global.date.time.jears'] = 'Jahre';
+$l['global.date.time.month'] = 'Monat';
+$l['global.date.time.months'] = 'Monate';
+$l['global.date.time.week'] = 'Woche';
+$l['global.date.time.weeks'] = 'Wochen';
+$l['global.date.time.day'] = 'Tag';
+$l['global.date.time.days'] = 'Tage';
+$l['global.date.time.hour'] = 'Stunde';
+$l['global.date.time.hours'] = 'Stunden';
+$l['global.date.time.minute'] = 'Minute';
+$l['global.date.time.minutes'] = 'Minuten';
+$l['global.date.time.second'] = 'Sekunde';
+$l['global.date.time.seconds'] = 'Sekunden';
+
+$l['global.date.time.short.jear'] = 'J';
+$l['global.date.time.short.month'] = 'M';
+$l['global.date.time.short.week'] = 'W';
+$l['global.date.time.short.day'] = 'T';
+$l['global.date.time.short.hour'] = 'S';
+$l['global.date.time.short.minute'] = 'min';
+$l['global.date.time.short.second'] = 's';

@@ -1,0 +1,39 @@
+{* Startseite *}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="pcc-content">
+            <div id="pcc-content-tabs">
+                <ul>
+                    {premission premission='pcc.ucp.viewSysState'}
+                    <li><a href="index.php?app=pcc&ajax=state">{lang var='index.tabs.state'}</a></li>
+                    {/premission}
+                    {premission premission='pcc.ucp.viewSysData'}
+                    <li><a href="index.php?app=pcc&ajax=data">{lang var='index.tabs.data'}</a></li>
+                    {/premission}
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+
+                $("#pcc-content-tabs").tabs({
+                    active   : $.cookie('activeTabMainViewPCC'),
+                    activate : function( event, ui ){
+                        $.cookie( 'activeTabMainViewPCC', ui.newTab.index(),{
+                            expires : 10
+                        });
+                    }
+                });
+
+            });
+        </script>
+    </body>
+</html>

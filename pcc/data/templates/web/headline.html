@@ -1,0 +1,243 @@
+<div id="pcc-headline">
+    <div>
+        {premission premission='pcc.acp.menue'}
+        {if $acp|isset == true}
+        <a href="index.php?app=pcc&page=index" id="pcc-display-acp-menu">{lang var='index.button.ucp'}</a>
+        {else}
+        <a href="index.php?app=pcc&page=acp" id="pcc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
+        {/if}
+        {/premission}
+        {premission premission='pcc.ucp.reboot'}
+        <img src="./pcc/inc/img/buttons/reboot.png" style="width: 32px; height: 32px;" id="pcc-view-buttons-reboot" title="{lang var='global.button.reboot'}" />
+        {/premission}
+        {premission premission='pcc.ucp.shutdown'}
+        <img src="./pcc/inc/img/buttons/shutdown.png" style="width: 32px; height: 32px;" id="pcc-view-buttons-shutdown" title="{lang var='global.button.shutdown'}" />
+        {/premission}
+    </div>
+    <div id="pcc-headline-left">
+        {if $acp|isset == true}
+        <div id="pcc-headline-logo"><a href="{if $apps|count == 1}index.php?app=pcc&page=acp{else}#{/if}">{setting name='pcc.title'} - {lang var='acpindex.text.acp'}</a></div>
+        {else}
+        <div id="pcc-headline-logo"><a href="{if $apps|count == 1}index.php?app=pcc{else}#{/if}">{setting name='pcc.title'}</a></div>
+        {/if}
+    </div>
+    <div id="pcc-headline-right">
+        <div>
+            {if $user->isUser()}
+            <span>
+                {'index.login.user'|lang::$user->getName()} | <a href="index.php?app=pcc&action=logout" id="pcc-logout-link">{lang var='index.button.logout'}</a>
+            </span>
+            {else}
+            <a href="#" id="pcc-login-link">{lang var='index.button.login'}</a>
+            {/if}
+        </div>
+    </div>
+</div>
+{if $user->isUser() == false}
+<div id="pcc-login-prompt" style="display: none;" title="{lang var='index.login.boxTitle'}">
+    <form action="#" id="pcc-form-login">
+        <div class="rwf-ui-message-error" style="display: none;" id="pcc-login-error">
+            <div class="rwf-ui-message-icon"></div>
+            <div class="rwf-ui-message" id="pcc-login-error-message"></div>
+        </div>
+        <div>
+            <span>{lang var='index.login.name'}</span>
+            <input type="text" maxlength="20" name="user" id="pcc-login-username" class="pcc-form-defaulField" />
+        </div>
+        <div>
+            <span>{lang var='index.login.password'}</span>
+            <input type="password" maxlength="20" name="password" id="pcc-login-password" class="pcc-form-defaulField" />
+        </div>
+        {ifsetting name='rwf.session.allowLongTimeLogin'}
+        <div>
+            <span>{lang var='index.login.longTime'}</span>
+            <input type="checkbox" name="longTime" value="1" id="pcc-login-longtime" class="pcc-form-defaulField" />
+        </div>
+        {/ifsetting}
+    </form>
+</div>
+{/if}
+<div id="pcc-view-safetyPrompt" style="display: none;"></div>
+{if $apps|count > 1}
+<ul id="rwf-ui-appMenue" style="display: none;">
+    {foreach from=$apps item='app'}
+    <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    {/foreach}
+</ul>
+{/if}
+<script type="text/javascript">
+    {if $user->isUser() == false}
+        $(function () {
+
+            //Login Formular absenden
+            function loginSubmit() {
+
+                //Anmeldedaten an den Server schicken
+                var $form = $('#pcc-form-login');
+                var $inputs = $form.find("input, select, button, textarea");
+                var serializedData = $form.serialize();
+                $inputs.prop("disabled", true);
+
+                request = $.ajax({
+                    url: "index.php?app=pcc&ajax=login",
+                    type: "post",
+                    data: serializedData
+                });
+
+                request.done(function (response, textStatus, jqXHR) {
+
+                    //Antwort vom Server
+                    if (response.success == true) {
+
+                        window.location = 'index.php?app=pcc&page=index';
+                    } else if (response.success == false) {
+
+                        $('#pcc-login-error-message').text(response.message);
+                        $('#pcc-login-error').css({ display: 'block' });
+                        return;
+                    } else {
+
+                        $('#pcc-login-error-message').text("{lang var='index.login.requestError'}");
+                        $('#pcc-login-error').css({ display: 'block' });
+                        return;
+                    }
+                });
+
+                request.fail(function (jqXHR, textStatus, errorThrown) {
+
+                    //Anfrage Fehlgeschlagen
+                    $('#pcc-login-error-message').text("{lang var='index.login.requestError'}");
+                    $('#pcc-login-error').css({ display: 'block' });
+                    return;
+                });
+
+                request.always(function () {
+
+                    $inputs.prop("disabled", false);
+                });
+            }
+
+            //Loginfenster Anzeigen
+            $('#pcc-login-link').click(function () {
+                $('#pcc-login-prompt').dialog({
+                    modal: true,
+                    resizable: false,
+                    width: 325,
+                    buttons: {
+                        "{lang var='index.login.submit'}": function () {
+
+                            loginSubmit();
+                        }
+                    }
+                });
+            });
+
+            //Login Formular Absenden bei Enter
+            $('#login input[name=user]').bind('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    loginSubmit();
+                }
+            });
+            $('#login input[name=password]').bind('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    loginSubmit();
+                }
+            });
+            {ifsetting name='rwf.session.allowLongTimeLogin'}
+            $('#login input[name=longTime]').bind('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    loginSubmit();
+                }
+            });
+            {/ifsetting}
+        });
+        {/if}
+        {if $apps|count > 1}
+            $('#rwf-ui-appMenue').menu().css({ 'z-index': '100' });
+            $('#pcc-headline-logo').css('cursor', 'pointer').click(function(e) {
+                pos = $(this).offset();
+                $('#rwf-ui-appMenue').css({
+                    position: 'absolute',
+                    top: pos.top + 63 + 'px',
+                    left: pos.left + 'px'
+                });
+                $('#rwf-ui-appMenue').css({
+                    display: 'block'
+                });
+            });
+            $('#rwf-ui-appMenue').mouseleave(function() {
+                $('#rwf-ui-appMenue').css({
+                    display: 'none'
+                });
+            });
+        {/if}
+</script>
+{premission premission='pcc.acp.menue'}
+<script type="text/javascript">
+    $('#pcc-display-acp-menu').button().css({
+        position: 'absolute',
+        top: '32px',
+        right: '24px'
+    });
+</script>
+{/premission}
+{premission premission='pcc.ucp.reboot'}
+<script type="text/javascript">
+    $('#pcc-view-buttons-reboot').button().css({
+        position: 'absolute',
+        top: '12px',
+        right: '332px'
+    }).tooltip();
+    $('#pcc-view-buttons-reboot').click(function() {
+
+        //Prompt
+        $('#pcc-view-safetyPrompt').text("{lang var='global.prompt.reboot.text'}");
+        $('#pcc-view-safetyPrompt').dialog({
+            modal: true,
+            resizable: false,
+            title: '{lang var="global.prompt.reboot.title"}',
+            position: { my: "center top", at: "center bottom", of: $('#pcc-headline') },
+            buttons: {
+                '{lang var="global.yes"}': function() {
+
+                    window.location = 'index.php?app=pcc&action=reboot';
+                },
+                '{lang var="global.no"}': function() {
+
+                    $('#pcc-view-safetyPrompt').dialog('close');
+                }
+            }
+        });
+    });
+</script>
+{/premission}
+{premission premission='pcc.ucp.shutdown'}
+<script type="text/javascript">
+    $('#pcc-view-buttons-shutdown').button().css({
+        position: 'absolute',
+        top: '12px',
+        right: '300px'
+    }).tooltip();
+    $('#pcc-view-buttons-shutdown').click(function() {
+
+        //Prompt
+        $('#pcc-view-safetyPrompt').text("{lang var='global.prompt.shutdown.text'}");
+        $('#pcc-view-safetyPrompt').dialog({
+            modal: true,
+            resizable: false,
+            title: '{lang var="global.prompt.shutdown.title"}',
+            position: { my: "center top", at: "center bottom", of: $('#pcc-headline') },
+            buttons: {
+                '{lang var="global.yes"}': function() {
+
+                    window.location = 'index.php?app=pcc&action=shutdown';
+                },
+                '{lang var="global.no"}': function() {
+
+                    $('#pcc-view-safetyPrompt').dialog('close');
+                }
+            }
+        });
+    });
+</script>
+{/premission}

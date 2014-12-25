@@ -1,0 +1,31 @@
+{* Einstellungen bearbeiten Formular *}
+<div>
+    {if $message|isset}
+    <div class="pcc-view-content">
+        {$message->fetchHtml()}
+    </div>
+    <div class="pcc-view-buttons">
+        <div class="pcc-view-buttonSet">
+            {acpbackbutton location="index.php?app=pcc&page=acp"}
+        </div>
+    </div>
+    {elseif $settingsForm|isset}
+    <div class="pcc-view-content">
+        {$settingsForm->showForm()}
+    </div>
+    <div class="pcc-view-buttons">
+        <div class="pcc-view-buttonSet">
+            {acpbackbutton location="index.php?app=pcc&page=acp"}
+            {resetbutton form="#pcc-view-form-settings"}
+            {submitbutton form="#pcc-view-form-settings" action="index.php?app=pcc&ajax=settingsform"}
+        </div>
+    </div>
+    {/if}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#pcc-view-acp-contentBox .pcc-contentbox-header').text('{lang var="acp.settings.title"}');
+        $('.pcc-view-buttonSet').buttonset();
+    });
+</script>

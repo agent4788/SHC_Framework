@@ -57,17 +57,20 @@ class UserGroupForm extends TabbedHtmlForm {
         //Rechte Ja/Nein Auswahl erstellen
         foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
-            $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPremission($premissionName) : false));
-            $yesNoOption->setTitle(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName));
-            $yesNoOption->setDescription(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName .'.description'));
-            $yesNoOption->requiredField(true);
+            if(preg_match('#^shc\.#', $premissionName)) {
 
-            if(preg_match('#^shc.ucp.#', $premissionName)) {
+                $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPremission($premissionName) : false));
+                $yesNoOption->setTitle(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName));
+                $yesNoOption->setDescription(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName .'.description'));
+                $yesNoOption->requiredField(true);
 
-                $this->addFormElementToTab('userPremissions', $yesNoOption);
-            } else {
+                if(preg_match('#^shc\.ucp.#', $premissionName)) {
 
-                $this->addFormElementToTab('adminPremissions', $yesNoOption);
+                    $this->addFormElementToTab('userPremissions', $yesNoOption);
+                } else {
+
+                    $this->addFormElementToTab('adminPremissions', $yesNoOption);
+                }
             }
         }
         RWF::getLanguage()->enableAutoHtmlEndocde();

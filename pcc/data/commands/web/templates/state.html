@@ -1,0 +1,259 @@
+<div>
+    <div id="pcc-view-firstLoadState">
+        <div id="pcc-view-loadPrgogressState"></div>
+    </div>
+    <div id="pcc-view-finishedLoadState" style="display: none;">
+        {contentbox name='index.box.time.title'}
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.time.uptime'}</span>
+            <span class="pcc-icon pcc-icon-time"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_uptime" title=""></span>
+            </div>
+        </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.time.bootTime'}</span>
+            <span class="pcc-icon pcc-icon-bootTime"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_lastBootTime"></span>
+            </div>
+        </div>
+        {/contentbox}
+        {contentbox name='index.box.system.title'}
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.coreAvg'}</span>
+            <span class="pcc-icon pcc-icon-coreAvg"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_sysload_0"></span>
+                &gt;
+                <span id="state_sysload_1"></span>
+                &gt;
+                <span id="state_sysload_2"></span>
+            </div>
+        </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.coreClock'}</span>
+            <span class="pcc-icon pcc-icon-coreClock"></span>
+            <div class="pcc-contentbox-body-row-content" id="cpuClockTooltip" title="">
+                <span id="state_cpuClock"></span> MHz
+            </div>
+            <div style="display: none;" id="cpuClockTooltipData">
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.coreClock.min'}</span>: <span id="state_minCpuClock"></span> MHz
+                </div>
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.coreClock.max'}</span>: <span id="state_maxCpuClock"></span> MHz
+                </div>
+            </div>
+        </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.coreTemp'}</span>
+            <span class="pcc-icon pcc-icon-coreTemp"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_coreTemp"></span>&ordm;c
+            </div>
+        </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.ram'}</span>
+            <span class="pcc-icon pcc-icon-memory"></span>
+            <div class="pcc-contentbox-body-row-content" id="memoryusage" title="">
+                <div id="memoryusage_progress" class="content_box_collapsable_progress"></div>
+                <span id="state_memoryPercentDisplay"></span>%
+            </div>
+            <div style="display: none;" id="memoryusage_tooltip">
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.total'}</span>: <span id="state_memoryTotal"></span>
+                </div>
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.used'}</span>: <span id="state_memoryUsed"></span>
+                </div>
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.free'}</span>: <span id="state_memoryFree"></span>
+                </div>
+            </div>
+        </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.swap'}</span>
+            <span class="pcc-icon pcc-icon-swap"></span>
+            <div class="pcc-contentbox-body-row-content"  id="swapusage" title="">
+                <div id="swapusage_progress" class="content_box_collapsable_progress"></div>
+                <span id="state_swapPercentDisplay"></span>%
+            </div>
+            <div style="display: none;" id="swapusage_tooltip">
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.total'}</span>: <span id="state_swapTotal"></span>
+                </div>
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.used'}</span>: <span id="state_swapUsed"></span>
+                </div>
+                <div class="tootlip_row">
+                    <span class="tooltip_strong">{lang var='index.box.system.free'}</span>: <span id="state_swapFree"></span>
+                </div>
+            </div>
+        </div>
+        {/contentbox}
+        {contentbox name='index.box.memory.title'}
+        <table class="pcc-view-contentTable pcc-view-contentTable-sys">
+            <thead>
+            <tr>
+                <th>{lang var='index.box.memory.partition'}</th>
+                <th>{lang var='index.box.memory.mountpoint'}</th>
+                <th style="width: 204px;">{lang var='index.box.memory.usage'}</th>
+                <th style="width: 35px;"></th>
+                <th>{lang var='index.box.memory.total'}</th>
+                <th>{lang var='index.box.memory.used'}</th>
+                <th>{lang var='index.box.memory.free'}</th>
+            </tr>
+            </thead>
+            <tbody id="state_sysMemory">
+            </tbody>
+            <tfoot id="state_sysMemoryFoot">
+            </tfoot>
+        </table>
+        {/contentbox}
+        {contentbox name='index.box.network.title'}
+        <table class="pcc-view-contentTable pcc-view-contentTable-sys">
+            <thead>
+            <tr>
+                <th>{lang var='index.box.network.interface'}</th>
+                <th>{lang var='index.box.network.recived'}</th>
+                <th>{lang var='index.box.network.transmitted'}</th>
+                <th>{lang var='index.box.network.errors'}</th>
+            </tr>
+            </thead>
+            <tbody id="state_network">
+            </tbody>
+        </table>
+        {/contentbox}
+        {contentbox name='index.box.wlan.title' id='boxWireless'}
+        <table class="pcc-view-contentTable pcc-view-contentTable-sys">
+            <thead>
+            <tr>
+                <th>{lang var='index.box.network.interface'}</th>
+                <th>{lang var='index.box.wlan.standard'}</th>
+                <th>{lang var='index.box.wlan.ssid'}</th>
+                <th>{lang var='index.box.wlan.speed'}</th>
+                <th>{lang var='index.box.wlan.quality'}</th>
+            </tr>
+            </thead>
+            <tbody id="state_wireless">
+            </tbody>
+        </table>
+        {/contentbox}
+    </div>
+    <script type="text/javascript">
+        $(function() {
+
+            //Ladebalken Anzeigen
+            $('#pcc-view-loadPrgogressState').progressbar({
+                value: false
+            });
+
+            //Status laden
+            function loadState(firstLoad) {
+
+                //Statusdaten per Ajax holen
+                $.getJSON(
+                        "index.php?app=pcc&ajax=statesync&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            if (typeof data.error != 'undefined') {
+
+                                return;
+                            }
+
+                            $('#state_uptime').text(data.uptimeSort);
+                            $('#state_uptime').attr('title', data.uptime);
+                            $('#state_lastBootTime').text(data.lastBootTime);
+
+                            $('#state_sysload_0').text(data.sysload_0);
+                            $('#state_sysload_1').text(data.sysload_1);
+                            $('#state_sysload_2').text(data.sysload_2);
+                            $('#state_cpuClock').text(data.cpuClock);
+                            $('#state_minCpuClock').text(data.cpuMinClock);
+                            $('#state_maxCpuClock').text(data.cpuMaxClock);
+                            $('#state_coreTemp').text(data.coreTemp);
+
+                            $('#state_memoryPercentDisplay').text(data.memoryPercentDisplay);
+                            $('#state_memoryTotal').text(data.memoryTotal);
+                            $('#state_memoryFree').text(data.memoryFree);
+                            $('#state_memoryUsed').text(data.memoryUsed);
+                            $('#memoryusage_progress').progressbar({ value: data.memoryPercent });
+
+                            $('#state_swapPercentDisplay').text(data.swapPercentDisplay);
+                            $('#state_swapTotal').text(data.swapTotal);
+                            $('#state_swapFree').text(data.swapFree);
+                            $('#state_swapUsed').text(data.swapUsed);
+                            $('#swapusage_progress').progressbar({ value: data.swapPercent });
+
+                            $('#state_sysMemory').html(data.sysMemory);
+                            $('#state_sysMemoryFoot').html(data.sysMemoryFoot);
+
+                            $('#state_network').html(data.network);
+
+                            if (firstLoad == false) {
+                                $('#generationTime').text(data.generationTime);
+                            }
+
+                            $('#pcc-view-firstLoadState').css('display', 'none');
+                            $('#pcc-view-finishedLoadState').css('display', 'block');
+
+                            $(document).tooltip({
+                                track: true
+                            });
+
+                        });
+
+                $.getJSON(
+                        "index.php?app=pcc&ajax=statesync&wireless=1&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            if (typeof data.error != 'undefined') {
+
+                                return;
+                            }
+
+                            $('#state_wireless').html(data.wireless);
+                            if(data.devNum > 0) {
+
+                                $('#boxWireless').css("display", "block");
+                            } else {
+
+                                $('#boxWireless').css("display", "none");
+                            }
+                        });
+
+                //Tooltips
+                $('#memoryusage').tooltip({
+                    content: function() {
+                        return $('#memoryusage_tooltip').html();
+                    },
+                    track: true
+                });
+                $('#swapusage').tooltip({
+                    content: function() {
+                        return $('#swapusage_tooltip').html();
+                    },
+                    track: true
+                });
+                $('#cpuClockTooltip').tooltip({
+                    content: function() {
+                        return $('#cpuClockTooltipData').html();
+                    },
+                    track: true
+                });
+            }
+
+            loadState(true);
+
+            //automatisch aktualisieren
+            var reloadState = function() {
+
+                loadState(false);
+                window.setTimeout(reloadState, 10000);
+            }
+            window.setTimeout(reloadState, 10000);
+
+        });
+    </script>
+</div>

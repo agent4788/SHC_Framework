@@ -1,0 +1,6 @@
+{
+  "app": "shc",
+  "name": "Raspberry Pi SmartHome Control",
+  "icon": "./shc/inc/img/shc-icon.png",
+  "installed": true
+}
