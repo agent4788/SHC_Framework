@@ -767,7 +767,7 @@ class RaspberryPi {
 
                         //Uebetragungsrate
                         $matches = array();
-                        preg_match('#Bit\s+Rate\=(\d+)\s+Mb/s#i', $data[2], $matches);
+                        preg_match('#Bit\s+Rate\:(\d+)\s+Mb/s#i', $data[2], $matches);
                         $dev['bitRate'] = $matches[1];
 
                         //Verbindungsqualitaet
@@ -777,7 +777,7 @@ class RaspberryPi {
 
                         //Signalstaerke
                         $matches = array();
-                        preg_match('#Signal\s+level\=(-?\d+)\s+dBm#i', $data[5], $matches);
+                        preg_match('#Signal\s+level\=(-?\d+)\/100#i', $data[5], $matches);
                         $dev['signalLevel'] = $matches[1];
                     }
 
