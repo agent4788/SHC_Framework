@@ -16,9 +16,9 @@
     </div>
     <div id="pcc-headline-left">
         {if $acp|isset == true}
-        <div id="pcc-headline-logo"><a href="index.php?app=pcc&page=acp">{setting name='pcc.title'} - {lang var='acpindex.text.acp'}</a></div>
+        <div id="pcc-headline-logo"><a href="{if $apps|count == 1}index.php?app=pcc&page=acp{else}#{/if}">{setting name='pcc.title'} - {lang var='acpindex.text.acp'}</a></div>
         {else}
-        <div id="pcc-headline-logo"><a href="index.php?app=pcc&page=index">{setting name='pcc.title'}</a></div>
+        <div id="pcc-headline-logo"><a href="{if $apps|count == 1}index.php?app=pcc{else}#{/if}">{setting name='pcc.title'}</a></div>
         {/if}
     </div>
     <div id="pcc-headline-right">
@@ -58,6 +58,13 @@
 </div>
 {/if}
 <div id="pcc-view-safetyPrompt" style="display: none;"></div>
+{if $apps|count > 1}
+<ul id="rwf-ui-appMenue" style="display: none;">
+    {foreach from=$apps item='app'}
+    <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    {/foreach}
+</ul>
+{/if}
 <script type="text/javascript">
     {if $user->isUser() == false}
         $(function () {
@@ -144,6 +151,25 @@
             });
             {/ifsetting}
         });
+        {/if}
+        {if $apps|count > 1}
+            $('#rwf-ui-appMenue').menu().css({ 'z-index': '100' });
+            $('#pcc-headline-logo').css('cursor', 'pointer').click(function(e) {
+                pos = $(this).offset();
+                $('#rwf-ui-appMenue').css({
+                    position: 'absolute',
+                    top: pos.top + 63 + 'px',
+                    left: pos.left + 'px'
+                });
+                $('#rwf-ui-appMenue').css({
+                    display: 'block'
+                });
+            });
+            $('#rwf-ui-appMenue').mouseleave(function() {
+                $('#rwf-ui-appMenue').css({
+                    display: 'none'
+                });
+            });
         {/if}
 </script>
 {premission premission='pcc.acp.menue'}

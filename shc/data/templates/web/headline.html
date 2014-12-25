@@ -16,9 +16,9 @@
     </div>
     <div id="shc-headline-left">
         {if $acp|isset == true}
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=acp">{setting name='shc.title'} - {lang var='acpindex.text.acp'}</a></div>
+        <div id="shc-headline-logo"><a href="{if $apps|count == 1}index.php?app=shc&page=acp{else}#{/if}">{setting name='shc.title'} - {lang var='acpindex.text.acp'}</a></div>
         {else}
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}</a></div>
+        <div id="shc-headline-logo"><a href="{if $apps|count == 1}index.php?app=shc{else}#{/if}">{setting name='shc.title'}</a></div>
         {/if}
     </div>
     <div id="shc-headline-right">
@@ -58,6 +58,13 @@
 </div>
 {/if}
 <div id="shc-view-safetyPrompt" style="display: none;"></div>
+{if $apps|count > 1}
+<ul id="rwf-ui-appMenue" style="display: none;">
+    {foreach from=$apps item='app'}
+        <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    {/foreach}
+</ul>
+{/if}
 <script type="text/javascript">
 {if $user->isUser() == false}
     $(function () {
@@ -143,6 +150,25 @@
             }
         });
         {/ifsetting}
+    });
+{/if}
+{if $apps|count > 1}
+    $('#rwf-ui-appMenue').menu().css({ 'z-index': '100' });
+    $('#shc-headline-logo').css('cursor', 'pointer').click(function(e) {
+        pos = $(this).offset();
+        $('#rwf-ui-appMenue').css({
+            position: 'absolute',
+            top: pos.top + 63 + 'px',
+            left: pos.left + 'px'
+        });
+        $('#rwf-ui-appMenue').css({
+            display: 'block'
+        });
+    });
+    $('#rwf-ui-appMenue').mouseleave(function() {
+        $('#rwf-ui-appMenue').css({
+            display: 'none'
+        });
     });
 {/if}
 </script>

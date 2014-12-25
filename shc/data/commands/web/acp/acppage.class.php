@@ -43,6 +43,7 @@ class AcpPage extends PageCommand {
      */
     public function processData() {
 
+        SHC::getTemplate()->assign('apps', SHC::listApps());
         SHC::getTemplate()->assign('acp', true);
         SHC::getTemplate()->assign('style', SHC::getStyle());
         SHC::getTemplate()->assign('user', SHC::getVisitor());

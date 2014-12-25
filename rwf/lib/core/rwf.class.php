@@ -83,6 +83,13 @@ class RWF {
      */
     protected static $template = null;
 
+    /**
+     * liste mit den installierten Apps
+     *
+     * @var Array
+     */
+    protected static $appList = array();
+
     public function __construct() {
 
         //Multibyte Engine Konfigurieren
@@ -93,6 +100,27 @@ class RWF {
         } else {
 
             define('MULTIBYTE_STRING', false);
+        }
+
+        //APPs einlesen
+        $dir = opendir(PATH_BASE);
+        while($element = readdir($dir)) {
+
+            //ueberspringen
+            if($element == '.' || $element == '..') {
+
+                continue;
+            }
+
+            //APP Ordner suchen und app.json einlesen
+            if(is_dir($element) && $element != 'rwf' && file_exists(PATH_BASE . $element .'/app.json')) {
+
+                $app = json_decode(file_get_contents(PATH_BASE . $element .'/app.json'));
+                if(isset($app->installed) && $app->installed == true) {
+
+                    self::$appList[] = $app;
+                }
+            }
         }
 
         //Anfrage/Antwort initialisieren
@@ -304,6 +332,16 @@ class RWF {
     public static function getSetting($name) {
 
         return self::$settings->getValue($name);
+    }
+
+    /**
+     * gibt eine liste mit den installierten Apps zurueck
+     *
+     * @return Array
+     */
+    public static function listApps() {
+
+        return self::$appList;
     }
 
     /**
