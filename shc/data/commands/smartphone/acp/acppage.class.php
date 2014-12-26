@@ -45,6 +45,7 @@ class AcpPage extends PageCommand {
 
         SHC::getTemplate()->assign('apps', SHC::listApps());
         SHC::getTemplate()->assign('acp', true);
+        SHC::getTemplate()->assign('acpMenue', true);
         SHC::getTemplate()->assign('style', SHC::getStyle());
         SHC::getTemplate()->assign('user', SHC::getVisitor());
     }

@@ -1,6 +1,10 @@
 <div data-theme="b" data-role="header" data-position="fixed">
     {if $acp|isset == true}
+    {if $acpMenue|isset}
     <a href="index.php?app=shc&page=index&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.ucp'}</a>
+    {else}
+    <a href="{$backLink}" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.back'}</a>
+    {/if}
     {else}
     <a href="index.php?app=shc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.acpMenu'}</a>
     {/if}

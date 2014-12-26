@@ -6,10 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {$style->fetchHtmlHeaderTags()}
         <style type="text/css">
-            .ui-block-a,
-            .ui-block-b, {
-                margin: 5px;
-            }
             @media all and (max-width: 35em) {
                 .my-breakpoint .ui-block-a,
                 .my-breakpoint .ui-block-b,
@@ -33,7 +29,7 @@
                             <li data-role="list-divider">{lang var='acpindex.menu.group.main'}</li>
                             {premission premission='shc.acp.userManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listusers&m">
+                                <a href="index.php?app=shc&page=listusers&m">
                                     <img src="./shc/inc/img/acpmenue/usermanagement.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.users'}
                                 </a>
@@ -41,7 +37,7 @@
                             {/premission}
                             {premission premission='shc.acp.settings'}
                             <li>
-                                <a href="index.php?app=shc&ajax=settingsform&m">
+                                <a href="index.php?app=shc&page=settingsform&m">
                                     <img src="./shc/inc/img/acpmenue/settings.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.settings'}
                                 </a>
@@ -49,7 +45,7 @@
                             {/premission}
                             {premission premission='shc.acp.backupsManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listbackups&m">
+                                <a href="index.php?app=shc&page=listbackups&m">
                                     <img src="./shc/inc/img/acpmenue/backup.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.backup'}
                                 </a>
@@ -62,7 +58,7 @@
                             <li data-role="list-divider">{lang var='acpindex.menu.group.smartHome'}</li>
                             {premission premission='shc.acp.roomManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listrooms&m">
+                                <a href="index.php?app=shc&page=listrooms&m">
                                     <img src="./shc/inc/img/acpmenue/rooms.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.rooms'}
                                 </a>
@@ -70,7 +66,7 @@
                             {/premission}
                             {premission premission='shc.acp.switchableManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listswitchables&m">
+                                <a href="index.php?app=shc&page=listswitchables&m">
                                     <img src="./shc/inc/img/acpmenue/switchfunctions.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.switchFunctions'}
                                 </a>
@@ -78,7 +74,7 @@
                             {/premission}
                             {premission premission='shc.acp.sensorpointsManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listsensorpoints&m">
+                                <a href="index.php?app=shc&page=listsensorpoints&m">
                                     <img src="./shc/inc/img/acpmenue/sensorpoints.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.sensorPoints'}
                                 </a>
@@ -86,7 +82,7 @@
                             {/premission}
                             {premission premission='shc.acp.usersathomeManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listusersathome&m">
+                                <a href="index.php?app=shc&page=listusersathome&m">
                                     <img src="./shc/inc/img/acpmenue/usersathome.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.userAtHome'}
                                 </a>
@@ -101,7 +97,7 @@
                             <li data-role="list-divider">{lang var='acpindex.menu.group.homeAutomation'}</li>
                             {premission premission='shc.acp.conditionsManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listconditions&m">
+                                <a href="index.php?app=shc&page=listconditions&m">
                                     <img src="./shc/inc/img/acpmenue/conditions.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.conditions'}
                                 </a>
@@ -109,7 +105,7 @@
                             {/premission}
                             {premission premission='shc.acp.switchpointsManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listswitchpoints&m">
+                                <a href="index.php?app=shc&page=listswitchpoints&m">
                                     <img src="./shc/inc/img/acpmenue/switchpoints.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.switchPoints'}
                                 </a>
@@ -117,7 +113,7 @@
                             {/premission}
                             {premission premission='shc.acp.eventsManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listevents&m">
+                                <a href="index.php?app=shc&page=listevents&m">
                                     <img src="./shc/inc/img/acpmenue/events.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.events'}
                                 </a>
@@ -130,7 +126,7 @@
                             <li data-role="list-divider">{lang var='acpindex.menu.group.other'}</li>
                             {premission premission='shc.acp.menu'}
                             <li>
-                                <a href="index.php?app=shc&ajax=daemonstate&m">
+                                <a href="index.php?app=shc&page=daemonstate&m">
                                     <img src="./shc/inc/img/acpmenue/serserstate.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.serverStatus'}
                                 </a>
@@ -138,7 +134,7 @@
                             {/premission}
                             {premission premission='shc.acp.switchserverManagement'}
                             <li>
-                                <a href="index.php?app=shc&ajax=listswitchservers&m">
+                                <a href="index.php?app=shc&page=listswitchservers&m">
                                     <img src="./shc/inc/img/acpmenue/switchservers.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.switchServer'}
                                 </a>
@@ -146,7 +142,7 @@
                             {/premission}
                             {premission premission='shc.acp.menu'}
                             <li>
-                                <a href="index.php?app=shc&ajax=info&m">
+                                <a href="index.php?app=shc&page=info&m">
                                     <img src="./shc/inc/img/acpmenue/info.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.info'}
                                 </a>
