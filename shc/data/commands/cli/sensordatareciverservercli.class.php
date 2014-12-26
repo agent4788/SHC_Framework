@@ -55,7 +55,7 @@ class SensorDataReciverServerCli extends CliCommand {
         ob_implicit_flush();
 
         //Sprache einbinden
-        RWF::getLanguage()->loadModul('SensorReceiver');
+        RWF::getLanguage()->loadModul('SensorReciver');
 
         //Debug aktivieren
         if (in_array('-d', $argv) || in_array('--debug', $argv)) {
