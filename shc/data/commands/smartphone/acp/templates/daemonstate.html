@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            {if $message|isset}
+            <div>
+                {$message->fetchHtml()}
+            </div>
+            {/if}
+            <ul data-role="listview">
+                <li  data-role="list-divider">{lang var='acp.daemonState.box.switchServer'}</li>
+                {foreach from=$switchServers item='switchServer'}
+                <li>
+                    <img src="./shc/inc/img/buttons/{if $switchServer.state == 1}run.png{else}stop.png{/if}" class="ui-li-icon">
+                    <span style="font-weight: bold;">{#$switchServer.object->getName()}</span>:
+                    {if $switchServer.state == 1}
+                        {lang var='acp.daemonState.box.state.run'}
+                    {else}
+                        {lang var='acp.daemonState.box.state.stop'}
+                    {/if}
+                </li>
+                {/foreach}
+            </ul>
+            <ul data-role="listview">
+                <li  data-role="list-divider">{lang var='acp.daemonState.box.daemons'}</li>
+                <li>
+                    {if $shedulerState == 1}
+                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
+                    {elseif $shedulerState == 2}
+                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
+                    {else}
+                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
+                    {/if}
+                    <span style="font-weight: bold;">{lang var='acp.daemonState.box.deamon.task'}</span>:
+                    {if $shedulerState == 1}
+                        {lang var='acp.daemonState.box.state.run'}
+                    {elseif $shedulerState == 2}
+                        {lang var='acp.daemonState.box.state.notActive'}
+                    {else}
+                        {lang var='acp.daemonState.box.state.stop'}
+                    {/if}
+                </li>
+                <li>
+                    {if $arduinoSensorReciverState == 1}
+                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
+                    {elseif $arduinoSensorReciverState == 2}
+                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
+                    {else}
+                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
+                    {/if}
+                    <span style="font-weight: bold;">{lang var='acp.daemonState.box.deamon.arduinoSensorReciver'}</span>:
+                    {if $arduinoSensorReciverState == 1}
+                    {lang var='acp.daemonState.box.state.run'}
+                    {elseif $arduinoSensorReciverState == 2}
+                    {lang var='acp.daemonState.box.state.notActive'}
+                    {else}
+                    {lang var='acp.daemonState.box.state.stop'}
+                    {/if}
+                </li>
+                <li>
+                    {if $sensorDataReciverState == 1}
+                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
+                    {elseif $sensorDataReciverState == 2}
+                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
+                    {else}
+                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
+                    {/if}
+                    <span style="font-weight: bold;">{lang var='acp.daemonState.box.deamon.sensorDataReciver'}</span>:
+                    {if $sensorDataReciverState == 1}
+                    {lang var='acp.daemonState.box.state.run'}
+                    {elseif $sensorDataReciverState == 2}
+                    {lang var='acp.daemonState.box.state.notActive'}
+                    {else}
+                    {lang var='acp.daemonState.box.state.stop'}
+                    {/if}
+                </li>
+                <li>
+                    {if $sensorDataTransmitterState == 1}
+                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
+                    {elseif $sensorDataTransmitterState == 2}
+                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
+                    {else}
+                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
+                    {/if}
+                    <span style="font-weight: bold;">{lang var='acp.daemonState.box.deamon.sensorDataTransmitter'}</span>:
+                    {if $sensorDataTransmitterState == 1}
+                    {lang var='acp.daemonState.box.state.run'}
+                    {elseif $sensorDataTransmitterState == 2}
+                    {lang var='acp.daemonState.box.state.notActive'}
+                    {else}
+                    {lang var='acp.daemonState.box.state.stop'}
+                    {/if}
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

@@ -67,7 +67,7 @@ class DeleteGroupAjax extends AjaxCommand {
                 //fehlende Schreibrechte
                 $message->setType(Message::ERROR);
                 $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1102.group.del'));
-            } elseif($e->getCode() == 1111) {
+            } elseif($e->getCode() == 1113) {
 
                 //Systemgruppe
                 $message->setType(Message::ERROR);
