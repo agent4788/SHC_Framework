@@ -24,7 +24,13 @@
                     <li  data-role="list-divider">{lang var='acp.acpinfo.box.version'}</li>
                     <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.php'}</span>: {#$php}</li>
                     <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.wiringPi'}</span>: {#$wiringPi}</li>
-                    <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.jQuery'}</span>: <td><span id="jqueryVersion1"></span></td></li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.jQuery'}</span>:
+                        <span id="jqVersion"></span>
+                        <script type="text/javascript">
+                            $('#jqVersion').text($.fn.jquery);
+                        </script>
+                    </li>
                     <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.jQueryMobile'}</span>: 1.4.5</li>
                     <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.jQueryCookie'}</span>: 1.4.1</li>
                     <li><span style="font-weight: bold;">{lang var='acp.acpinfo.box.version.mobileDetect'}</span>: {#$mobileDetect}</li>
@@ -114,7 +120,12 @@
                         </tr>
                         <tr>
                             <td>{lang var='acp.acpinfo.box.version.jQuery'}</td>
-                            <td><span id="jqueryVersion"></span></td>
+                            <td>
+                                <span id="jqVersion"></span>
+                                <script type="text/javascript">
+                                    $('#jqVersion').text($.fn.jquery);
+                                </script>
+                            </td>
                         </tr>
                         <tr>
                             <td>{lang var='acp.acpinfo.box.version.jQueryMobile'}</td>
@@ -207,9 +218,5 @@
                 {/if}
             </div>
         </div>
-        <script type="text/javascript">
-            $('#jqueryVersion').text($.fn.jquery);
-            $('#jqueryVersion1').text($.fn.jquery);
-        </script>
     </body>
 </html>
