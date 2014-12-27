@@ -1,0 +1,130 @@
+/* Farbklassen */
+
+.red {
+    color: #ff0000;
+}
+
+.green {
+    color: #006907;
+}
+
+/* Meldungen */
+
+.rwf-ui-message-error, .rwf-ui-message-info, .rwf-ui-message-successfully, .rwf-ui-message-warning {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    position: relative;
+    min-height: 22px;
+    margin: 10px;
+}
+
+.rwf-ui-message-error .rwf-ui-message-icon, .rwf-ui-message-info .rwf-ui-message-icon, .rwf-ui-message-successfully .rwf-ui-message-icon, .rwf-ui-message-warning .rwf-ui-message-icon {
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    position: absolute;
+    top: 0;
+    left: 5px;
+}
+
+.rwf-ui-message-error ul, .rwf-ui-message-info ul, .rwf-ui-message-successfully ul, .rwf-ui-message-warning ul {
+    margin: 5px 0 0 80px;
+    font-size: 0.9em;
+    color: #000000;
+}
+
+.rwf-ui-message-error .rwf-ui-message, .rwf-ui-message-info .rwf-ui-message, .rwf-ui-message-successfully .rwf-ui-message, .rwf-ui-message-warning .rwf-ui-message {
+    margin-left: 45px;
+    color: #000000;
+}
+
+.rwf-ui-message-error {
+    border: 1px solid #d00101;
+    background-color: #fde7e7;
+}
+
+.rwf-ui-message-error .rwf-ui-message-icon {
+    background: url(../../../img/shc-message-error.png) no-repeat;
+}
+
+.rwf-ui-message-error .rwf-ui-message a {
+    background-color: #fde7e7;
+    border: #d00101 double 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.rwf-ui-message-warning {
+    border: 1px solid #ee9e09;
+    background-color: #fefcc6;
+}
+
+.rwf-ui-message-warning .rwf-ui-message-icon {
+    background: url(../../../img/shc-message-warning.png) no-repeat;
+}
+
+.rwf-ui-message-warning .rwf-ui-message a {
+    background-color: #fefcc6;
+    border: #ee9e09 double 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.rwf-ui-message-info {
+    border: 1px solid #799ee1;
+    background-color: #e2eafb;
+}
+
+.rwf-ui-message-info .rwf-ui-message-icon {
+    background: url(../../../img/shc-message-info.png) no-repeat;
+}
+
+.rwf-ui-message-info .rwf-ui-message a {
+    background-color: #e2eafb;
+    border: #799ee1 double 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.rwf-ui-message-successfully {
+    border: 1px solid #009607;
+    background-color: #d2ffcd;
+}
+
+.rwf-ui-message-successfully .rwf-ui-message-icon {
+    background: url(../../../img/shc-message-successfully.png) no-repeat;
+}
+
+.rwf-ui-message-successfully .rwf-ui-message a {
+    background-color: #d2ffcd;
+    border: #009607 double 3px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+}
