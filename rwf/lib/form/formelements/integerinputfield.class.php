@@ -145,14 +145,16 @@ class IntegerInputField extends AbstractFormElement {
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Titel
-        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<div class="ui-field-contain' . $class . '">' . "\n";
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
         //Formularfeld
         $html .= '<input type="number" pattern="[0-9]*" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . $options . $disabled . ' />';
 
+        $html .= "</div>";
+
         //Pflichtfeld
-        if ($this->isRequiredField() && $this->getValue() == '') {
+        if ($this->isRequiredField() && $this->getValue() == '' && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {

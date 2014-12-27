@@ -28,8 +28,7 @@ $l['acp.settings.tabs.ui'] = 'Benutzeroberfläche';
 $l['acp.settings.tabs.ui.description'] = 'Einstellungen zur Benutzeroberfläche';
 
 $l['acp.settings.tabs.redirect.pc'] = 'Weboberfläche';
-$l['acp.settings.tabs.redirect.tablet'] = 'Tabletoberfläche';
-$l['acp.settings.tabs.redirect.smartphone'] = 'Smartphoneoberfläche';
+$l['acp.settings.tabs.redirect.smartphone'] = 'Mobiloberfläche';
 
 $l['acp.settings.form.title'] = 'Titel';
 $l['acp.settings.form.title.decription'] = 'Titel der in der Kopfzeile angezeit wird';

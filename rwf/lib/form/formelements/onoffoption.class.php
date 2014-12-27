@@ -5,6 +5,7 @@ namespace RWF\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
+use RWF\Request\Request;
 use RWF\Util\String;
 
 /**
@@ -79,6 +80,47 @@ class OnOffOption extends AbstractFormElement {
     public function getLabel() {
 
         $this->label;
+    }
+
+    /**
+     * gibt den Standartwert oder den Eingabewert zurueck
+     *
+     * @return Mixed
+     */
+    public function getValue() {
+
+        $request = RWF::getRequest();
+        if ($request->issetParam($this->getName(), Request::POST)) {
+
+            //Daten per POST
+            $value = String::trim($request->getParam($this->getName(), Request::POST));
+
+            if($value == 'on') {
+
+                $value = 1;
+            } elseif($value == 'off') {
+
+                $value = 0;
+            }
+
+            //Pruefen ob
+            if ($value == $this->value) {
+
+                //Daten nicht veraendert
+                $this->isDefault = true;
+            } else {
+
+                //Daten veraendert
+                $this->isDefault = false;
+            }
+        } else {
+
+            //keine Daten per POST
+            $this->isDefault = true;
+            $value = $this->value;
+        }
+
+        return $value;
     }
 
     /**
@@ -222,7 +264,7 @@ class OnOffOption extends AbstractFormElement {
         $html .= '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld
-        $html .= '<div class="rwf-ui-form-content-element rwf-ui-form-content-on-off-chooser ui-field-contain">';
+        $html .= '<div class="ui-field-contain">';
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . '</label>';
         $html .= '<input data-role="flipswitch" name="' . String::encodeHTML($this->getName()) . '" ' . $id . ' data-on-text="' . String::encodeHTML($this->label['on']) . '" data-off-text="' . String::encodeHTML($this->label['off']) . '" data-wrapper-class="' . $wrapperClass . '" type="checkbox" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . ' />';
 
