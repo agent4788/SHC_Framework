@@ -59,7 +59,6 @@ class EditUserFormPage extends PageCommand {
         if(!$user instanceof User) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
-            $this->data = $tpl->fetchString('edituserform.html');
             return;
         }
 

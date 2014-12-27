@@ -177,11 +177,13 @@ class TextArea extends AbstractFormElement {
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Titel
-        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<div class="ui-field-contain' . $class . '">' . "\n";
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
         //Formularfeld
         $html .= '<textarea type="text" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-textarea" ' . $id . $options . $disabled . ' >' . String::encodeHTML($this->getValue()) . '</textarea>';
+
+        $html .= "</div>";
 
         //Pflichtfeld
         if($this->isRequiredField() && $this->getValue() == '') {

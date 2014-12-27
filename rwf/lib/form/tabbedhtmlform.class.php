@@ -17,6 +17,13 @@ use RWF\Util\String;
 class TabbedHtmlForm extends DefaultHtmlForm {
 
     /**
+     * ist True solange das erste Tab noch nicht angezeigt wurde
+     *
+     * @var Boolean
+     */
+    protected $first = true;
+
+    /**
      * Enthaelt die Tabs und zugehoerigen Formular Elemente
      *
      * @var Array
@@ -96,6 +103,21 @@ class TabbedHtmlForm extends DefaultHtmlForm {
     public function removeAllTabs() {
 
         $this->tabs = array();
+    }
+
+    /**
+     * gibt eine Liste mit allen Tabs zurueck
+     *
+     * @return Array
+     */
+    public function listTabs() {
+
+        $return = array();
+        foreach($this->tabs as $name => $content) {
+
+            $return[] = $name;
+        }
+        return $return;
     }
 
     /**
@@ -214,6 +236,12 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      */
     public function fetchTabContainerStart() {
 
+        //mobile Ansicht
+        if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
+
+            return '<div data-role="collapsibleset" id="'. $this->formCssId .'">' . "\n";
+        }
+
         //Standard ID fuer Tab Formulare
         $html = '<div id="'. $this->formCssId .'">';
         return $html . "\n";
@@ -235,6 +263,12 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      * @return String
      */
     public function fetchContainerJavaScript() {
+
+        //mobile Ansicht
+        if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
+
+            return;
+        }
 
         //JavaScript ueberpruefung
         $html = "<script type=\"text/javascript\">\n";
@@ -268,6 +302,13 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      */
     public function fetchTabList() {
 
+        //mobile Ansicht
+        if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
+
+            return;
+        }
+
+        //Webansicht
         $html = "<ul>\n";
         foreach ($this->tabs as $tabName => $content) {
 
@@ -285,6 +326,15 @@ class TabbedHtmlForm extends DefaultHtmlForm {
      */
     public function fetchTabStart($tabName) {
 
+        //mobile Ansicht
+        if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
+
+            $html = '<div data-role="collapsible" '. ($this->first === true ? 'data-collapsed="false"' : '') .' ><h3>'. String::encodeHTML($this->tabs[$tabName]['title']) .'</h3>';
+            $this->first = false;
+            return $html;
+        }
+
+        //Webansicht
         return '<div id="rwf-view-form-tab_' . String::encodeHTML($tabName) . '">' . "\n";
     }
 
@@ -312,7 +362,14 @@ class TabbedHtmlForm extends DefaultHtmlForm {
             foreach ($this->tabs[$tabName]['elements'] as $element) {
 
                 /* @var $element FormElement */
-                $html .= $element->fetch();
+                //mobile Ansicht
+                if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
+
+                    $html .= $element->fetch(self::SMARTPHONE_VIEW);
+                } else {
+
+                    $html .= $element->fetch(self::DEFAULT_VIEW);
+                }
             }
         }
         return $html;

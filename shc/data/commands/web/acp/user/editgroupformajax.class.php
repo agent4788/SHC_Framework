@@ -68,8 +68,11 @@ class EditGroupFormAjax extends AjaxCommand {
             $premissions = array();
             foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
-                $value = $groupForm->getElementByName(str_replace('.', '_', $premissionName))->getValue();
-                $premissions[$premissionName] = ($value === null ? false : $value);
+                if(preg_match('#^shc\.#', $premissionName)) {
+
+                    $value = $groupForm->getElementByName(str_replace('.', '_', $premissionName))->getValue();
+                    $premissions[$premissionName] = ($value === null ? false : $value);
+                }
             }
 
             $message = new Message();

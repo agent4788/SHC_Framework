@@ -44,6 +44,11 @@
                 <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$user->getId()}">{lang var="global.no"}</a>
             </div>
         </div>
+        <script type="text/javascript">
+            $('#delete-close-{$user->getId()}').click(function() {
+                $('.ui-dialog').dialog('close');
+            });
+        </script>
         {/foreach}
     </body>
 </html>

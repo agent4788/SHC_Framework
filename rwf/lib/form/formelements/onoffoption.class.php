@@ -226,8 +226,10 @@ class OnOffOption extends AbstractFormElement {
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . '</label>';
         $html .= '<input data-role="flipswitch" name="' . String::encodeHTML($this->getName()) . '" ' . $id . ' data-on-text="' . String::encodeHTML($this->label['on']) . '" data-off-text="' . String::encodeHTML($this->label['off']) . '" data-wrapper-class="' . $wrapperClass . '" type="checkbox" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . ' />';
 
+        $html .= "</div>";
+
         //Pflichtfeld
-        if ($this->isRequiredField() && $this->getValue() == '') {
+        if ($this->isRequiredField() && $this->getValue() == '' && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {

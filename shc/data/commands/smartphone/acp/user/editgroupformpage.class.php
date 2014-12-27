@@ -1,19 +1,20 @@
 <?php
 
-namespace PCC\Command\Web;
+namespace SHC\Command\Smartphone;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\User\UserEditor;
 use RWF\User\UserGroup;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use PCC\Form\Forms\UserGroupForm;
+use SHC\Core\SHC;
+use SHC\Form\Forms\UserGroupForm;
 
 /**
- * Bearbeitet eine Benutzergruppe
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,24 +22,33 @@ use PCC\Form\Forms\UserGroupForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditGroupFormAjax extends AjaxCommand {
+class EditGroupFormPage extends PageCommand {
 
-    protected $premission = 'pcc.acp.userManagement';
+    protected $template = 'editgroupform.html';
+
+    protected $premission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Headline Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+        $tpl->assign('backLink', 'index.php?app=shc&m&page=listgroups');
+        $tpl->assign('device', SHC_DETECTED_DEVICE);
 
         //Gruppen Objekt laden
         $groupId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -48,17 +58,17 @@ class EditGroupFormAjax extends AjaxCommand {
         if(!$group instanceof UserGroup) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
-            $this->data = $tpl->fetchString('editgroupform.html');
             return;
         }
 
         //Formular erstellen
         $groupForm = new UserGroupForm($group);
-        $groupForm->addId('pcc-view-form-editGroup');
+        $groupForm->setView(UserGroupForm::SMARTPHONE_VIEW);
+        $groupForm->setAction('index.php?app=shc&m&page=editgroupform&id='. $group->getId());
+        $groupForm->addId('shc-view-form-editGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 
-            $tpl->assign('group', $group);
             $tpl->assign('groupForm', $groupForm);
         } else {
 
@@ -68,7 +78,7 @@ class EditGroupFormAjax extends AjaxCommand {
             $premissions = array();
             foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
-                if(preg_match('#^pcc\.#', $premissionName)) {
+                if(preg_match('#^shc\.#', $premissionName)) {
 
                     $value = $groupForm->getElementByName(str_replace('.', '_', $premissionName))->getValue();
                     $premissions[$premissionName] = ($value === null ? false : $value);
@@ -100,11 +110,13 @@ class EditGroupFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&m&page=listgroups');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editgroupform.html');
     }
-
 }
