@@ -76,7 +76,6 @@ class SwitchServerForm extends DefaultHtmlForm {
 
         //Funksteckdosen
         $radioSockets = new OnOffOption('radioSockets', ($switchServer instanceof SwitchServer ? $switchServer->isRadioSocketsEnabled() : true));
-        $radioSockets->setActiveInactiveLabel();
         $radioSockets->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.radioSockets'));
         $radioSockets->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.radioSockets.description'));
         $radioSockets->requiredField(true);
@@ -84,7 +83,6 @@ class SwitchServerForm extends DefaultHtmlForm {
 
         //GPIOs lesen
         $readGPIO = new OnOffOption('readGPIO', ($switchServer instanceof SwitchServer ? $switchServer->isReadGpiosEnabled() : false));
-        $readGPIO->setActiveInactiveLabel();
         $readGPIO->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.readGPIO'));
         $readGPIO->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.readGPIO.description'));
         $readGPIO->requiredField(true);
@@ -92,7 +90,6 @@ class SwitchServerForm extends DefaultHtmlForm {
 
         //GPIOs schreiben
         $writeGPIO = new OnOffOption('writeGPIO', ($switchServer instanceof SwitchServer ? $switchServer->isWriteGpiosEnabled() : false));
-        $writeGPIO->setActiveInactiveLabel();
         $writeGPIO->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.writeGPIO'));
         $writeGPIO->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.writeGPIO.description'));
         $writeGPIO->requiredField(true);
@@ -100,7 +97,6 @@ class SwitchServerForm extends DefaultHtmlForm {
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($switchServer instanceof SwitchServer ? $switchServer->isEnabled() : true));
-        $enabled->setActiveInactiveLabel();
         $enabled->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.active'));
         $enabled->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.active.description'));
         $enabled->requiredField(true);
