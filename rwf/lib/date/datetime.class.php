@@ -448,8 +448,9 @@ class DateTime extends \DateTime {
      */
     public function getSunrise() {
         
-        $sunrise = date_sunrise($this->getTimestamp(), SUNFUNCS_RET_STRING, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
-        $date = new DateTime($this->format('Y-m-d ') . $sunrise . ':0');
+        $sunrise = date_sunrise($this->getTimestamp(), SUNFUNCS_RET_TIMESTAMP, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
+        $date = new DateTime();
+        $date->setTimestamp($sunrise);
         $offset = RWF::getSetting('rwf.date.sunriseOffset');
         if($offset != 0) {
             if($offset > 0) {
@@ -469,8 +470,9 @@ class DateTime extends \DateTime {
      */
     public function getSunset() {
         
-        $sunset = date_sunset($this->getTimestamp(), SUNFUNCS_RET_STRING, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
-        $date = new DateTime($this->format('Y-m-d ') . $sunset . ':0');
+        $sunset = date_sunset($this->getTimestamp(), SUNFUNCS_RET_TIMESTAMP, RWF::getSetting('rwf.date.Latitude'), RWF::getSetting('rwf.date.Longitude'), 90.833333, ($this->format('I') == 1 ? 2 : 1));
+        $date = new DateTime();
+        $date->setTimestamp($sunset);
         $offset = RWF::getSetting('rwf.date.sunsetOffset');
         if($offset != 0) {
             if($offset > 0) {
