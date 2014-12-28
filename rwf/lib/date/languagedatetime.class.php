@@ -335,7 +335,7 @@ class LanguageDateTime extends DateTime {
                 return $this->showDate($dateFormat, $withDayNames) .' '. $this->showTime($timeFormat);
             } else {
                 
-                return $this->showDate($dateFormat, $withDayNames);
+                return $this->showDate($dateFormat, $withDayNames) .' '. $this->showTime($timeFormat);
             }
         }
         return $this->showDate($dateFormat, $withDayNames) .' '. $this->showTime($timeFormat);
