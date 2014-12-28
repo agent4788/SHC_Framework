@@ -184,8 +184,8 @@
                         function(data) {
 
                             $('#data_usb').html(data);
-                            $('#firstLoadData').css('display', 'none');
-                            $('#finishedLoadData').css('display', 'block');
+                            $('#pcc-view-firstLoadData').css('display', 'none');
+                            $('#pcc-view-finishedLoadData').css('display', 'block');
                         });
 
                 $('#overclock').tooltip({
@@ -194,9 +194,6 @@
                     },
                     track: true
                 });
-
-                $('#pcc-view-firstLoadData').css('display', 'none');
-                $('#pcc-view-finishedLoadData').css('display', 'block');
             }
 
             loadData(true);
