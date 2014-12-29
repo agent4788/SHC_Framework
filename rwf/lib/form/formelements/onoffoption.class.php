@@ -239,10 +239,15 @@ class OnOffOption extends AbstractFormElement {
         $html .= '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld
-        $html .= '<div class="ui-field-contain">';
-        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . '</label>';
-        $html .= '<input data-role="flipswitch" name="' . String::encodeHTML($this->getName()) . '" ' . $id . ' data-on-text="' . String::encodeHTML($this->label['on']) . '" data-off-text="' . String::encodeHTML($this->label['off']) . '" data-wrapper-class="' . $wrapperClass . '" type="checkbox" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . ' />';
-        $html .= "</div>";
+        $html .= '<div ' . $id . ' class="ui-field-contain ' . $class . '">' . "\n";
+        $html .= '<label for="a' . $randomId . '">'. String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') .'</label>' . "\n";
+        $html .= '<div data-role="controlgroup" data-type="horizontal" id="a' . $randomId . '">' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_on" name="' . String::encodeHTML($this->getName()) . '" value="1" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="yes" for="a' . $randomId . '_on">' . String::encodeHTML($this->label['on']) . '</label>' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_off" name="' . String::encodeHTML($this->getName()) . '" value="0" ' . ($this->getValue() == false ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="no" for="a' . $randomId . '_off">' . String::encodeHTML($this->label['off']) . '</label>' . "\n";
+        $html .= "</div>\n";
+        $html .= "</div>\n";
 
         //Pflichtfeld
         if ($this->isRequiredField() && $this->getValue() == '' && !$this->isDefaultValue()) {
