@@ -13,6 +13,8 @@ $l = array();
 
 $l['index.button.acpMenu'] = 'Administration';
 $l['index.button.ucp'] = 'Benutzer Bereich';
+$l['index.button.mobile.acpMenu'] = 'Admin-CP';
+$l['index.button.mobile.ucp'] = 'Benutzer-CP';
 $l['index.button.login'] = 'anmelden';
 $l['index.button.logout'] = 'abmelden';
 $l['index.button.back'] = 'zurück';
