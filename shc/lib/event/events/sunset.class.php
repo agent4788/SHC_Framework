@@ -40,7 +40,7 @@ class Sunset extends AbstractEvent {
 
         //pruefen ob der Ereigniszustand erfuellt ist
         $success = false;
-        if($now->format('Ymdhi') == $sunsetDate->format('Ymdhi') && $this->state['lastExecute']->format('Ymdhi') != $now->format('Ymdhi')) {
+        if($now->format('Ymdhi') == $sunsetDate->format('Ymdhi') && $sunsetDate->getHour() >= 12 && $this->state['lastExecute']->format('Ymdhi') != $now->format('Ymdhi')) {
 
             $success = true;
             $this->state['lastExecute'] = $now;
