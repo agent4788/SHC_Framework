@@ -20,6 +20,10 @@
                         </a>
                         <a href="#delete-a{$backup->getHash()}" data-rel="dialog">{lang var="acpindex.options"}</a>
                     </li>
+                    {foreachelse}
+                    <li>
+                        <h2>{lang var='acpindex.emptyList'}</h2>
+                    </li>
                     {/foreach}
                 </ul>
             </div>
