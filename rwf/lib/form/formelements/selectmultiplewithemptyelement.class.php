@@ -245,7 +245,7 @@ class SelectMultipleWithEmptyElement extends AbstractFormElement {
         $html .= '<div class="ui-field-contain">';
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
-        $html .= '<select name="' . String::encodeHTML($this->getName()) . '[]" multiple="multiple" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-selectmultiple' . $class . '" data-native-menu="false">' . "\n";
+        $html .= '<select name="' . String::encodeHTML($this->getName()) . '[]" multiple="multiple" ' . $id . $disabled . $size . ' class="' . $class . '" data-native-menu="false">' . "\n";
 
         //Auswahl des leeren Elements
         $selected = '';
@@ -295,9 +295,9 @@ class SelectMultipleWithEmptyElement extends AbstractFormElement {
         }
         $html .= "</select>\n";
         $html .= "</div>\n";
-        
+
         //Pflichtfeld
-        if ($this->isRequiredField() && !count($this->getValues())) {
+        if ($this->isRequiredField() && !count($this->getValues()) && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {
