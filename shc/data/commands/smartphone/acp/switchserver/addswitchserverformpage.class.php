@@ -8,7 +8,6 @@ use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\Forms\SwitchServerForm;
-use SHC\Form\Forms\UserForm;
 use SHC\SwitchServer\SwitchServerEditor;
 
 /**
@@ -50,7 +49,7 @@ class AddSwitchServerFormPage extends PageCommand {
 
         //Formular erstellen
         $switchServerForm = new SwitchServerForm();
-        $switchServerForm->setView(UserForm::SMARTPHONE_VIEW);
+        $switchServerForm->setView(SwitchServerForm::SMARTPHONE_VIEW);
         $switchServerForm->setAction('index.php?app=shc&m&page=addswitchserverform');
         $switchServerForm->addId('shc-view-form-addSwitchServer');
 
