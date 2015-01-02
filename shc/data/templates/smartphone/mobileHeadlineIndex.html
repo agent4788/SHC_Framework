@@ -1,4 +1,5 @@
 <div data-theme="b" data-role="header" data-position="fixed">
+    {if $user->isUser()}
     {if $acp|isset == true}
     {if $acpMenue|isset}
     <a href="index.php?app=shc&page=index&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.ucp'}</a>
@@ -7,6 +8,7 @@
     {/if}
     {else}
     <a href="index.php?app=shc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.acpMenu'}</a>
+    {/if}
     {/if}
     <h3>
         {setting name='shc.title' encodeHtml=1}
