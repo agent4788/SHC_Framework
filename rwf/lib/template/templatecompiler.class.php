@@ -898,11 +898,16 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {foreachelse} Tag', $this->templateName, $this->line);
                 }
 
-                $this->closeTag('foreachelse');
                 return '<?php } } else { { ?>';
 
                 break;
             case '/foreach':
+
+                $last = $this->getLastOpendTag();
+                if ($last != 'foreach' && $last != 'foreachelse') {
+
+                    throw new TemplateCompilationException('nicht erwartetes {/foreach} Tag', $this->templateName, $this->line);
+                }
 
                 $this->closeTag('foreach');
                 return '<?php } } ?>';
