@@ -1132,6 +1132,82 @@ class EventEditor {
     }
 
     /**
+     * fuegt einem Event eine Bedingung hinzu
+     *
+     * @param  Integer $eventId      ID des Events
+     * @param  Integer $conditionId  ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function addConditionToEvent($eventId, $conditionId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+
+        //Event Suchen
+        foreach ($xml->event as $event) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $event->id == $eventId) {
+
+                //Bedingung einfügen
+                $data = explode(',', $event->conditions);
+                if(!in_array($conditionId, $data)) {
+
+                    $data[] = $conditionId;
+                    $event->conditions = implode(',', $data);
+
+                    //Daten Speichern
+                    $xml->save();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * entfernt eine Bedingung aus einem Event
+     *
+     * @param  Integer $eventId      ID des Events
+     * @param  Integer $conditionId  ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function removeConditionFromEvent($eventId, $conditionId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+
+        //Event Suchen
+        foreach ($xml->event as $event) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $event->id == $eventId) {
+
+                //Bedingung einfügen
+                $data = explode(',', $event->conditions);
+                if(in_array($conditionId, $data)) {
+
+                    foreach($data as $index => $id) {
+
+                        if($id == $conditionId) {
+
+                            unset($data[$index]);
+                            $event->conditions = implode(',', $data);
+
+                            //Daten Speichern
+                            $xml->save();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * fuegt einem Event ein Schaltbares Element hinzu
      *
      * @param  Integer $eventId      ID des Events

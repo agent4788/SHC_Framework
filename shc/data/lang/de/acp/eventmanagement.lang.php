@@ -13,6 +13,9 @@ $l = array();
 
 //Allgemein
 $l['acp.eventsManagement.title'] = 'Ereignisse verwalten';
+$l['acp.eventsManagement.title.info'] = 'Info';
+$l['acp.eventsManagement.title.conditions'] = 'Bedingungen';
+$l['acp.eventsManagement.title.switchables'] = 'schaltbare Elemente';
 
 //Ereignisse uebersicht
 $l['acp.eventsManagement.eventList.table.head.name'] = 'Name';
@@ -63,7 +66,7 @@ $l['acp.eventsManagement.form.event.inputs.description'] = 'wähle die Eingänge
 $l['acp.eventsManagement.form.event.users'] = 'Benutzer';
 $l['acp.eventsManagement.form.event.users.description'] = 'wähle die Benutzer die durch das Ereignis überwacht werden sollen';
 $l['acp.eventsManagement.form.event.interval'] = 'Sperrzeit';
-$l['acp.eventsManagement.form.event.interval.description'] = 'Zeit in Sekunden, in dieser Zeit wird das Ereignich nach einem erfolgreichen auslösen nicht erneut ausgelöst';
+$l['acp.eventsManagement.form.event.interval.description'] = 'Zeit in Sekunden, in dieser Zeit wird das Ereignis nach einem erfolgreichen auslösen nicht erneut ausgelöst';
 $l['acp.eventsManagement.form.event.active'] = 'Aktiv';
 $l['acp.eventsManagement.form.event.active.description'] = 'aktiviert/deaktiviert das Ereignis';
 
@@ -81,6 +84,12 @@ $l['acp.eventsManagement.form.delete.error'] =  'Das Ereignis konnte nicht gelö
 $l['acp.eventsManagement.form.addElement.success'] =  'Das Element wurde erfolgreich gespeichert';
 $l['acp.eventsManagement.form.addElement.error.1102'] =  'Das Element konnte wegen fehlender schreibrechte nicht gespeichert werden';
 $l['acp.eventsManagement.form.addElement.error'] =  'Das Element konnte nicht gespeichert werden';
+$l['acp.eventsManagement.form.addCondition.success'] =  'Die Bedingung wurde erfolgreich gespeichert';
+$l['acp.eventsManagement.form.addCondition.error.1102'] =  'Die Bedingung konnte wegen fehlender schreibrechte nicht gespeichert werden';
+$l['acp.eventsManagement.form.addCondition.error'] =  'Die Bedingung konnte nicht gespeichert werden';
 $l['acp.eventsManagement.form.addElement.removeSuccesss'] =  'Das Element wurde erfolgreich gespeichert';
 $l['acp.eventsManagement.form.addElement.removeError.1102'] =  'Das Element konnte wegen fehlender schreibrechte nicht gespeichert werden';
 $l['acp.eventsManagement.form.addElement.removeError'] =  'Das Element konnte nicht gespeichert werden';
+$l['acp.eventsManagement.form.addCondition.removeSuccesss'] =  'Die Bedingung wurde erfolgreich gespeichert';
+$l['acp.eventsManagement.form.addCondition.removeError.1102'] =  'Die Bedingung konnte wegen fehlender schreibrechte nicht gespeichert werden';
+$l['acp.eventsManagement.form.addCondition.removeError'] =  'Die Bedingung konnte nicht gespeichert werden';
