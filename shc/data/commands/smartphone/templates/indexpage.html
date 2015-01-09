@@ -35,7 +35,10 @@
 
                     setTimeout("updateWhoIsAtHome()", 15000);
                 }
-                updateWhoIsAtHome();
+                $(document).on('pageinit', '#home', function() {
+
+                    updateWhoIsAtHome();
+                });
             </script>
             {/premission}
             <ul data-role="listview" data-divider-theme="b" data-inset="true">
