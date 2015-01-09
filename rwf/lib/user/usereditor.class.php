@@ -617,10 +617,13 @@ class UserEditor {
                         }
                     }
 
-                    //TAG nicht gefunden, neues erstellen
-                    $premission = $group->premissions->addChild('premission');
-                    $premission->addAttribute('name', $name);
-                    $premission->addAttribute('value', ((bool) $value == true ? 1 : 0));
+                    if($found === false) {
+
+                        //TAG nicht gefunden, neues erstellen
+                        $premission = $group->premissions->addChild('premission');
+                        $premission->addAttribute('name', $name);
+                        $premission->addAttribute('value', ((bool) $value == true ? 1 : 0));
+                    }
                 }
 
                 //Daten Speichern
