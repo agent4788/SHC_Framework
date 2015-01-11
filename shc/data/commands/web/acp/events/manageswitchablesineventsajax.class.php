@@ -82,7 +82,7 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                 $message = new Message();
                 if($command == 'addCondition') {
 
-                    //Bedingung Objekt laden
+                   //Bedingung Objekt laden
                     $conditionId = RWF::getRequest()->getParam('condition', Request::GET, DataTypeUtil::INTEGER);
                     $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
 
@@ -122,9 +122,7 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                             }
                         }
                     }
-
-
-                } elseif($command = 'deleteCondition') {
+                } elseif($command == 'deleteCondition') {
 
                     //Bedingung Objekt laden
                     $conditionId = RWF::getRequest()->getParam('condition', Request::GET, DataTypeUtil::INTEGER);
@@ -135,7 +133,7 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                     if (!$condition instanceof Condition) {
 
                         $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.error.id'));
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.error.id') .'123');
                         $error = true;
 
                     }
@@ -166,8 +164,7 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                             }
                         }
                     }
-                $tpl->assign('message', $message);
-            } elseif($command == 'addElement') {
+                } elseif($command == 'addElement') {
 
                     //element hinzufuegen
                     $switchableElementId = RWF::getRequest()->getParam('element', Request::GET, DataTypeUtil::INTEGER);
