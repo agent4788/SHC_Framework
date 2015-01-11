@@ -73,7 +73,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $name = $activityForm->getElementByName('name')->getValue();
                         $icon = $activityForm->getElementByName('icon')->getValue();;
                         $roomId = $activityForm->getElementByName('room')->getValue();
-                        $switchPoints = $activityForm->getElementByName('switchPoints')->getValues();
+                        //$switchPoints = $activityForm->getElementByName('switchPoints')->getValues();
                         $enabled = $activityForm->getElementByName('enabled')->getValue();
                         $visibility = $activityForm->getElementByName('visibility')->getValue();
                         $allowedUsers = $activityForm->getElementByName('allowedUsers')->getValues();
@@ -82,7 +82,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addActivity($name, $enabled, $visibility, $icon, $roomId, $orderId, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addActivity($name, $enabled, $visibility, $icon, $roomId, $orderId, array(), $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.success'));
                         } catch(\Exception $e) {
@@ -131,7 +131,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $icon = $countdownForm->getElementByName('icon')->getValue();;
                         $roomId = $countdownForm->getElementByName('room')->getValue();
                         $interval = $countdownForm->getElementByName('interval')->getValue();
-                        $switchPoints = $countdownForm->getElementByName('switchPoints')->getValues();
+                        //$switchPoints = $countdownForm->getElementByName('switchPoints')->getValues();
                         $enabled = $countdownForm->getElementByName('enabled')->getValue();
                         $visibility = $countdownForm->getElementByName('visibility')->getValue();
                         $allowedUsers = $countdownForm->getElementByName('allowedUsers')->getValues();
@@ -140,7 +140,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addCountdown($name, $enabled, $visibility, $icon, $roomId, $orderId, $interval, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addCountdown($name, $enabled, $visibility, $icon, $roomId, $orderId, $interval, array(), $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.success'));
                         } catch(\Exception $e) {
@@ -184,7 +184,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $systemCode = $radiosocketForm->getElementByName('systemCode')->getValue();
                         $deviceCode = $radiosocketForm->getElementByName('deviceCode')->getValue();
                         $continuous = $radiosocketForm->getElementByName('continuous')->getValue();
-                        $switchPoints = $radiosocketForm->getElementByName('switchPoints')->getValues();
+                        //$switchPoints = $radiosocketForm->getElementByName('switchPoints')->getValues();
                         $enabled = $radiosocketForm->getElementByName('enabled')->getValue();
                         $visibility = $radiosocketForm->getElementByName('visibility')->getValue();
                         $allowedUsers = $radiosocketForm->getElementByName('allowedUsers')->getValues();
@@ -193,7 +193,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $roomId, $orderId, $protocol, $systemCode, $deviceCode, $continuous, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $roomId, $orderId, $protocol, $systemCode, $deviceCode, $continuous, array(), $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.success'));
                         } catch(\Exception $e) {
@@ -235,7 +235,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $roomId = $gpioOutputForm->getElementByName('room')->getValue();
                         $switchServer = $gpioOutputForm->getElementByName('switchServer')->getValue();
                         $gpioPin = $gpioOutputForm->getElementByName('gpio')->getValue();
-                        $switchPoints = $gpioOutputForm->getElementByName('switchPoints')->getValues();
+                        //$switchPoints = $gpioOutputForm->getElementByName('switchPoints')->getValues();
                         $enabled = $gpioOutputForm->getElementByName('enabled')->getValue();
                         $visibility = $gpioOutputForm->getElementByName('visibility')->getValue();
                         $allowedUsers = $gpioOutputForm->getElementByName('allowedUsers')->getValues();
@@ -244,7 +244,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addRriGpioOutput($name, $enabled, $visibility, $icon, $roomId, $orderId, $switchServer, $gpioPin, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addRriGpioOutput($name, $enabled, $visibility, $icon, $roomId, $orderId, $switchServer, $gpioPin, array(), $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.success'));
                         } catch(\Exception $e) {
@@ -336,7 +336,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $roomId = $wolForm->getElementByName('room')->getValue();
                         $mac = $wolForm->getElementByName('mac')->getValue();
                         $ip = $wolForm->getElementByName('ip')->getValue();
-                        $switchPoints = $wolForm->getElementByName('switchPoints')->getValues();
+                        //$switchPoints = $wolForm->getElementByName('switchPoints')->getValues();
                         $enabled = $wolForm->getElementByName('enabled')->getValue();
                         $visibility = $wolForm->getElementByName('visibility')->getValue();
                         $allowedUsers = $wolForm->getElementByName('allowedUsers')->getValues();
@@ -345,7 +345,7 @@ class AddElementFormAjax extends AjaxCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addWakeOnLan($name, $enabled, $visibility, $icon, $roomId, $orderId, $mac, $ip, $switchPoints, $allowedUsers);
+                            SwitchableEditor::getInstance()->addWakeOnLan($name, $enabled, $visibility, $icon, $roomId, $orderId, $mac, $ip, array(), $allowedUsers);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.success'));
                         } catch(\Exception $e) {

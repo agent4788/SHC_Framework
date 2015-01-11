@@ -73,11 +73,11 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $this->addFormElement($gpio);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->listSwitchPoints() : array()));
+        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isEnabled() : true));

@@ -175,6 +175,82 @@ class SwitchPointEditor {
     }
 
     /**
+     * fuegt einem Schaltpunkt eine Bedingung hinzu
+     *
+     * @param  Integer $switchPointId  ID des Schaltpunktes
+     * @param  Integer $conditionId    ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function addConditionToSwitchPoint($switchPointId, $conditionId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+
+        //Event Suchen
+        foreach ($xml->switchPoint as $switchPoint) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $switchPoint->id == $switchPointId) {
+
+                //Bedingung einfügen
+                $data = explode(',', $switchPoint->conditions);
+                if(!in_array($conditionId, $data)) {
+
+                    $data[] = $conditionId;
+                    $switchPoint->conditions = implode(',', $data);
+
+                    //Daten Speichern
+                    $xml->save();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * entfernt eine Bedingung aus einem Schaltpunkt
+     *
+     * @param  Integer $switchPointId  ID des Schaltpunktes
+     * @param  Integer $conditionId    ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function removeConditionFromSwitchPoint($switchPointId, $conditionId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+
+        //Event Suchen
+        foreach ($xml->switchPoint as $switchPoint) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $switchPoint->id == $switchPointId) {
+
+                //Bedingung einfügen
+                $data = explode(',', $switchPoint->conditions);
+                if(in_array($conditionId, $data)) {
+
+                    foreach($data as $index => $id) {
+
+                        if($id == $conditionId) {
+
+                            unset($data[$index]);
+                            $switchPoint->conditions = implode(',', $data);
+
+                            //Daten Speichern
+                            $xml->save();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * setzt die letzte ausfuehrung auf das uebergebene Datum
      * 
      * @param  Integre $id ID

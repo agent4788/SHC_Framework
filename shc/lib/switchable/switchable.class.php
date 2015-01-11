@@ -31,14 +31,21 @@ interface Switchable extends Element {
      * @return \SHC\Switchable\Switchable
      */
     public function removeSwitchPoint(SwitchPoint $switchPoint);
-    
+
+    /**
+     * gibt eine Liste mit allen Schaltpunkten zurueck
+     *
+     * @return Array
+     */
+    public function listSwitchPoints();
+
     /**
      * loescht alle Schaltpunkte
      * 
      * @return \SHC\Switchable\Switchable
      */
     public function removeAllSwitchPoints();
-    
+
     /**
      * schaltet das Objekt ein
      * 

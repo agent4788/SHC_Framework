@@ -66,11 +66,11 @@ class WolForm extends DefaultHtmlForm {
         $this->addFormElement($ip);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->listSwitchPoints() : array()));
+        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isEnabled() : true));

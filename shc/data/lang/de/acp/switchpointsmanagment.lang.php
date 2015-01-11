@@ -13,11 +13,16 @@ $l = array();
 
 //Allgemein
 $l['acp.switchpointsManagment.title'] = 'Schaltpunkte verwalten';
+$l['acp.switchpointsManagment.title.info'] = 'Info';
+$l['acp.switchpointsManagment.title.conditions'] = 'Bedingungen';
+$l['acp.switchpointsManagment.title.switchables'] = 'schaltbare Elemente';
 
 //Schaltpunkte Tabelle
 $l['acp.switchpointsManagment.switchPointList.table.head.name'] = 'Name';
 $l['acp.switchpointsManagment.switchPointList.table.head.lastExecute'] = 'letzte Ausführung';
 $l['acp.switchpointsManagment.switchPointList.table.head.lastExecute.never'] = 'nie Ausgeführt';
+$l['acp.switchpointsManagment.switchPointList.table.head.type'] = 'Typ';
+$l['acp.switchpointsManagment.switchPointList.table.head.command'] = 'Befehl';
 
 //Tooltip
 $l['acp.switchpointsManagment.tooltip.command'] = 'Befehl';
@@ -83,3 +88,17 @@ $l['acp.switchpointsManagment.form.switchPoint.error.1102'] =  'Der Schaltpunkt 
 $l['acp.switchpointsManagment.form.switchPoint.error'] =  'Der Schaltpunkt konnte nicht gespeichert werden';
 $l['acp.switchpointsManagment.form.error.1102.del'] =  'Der Schaltpunkt konnte wegen fehlender Schreibrechte nicht gelöscht werden';
 $l['acp.switchpointsManagment.form.error.del'] =  'Der Schaltpunkt konnte nicht gelöscht werden';
+
+$l['acp.switchpointsManagment.form.addCondition.success'] =  'Die Bedingung wurde erfolgreich hinzugefügt';
+$l['acp.switchpointsManagment.form.addCondition.error.1102'] =  'Die Bedingung konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchpointsManagment.form.addCondition.error'] =  'Die Bedingung konnte nicht gespeichert werden';
+$l['acp.switchpointsManagment.form.addCondition.success.delete'] =  'Die Bedingung  wurde erfolgreich gelöscht';
+$l['acp.switchpointsManagment.form.addCondition.success'] =  'Die Bedingung wurde erfolgreich hinzugefügt';
+$l['acp.switchpointsManagment.form.addCondition.removeError.1102'] =  'Die Bedingung konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.switchpointsManagment.form.addCondition.removeError'] =  'Die Bedingung konnte nicht gelöscht werden';
+$l['acp.switchpointsManagment.form.addElement.success'] =  'Das Element wurde erfolgreich gespeichert';
+$l['acp.switchpointsManagment.form.addElement.error.1102'] =  'Das Element konnte wegen fehlender schreibrechte nicht gespeichert werden';
+$l['acp.switchpointsManagment.form.addElement.error'] =  'Das Element konnte nicht gespeichert werden';
+$l['acp.switchpointsManagment.form.addElement.removeSuccesss'] =  'Das Element wurde erfolgreich glöscht';
+$l['acp.switchpointsManagment.form.addElement.removeError.1102'] =  'Das Element konnte wegen fehlender schreibrechte nicht glöscht werden';
+$l['acp.switchpointsManagment.form.addElement.removeError'] =  'Das Element konnte nicht glöscht werden';

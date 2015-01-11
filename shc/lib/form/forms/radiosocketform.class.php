@@ -98,11 +98,11 @@ class RadiosocketForm extends DefaultHtmlForm {
         $this->addFormElement($continuous);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($radioSocket instanceof RadioSocket ? $radioSocket->listSwitchPoints() : array()));
+        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($radioSocket instanceof RadioSocket ? $radioSocket->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($radioSocket instanceof RadioSocket ? $radioSocket->isEnabled() : true));

@@ -564,6 +564,82 @@ class SwitchableEditor {
     }
 
     /**
+     * fuegt einen schaltbaren Element einen Schaltpunkt hinzu
+     *
+     * @param  Integer $switchableId  ID des schaltbaren Elements
+     * @param  Integer $switchPointId ID des Schaltpunktes
+     * @return Boolean
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    public function addSwitchPointToSwitchable($switchableId, $switchPointId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+
+        //Event Suchen
+        foreach ($xml->switchable as $switchable) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $switchable->id == $switchableId) {
+
+                //Neues ELement erstellen
+                $data = explode(',', $switchable->switchPoints);
+                if(!in_array($switchPointId, $data)) {
+
+                    $data[] = $switchPointId;
+                    $switchable->switchPoints = implode(',', $data);
+
+                    //Daten Speichern
+                    $xml->save();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * entfernt einen Schaltpunkt von einemschaltbaren Element
+     *
+     * @param  Integer $switchableId  ID des schaltbaren Elements
+     * @param  Integer $switchPointId ID des Schaltpunktes
+     * @return Boolean
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    public function removeSwitchpointFromSwitchable($switchableId, $switchPointId) {
+
+        //XML Daten Laden
+        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+
+        //Event Suchen
+        foreach ($xml->switchable as $switchable) {
+
+            /* @var $switchable \SimpleXmlElement */
+            if ((int) $switchable->id == $switchableId) {
+
+                //Bedingung einfügen
+                $data = explode(',', $switchable->switchPoints);
+                if(in_array($switchPointId, $data)) {
+
+                    foreach($data as $index => $id) {
+
+                        if($id == $switchPointId) {
+
+                            unset($data[$index]);
+                            $switchable->switchPoints = implode(',', $data);
+
+                            //Daten Speichern
+                            $xml->save();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * erstellt ein neues Schaltbares Element
      * 
      * @param  Integer $type              Typ

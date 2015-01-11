@@ -57,11 +57,11 @@ class ActivityForm extends DefaultHtmlForm {
         $this->addFormElement($room);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($activity instanceof Activity ? $activity->listSwitchPoints() : array()));
+        /*//$switchPoints = new SwitchPointsChooser('switchPoints', ($activity instanceof Activity ? $activity->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($activity instanceof Activity ? $activity->isEnabled() : true));

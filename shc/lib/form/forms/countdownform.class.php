@@ -65,11 +65,11 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($interval);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($countdown instanceof Countdown ? $countdown->listSwitchPoints() : array()));
+        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($countdown instanceof Countdown ? $countdown->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($countdown instanceof Countdown ? $countdown->isEnabled() : true));
