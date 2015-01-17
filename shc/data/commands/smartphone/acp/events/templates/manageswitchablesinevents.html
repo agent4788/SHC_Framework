@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="event">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">{lang var='acp.eventsManagement.title.info'}</li>
+                    <li>{lang var='acp.eventsManagement.eventList.table.head.name'}: {#$event->getName()}</li>
+                    <li>
+                        {lang var='acp.eventsManagement.eventList.table.head.type'}:
+                        {instanceof element=$event class='\SHC\Event\Events\HumidityClimbOver'}{lang var="acp.eventsManagement.events.HumidityClimbOver"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\HumidityFallsBelow'}{lang var="acp.eventsManagement.events.HumidityFallsBelow"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\InputHigh'}{lang var="acp.eventsManagement.events.InputHigh"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\InputLow'}{lang var="acp.eventsManagement.events.InputLow"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\LightIntensityClimbOver'}{lang var="acp.eventsManagement.events.LightIntensityClimbOver"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\LightIntensityFallBelow'}{lang var="acp.eventsManagement.events.LightIntensityFallBelow"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\MoistureClimbOver'}{lang var="acp.eventsManagement.events.MoistureClimbOver"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\MoistureFallsBelow'}{lang var="acp.eventsManagement.events.MoistureFallsBelow"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\TemperatureClimbOver'}{lang var="acp.eventsManagement.events.TemperatureClimbOver"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\TemperatureFallsBelow'}{lang var="acp.eventsManagement.events.TemperatureFallsBelow"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\UserComesHome'}{lang var="acp.eventsManagement.events.UserComesHome"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\UserLeavesHome'}{lang var="acp.eventsManagement.events.UserLeavesHome"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\Sunrise'}{lang var="acp.eventsManagement.events.Sunrise"}{/instanceof}
+                        {instanceof element=$event class='\SHC\Event\Events\Sunset'}{lang var="acp.eventsManagement.events.Sunset"}{/instanceof}
+                    </li>
+                </ul>
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    <li data-role="list-divider">{lang var='acp.eventsManagement.title.conditions'}</li>
+                    {foreach from=$conditionList item='condition'}
+                    {instanceof element=$condition class='\SHC\Condition\Condition'}
+                    <li>
+                        <a href="#">
+                            <h2>
+                                {if $condition->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$condition->getName()}{if $condition->isEnabled() == false}</span>{/if}
+                            </h2>
+                            <p>
+                                {lang var="acp.switchableManagement.elementTable.table.head.type"}:
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.HumidityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityLowerThanCondition'}{lang var="acp.conditionManagement.condition.HumidityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityLowerThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.MoistureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureLowerThanCondition'}{lang var="acp.conditionManagement.condition.MoistureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureLowerThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\NobodyAtHomeCondition'}{lang var="acp.conditionManagement.condition.NobodyAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DateCondition'}{lang var="acp.conditionManagement.condition.DateCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DayOfWeekCondition'}{lang var="acp.conditionManagement.condition.DayOfWeekCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TimeOfDayCondition'}{lang var="acp.conditionManagement.condition.TimeOfDayCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunriseSunsetCondition'}{lang var="acp.conditionManagement.condition.SunriseSunsetCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunsetSunriseCondition'}{lang var="acp.conditionManagement.condition.SunsetSunriseCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FileExistsCondition'}{lang var="acp.conditionManagement.condition.FileExistsCondition"}{/instanceof}
+                            </p>
+                        </a>
+                        <a href="index.php?app=shc&m&action=deleteconditionfromevent&id={$event->getId()}&condition={$condition->getId()}">{lang var="acpindex.options"}</a>
+                    </li>
+                    {/instanceof}
+                    {foreachelse}
+                    <li>
+                        {lang var='acpindex.emptyList'}
+                    </li>
+                    {/foreach}
+                    <li>
+                        <a href="#addCondition" data-rel="dialog">
+                            <h2>{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</h2>
+                        </a>
+                    </li>
+                </ul>
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    <li data-role="list-divider">{lang var='acp.eventsManagement.title.switchables'}</li>
+                    {foreach from=$elementList item='element'}
+                    {instanceof element=$element['object'] class='\SHC\Switchable\Switchable'}
+                    <li>
+                        <a href="#">
+                            <h2>
+                                {if $element['object']->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element['object']->getName()}{if $element['object']->isEnabled() == false}</span>{/if}
+                            </h2>
+                            <p>
+                                {lang var="acp.switchableManagement.elementTable.table.head.command"}: {if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}
+                                <br/>
+                                {lang var="acp.switchableManagement.elementTable.table.head.type"}:
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                            </p>
+                        </a>
+                        <a href="index.php?app=shc&m&action=deleteswitchablefromevent&id={$event->getId()}&element={$element['object']->getId()}">{lang var="acpindex.options"}</a>
+                    </li>
+                    {/instanceof}
+                    {foreachelse}
+                    <li>
+                        {lang var='acpindex.emptyList'}
+                    </li>
+                    {/foreach}
+                    <li>
+                        <a href="#addSwitchable" data-rel="dialog">
+                            <h2>{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</h2>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="page" id="addCondition">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.eventsManagement.title.addCondition"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                {$conditionChooser->fetch(4)}
+                <a href="#" id="shc-view-eventsManagement-addConditionEvent" class="ui-btn">{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</a>
+                <script type="text/javascript">
+                    $(document).on('pageinit', '#event', function() {
+
+                        $('#shc-view-eventsManagement-addConditionEvent').click(function() {
+
+                            var condition = $('select[name=condition]').val();
+                            window.location = "index.php?app=shc&m&action=addconditiontoevent&id={$event->getId()}&condition="+ condition;
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div data-role="page" id="addSwitchable">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.eventsManagement.title.addSwitchable"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                {$elementChooser->fetch(4)}
+                {$switchCommand->fetch(4)}
+                <a href="#" id="shc-view-eventsManagement-addSwitchableEvent" class="ui-btn">{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</a>
+                <script type="text/javascript">
+                    $(document).on('pageinit', '#event', function() {
+
+                        $('#shc-view-eventsManagement-addSwitchableEvent').click(function() {
+
+                            var element = $('select[name=element]').val();
+                            var switchCommand = $('select[name=switchCommand]').val();
+                            window.location = "index.php?app=shc&m&action=addswitchabletoevent&id={$event->getId()}&element="+ element +"&switchCommand="+ switchCommand;
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </body>
+</html>

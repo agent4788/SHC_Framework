@@ -16,6 +16,8 @@ $l['acp.eventsManagement.title'] = 'Ereignisse verwalten';
 $l['acp.eventsManagement.title.info'] = 'Info';
 $l['acp.eventsManagement.title.conditions'] = 'Bedingungen';
 $l['acp.eventsManagement.title.switchables'] = 'schaltbare Elemente';
+$l['acp.eventsManagement.title.addCondition'] = 'Bedingung hinzufügen';
+$l['acp.eventsManagement.title.addSwitchable'] = 'schaltbares Element hinzufügen';
 
 //Ereignisse uebersicht
 $l['acp.eventsManagement.eventList.table.head.name'] = 'Name';

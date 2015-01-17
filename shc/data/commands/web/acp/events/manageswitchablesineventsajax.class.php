@@ -133,7 +133,7 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                     if (!$condition instanceof Condition) {
 
                         $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.error.id') .'123');
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.error.id'));
                         $error = true;
 
                     }
