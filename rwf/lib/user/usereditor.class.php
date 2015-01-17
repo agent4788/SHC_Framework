@@ -62,7 +62,7 @@ class UserEditor {
     /**
      * Singleton Instanz
      * 
-     * @var RWF\User\UserEditor 
+     * @var \RWF\User\UserEditor
      */
     protected static $instance = null;
 
@@ -98,7 +98,17 @@ class UserEditor {
             }
 
             $this->users[(int) $user->id] = new User(
-                    (int) $user->id, (string) $user->authCode, (string) $user->name, (string) $user->password, (bool) $user->isOriginator, $this->getUserGroupById((int) $user->mainUserGroup), $userGroups, ((string) $user->language != '' ? (string) $user->language : null), ((string) $user->webStyle != '' ? (string) $user->webStyle : null), ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null), \DateTime::createFromFormat('Y-m-d', (string) $user->register)
+                (int) $user->id,
+                (string) $user->authCode,
+                (string) $user->name,
+                (string) $user->password,
+                ((int) $user->isOriginator == 1 ? true : false),
+                $this->getUserGroupById((int) $user->mainUserGroup),
+                $userGroups,
+                ((string) $user->language != '' ? (string) $user->language : null),
+                ((string) $user->webStyle != '' ? (string) $user->webStyle : null),
+                ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null),
+                \DateTime::createFromFormat('Y-m-d', (string) $user->register)
             );
         }
     }
