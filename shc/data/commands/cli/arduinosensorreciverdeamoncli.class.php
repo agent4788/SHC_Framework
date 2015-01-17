@@ -32,7 +32,7 @@ class ArduinoSensorReciverDeamonCli extends CliCommand {
      * 
      * @var String 
      */
-    protected $fullParam = '--arduinoreciver';
+    protected $fullParam = '--arduinoreceiver';
 
     /**
      * Debug Modus aktiv
