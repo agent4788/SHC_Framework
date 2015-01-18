@@ -45,6 +45,7 @@
             </div>
             <div role="main" class="ui-content">
                 {$switchPoint->fetchTooltip()}
+                <a href="index.php?app=shc&m&page=manageswitchablesinswitchpoints&id={$switchPoint->getId()}" class="ui-btn">{lang var='global.button.editlist'}</a>
                 <a href="index.php?app=shc&m&page=editswitchpointform&id={$switchPoint->getId()}" class="ui-btn">{lang var='global.button.edit'}</a>
             </div>
         </div>

@@ -16,6 +16,8 @@ $l['acp.switchpointsManagment.title'] = 'Schaltpunkte verwalten';
 $l['acp.switchpointsManagment.title.info'] = 'Info';
 $l['acp.switchpointsManagment.title.conditions'] = 'Bedingungen';
 $l['acp.switchpointsManagment.title.switchables'] = 'schaltbare Elemente';
+$l['acp.switchpointsManagment.title.addCondition'] = 'Bedingung hinzufügen';
+$l['acp.switchpointsManagment.title.addSwitchable'] = 'schaltbares Element hinzufügen';
 
 //Schaltpunkte Tabelle
 $l['acp.switchpointsManagment.switchPointList.table.head.name'] = 'Name';
