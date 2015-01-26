@@ -7,12 +7,6 @@
         <a href="index.php?app=shc&page=acp" id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
         {/if}
         {/premission}
-        {premission premission='shc.ucp.reboot'}
-        <img src="./shc/inc/img/buttons/reboot.png" style="width: 32px; height: 32px;" id="shc-view-buttons-reboot" title="{lang var='global.button.reboot'}" />
-        {/premission}
-        {premission premission='shc.ucp.shutdown'}
-        <img src="./shc/inc/img/buttons/shutdown.png" style="width: 32px; height: 32px;" id="shc-view-buttons-shutdown" title="{lang var='global.button.shutdown'}" />
-        {/premission}
     </div>
     <div id="shc-headline-left">
         {if $acp|isset == true}
@@ -178,66 +172,6 @@
         position: 'absolute',
         top: '32px',
         right: '24px'
-    });
-</script>
-{/premission}
-{premission premission='shc.ucp.reboot'}
-<script type="text/javascript">
-    $('#shc-view-buttons-reboot').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '332px'
-    }).tooltip();
-    $('#shc-view-buttons-reboot').click(function() {
-
-        //Prompt
-        $('#shc-view-safetyPrompt').text("{lang var='global.prompt.reboot.text'}");
-        $('#shc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.reboot.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#shc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=shc&action=reboot';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#shc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
-    });
-</script>
-{/premission}
-{premission premission='shc.ucp.shutdown'}
-<script type="text/javascript">
-    $('#shc-view-buttons-shutdown').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '300px'
-    }).tooltip();
-    $('#shc-view-buttons-shutdown').click(function() {
-
-        //Prompt
-        $('#shc-view-safetyPrompt').text("{lang var='global.prompt.shutdown.text'}");
-        $('#shc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.shutdown.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#shc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=shc&action=shutdown';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#shc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
     });
 </script>
 {/premission}

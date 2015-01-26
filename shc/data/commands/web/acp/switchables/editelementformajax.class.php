@@ -11,8 +11,11 @@ use RWF\Util\Message;
 use SHC\Form\Forms\ActivityForm;
 use SHC\Form\Forms\CountdownForm;
 use SHC\Form\Forms\RadiosocketForm;
+use SHC\Form\Forms\RebootForm;
 use SHC\Form\Forms\RpiGpioInputForm;
 use SHC\Form\Forms\RpiGpioOutputForm;
+use SHC\Form\Forms\ScriptForm;
+use SHC\Form\Forms\ShutdownForm;
 use SHC\Form\Forms\WolForm;
 use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
@@ -20,8 +23,15 @@ use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\RadioSocketDimmer;
+use SHC\Switchable\Switchables\Reboot;
+use SHC\Switchable\Switchables\RemoteReboot;
+use SHC\Switchable\Switchables\RemoteShutdown;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
+use SHC\View\Room\ViewHelperEditor;
 
 /**
  * bearbeitet ein Element
@@ -365,6 +375,158 @@ class EditElementFormAjax extends AjaxCommand {
                 //Formular anzeigen
                 $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $wolForm);
+            }
+        } elseif($element instanceof RadioSocketDimmer) {
+
+            //nicht Implementiert
+        } elseif($element instanceof Shutdown) {
+
+            $shutdownForm = new ShutdownForm($element);
+            $shutdownForm->addId('shc-view-form-editElement');
+
+            if($shutdownForm->isSubmitted() && $shutdownForm->validate()) {
+
+                //Speichern
+                $name = $shutdownForm->getElementByName('name')->getValue();
+                $icon = '';
+                $roomId = $shutdownForm->getElementByName('room')->getValue();
+                $enabled = $shutdownForm->getElementByName('enabled')->getValue();
+                $visibility = $shutdownForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $shutdownForm->getElementByName('allowedUsers')->getValues();
+                $orderId = ViewHelperEditor::getInstance()->getNextOrderId();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editShutdown($elementId, $name, $enabled, $visibility, $icon, $roomId, $orderId, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editShutdown.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1507) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error.1507'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $shutdownForm);
+            }
+        } elseif($element instanceof Reboot) {
+
+            $rebootForm = new RebootForm($element);
+            $rebootForm->addId('shc-view-form-editElement');
+
+            if($rebootForm->isSubmitted() && $rebootForm->validate()) {
+
+                //Speichern
+                $name = $rebootForm->getElementByName('name')->getValue();
+                $icon = '';
+                $roomId = $rebootForm->getElementByName('room')->getValue();
+                $enabled = $rebootForm->getElementByName('enabled')->getValue();
+                $visibility = $rebootForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $rebootForm->getElementByName('allowedUsers')->getValues();
+                $orderId = ViewHelperEditor::getInstance()->getNextOrderId();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editReboot($elementId, $name, $enabled, $visibility, $icon, $roomId, $orderId, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editReboot.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1507) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error.1507'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $rebootForm);
+            }
+        } elseif($element instanceof RemoteShutdown) {
+
+            //nicht Implementiert
+        } elseif($element instanceof RemoteReboot) {
+
+            //nicht Implementiert
+        } elseif($element instanceof Script) {
+
+            $scriptForm = new ScriptForm($element);
+            $scriptForm->addId('shc-view-form-editElement');
+
+            if($scriptForm->isSubmitted() && $scriptForm->validate()) {
+
+                //Speichern
+                $name = $scriptForm->getElementByName('name')->getValue();
+                $icon = $scriptForm->getElementByName('icon')->getValue();
+                $roomId = $scriptForm->getElementByName('room')->getValue();
+                $onCommand = $scriptForm->getElementByName('onCommand')->getValue();
+                $offCommand = $scriptForm->getElementByName('offCommand')->getValue();
+                $enabled = $scriptForm->getElementByName('enabled')->getValue();
+                $visibility = $scriptForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $scriptForm->getElementByName('allowedUsers')->getValues();
+                $orderId = ViewHelperEditor::getInstance()->getNextOrderId();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editScript($elementId, $name, $enabled, $visibility, $icon, $roomId, $orderId, $onCommand, $offCommand, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1507) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error.1507'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $scriptForm);
             }
         } else {
 

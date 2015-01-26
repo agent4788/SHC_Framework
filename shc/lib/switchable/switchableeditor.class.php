@@ -12,7 +12,13 @@ use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\RadioSocketDimmer;
+use SHC\Switchable\Switchables\Reboot;
+use SHC\Switchable\Switchables\RemoteReboot;
+use SHC\Switchable\Switchables\RemoteShutdown;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
@@ -117,6 +123,48 @@ class SwitchableEditor {
      * @var Integer
      */
     const TYPE_RPI_GPIO_INPUT = 128;
+
+    /**
+     * Funkdimmer
+     *
+     * @var Integer
+     */
+    const TYPE_RADIOSOCKET_DIMMER = 256;
+
+    /**
+     * Neustart
+     *
+     * @var Integer
+     */
+    const TYPE_REBOOT = 512;
+
+    /**
+     * Herunterfahren
+     *
+     * @var Integer
+     */
+    const TYPE_SHUTDOWN = 1024;
+
+    /**
+     * externes Geraet Neustarten
+     *
+     * @var Integer
+     */
+    const TYPE_REMOTE_REBOOT = 2048;
+
+    /**
+     * externes Geraet Herunterfahren
+     *
+     * @var Integer
+     */
+    const TYPE_REMOTE_SHUTDOWN = 4096;
+
+    /**
+     * Script
+     *
+     * @var Integer
+     */
+    const TYPE_SCRIPT = 8192;
 
     /**
      * Liste mit allen Schaltbaren Objekten
@@ -224,6 +272,38 @@ class SwitchableEditor {
                     $object = new RpiGpioInput();
                     $object->setSwitchServer((int) $switchable->switchServer);
                     $object->setPinNumber((int) $switchable->pinNumber);
+                    break;
+                case self::TYPE_RADIOSOCKET_DIMMER:
+
+                    $object = new RadioSocketDimmer();
+                    $object->setProtocol((string) $switchable->protocol);
+                    $object->setSystemCode((string) $switchable->systemCode);
+                    $object->setDeviceCode((string) $switchable->deviceCode);
+                    $object->setContinuous((string) $switchable->continuous);
+                    break;
+                case self::TYPE_REBOOT:
+
+                    $object = new Reboot();
+                    break;
+                case self::TYPE_SHUTDOWN:
+
+                    $object = new Shutdown();
+                    break;
+                case self::TYPE_REMOTE_REBOOT:
+
+                    $object = new RemoteReboot();
+                    //nicht Implementiert
+                    break;
+                case self::TYPE_REMOTE_SHUTDOWN:
+
+                    $object = new RemoteShutdown();
+                    //nicht Implementiert
+                    break;
+                case self::TYPE_SCRIPT:
+
+                    $object = new Script();
+                    $object->setOnCommand((string) $switchable->onCommand);
+                    $object->setOffCommand((string) $switchable->offCommand);
                     break;
                 default:
 
@@ -1511,6 +1591,283 @@ class SwitchableEditor {
         //Datensatz bearbeiten
         return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups, $data);
     }
+
+    /**
+     * erstellt eine neuen Funkdimmer
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  String  $protocol          Protokoll
+     * @param  String  $systemCode        System Code
+     * @param  String  $deviceCode        Geraete Code
+     * @param  Integer $continuous        Anzahl der Sendevorgaenge
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addRadioSocketDimmer($name, $enabled, $visibility, $icon, $room, $orderId, $protocol, $systemCode, $deviceCode, $continuous, array $switchPoints = array(), array $allowedUserGroups = array()) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'protocol' => $protocol,
+            'systemCode' => $systemCode,
+            'deviceCode' => $deviceCode,
+            'continuous' => $continuous
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_RADIOSOCKET_DIMMER, $name, $enabled, $visibility, $icon, $room, $orderId, $switchPoints, $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet einen Funkdimmer
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  String  $protocol          Protokoll
+     * @param  String  $systemCode        System Code
+     * @param  String  $deviceCode        Geraete Code
+     * @param  Integer $continuous        Anzahl der Sendevorgaenge
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editRadioSocketDimmer($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $protocol = null, $systemCode = null, $deviceCode = null, $continuous = null, array $switchPoints = null, array $allowedUserGroups = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'protocol' => $protocol,
+            'systemCode' => $systemCode,
+            'deviceCode' => $deviceCode,
+            'continuous' => $continuous
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, $switchPoints, $allowedUserGroups, $data);
+    }
+
+    /**
+     * erstellt ein Reboot
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addReboot($name, $enabled, $visibility, $icon, $room, $orderId, array $allowedUserGroups = array()) {
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_REBOOT, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * bearbeitet ein Reboot
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editReboot($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $allowedUserGroups = null) {
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * erstellt ein Shutdown
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addShutdown($name, $enabled, $visibility, $icon, $room, $orderId, array $allowedUserGroups = array()) {
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_SHUTDOWN, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * bearbeitet ein Shutdown
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editShutdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $allowedUserGroups = null) {
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * erstellt einen externen Reboot
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addRemoteReboot($name, $enabled, $visibility, $icon, $room, $orderId, array $allowedUserGroups = array()) {
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_REMOTE_REBOOT, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * bearbeitet einen externen Reboot
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editRemoteReboot($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $allowedUserGroups = null) {
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * erstellt ein externes Shutdown
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addRemoteShutdown($name, $enabled, $visibility, $icon, $room, $orderId, array $allowedUserGroups = array()) {
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_REMOTE_SHUTDOWN, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * bearbeitet ein externes Shutdown
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editRemoteShutdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $allowedUserGroups = null) {
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups);
+    }
+
+    /**
+     * erstellt einen neuen Raspberry Pi GPIO Input
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  String  $onCommand         Einschaltkommando
+     * @param  String  $offCommand        Ausschaltkommando
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addScript($name, $enabled, $visibility, $icon, $room, $orderId, $onCommand, $offCommand, array $allowedUserGroups = array()) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'onCommand' => $onCommand,
+            'offCommand' => $offCommand
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_SCRIPT, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet einen Raspberry Pi GPIO Input
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Integer $room              Raum ID
+     * @param  Integer $orderId           Sortierungs ID
+     * @param  String  $onCommand         Einschaltkommando
+     * @param  String  $offCommand        Ausschaltkommando
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editScript($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $onCommand = null, $offCommand = null, array $allowedUserGroups = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'onCommand' => $onCommand,
+            'offCommand' => $offCommand
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $room, $orderId, array(), $allowedUserGroups, $data);
+    }
+
 
     /**
      * loascht ein Schaltbares Element

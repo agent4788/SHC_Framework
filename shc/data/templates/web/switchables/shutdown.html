@@ -1,0 +1,47 @@
+<div class="shc-contentbox-body-row shc-view-switchable">
+    <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
+    <span id="shc-view-wolDevice-{$switchable->getId()}" class="shc-icon shc-icon-shutdown"></span>
+    <div class="shc-contentbox-body-row-content">
+        <div id="shc-view-switchable-set-{$switchable->getId()}">
+            <button id="shc-view-switchable-{$switchable->getId()}-on" style="width: 10em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.shutdown'}</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        //Buttons Initialisieren
+        $('#shc-view-switchable-set-{$switchable->getId()}').buttonset();
+
+        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+
+            //An Button gedrueckt
+            $.getJSON(
+                    "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                    function(data) {
+
+                        if (data.success == true) {
+
+                        } else {
+
+                            $('#shc-view-errorFrame').text(data.message);
+                            $('#shc-view-errorFrame').dialog({
+                                resizable: false,
+                                modal: true,
+                                buttons: {
+                                    OK: function() {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                        }
+                    }
+            );
+            return false;
+        });
+
+        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+        });
+    });
+</script>

@@ -18,6 +18,8 @@ $l['index.room.title'] = 'Räume';
 $l['index.room.button.on'] = 'an';
 $l['index.room.button.off'] = 'aus';
 $l['index.room.button.start'] = 'start';
+$l['index.room.button.reboot'] = 'Neustart';
+$l['index.room.button.shutdown'] = 'Herunterfahren';
 
 //Meldungen
 $l['index.room.error.title'] = 'Fehler';

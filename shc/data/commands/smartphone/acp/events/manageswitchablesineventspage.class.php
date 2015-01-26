@@ -38,7 +38,10 @@ use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -210,6 +213,15 @@ class ManageSwitchablesInEventsPage extends PageCommand {
                     } elseif($switchableElement instanceof Countdown) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.countdown');
+                    } elseif($switchableElement instanceof Reboot) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.reboot');
+                    } elseif($switchableElement instanceof Shutdown) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.shutdown');
+                    } elseif($switchableElement instanceof Script) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
                     }
                     RWF::getLanguage()->enableAutoHtmlEndocde();
                     $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';

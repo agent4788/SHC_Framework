@@ -106,6 +106,14 @@ span.shc-icon-star {
     background-image: url(../../../img/switchables/star.png);
 }
 
+span.shc-icon-reboot {
+    background-image: url(../../../img/switchables/reboot.png);
+}
+
+span.shc-icon-shutdown {
+    background-image: url(../../../img/switchables/shutdown.png);
+}
+
 /* Status Icons */
 span.shc-icon-high {
     display: inline-block;
