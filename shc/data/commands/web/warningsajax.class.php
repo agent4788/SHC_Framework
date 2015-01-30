@@ -3,14 +3,15 @@
 namespace SHC\Command\Web;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Request\Commands\AjaxCommand;
-use RWF\Core\RWF;
 use RWF\Util\Message;
+use SHC\Sensor\SensorPointEditor;
 use SHC\SwitchServer\SwitchServerEditor;
 
 /**
- * zeigt den Status der einzelnen DIenste an
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -18,26 +19,27 @@ use SHC\SwitchServer\SwitchServerEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DaemonStateAjax extends AjaxCommand {
+class WarningsAjax extends AjaxCommand {
 
-    protected $premission = 'shc.acp.menu';
+    protected $premission = '';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('daemonstate', 'acpindex');
+    protected $languageModules = array('index');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        $tpl = RWF::getTemplate();
+        $message = new Message(Message::WARNING, RWF::getLanguage()->get('index.warnings'));
+
+        //Dienste
 
         //Schaltserver verbindungsversuch um lebenszeichen ab zu fragen
-        $switchServers = array();
         $foundRunningServer = false;
         foreach(SwitchServerEditor::getInstance()->listSwitchServers(SwitchServerEditor::SORT_BY_NAME) as $switchServer) {
 
@@ -49,24 +51,12 @@ class DaemonStateAjax extends AjaxCommand {
 
                 //Verbindungsversuch
                 $socket->open();
-
-                //erfolg
-                $switchServers[] = array(
-                    'object' => $switchServer,
-                    'state' => 1
-                );
-                $foundRunningServer = true;
-
                 $socket->close();
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1150) {
 
-                    //Fehler
-                    $switchServers[] = array(
-                        'object' => $switchServer,
-                        'state' => 0
-                    );
+                    $message->addSubMessage(RWF::getLanguage()->get('index.warnings.switchserver.stop', $switchServer->getName()));
                 } else {
 
                     //Fehler erneut werfen wenn unerwarteter Fehler aufgetreten
@@ -77,15 +67,13 @@ class DaemonStateAjax extends AjaxCommand {
         //kein laufender Server gefunden
         if($foundRunningServer === false) {
 
-            $message = new Message(Message::WARNING, RWF::getLanguage()->get('acp.daemonState.noRunningServer'));
-            $tpl->assign('message', $message);
+            $message->removeSubMessages();
+            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.noRunningServer'));
         }
-        $tpl->assign('switchServers', $switchServers);
 
-        //Dienste
         //Sheduler
         $shedulerState = 0;
-        if(RWF::getSetting('shedulerDaemon')) {
+        if(RWF::getSetting('shc.shedulerDaemon.active')) {
             $data = trim(@file_get_contents(PATH_RWF_CACHE . 'shedulerRun.flag'));
             if ($data != '') {
 
@@ -98,9 +86,12 @@ class DaemonStateAjax extends AjaxCommand {
             }
         } else {
 
-            $shedulerState = 2;
+            $shedulerState = 3;
         }
-        $tpl->assign('shedulerState', $shedulerState);
+        if($shedulerState === 0) {
+
+            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sheduler.stop'));
+        }
 
         //Arduino Sensor Reciver
         $arduinoSensorReciverState = 0;
@@ -120,7 +111,10 @@ class DaemonStateAjax extends AjaxCommand {
 
             $arduinoSensorReciverState = 2;
         }
-        $tpl->assign('arduinoSensorReciverState', $arduinoSensorReciverState);
+        if($arduinoSensorReciverState === 0) {
+
+            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.arduinoSensorReciver.stop'));
+        }
 
         //Sensordata Reciver
         $sensorDataReciverState = 0;
@@ -140,7 +134,10 @@ class DaemonStateAjax extends AjaxCommand {
 
             $sensorDataReciverState = 2;
         }
-        $tpl->assign('sensorDataReciverState', $sensorDataReciverState);
+        if($sensorDataReciverState === 0) {
+
+            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorDataReciver.stop'));
+        }
 
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;
@@ -160,10 +157,25 @@ class DaemonStateAjax extends AjaxCommand {
 
             $sensorDataTransmitterState = 2;
         }
-        $tpl->assign('sensorDataTransmitterState', $sensorDataTransmitterState);
+        if($sensorDataTransmitterState === 0) {
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('daemonstate.html');
+            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorDataTransmitter.stop'));
+        }
+
+        //Sensorpunkte
+        $inPast = DateTime::now()->sub(new \DateInterval('PT2H'));
+        $sensorPoints = SensorPointEditor::getInstance()->listSensorPoints(SensorPointEditor::SORT_BY_NAME);
+        foreach($sensorPoints as $sensorPoint) {
+
+            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+            $lastConnect = $sensorPoint->getTime();
+            if($lastConnect < $inPast) {
+
+                $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorPoint.stop', $sensorPoint->getName()));
+            }
+        }
+
+        $this->data = $message->fetchHtml();
     }
 
 }

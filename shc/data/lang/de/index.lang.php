@@ -34,3 +34,13 @@ $l['index.login.longTime'] = 'merken?';
 $l['index.login.submit'] = 'anmelden';
 $l['index.login.requestError'] = 'Anfrage Fehlgeschlagen';
 $l['index.login.error'] = 'Benutzername oder Passwort falsch';
+
+//Warnungen
+$l['index.warnings'] = 'folgende Fehler sind aufgetreten:';
+$l['index.warnings.noRunningServer'] = 'Kein laufender Schaltserver gefunden. Für die Funktion des SHC muss mindestens ein Schaltserver erreichbar sein!';
+$l['index.warnings.switchserver.stop'] = 'Der Schaltserver "{1:s}" ist nicht erreichbar';
+$l['index.warnings.sheduler.stop'] = 'Der Sheduler läuft nicht';
+$l['index.warnings.arduinoSensorReciver.stop'] = 'Der Arduino Sensor Receiver läuft nicht';
+$l['index.warnings.sensorDataReciver.stop'] = 'Der Sensor Receiver läuft nicht';
+$l['index.warnings.sensorDataTransmitter.stop'] = 'Der Sensor Transmitter läuft nicht';
+$l['index.warnings.sensorPoint.stop'] = 'Der Sensorpunkt "{1:s}" hat seit mehr als 2 Stunden keine Daten mehr übermittelt';
