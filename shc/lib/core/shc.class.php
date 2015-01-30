@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
+use SHC\Database\NoSQL\Redis;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -95,6 +96,13 @@ class SHC extends RWF {
      * @var \RWF\Style\Style 
      */
     protected static $style = null;
+
+    /**
+     * Datenbank
+     *
+     * @var \SHC\Database\NoSQL\Redis
+     */
+    protected static $redis = null;
     
     public function __construct() {
 
@@ -103,6 +111,9 @@ class SHC extends RWF {
 
         //Basisklasse initalisieren
         parent::__construct();
+
+        //Datenbank Initalisieren
+        $this->initDatabase();
 
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
@@ -129,6 +140,17 @@ class SHC extends RWF {
         $fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
         $fileManager->registerXmlFile(self::XML_EVENTS, PATH_SHC_STORAGE . 'events.xml', PATH_SHC_STORAGE . 'default/defaultEvents.xml');
+    }
+
+    /**
+     * Datenbankverbindung Initalisieren
+     *
+     * @throws \Exception
+     */
+    protected function initDatabase() {
+
+        self::$redis = new Redis();
+        self::$redis->connect();
     }
     
     /**
@@ -250,7 +272,7 @@ class SHC extends RWF {
         }
 
         //Header setzen, senden und beenden
-        if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive')) {
+        if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive') && $location != 'index.php?app=' . APP_NAME) {
             self::$response->addLocationHeader($location);
             self::$response->setBody('');
             self::$response->flush();
@@ -267,5 +289,39 @@ class SHC extends RWF {
     public static function getStyle() {
         
         return self::$style;
+    }
+
+    /**
+     * gibt das Datenbankobjekt zutueck
+     *
+     * @return \SHC\Database\NoSQL\Redis
+     */
+    public static function getDatabase() {
+
+        return self::$redis;
+    }
+
+    /**
+     * beendet die Anwendung
+     */
+    public function finalize() {
+
+        //Einstellungen Speichern
+        if (self::$settings instanceof Settings) {
+
+            self::$settings->finalize();
+        }
+
+        //Sessionobjekt abschliesen
+        if (self::$session instanceof Session) {
+
+            self::$session->finalize();
+        }
+
+        //Datenbankverbindung beenden
+        if(self::$redis instanceof Redis) {
+
+            self::$redis->close();
+        }
     }
 }
