@@ -8,6 +8,7 @@ use RWF\User\UserGroup;
 use SHC\Core\SHC;
 use RWF\XML\XmlFileManager;
 use RWF\Util\String;
+use SHC\Database\NoSQL\Redis;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
@@ -63,6 +64,13 @@ class RoomEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'rooms';
+
     protected function __construct() {
 
         $this->loadData();
@@ -73,17 +81,15 @@ class RoomEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
+        $rooms = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach($rooms as $room) {
 
-        //Daten einlesen
-        foreach ($xml->room as $room) {
-
-            $id = (int) $room->id;
+            $id = $room['id'];
             $this->rooms[$id] = new Room(
-                $id, (string) $room->name, (int) $room->orderId, ((int) $room->enabled == 1 ? true : false)
+                $id, $room['name'], $room['orderId'], $room['enabled']
             );
 
-            foreach(explode(',', (string) $room->allowedUserGroups) as $allowedGroupId) {
+            foreach($room['allowedUserGroups'] as $allowedGroupId) {
 
                 $group = UserEditor::getInstance()->getUserGroupById($allowedGroupId);
                 if($group instanceof UserGroup) {
@@ -192,20 +198,18 @@ class RoomEditor {
      */
     public function editRoomOrder(array $order) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
+        $pipeline = SHC::getDatabase()->multi(Redis::PIPELINE);
+        foreach($order as $roomId => $orderId) {
 
-        //Raeume durchlaufen und deren Sortierungs ID anpassen
-        foreach ($xml->room as $room) {
+            if(isset($this->rooms[$roomId])) {
 
-            if (isset($order[(int) $room->id])) {
-
-                $room->orderId = $order[(int) $room->id];
+                /* @var $room \SHC\Room\Room */
+                $room = $this->rooms[$roomId];
+                $room->setOrderId($orderId);
+                $pipeline->hset(self::$tableName, $roomId, $room->toArray());
             }
         }
-
-        //Daten Speichern
-        $xml->save();
+        $pipeline->exec();
         return true;
     }
 
@@ -226,23 +230,20 @@ class RoomEditor {
             throw new \Exception('Der Raumname ist schon vergeben', 1500);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newRoom = array(
+            'id' => $index,
+            'name' => $name,
+            'orderId' => $index,
+            'enabled' => ($enabled == true ? true : false),
+            'allowedUserGroups' => $allowedUserGroups
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
+        if($db->hSetNx(self::$tableName, $index, $newRoom) == 0) {
 
-        //Datensatz erstellen
-        $room = $xml->addChild('room');
-        $room->addChild('id', $nextId);
-        $room->addChild('name', $name);
-        $room->addChild('orderId', $nextId);
-        $room->addChild('enabled', ($enabled == true ? 1 : 0));
-        $room->addChild('allowedUserGroups', implode(',', $allowedUserGroups));
-
-        //Daten Speichern
-        $xml->save();
+            return false;
+        }
         return true;
     }
 
@@ -258,40 +259,38 @@ class RoomEditor {
      */
     public function editRoom($id, $name = null, $enabled = null, array $allowedUserGroups = null) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Raum Suchen
-        foreach ($xml->room as $room) {
+            $room = $db->hGet(self::$tableName, $id);
 
-            if ((int) $room->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Raumname schon belegt
+                if ($room['name'] != $name && !$this->isRoomNameAvailable($name)) {
 
-                    //Ausnahme wenn Raumname schon belegt
-                    if ((string) $room->name != $name && !$this->isRoomNameAvailable($name)) {
-
-                        throw new \Exception('Der Raumname ist schon vergeben', 1500);
-                    }
-
-                    $room->name = $name;
+                    throw new \Exception('Der Raumname ist schon vergeben', 1500);
                 }
 
-                //Aktiviert
-                if ($enabled !== null) {
+                $room['name'] = $name;
+            }
 
-                    $room->enabled = ($enabled == true ? 1 : 0);
-                }
+            //Aktiviert
+            if ($enabled !== null) {
 
-                //erlaubte Benutzergruppen
-                if ($allowedUserGroups !== null) {
+                $room['enabled'] = ($enabled == true ? true : false);
+            }
 
-                    $room->allowedUserGroups = implode(',', $allowedUserGroups);
-                }
+            //erlaubte Benutzergruppen
+            if ($allowedUserGroups !== null) {
 
-                //Daten Speichern
-                $xml->save();
+                $room['allowedUserGroups'] = $allowedUserGroups;
+            }
+
+            if($db->hSet(self::$tableName, $id, $room) == 0) {
+
                 return true;
             }
         }
@@ -306,30 +305,13 @@ class RoomEditor {
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function removeRoom($id) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM, true);
-        
-        //Raum suchen
-        for($i = 0; $i < count($xml->room); $i++) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
             
-            if((int) $xml->room[$i]->id == $id) {
-                
-                //Raum loeschen
-                unset($xml->room[$i]);
+            if($db->hDel(self::$tableName, $id)) {
 
-                //Daten Speichern
-                $xml->save();
-
-                //Boxen die dem Raum zugeordnet sind mit loeschen
-                $boxList = ViewHelperEditor::getInstance()->listBoxes(ViewHelperEditor::SORT_NOTHING);
-                foreach($boxList as $box) {
-
-                    if($box->getRoomId() == $id) {
-
-                        ViewHelperEditor::getInstance()->removeBox($box->getBoxId());
-                    }
-                }
                 return true;
             }
         }

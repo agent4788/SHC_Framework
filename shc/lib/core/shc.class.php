@@ -131,7 +131,7 @@ class SHC extends RWF {
     protected function initXml() {
         
         $fileManager = XmlFileManager::getInstance();
-        $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
+        //$fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
         $fileManager->registerXmlFile(self::XML_ROOM_VIEW, PATH_SHC_STORAGE . 'roomview.xml', PATH_SHC_STORAGE . 'default/defaultRoomview.xml');
         $fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
         $fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
