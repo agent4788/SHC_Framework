@@ -52,25 +52,30 @@ class SwitchServerEditor {
      * @var \SHC\SwitchServer\SwitchServerEditor
      */
     protected static $instance = null;
+
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'switchServers';
     
     protected function __construct() {
-        
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER);
 
-        //Daten einlesen
-        foreach ($xml->switchserver as $switchserver) {
+        $switchServers = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach ($switchServers as $switchserver) {
 
-            $this->switchServers[(int) $switchserver->id] = new SwitchServer(
-                    (int) $switchserver->id, 
-                    (string) $switchserver->name, 
-                    (string) $switchserver->address, 
-                    (int) $switchserver->port, 
-                    (int) $switchserver->model,
-                    (int) $switchserver->radioSockets, 
-                    (int) $switchserver->writeGpios, 
-                    (int) $switchserver->readGpios, 
-                    (int) $switchserver->timeout,
-                    (int) $switchserver->enabled
+            $this->switchServers[(int) $switchserver['id']] = new SwitchServer(
+                    (int) $switchserver['id'],
+                    (string) $switchserver['name'],
+                    (string) $switchserver['address'],
+                    (int) $switchserver['port'],
+                    (int) $switchserver['model'],
+                    (int) $switchserver['radioSockets'],
+                    (int) $switchserver['writeGpios'],
+                    (int) $switchserver['readGpios'],
+                    (int) $switchserver['timeout'],
+                    (int) $switchserver['enabled']
             );
         }
     }
@@ -175,28 +180,26 @@ class SwitchServerEditor {
             throw new \Exception('Der Servername ist schon vergeben', 1501);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
+        $newSwitchServer = array(
+            'id' => $index,
+            'name' => $name,
+            'address' => $address,
+            'port' => $port,
+            'timeout' => $timeout,
+            'model' => $model,
+            'radioSockets' => ($radioSockets == true ? true : false),
+            'writeGpios' => ($writeGpios == true ? true : false),
+            'readGpios' => ($readGpios == true ? true : false),
+            'enabled' => ($enabled == true ? true : false)
+        );
 
-        //Datensatz erstellen
-        $switchServer = $xml->addChild('switchserver');
-        $switchServer->addChild('id', $nextId);
-        $switchServer->addChild('name', $name);
-        $switchServer->addChild('address', $address);
-        $switchServer->addChild('port', $port);
-        $switchServer->addChild('timeout', $timeout);
-        $switchServer->addChild('model', $model);
-        $switchServer->addChild('radioSockets', ($radioSockets == true ? 1 : 0));
-        $switchServer->addChild('writeGpios', ($writeGpios == true ? 1 : 0));
-        $switchServer->addChild('readGpios', ($readGpios == true ? 1 : 0));
-        $switchServer->addChild('enabled', ($enabled == true ? 1 : 0));
+        if($db->hSetNx(self::$tableName, $index, $newSwitchServer) == 0) {
 
-        //Daten Speichern
-        $xml->save();
+            return false;
+        }
         return true;
     }
     
@@ -217,77 +220,75 @@ class SwitchServerEditor {
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function editSwitchServer($id, $name = null, $address = null, $port = null, $timeout = null, $model = null, $radioSockets = null, $writeGpios = null, $readGpios = null, $enabled = null) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER, true);
 
-        //Server Suchen
-        foreach ($xml->switchserver as $switchServer) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-            if ((int) $switchServer->id == $id) {
+            $switchServer = $db->hGet(self::$tableName, $id);
 
-                //Name
-                if ($name !== null) {
+            //Name
+            if ($name !== null) {
 
-                    //Ausnahme wenn Raumname schon belegt
-                    if ((string) $switchServer->name != $name && !$this->isSwitchServerNameAvailable($name)) {
+                //Ausnahme wenn Raumname schon belegt
+                if ((string) $switchServer['name'] != $name && !$this->isSwitchServerNameAvailable($name)) {
 
-                        throw new \Exception('Der Servername ist schon vergeben', 1501);
-                    }
-
-                    $switchServer->name = $name;
+                    throw new \Exception('Der Servername ist schon vergeben', 1501);
                 }
 
-                //IP Adresse
-                if ($address !== null) {
+                $switchServer['name'] = $name;
+            }
 
-                    $switchServer->address = $address;
-                }
-                
-                //Port
-                if ($port !== null) {
+            //IP Adresse
+            if ($address !== null) {
 
-                    $switchServer->port = $port;
-                }
+                $switchServer['address'] = $address;
+            }
 
-                //Timeout
-                if ($timeout !== null) {
+            //Port
+            if ($port !== null) {
 
-                    $switchServer->timeout = $timeout;
-                }
+                $switchServer['port'] = $port;
+            }
 
-                //Model
-                if ($model !== null) {
+            //Timeout
+            if ($timeout !== null) {
 
-                    $switchServer->model = $model;
-                }
-                
-                //Funksteckdosen schalten
-                if ($radioSockets !== null) {
+                $switchServer['timeout'] = $timeout;
+            }
 
-                    $switchServer->radioSockets = ($radioSockets == true ? 1 : 0);
-                }
-                
-                //GPIOs schalten
-                if ($writeGpios !== null) {
+            //Model
+            if ($model !== null) {
 
-                    $switchServer->writeGpios = ($writeGpios == true ? 1 : 0);
-                }
-                
-                //GPIOs abfragen
-                if ($readGpios !== null) {
+                $switchServer['model'] = $model;
+            }
 
-                    $switchServer->readGpios = ($readGpios == true ? 1 : 0);
-                }
+            //Funksteckdosen schalten
+            if ($radioSockets !== null) {
 
-                //Aktiviert
-                if ($enabled !== null) {
+                $switchServer['radioSockets'] = ($radioSockets == true ? true : false);
+            }
 
-                    $switchServer->enabled = ($enabled == true ? 1 : 0);
-                }
+            //GPIOs schalten
+            if ($writeGpios !== null) {
 
-                //Daten Speichern
-                $xml->save();
+                $switchServer['writeGpios'] = ($writeGpios == true ? true : false);
+            }
+
+            //GPIOs abfragen
+            if ($readGpios !== null) {
+
+                $switchServer['readGpios'] = ($readGpios == true ? true : false);
+            }
+
+            //Aktiviert
+            if ($enabled !== null) {
+
+                $switchServer['enabled'] = ($enabled == true ? true : false);
+            }
+
+            if($db->hSet(self::$tableName, $id, $switchServer) == 0) {
+
                 return true;
             }
         }
@@ -301,20 +302,13 @@ class SwitchServerEditor {
      * @return Boolean
      */
     public function removeSwitchServer($id) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER, true);
-        
-        //Server suchen
-        for($i = 0; $i < count($xml->switchserver); $i++) {
-            
-            if((int) $xml->switchserver[$i]->id == $id) {
-                
-                //Raum loeschen
-                unset($xml->switchserver[$i]);
 
-                //Daten Speichern
-                $xml->save();
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
+
+            if($db->hDel(self::$tableName, $id)) {
+
                 return true;
             }
         }
