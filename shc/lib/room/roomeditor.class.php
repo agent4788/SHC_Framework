@@ -86,12 +86,12 @@ class RoomEditor {
 
             $id = $room['id'];
             $this->rooms[$id] = new Room(
-                $id, $room['name'], $room['orderId'], $room['enabled']
+                $id, (string) $room['name'], (int) $room['orderId'], (bool) $room['enabled']
             );
 
             foreach($room['allowedUserGroups'] as $allowedGroupId) {
 
-                $group = UserEditor::getInstance()->getUserGroupById($allowedGroupId);
+                $group = UserEditor::getInstance()->getUserGroupById((int) $allowedGroupId);
                 if($group instanceof UserGroup) {
 
                     $this->rooms[$id]->addAllowedUserGroup($group);

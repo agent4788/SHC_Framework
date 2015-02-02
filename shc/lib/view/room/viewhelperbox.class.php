@@ -166,7 +166,7 @@ class ViewHelperBox {
      */
     public function removeReadable(Readable $readable) {
         
-        $this->elements = array_diff($$this->elements, array($readable));
+        $this->elements = array_diff($this->elements, array($readable));
         return $this;
     }
     
@@ -190,7 +190,7 @@ class ViewHelperBox {
      */
     public function removeSwitchable(Switchable $switchable) {
         
-        $this->elements = array_diff($$this->elements, array($switchable));
+        $this->elements = array_diff($this->elements, array($switchable));
         return $this;
     }
 
@@ -214,7 +214,7 @@ class ViewHelperBox {
      */
     public function removeSensor(Sensor $sensor) {
         
-        $this->elements = array_diff($$this->elements, array($sensor));
+        $this->elements = array_diff($this->elements, array($sensor));
         return $this;
     }
 
@@ -334,5 +334,39 @@ class ViewHelperBox {
         }
         return $html;
     }
-    
+
+    /**
+     * exportiert das Objekt als Array
+     *
+     * @return Array
+     */
+    public function toArray() {
+
+        $data = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'orderId' => $this->orderId,
+            'roomId' => $this->roomId,
+        );
+
+        foreach($this->elements as $orderId => $element) {
+
+            $type = 0;
+            if($element instanceof Readable) {
+
+                $type = 1;
+            } elseif($element instanceof Switchable) {
+
+                $type = 2;
+            } elseif($element instanceof Sensor) {
+
+                $type = 4;
+            }
+
+            $data['elements'][] = array(
+                'type' => $type,
+                'id' => $element->getId()
+            );
+        }
+    }
 }
