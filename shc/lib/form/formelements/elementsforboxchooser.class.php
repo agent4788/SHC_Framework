@@ -20,7 +20,10 @@ use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\View\Room\ViewHelperBox;
 
@@ -74,6 +77,15 @@ class ElementsForBoxChooser extends SelectMultiple {
             } elseif($element instanceof WakeOnLan) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.wakeOnLan');
+            } elseif($element instanceof Reboot) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.reboot');
+            } elseif($element instanceof Shutdown) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.shutdown');
+            } elseif($element instanceof Script) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
             }
             $values['element-'. $element->getId()] = array($element->getName() .' ('. $type .')', $box->isElementInBox($element));
         }
