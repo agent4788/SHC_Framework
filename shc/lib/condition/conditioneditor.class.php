@@ -53,6 +53,13 @@ class ConditionEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'conditions';
+
     protected function __construct() {
 
         $this->loadData();
@@ -63,13 +70,10 @@ class ConditionEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS);
+        $conditions = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach($conditions as $condition) {
 
-        //Daten einlesen
-        foreach ($xml->condition as $condition) {
-
-            //Variablen Vorbereiten
-            $class = (string) $condition->class;
+            $class = (string) $condition['class'];
 
             $data = array();
             foreach ($condition as $index => $value) {
@@ -80,8 +84,8 @@ class ConditionEditor {
                 }
             }
 
-            $this->conditions[(int) $condition->id] = new $class(
-                    (int) $condition->id, (string) $condition->name, $data, ((int) $condition->enabled == 1 ? true : false)
+            $this->conditions[(int) $condition['id']] = new $class(
+                (int) $condition['id'], (string) $condition['name'], $data, ((int) $condition['enabled'] == 1 ? true : false)
             );
         }
     }
@@ -181,31 +185,27 @@ class ConditionEditor {
             throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newCondition = array(
+            'id' => $index,
+            'class' => $class,
+            'name' => $name,
+            'enabled' => ($enabled == true ? true : false)
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-
-        //Datensatz erstellen
-        $condition = $xml->addChild('condition');
-        $condition->addChild('id', $nextId);
-        $condition->addChild('class', $class);
-        $condition->addChild('name', $name);
-        $condition->addChild('enabled', ($enabled == true ? 1 : 0));
-
-        //Daten hinzufuegen
         foreach ($data as $tag => $value) {
 
             if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
 
-                $condition->addChild($tag, $value);
+                $newCondition[$tag] = $value;
             }
         }
 
-        //Daten Speichern
-        $xml->save();
+        if($db->hSetNx(self::$tableName, $index, $newCondition) == 0) {
+
+            return false;
+        }
         return true;
     }
 
@@ -221,48 +221,48 @@ class ConditionEditor {
      */
     public function editCondition($id, $name, $enabled, array $data = array()) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->condition as $condition) {
+            $condition = $db->hGet(self::$tableName, $id);
 
-            if ((int) $condition->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ((string) $condition['name'] != $name && !$this->isConditionNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ((string) $condition->name != $name && !$this->isConditionNameAvailable($name)) {
-
-                        throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
-                    }
-
-                    $condition->name = $name;
+                    throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $condition['name'] = $name;
+            }
 
-                    $condition->enabled = ($enabled == true ? 1 : 0);
-                }
+            //Aktiv
+            if ($enabled !== null) {
 
-                //Zusatzdaten
-                foreach($data as $tag => $value) {
-                    
-                    if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
-                        
-                        if($value !== null) {
-                            
-                            $condition->$tag = $value;
-                        }
+                $condition['enabled'] = ($enabled == true ? 1 : 0);
+            }
+
+            //Zusatzdaten
+            foreach($data as $tag => $value) {
+
+                if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+
+                    if($value !== null) {
+
+                        $condition[$tag] = $value;
                     }
                 }
+            }
 
-                //Daten Speichern
-                $xml->save();
+            //Daten Speichern
+            if($db->hSet(self::$tableName, $id, $condition) == 0) {
+
                 return true;
             }
+
         }
         return false;
     }
@@ -950,19 +950,12 @@ class ConditionEditor {
      */
     public function removeCondition($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Bedingung suchen
-        for ($i = 0; $i < count($xml->condition); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            if ((int) $xml->condition[$i]->id == $id) {
-
-                //Bedingung loeschen
-                unset($xml->condition[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
