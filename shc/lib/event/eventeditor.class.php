@@ -157,6 +157,13 @@ class EventEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'events';
+
     protected function __construct() {
 
         $this->loadData();
@@ -167,22 +174,21 @@ class EventEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
-
         //Daten Vorbereiten
         $oldEvents = $this->events;
         $this->events = array();
 
+        $events = SHC::getDatabase()->hGetAll(self::$tableName);
         //Daten einlesen
-        foreach ($xml->event as $event) {
+        foreach ($events as $event) {
 
             //Variablen Vorbereiten
-            $class = (string) $event->class;
+            $class = (string) $event['class'];
 
             $data = array();
             foreach ($event as $index => $value) {
 
-                if (!in_array($index, array('id', 'name', 'class', 'enabled'))) {
+                if (!in_array($index, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
                     $data[$index] = (string) $value;
                 }
@@ -190,11 +196,11 @@ class EventEditor {
 
             /* @var $eventObj \SHC\Event\Event */
             $eventObj = new $class(
-                (int) $event->id, (string) $event->name, $data, ((int) $event->enabled == 1 ? true : false), DateTime::createFromDatabaseDateTime((string) $event->lastExecute)
+                (int) $event['id'], (string) $event['name'], $data, ((int) $event['enabled'] == true ? true : false), DateTime::createFromDatabaseDateTime((string) $event['lastExecute'])
             );
 
             //Bedingungen anhaengen
-            foreach (explode(',', (string) $event->conditions) as $conditionId) {
+            foreach ($event['conditions'] as $conditionId) {
 
                 $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
                 if ($condition instanceof Condition) {
@@ -204,25 +210,24 @@ class EventEditor {
             }
 
             //schaltbare Elemente Hinzufuegen
-            if(isset($event->switchable)) {
+            if(isset($event['switchable'])) {
 
-                foreach ($event->switchable as $switchable) {
+                foreach ($event['switchable'] as $switchable) {
 
-                    $attr = $switchable->attributes();
-                    $switchableObject = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
+                    $switchableObject = SwitchableEditor::getInstance()->getElementById((int) $switchable['id']);
                     if ($switchableObject instanceof Switchable) {
 
-                        $eventObj->addSwitchable($switchableObject, (int) $attr->command);
+                        $eventObj->addSwitchable($switchableObject, (int) $switchable['command']);
                     }
                 }
             }
 
             //Objekt status vom alten Objekt ins neue übertragen
-            if(isset($oldEvents[(int) $event->id])) {
+            if(isset($oldEvents[(int) $event['id']])) {
 
-                $eventObj->setState($oldEvents[(int) $event->id]->getState());
+                $eventObj->setState($oldEvents[(int) $event['id']]->getState());
             }
-            $this->events[(int) $event->id] = $eventObj;
+            $this->events[(int) $event['id']] = $eventObj;
         }
     }
 
@@ -259,8 +264,6 @@ class EventEditor {
         }
         return true;
     }
-
-
 
     /**
      * gibt eine Liste mit allen Bedingungen zurueck
@@ -325,33 +328,29 @@ class EventEditor {
             throw new \Exception('Der Name des Events ist schon vergeben', 1502);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newEvent = array(
+            'id' => $index,
+            'class' => $class,
+            'name' => $name,
+            'enabled' => ($enabled == true ? true : false),
+            'conditions' => $conditions,
+            'lastExecute' => '2000-01-01 00:00:00'
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-
-        //Datensatz erstellen
-        $condition = $xml->addChild('event');
-        $condition->addChild('id', $nextId);
-        $condition->addChild('class', $class);
-        $condition->addChild('name', $name);
-        $condition->addChild('enabled', ($enabled == true ? 1 : 0));
-        $condition->addChild('conditions', implode(',', $conditions));
-        $condition->addChild('lastExecute', '2000-01-01 00:00:00');
-
-        //Daten hinzufuegen
         foreach ($data as $tag => $value) {
 
-            if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+            if (!in_array($tag, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                $condition->addChild($tag, $value);
+                $newEvent[$tag] = $value;
             }
         }
 
-        //Daten Speichern
-        $xml->save();
+        if($db->hSetNx(self::$tableName, $index, $newEvent) == 0) {
+
+            return false;
+        }
         return true;
     }
 
@@ -369,54 +368,53 @@ class EventEditor {
      */
     protected function editEvent($id, $name = null, array $data = null, $enabled = null, array $conditions = null) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $id);
 
-            if ((int) $event->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ((string) $event['name'] != $name && !$this->isEventNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ((string) $event->name != $name && !$this->isEventNameAvailable($name)) {
-
-                        throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
-                    }
-
-                    $event->name = $name;
+                    throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $event['name'] = $name;
+            }
 
-                    $event->enabled = ($enabled == true ? 1 : 0);
-                }
+            //Aktiv
+            if ($enabled !== null) {
 
-                //Bedingungen
-                if($conditions !== null) {
+                $event['enabled'] = ($enabled == true ? 1 : 0);
+            }
 
-                    $event->conditions = implode(',', $conditions);
-                }
+            //Bedingungen
+            if($conditions !== null) {
 
-                //Zusatzdaten
-                foreach($data as $tag => $value) {
+                $event['conditions'] = implode(',', $conditions);
+            }
 
-                    if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+            //Zusatzdaten
+            foreach($data as $tag => $value) {
 
-                        if($value !== null) {
+                if (!in_array($tag, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                            $event->$tag = $value;
-                        }
+                    if($value !== null) {
+
+                        $event[$tag] = $value;
                     }
                 }
+            }
 
-                //Daten Speichern
-                $xml->save();
+            if($db->hSet(self::$tableName, $id, $event) == 0) {
+
                 return true;
             }
+
         }
         return false;
     }
@@ -431,18 +429,15 @@ class EventEditor {
      */
     public function updateLastExecute($id, DateTime $lastExecute) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $id);
+            $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
 
-            if ((int) $event->id == $id) {
+            if($db->hSet(self::$tableName, $id, $event) == 0) {
 
-                $event->lastExecute = $lastExecute->getDatabaseDateTime();
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -1112,19 +1107,12 @@ class EventEditor {
      */
     public function removeEvent($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Element suchen
-        for ($i = 0; $i < count($xml->event); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            if ((int) $xml->event[$i]->id == $id) {
-
-                //Element loeschen
-                unset($xml->event[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -1141,26 +1129,16 @@ class EventEditor {
      */
     public function addConditionToEvent($eventId, $conditionId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['conditions'][] = $conditionId;
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
 
-                //Bedingung einfügen
-                $data = explode(',', $event->conditions);
-                if(!in_array($conditionId, $data)) {
-
-                    $data[] = $conditionId;
-                    $event->conditions = implode(',', $data);
-
-                    //Daten Speichern
-                    $xml->save();
-                    return true;
-                }
+                return true;
             }
         }
         return false;
@@ -1176,32 +1154,16 @@ class EventEditor {
      */
     public function removeConditionFromEvent($eventId, $conditionId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['conditions'] = array_diff($event['conditions'], array($conditionId));
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
 
-                //Bedingung einfügen
-                $data = explode(',', $event->conditions);
-                if(in_array($conditionId, $data)) {
-
-                    foreach($data as $index => $id) {
-
-                        if($id == $conditionId) {
-
-                            unset($data[$index]);
-                            $event->conditions = implode(',', $data);
-
-                            //Daten Speichern
-                            $xml->save();
-                            return true;
-                        }
-                    }
-                }
+                return true;
             }
         }
         return false;
@@ -1218,22 +1180,15 @@ class EventEditor {
      */
     public function addSwitchableToEvent($eventId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
 
-                //Neues ELement erstellen
-                $tag = $event->addChild('switchable');
-                $tag->addAttribute('id', $switchableId);
-                $tag->addAttribute('command', $command);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -1251,28 +1206,23 @@ class EventEditor {
      */
     public function setEventSwitchableCommand($eventId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Aktivitaet Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            foreach($event['switchable'] as $switchable) {
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+                if($switchable['id'] == $switchableId) {
 
-                //Nach Element suchen
-                foreach ($event->switchable as $eventSwitchable) {
-
-                    $attr = $eventSwitchable->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        $attr->command = $command;
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    $switchable['command'] = $command;
+                    break;
                 }
+            }
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
+                return true;
             }
         }
         return false;
@@ -1288,28 +1238,23 @@ class EventEditor {
      */
     public function removeSwitchableFromEvent($eventId, $switchableId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event suchen
-        for ($i = 0; $i < count($xml->event); $i++) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            foreach($event['switchable'] as $index => $switchable) {
 
-            if ((int) $xml->event[$i]->id == $eventId) {
+                if($switchable['id'] == $switchableId) {
 
-                //Element suchen
-                for ($j = 0; $j < count($xml->event[$i]->switchable); $j++) {
-
-                    $attr = $xml->event[$i]->switchable[$j]->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        //Element loeschen
-                        unset($xml->event[$i]->switchable[$j]);
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    unset($event['switchable'][$index]);
+                    break;
                 }
+            }
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
+                return true;
             }
         }
         return false;
