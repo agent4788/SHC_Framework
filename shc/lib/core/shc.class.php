@@ -114,11 +114,11 @@ class SHC extends RWF {
         //Basisklasse initalisieren
         parent::__construct();
 
-        //Datenbank Initalisieren
-        $this->initDatabase();
-
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
+
+            //Datenbank Initalisieren
+            $this->initDatabase();
 
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
@@ -138,7 +138,7 @@ class SHC extends RWF {
         //$fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
         //$fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
         //$fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
-        $fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
+        //$fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
         //$fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
         //$fileManager->registerXmlFile(self::XML_EVENTS, PATH_SHC_STORAGE . 'events.xml', PATH_SHC_STORAGE . 'default/defaultEvents.xml');

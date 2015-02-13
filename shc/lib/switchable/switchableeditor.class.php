@@ -187,6 +187,13 @@ class SwitchableEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'switchables';
+
     protected function __construct() {
 
         $this->loadData();
@@ -197,13 +204,11 @@ class SwitchableEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
-
-        //Daten einlesen
-        foreach ($xml->switchable as $switchable) {
+        $switchables = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach ($switchables as $switchable) {
 
             //Objekte initialisiernen und Spezifische Daten setzen
-            switch ((int) $switchable->type) {
+            switch ((int) $switchable['type']) {
 
                 case self::TYPE_ACTIVITY:
 
@@ -211,75 +216,71 @@ class SwitchableEditor {
 
                     //Switchable IDs zwischenspeichern (erst nach dem Laden alle Objekte setzen)
                     $list = array();
-                    foreach ($switchable->switchable as $activitySwitchable) {
+                    foreach ($switchable['switchable'] as $activitySwitchable) {
 
-                        /* @var $activitySwitchable \SimpleXmlElement */
-                        $attributes = $activitySwitchable->attributes();
-                        $list[] = array('id' => (int) $attributes->id, 'command' => (int) $attributes->command);
+                        $list[] = $activitySwitchable;
                     }
-                    $this->switchableList[(int) $switchable->id] = $list;
+                    $this->switchableList[(int) $switchable['id']] = $list;
                     break;
                 case self::TYPE_ARDUINO_OUTPUT:
 
                     $object = new ArduinoOutput();
-                    $object->setDeviceId((string) $switchable->deviceId);
-                    $object->setPinNumber((int) $switchable->pinNumber);
+                    $object->setDeviceId((string) $switchable['deviceId']);
+                    $object->setPinNumber((int) $switchable['pinNumber']);
                     break;
                 case self::TYPE_COUNTDOWN:
 
                     $object = new Countdown();
-                    $object->setInterval((string) $switchable->interval);
-                    $object->setSwitchOffTime(DateTime::createFromDatabaseDateTime((string) $switchable->switchOffTime));
+                    $object->setInterval((string) $switchable['interval']);
+                    $object->setSwitchOffTime(DateTime::createFromDatabaseDateTime((string) $switchable['switchOffTime']));
 
                     //Switchable IDs zwischenspeichern (erst nach dem Laden alle Objekte setzen)
                     $list = array();
-                    foreach ($switchable->switchable as $countdownSwitchable) {
+                    foreach ($switchable['switchable'] as $activitySwitchable) {
 
-                        /* @var $countdownSwitchable \SimpleXmlElement */
-                        $attributes = $countdownSwitchable->attributes();
-                        $list[] = array('id' => (int) $attributes->id, 'command' => (int) $attributes->command);
+                        $list[] = $activitySwitchable;
                     }
-                    $this->switchableList[(int) $switchable->id] = $list;
+                    $this->switchableList[(int) $switchable['id']] = $list;
                     break;
                 case self::TYPE_RADIOSOCKET:
 
                     $object = new RadioSocket();
-                    $object->setProtocol((string) $switchable->protocol);
-                    $object->setSystemCode((string) $switchable->systemCode);
-                    $object->setDeviceCode((string) $switchable->deviceCode);
-                    $object->setContinuous((string) $switchable->continuous);
+                    $object->setProtocol((string) $switchable['protocol']);
+                    $object->setSystemCode((string) $switchable['systemCode']);
+                    $object->setDeviceCode((string) $switchable['deviceCode']);
+                    $object->setContinuous((string) $switchable['continuous']);
                     break;
                 case self::TYPE_RPI_GPIO_OUTPUT:
 
                     $object = new RpiGpioOutput();
-                    $object->setSwitchServer((int) $switchable->switchServer);
-                    $object->setPinNumber((int) $switchable->pinNumber);
+                    $object->setSwitchServer((int) $switchable['switchServer']);
+                    $object->setPinNumber((int) $switchable['pinNumber']);
                     break;
                 case self::TYPE_WAKEONLAN:
 
                     $object = new WakeOnLan();
-                    $object->setMac((string) $switchable->mac);
-                    $object->setIpAddress((string) $switchable->ipAddress);
+                    $object->setMac((string) $switchable['mac']);
+                    $object->setIpAddress((string) $switchable['ipAddress']);
                     break;
                 case self::TYPE_ARDUINO_INPUT:
 
                     $object = new ArduinoInput();
-                    $object->setDeviceId((string) $switchable->deviceId);
-                    $object->setPinNumber((int) $switchable->pinNumber);
+                    $object->setDeviceId((string) $switchable['deviceId']);
+                    $object->setPinNumber((int) $switchable['pinNumber']);
                     break;
                 case self::TYPE_RPI_GPIO_INPUT:
 
                     $object = new RpiGpioInput();
-                    $object->setSwitchServer((int) $switchable->switchServer);
-                    $object->setPinNumber((int) $switchable->pinNumber);
+                    $object->setSwitchServer((int) $switchable['switchServer']);
+                    $object->setPinNumber((int) $switchable['pinNumber']);
                     break;
                 case self::TYPE_RADIOSOCKET_DIMMER:
 
                     $object = new RadioSocketDimmer();
-                    $object->setProtocol((string) $switchable->protocol);
-                    $object->setSystemCode((string) $switchable->systemCode);
-                    $object->setDeviceCode((string) $switchable->deviceCode);
-                    $object->setContinuous((string) $switchable->continuous);
+                    $object->setProtocol((string) $switchable['protocol']);
+                    $object->setSystemCode((string) $switchable['systemCode']);
+                    $object->setDeviceCode((string) $switchable['deviceCode']);
+                    $object->setContinuous((string) $switchable['continuous']);
                     break;
                 case self::TYPE_REBOOT:
 
@@ -302,8 +303,8 @@ class SwitchableEditor {
                 case self::TYPE_SCRIPT:
 
                     $object = new Script();
-                    $object->setOnCommand((string) $switchable->onCommand);
-                    $object->setOffCommand((string) $switchable->offCommand);
+                    $object->setOnCommand((string) $switchable['onCommand']);
+                    $object->setOffCommand((string) $switchable['offCommand']);
                     break;
                 default:
 
@@ -311,21 +312,20 @@ class SwitchableEditor {
             }
 
             //Allgemeine Daten setzen
-            $object->setId((int) $switchable->id);
-            $object->setName((string) $switchable->name);
-            $object->enable(((string) $switchable->enabled == 1 ? true : false));
-            $object->setVisibility(((string) $switchable->visibility == 1 ? true : false));
-            $object->setIcon((string) $switchable->icon);
-            $room = RoomEditor::getInstance()->getRoomById((int) $switchable->roomId);
+            $object->setId((int) $switchable['id']);
+            $object->setName((string) $switchable['name']);
+            $object->enable(((string) $switchable['enabled'] == true ? true : false));
+            $object->setVisibility(((string) $switchable['visibility'] == true ? true : false));
+            $object->setIcon((string) $switchable['icon']);
+            $room = RoomEditor::getInstance()->getRoomById((int) $switchable['roomId']);
             if($room instanceof Room) {
                 $object->setRoom($room);
             }
-            $object->setOrderId((int) $switchable->orderId);
-            $object->setState((int) $switchable->state, false);
+            $object->setOrderId((int) $switchable['orderId']);
+            $object->setState((int) $switchable['state'], false);
 
             //Schaltpunkte
-            $switchPoints = explode(',', (string) $switchable->switchPoints);
-            foreach ($switchPoints as $switchPointId) {
+            foreach ($switchable['switchPoints'] as $switchPointId) {
 
                 $switchPoint = SwitchPointEditor::getInstance()->getSwitchPointById($switchPointId);
                 if ($switchPoint instanceof SwitchPoint) {
@@ -335,8 +335,7 @@ class SwitchableEditor {
             }
 
             //Benutzergruppen
-            $userGroups = explode(',', (string) $switchable->allowedUserGroups);
-            foreach ($userGroups as $userGroupId) {
+            foreach ($switchable['allowedUserGroups'] as $userGroupId) {
 
                 $userGroup = UserEditor::getInstance()->getUserGroupById($userGroupId);
                 if ($userGroup instanceof UserGroup) {
@@ -536,7 +535,7 @@ class SwitchableEditor {
                 if ($orderBy == 'id') {
 
                     $roomSwitchables[$switchable->getId()] = $switchable;
-                } elseif ($orderBy = 'orderID') {
+                } elseif ($orderBy = 'orderId') {
 
                     $roomSwitchables[$switchable->getOrderId()] = $switchable;
                 } else {
@@ -588,20 +587,20 @@ class SwitchableEditor {
      */
     public function editOrder(array $order) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        foreach($order as $switchableId => $orderId) {
 
-        //Raeume durchlaufen und deren Sortierungs ID anpassen
-        foreach ($xml->switchable as $switchable) {
+            if(isset($this->switchables[$switchableId])) {
 
-            if (isset($order[(int) $switchable->id])) {
+                $switchableData = $db->hGet(self::$tableName, $switchableId);
+                $switchableData['orderId'] = $orderId;
 
-                $switchable->orderId = $order[(int) $switchable->id];
+                if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+
+                    return false;
+                }
             }
         }
-
-        //Daten Speichern
-        $xml->save();
         return true;
     }
     
@@ -611,11 +610,8 @@ class SwitchableEditor {
      * @return Boolean
      */
     public function updateState() {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
-        
-        //Alle Elemente durchlaufen
+
+        $db = SHC::getDatabase();
         foreach($this->switchables as $switchable) {
             
             //Wenn der Status veraendert wurde Speichern
@@ -623,23 +619,19 @@ class SwitchableEditor {
                 
                 //Nach Objekt suchen
                 $id = $switchable->getId();
-                foreach($xml->switchable as $xmlSwitchable) {
-                    
-                    if((int) $xmlSwitchable->id == $id) {
-                        
-                        $xmlSwitchable->state = $switchable->getState();
+                $switchableData = $db->hGet(self::$tableName, $id);
+                $switchableData['state'] = $switchable->getState();
+                if($switchable instanceof Countdown) {
 
-                        if($switchable instanceof Countdown) {
+                    $switchableData['switchOffTime'] = $switchable->getSwitchOffTime()->getDatabaseDateTime();
+                }
 
-                            $xmlSwitchable->switchOffTime = $switchable->getSwitchOffTime()->getDatabaseDateTime();
-                        }
-                    }
+                if($db->hSet(self::$tableName, $id, $switchableData) != 0) {
+
+                    return false;
                 }
             }
         }
-        
-        //Daten Speichern
-        $xml->save();
         return true;
     }
 
@@ -653,26 +645,15 @@ class SwitchableEditor {
      */
     public function addSwitchPointToSwitchable($switchableId, $switchPointId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $switchableId)) {
 
-        //Event Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData['switchPoints'][] = $switchPointId;
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $switchableId) {
+            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
 
-                //Neues ELement erstellen
-                $data = explode(',', $switchable->switchPoints);
-                if(!in_array($switchPointId, $data)) {
-
-                    $data[] = $switchPointId;
-                    $switchable->switchPoints = implode(',', $data);
-
-                    //Daten Speichern
-                    $xml->save();
-                    return true;
-                }
+                return false;
             }
         }
         return false;
@@ -688,32 +669,15 @@ class SwitchableEditor {
      */
     public function removeSwitchpointFromSwitchable($switchableId, $switchPointId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $switchableId)) {
 
-        //Event Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData['switchPoints'] = array_diff($switchableData['switchPoints'], array($switchPointId));
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $switchableId) {
+            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
 
-                //Bedingung einfügen
-                $data = explode(',', $switchable->switchPoints);
-                if(in_array($switchPointId, $data)) {
-
-                    foreach($data as $index => $id) {
-
-                        if($id == $switchPointId) {
-
-                            unset($data[$index]);
-                            $switchable->switchPoints = implode(',', $data);
-
-                            //Daten Speichern
-                            $xml->save();
-                            return true;
-                        }
-                    }
-                }
+                return false;
             }
         }
         return false;
@@ -743,51 +707,34 @@ class SwitchableEditor {
             throw new \Exception('Der Name ist schon vergeben', 1507);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newElement = array(
+            'type' => $type,
+            'id' => $index,
+            'name' => $name,
+            'orderId' => $orderId,
+            'enabled' => ($enabled == true ? true : false),
+            'visibility' => ($visibility == true ? true : false),
+            'state' => 0,
+            'icon' => $icon,
+            'roomId' => $room,
+            'switchPoints' => $switchPoints,
+            'allowedUserGroups' => $allowedUserGroups
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-
-        //Datensatz erstellen
-        /* @var $switchable \SimpleXmlElement */
-        $switchable = $xml->addChild('switchable');
-        $switchable->addChild('type', $type);
-        $switchable->addChild('id', $nextId);
-        $switchable->addChild('name', $name);
-        $switchable->addChild('enabled', ($enabled == true ? 1 : 0));
-        $switchable->addChild('visibility', ($visibility == true ? 1 : 0));
-        $switchable->addChild('state', 0);
-        $switchable->addChild('icon', $icon);
-        $switchable->addChild('roomId', $room);
-        $switchable->addChild('orderId', $orderId);
-        $switchable->addChild('switchPoints', implode(',', $switchPoints));
-        $switchable->addChild('allowedUserGroups', implode(',', $allowedUserGroups));
-
-        //Daten hinzufuegen
         foreach ($data as $tag => $value) {
 
-            if (!in_array($tag, array('id', 'name', 'type', 'enabled', 'visibility', 'icon', 'roomId', 'orderId', 'switchPoints', 'allowedUserGroups'))) {
+            if (!in_array($tag, array('id', 'name', 'type', 'enabled', 'visibility', 'icon', 'roomId', 'orderId', 'switchPoints', 'allowedUserGroups', 'state'))) {
 
-                if (is_array($value)) {
-
-                    //wenn Wert ein Array ist Werte als Attibute speichern
-                    $newTag = $switchable->addChild($tag);
-                    foreach ($value as $attribute => $attributeValue) {
-
-                        $newTag->addAttribute($attribute, $attributeValue);
-                    }
-                } else {
-
-                    //wenn kein Array als Tag Wert
-                    $switchable->addChild($tag, $value);
-                }
+                $newElement[$tag] = $value;
             }
         }
 
-        //Daten Speichern
-        $xml->save();
+        if($db->hSetNx(self::$tableName, $index, $newElement) == 0) {
+
+            return false;
+        }
         return true;
     }
 
@@ -809,100 +756,82 @@ class SwitchableEditor {
      */
     protected function editElement($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchable = $db->hGet(self::$tableName, $id);
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ($name != (string) $switchable['name'] && !$this->isElementNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ($name != (string) $switchable->name && !$this->isElementNameAvailable($name)) {
-
-                        throw new \Exception('Der Name ist schon vergeben', 1507);
-                    }
-
-                    $switchable->name = $name;
+                    throw new \Exception('Der Name ist schon vergeben', 1507);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $switchable['name'] = $name;
+            }
 
-                    $switchable->enabled = ($enabled == true ? 1 : 0);
+            //Aktiv
+            if ($enabled !== null) {
+
+                $switchable['enabled'] = ($enabled == true ? true : false);
+            }
+
+            //Sichtbarkeit
+            if ($visibility !== null) {
+
+                $switchable['visibility'] = ($visibility == true ? true : false);
+            }
+
+            //Icon
+            if ($icon !== null) {
+
+                $switchable['icon'] = $icon;
+            }
+
+            //Raum
+            if ($room !== null) {
+
+                //neue Sortierungs ID beim wechseln des Raumes um doppelte Sortierungs IDs zu vermeiden
+                if($room != (int) $switchable['roomId'] && $orderId === null) {
+
+                    $switchable['orderId'] = ViewHelperEditor::getInstance()->getNextOrderId();
                 }
+                $switchable['roomId'] = $room;
+            }
 
-                //Sichtbarkeit
-                if ($visibility !== null) {
+            //Sortierungs ID
+            if ($orderId !== null) {
 
-                    $switchable->visibility = ($visibility == true ? 1 : 0);
+                $switchable['orderId'] = $orderId;
+            }
+
+            //Schaltpunkte
+            if ($switchPoints !== null) {
+
+                $switchable['switchPoints'] = $switchPoints;
+            }
+
+            //erlaubte Benutzergruppen
+            if ($allowedUserGroups !== null) {
+
+                $switchable['allowedUserGroups'] = $allowedUserGroups;
+            }
+
+            //Zusatzdaten
+            foreach ($data as $tag => $value) {
+
+                if (!in_array($tag, array('id', 'name', 'type', 'enabled', 'visibility', 'icon', 'roomId', 'orderId', 'switchPoints', 'allowedUserGroups', 'state'))) {
+
+                    $switchable[$tag] = $value;
                 }
+            }
 
-                //Icon
-                if ($icon !== null) {
+            if($db->hSet(self::$tableName, $id, $switchable) == 0) {
 
-                    $switchable->icon = $icon;
-                }
-
-                //Raum
-                if ($room !== null) {
-
-                    //neue Sortierungs ID beim wechseln des Raumes um doppelte Sortierungs IDs zu vermeiden
-                    if($room != (int) $switchable->roomId && $orderId === null) {
-
-                        $switchable->orderId = ViewHelperEditor::getInstance()->getNextOrderId();
-                    }
-                    $switchable->roomId = $room;
-                }
-
-                //Sortierungs ID
-                if ($orderId !== null) {
-
-                    $switchable->orderId = $orderId;
-                }
-
-                //Schaltpunkte
-                if ($switchPoints !== null) {
-
-                    $switchable->switchPoints = implode(',', $switchPoints);
-                }
-
-                //erlaubte Benutzergruppen
-                if ($allowedUserGroups !== null) {
-
-                    $switchable->allowedUserGroups = implode(',', $allowedUserGroups);
-                }
-
-                //Zusatzdaten
-                foreach ($data as $tag => $value) {
-
-                    if (!in_array($tag, array('id', 'name', 'type', 'enabled', 'visibility', 'icon', 'roomId', 'orderId', 'switchPoints', 'allowedUserGroups'))) {
-
-                        if (is_array($value)) {
-
-                            //wenn Wert ein Array ist Werte als Attibute speichern
-                            $attr = $switchable->$tag->attributes();
-                            foreach ($value as $attribute => $attributeValue) {
-
-                                if (isset($attr->$attribute)) {
-
-                                    $attr->$attribute = $attributeValue;
-                                }
-                            }
-                        } elseif ($value !== null) {
-
-                            //wenn kein Array als Tag Wert
-                            $switchable->$tag = $value;
-                        }
-                    }
-                }
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -1238,29 +1167,16 @@ class SwitchableEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function setCountdownSwitchableCommand($countdownId, $switchableId, $command) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
 
-        //Aktivitaet Suchen
-        foreach ($xml->switchable as $switchable) {
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $countdownId)) {
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $countdownId) {
+            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                //Nach Element suchen
-                foreach ($switchable->switchable as $countdownSwitchable) {
+            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
-                    $attr = $countdownSwitchable->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        $attr->command = $command;
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
-                }
+                return false;
             }
         }
         return false;
@@ -1275,29 +1191,22 @@ class SwitchableEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeSwitchableFromCountdown($countdownId, $switchableId) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
 
-        //Aktivitaet suchen
-        for ($i = 0; $i < count($xml->switchable); $i++) {
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $countdownId)) {
 
-            if ((int) $xml->switchable[$i]->id == $countdownId) {
+            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            foreach($switchableData['switchable'] as $index => $data) {
 
-                //Element suchen
-                for ($j = 0; $j < count($xml->switchable[$i]->switchable); $j++) {
+                if($data['id'] == $switchableId) {
 
-                    $attr = $xml->switchable[$i]->switchable[$j]->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        //Element loeschen
-                        unset($xml->switchable[$i]->switchable[$j]);
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    unset($switchableData['switchable'][$index]);
                 }
+            }
+
+            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+
+                return false;
             }
         }
         return false;
@@ -1877,20 +1786,13 @@ class SwitchableEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeSwitchable($id) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
 
-        //Element suchen
-        for ($i = 0; $i < count($xml->switchable); $i++) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-            if ((int) $xml->switchable[$i]->id == $id) {
+            if($db->hDel(self::$tableName, $id)) {
 
-                //Element loeschen
-                unset($xml->switchable[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }

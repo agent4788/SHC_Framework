@@ -305,18 +305,20 @@ class ViewHelperEditor {
      */
     public function editBoxOrder(array $order) {
 
-        $pipeline = SHC::getDatabase()->multi(Redis::PIPELINE);
+        $db = SHC::getDatabase();
         foreach($order as $boxId => $orderId) {
 
             if(isset($this->boxes[$boxId])) {
 
-                /* @var $box \SHC\View\Room\ViewHelperBox */
-                $box = $this->boxes[$boxId];
-                $box->setOrderId($orderId);
-                $pipeline->hset(self::$tableName, $boxId, $box->toArray());
+                $boxData = $db->hGet(self::$tableName, $boxId);
+                $boxData['orderId'] = $orderId;
+
+                if($db->hSet(self::$tableName, $boxId, $boxData) != 0) {
+
+                    return false;
+                }
             }
         }
-        $pipeline->exec();
         return true;
     }
 

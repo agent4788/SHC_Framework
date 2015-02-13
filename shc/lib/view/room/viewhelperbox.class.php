@@ -177,7 +177,7 @@ class ViewHelperBox {
      * @return \SHC\View\Room\ViewHelperBox
      */
     public function addSwitchable(Switchable $switchable) {
-        
+
         $this->elements[$switchable->getOrderId()] = $switchable;
         return $this;
     }
@@ -201,7 +201,7 @@ class ViewHelperBox {
      * @return \SHC\View\Room\ViewHelperBox
      */
     public function addSensor(Sensor $sensor) {
-        
+
         $this->elements[$sensor->getOrderId()] = $sensor;
         return $this;
     }
@@ -280,7 +280,7 @@ class ViewHelperBox {
                 
                 $html .= ReadableViewHelper::showReadable($element);
             } elseif($element instanceof Switchable) {
-                
+
                 $html .= SwitchableViewHelper::showSwitchable($element);
             } elseif($element instanceof Sensor) {
                 
