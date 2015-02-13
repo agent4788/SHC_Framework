@@ -286,7 +286,7 @@ class UserAtHomeEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editUseratHome($id, $name = null, $ipAddress = null, $enabled = null, $visibility = null) {
+    public function editUserAtHome($id, $name = null, $ipAddress = null, $enabled = null, $visibility = null) {
 
         $db = SHC::getDatabase();
         //pruefen ob Datensatz existiert
