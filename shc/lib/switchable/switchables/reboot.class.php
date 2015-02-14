@@ -23,6 +23,9 @@ class Reboot extends AbstractSwitchable {
      */
     public function switchOn() {
 
+        //Datenbank vor dem reboot speichern
+        SHC::getDatabase()->save();
+
         exec('sudo reboot -n');
     }
 

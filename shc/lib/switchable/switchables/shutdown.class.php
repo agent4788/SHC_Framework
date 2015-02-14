@@ -3,6 +3,7 @@
 namespace SHC\Switchable\Switchables;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Switchable\AbstractSwitchable;
 
 /**
@@ -22,6 +23,9 @@ class Shutdown extends AbstractSwitchable {
      * @return Boolean
      */
     public function switchOn() {
+
+        //Datenbank vor dem shutdown speichern
+        SHC::getDatabase()->save();
 
         exec('sudo halt -p');
     }
