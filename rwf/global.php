@@ -20,7 +20,7 @@ define('PATH_RWF_CACHE_TEMPLATES', PATH_RWF_CACHE . 'templates/');              
 define('PATH_RWF_LOG', PATH_RWF . 'data/log/');                                 //Pfad zum Logordner des Frameworks
 define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   //Pfad zum Sessionordner des Frameworks
 //Grundeinstellungen
-define('DEVELOPMENT_MODE', false);                                               //Aktiviert/Deaktiviert den Entwicklermodus
+define('DEVELOPMENT_MODE', true);                                               //Aktiviert/Deaktiviert den Entwicklermodus
 define('RWF_COOKIE_PREFIX', 'rwf_');                                            //Cookie Prefix
 define('RWF_GUEST_USER_GROUP', 3);                                              //Benutzergruppe fuer Gaeste
 //Konstanten fur Laufzeitueberwachung
