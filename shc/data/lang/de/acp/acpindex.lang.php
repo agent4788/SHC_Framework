@@ -29,6 +29,7 @@ $l['acpindex.menu.group.main'] = 'Allgemein';
 $l['acpindex.menu.users'] = 'Benutzer';
 $l['acpindex.menu.settings'] = 'Einstellungen';
 $l['acpindex.menu.backup'] = 'Backup';
+$l['acpindex.menu.database'] = 'Dantenbank';
 
 $l['acpindex.menu.group.smartHome'] = 'Smart Home';
 $l['acpindex.menu.rooms'] = 'Räume';

@@ -118,7 +118,7 @@ span.shc-icon-shutdown {
 span.shc-icon-high {
     display: inline-block;
     width: 48px;
-    heigt: 48px;
+    height: 48px;
     border: #006907 solid 1px;
     background-color: #006907;;
     border-radius: 24px;
@@ -127,7 +127,7 @@ span.shc-icon-high {
 span.shc-icon-low {
     display: inline-block;
     width: 48px;
-    heigt: 48px;
+    height: 48px;
     border: #d00101 solid 1px;
     background-color: #d00101;;
     border-radius: 24px;
@@ -144,6 +144,10 @@ span#shc-view-acp-menu-settings {
 
 span#shc-view-acp-menu-backup {
     background-image: url(../../../img/acpmenue/backup.png);
+}
+
+span#shc-view-acp-menu-database {
+    background-image: url(../../../img/acpmenue/database.png);
 }
 
 span#shc-view-acp-menu-rooms {
