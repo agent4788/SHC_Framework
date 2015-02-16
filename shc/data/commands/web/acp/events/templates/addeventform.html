@@ -25,7 +25,7 @@
         $('#shc-view-eventsManagement-button-next').click(function() {
 
             $.get('index.php?app=shc&ajax=addeventform&type=' + $('select[name=type]').val(), function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
             });
         });
     });
