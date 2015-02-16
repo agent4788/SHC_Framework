@@ -854,8 +854,12 @@ class SwitchableEditor {
      */
     public function addActivity($name, $enabled, $visibility, $icon, $room, $orderId, array $switchPoints = array(), array $allowedUserGroups = array()) {
 
+        $data = array(
+                'switchable' => array()
+        );
+
         //Datensatz erstellen
-        return $this->addElement(self::TYPE_ACTIVITY, $name, $enabled, $visibility, $icon, $room, $orderId, $switchPoints, $allowedUserGroups);
+        return $this->addElement(self::TYPE_ACTIVITY, $name, $enabled, $visibility, $icon, $room, $orderId, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1090,7 +1094,8 @@ class SwitchableEditor {
         //Daten Vorbereiten
         $data = array(
             'interval' => $interval,
-            'switchOffTime' => '2000-01-01 00:00:00'
+            'switchOffTime' => '2000-01-01 00:00:00',
+            'switchable' => array()
         );
 
         //Datensatz erstellen
