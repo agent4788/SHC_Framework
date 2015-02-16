@@ -73,7 +73,7 @@
                             $('#shc-view-eventsManagement-deleteCondition-{$condition->getId()}').click(function() {
 
                                 $.get("index.php?app=shc&ajax=manageswitchablesinevents&id={$event->getId()}&command=deleteCondition&condition={$condition->getId()}", function(data, textStatus, jqXHR) {
-                                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                                    $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
                                 });
                             });
                         });
@@ -131,13 +131,13 @@
                             $('#shc-view-eventsManagement-toggleCommand-{$element['object']->getId()}').click(function() {
 
                                 $.get("index.php?app=shc&ajax=manageswitchablesinevents&id={$event->getId()}&command=toggle&element={$element['object']->getId()}", function(data, textStatus, jqXHR) {
-                                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                                    $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
                                 });
                             });
                             $('#shc-view-eventsManagement-deleteElement-{$element['object']->getId()}').click(function() {
 
                                 $.get("index.php?app=shc&ajax=manageswitchablesinevents&id={$event->getId()}&command=delete&element={$element['object']->getId()}", function(data, textStatus, jqXHR) {
-                                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                                    $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
                                 });
                             });
                         });
@@ -184,7 +184,7 @@
 
             var condition = $('select[name=condition]').val();
             $.get("index.php?app=shc&ajax=manageswitchablesinevents&id={$event->getId()}&command=addCondition&condition="+ condition, function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
             });
         });
         $('#shc-view-eventsManagement-addElementEvent').button().click(function() {
@@ -192,7 +192,7 @@
             var element = $('select[name=element]').val();
             var switchCommand = $('select[name=switchCommand]').val();
             $.get("index.php?app=shc&ajax=manageswitchablesinevents&id={$event->getId()}&command=addElement&element="+ element +"&switchCommand="+ switchCommand, function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
             });
         });
     });
