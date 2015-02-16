@@ -26,7 +26,7 @@ class RPiGpioChooser extends Select {
 
         //Gruppen anmelden
         $values = array();
-        foreach(range(0, 31) as $i) {
+        foreach(range(0, 100) as $i) {
 
             $values[$i] = array($i, ($i == $gpioPin ? 1 : 0));
 

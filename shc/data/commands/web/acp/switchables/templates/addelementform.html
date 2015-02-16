@@ -61,6 +61,45 @@
 
         $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchableManagement.title"}');
         $('.shc-view-buttonSet').buttonset();
+
+        {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioOutputForm'}
+        var value = $('select[name=gpio]').val();
+        var switchServerId = $('select[name=switchServer]').val();
+        $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+            $('select[name=gpio]').html(data);
+            $('select[name=gpio]').val(value);
+        });
+        $('select[name=switchServer]').change(function () {
+            var switchServerId = $('select[name=switchServer]').val();
+
+            $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                var value = $('select[name=gpio]').val();
+                $('select[name=gpio]').html(data);
+                $('select[name=gpio]').val(value);
+            });
+        });
+        {/instanceof}
+        {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioInputForm'}
+        var value = $('select[name=gpio]').val();
+        var switchServerId = $('select[name=switchServer]').val();
+        $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+            $('select[name=gpio]').html(data);
+            $('select[name=gpio]').val(value);
+        });
+        $('select[name=switchServer]').change(function () {
+            var switchServerId = $('select[name=switchServer]').val();
+
+            $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                var value = $('select[name=gpio]').val();
+                $('select[name=gpio]').html(data);
+                $('select[name=gpio]').val(value);
+            });
+        });
+        {/instanceof}
     });
 </script>
 {/if}
