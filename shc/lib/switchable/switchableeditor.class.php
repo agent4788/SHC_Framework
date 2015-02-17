@@ -754,7 +754,7 @@ class SwitchableEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    protected function editElement($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
+    protected function editElement($id, $name = null, $enabled = null, $visibility = null, $icon = null, $room = null, $orderId = null, $switchPoints = array(), $allowedUserGroups = array(), array $data = array()) {
 
         $db = SHC::getDatabase();
         //pruefen ob Datensatz existiert
@@ -894,23 +894,15 @@ class SwitchableEditor {
      */
     public function addSwitchableToActivity($activityId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $activityId)) {
 
-        //Aktivitaet Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $activityId) {
+            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
 
-                //Neues ELement erstellen
-                $tag = $switchable->addChild('switchable');
-                $tag->addAttribute('id', $switchableId);
-                $tag->addAttribute('command', $command);
-
-                //Daten Speichern
-                $xml->save();
-                return true;
+                return false;
             }
         }
         return false;
@@ -927,28 +919,21 @@ class SwitchableEditor {
      */
     public function setActivitySwitchableCommand($activityId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $activityId)) {
 
-        //Aktivitaet Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchableData = $db->hGet(self::$tableName, $activityId);
+            foreach($switchableData['switchable'] as $index => $data) {
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $activityId) {
+                if($data['id'] == $switchableId) {
 
-                //Nach Element suchen
-                foreach ($switchable->switchable as $activitySwitchable) {
-
-                    $attr = $activitySwitchable->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        $attr->command = $command;
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    $switchableData['switchable'][$index]['command'] = $command;
                 }
+            }
+
+            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+
+                return false;
             }
         }
         return false;
@@ -964,28 +949,21 @@ class SwitchableEditor {
      */
     public function removeSwitchableFromActivity($activityId, $switchableId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $activityId)) {
 
-        //Aktivitaet suchen
-        for ($i = 0; $i < count($xml->switchable); $i++) {
+            $switchableData = $db->hGet(self::$tableName, $activityId);
+            foreach($switchableData['switchable'] as $index => $data) {
 
-            if ((int) $xml->switchable[$i]->id == $activityId) {
+                if($data['id'] == $switchableId) {
 
-                //Element suchen
-                for ($j = 0; $j < count($xml->switchable[$i]->switchable); $j++) {
-
-                    $attr = $xml->switchable[$i]->switchable[$j]->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        //Element loeschen
-                        unset($xml->switchable[$i]->switchable[$j]);
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    unset($switchableData['switchable'][$index]);
                 }
+            }
+
+            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+
+                return false;
             }
         }
         return false;
@@ -1055,20 +1033,15 @@ class SwitchableEditor {
      */
     public function editCountdownSwitchOffTime($countdownId, DateTime $time) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $countdownId)) {
 
-        //Aktivitaet Suchen
-        foreach ($xml->switchable as $switchable) {
+            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData['switchOffTime'] = $time->getDatabaseDateTime();
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $countdownId) {
+            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
-                $switchable->switchOffTime = $time->getDatabaseDateTime();
-
-                //Daten Speichern
-                $xml->save();
-                return true;
+                return false;
             }
         }
         return false;
@@ -1139,24 +1112,16 @@ class SwitchableEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function addSwitchableToCountdown($countdownId, $switchableId, $command) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHABLES, true);
 
-        //Aktivitaet Suchen
-        foreach ($xml->switchable as $switchable) {
+        $db = SHC::getDatabase();
+        if($db->hExists(self::$tableName, $countdownId)) {
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $switchable->id == $countdownId) {
+            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                //Neues ELement erstellen
-                $tag = $switchable->addChild('switchable');
-                $tag->addAttribute('id', $switchableId);
-                $tag->addAttribute('command', $command);
+            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
-                //Daten Speichern
-                $xml->save();
-                return true;
+                return false;
             }
         }
         return false;
@@ -1177,7 +1142,13 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $countdownId)) {
 
             $switchableData = $db->hGet(self::$tableName, $countdownId);
-            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
+            foreach($switchableData['switchable'] as $index => $data) {
+
+                if($data['id'] == $switchableId) {
+
+                    $switchableData['switchable'][$index]['command'] = $command;
+                }
+            }
 
             if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
