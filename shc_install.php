@@ -114,15 +114,10 @@ addSetting('shc.arduinoReciver.baudRate', '9600', TYPE_INTEGER);
 addSetting('shc.arduinoReciver.ip', '127.0.0.1', TYPE_STRING);
 addSetting('shc.arduinoReciver.port', '9275', TYPE_STRING);
 
-//Sensor Reciver
-addSetting('shc.sensorReciver.active', 'false', TYPE_BOOLEAN);
-addSetting('shc.sensorReciver.ip', '127.0.0.1', TYPE_STRING);
-addSetting('shc.sensorReciver.port', '9275', TYPE_STRING);
-
 //Sensor Transmitter
 addSetting('shc.sensorTransmitter.active', 'false', TYPE_BOOLEAN);
 addSetting('shc.sensorTransmitter.ip', '127.0.0.1', TYPE_STRING);
-addSetting('shc.sensorTransmitter.port', '9275', TYPE_STRING);
+addSetting('shc.sensorTransmitter.port', '80', TYPE_STRING);
 addSetting('shc.sensorTransmitter.pointId', '-1', TYPE_INTEGER);
 
 //XML Speichern

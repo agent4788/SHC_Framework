@@ -64,18 +64,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.sensorDataReciver'}</td>
-                        <td>
-                            {if $sensorDataReciverState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $sensorDataReciverState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
                         <td>{lang var='acp.daemonState.box.deamon.sensorDataTransmitter'}</td>
                         <td>
                             {if $sensorDataTransmitterState == 1}

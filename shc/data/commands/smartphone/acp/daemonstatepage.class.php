@@ -128,26 +128,6 @@ class DaemonStatePage extends PageCommand {
         }
         $tpl->assign('arduinoSensorReciverState', $arduinoSensorReciverState);
 
-        //Sensordata Reciver
-        $sensorDataReciverState = 0;
-        if(RWF::getSetting('shc.sensorReciver.active')) {
-
-            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'sensorDataReciver.flag'));
-            if ($data != '') {
-
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
-                if ($date >= $compareDate) {
-
-                    $sensorDataReciverState = 1;
-                }
-            }
-        } else {
-
-            $sensorDataReciverState = 2;
-        }
-        $tpl->assign('sensorDataReciverState', $sensorDataReciverState);
-
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;
         if(RWF::getSetting('shc.sensorTransmitter.active')) {

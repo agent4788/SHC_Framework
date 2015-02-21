@@ -64,23 +64,6 @@
                     {/if}
                 </li>
                 <li>
-                    {if $sensorDataReciverState == 1}
-                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
-                    {elseif $sensorDataReciverState == 2}
-                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
-                    {else}
-                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
-                    {/if}
-                    <span style="font-weight: bold;">{lang var='acp.daemonState.box.deamon.sensorDataReciver'}</span>:
-                    {if $sensorDataReciverState == 1}
-                    {lang var='acp.daemonState.box.state.run'}
-                    {elseif $sensorDataReciverState == 2}
-                    {lang var='acp.daemonState.box.state.notActive'}
-                    {else}
-                    {lang var='acp.daemonState.box.state.stop'}
-                    {/if}
-                </li>
-                <li>
                     {if $sensorDataTransmitterState == 1}
                     <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
                     {elseif $sensorDataTransmitterState == 2}
