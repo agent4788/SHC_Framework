@@ -1199,6 +1199,7 @@ class SensorPointEditor {
 
             if($db->hDel(self::$tableName . ':sensors', $sId)) {
 
+                $db->del(self::$tableName .':sensorData:'. $sId);
                 return true;
             }
         }
