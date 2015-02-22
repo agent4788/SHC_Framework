@@ -36,7 +36,7 @@ class Hygrometer extends AbstractSensor {
      */
     public function __construct(array $values = array()) {
         
-        if(count($values) == 5) {
+        if(count($values) <= 25) {
             
             $this->oldValues = $values;
             $this->value = $values[0]['value'];
@@ -88,10 +88,10 @@ class Hygrometer extends AbstractSensor {
         //alte Werte Schieben
         array_unshift($this->oldValues, array('value' => $value, 'time' => $date));
         //mehr als 5 Werte im Array?
-        if(isset($this->oldValues[5])) {
+        if(isset($this->oldValues[25])) {
             
             //aeltesten Wert loeschen
-            unset($this->oldValues[5]);
+            unset($this->oldValues[25]);
         }
         
         //Werte setzten

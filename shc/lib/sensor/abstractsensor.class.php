@@ -25,6 +25,13 @@ abstract class AbstractSensor implements Sensor {
     protected $id = 0;
 
     /**
+     * Sensorpunkt ID
+     *
+     * @var Integer
+     */
+    protected $sensorPointId = 0;
+
+    /**
      * Name
      * 
      * @var String 
@@ -100,6 +107,28 @@ abstract class AbstractSensor implements Sensor {
     public function getId() {
 
         return $this->id;
+    }
+
+    /**
+     * setzt die Sensor Punkt ID
+     *
+     * @param  String $id Sensor Punkt ID
+     * @return \SHC\Sensor\Sensor
+     */
+    public function setSensorPointId($id) {
+
+        $this->sensorPointId = $id;
+        return $this;
+    }
+
+    /**
+     * gibt die Sensor Punkt ID zurueck
+     *
+     * @return String
+     */
+    public function getSensorPointId() {
+
+        return $this->sensorPointId;
     }
 
     /**
