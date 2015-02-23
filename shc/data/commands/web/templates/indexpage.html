@@ -11,6 +11,9 @@
         {include file='headline.html'}
         <div id="shc-content">
             <div id="shc-view-errorFrame" style="display:none" title="{lang var='index.room.error.title'}"></div>
+            {premission premission='shc.acp.warnings'}
+                <div id="shc-view-warnings"></div>
+            {/premission}
             {premission premission='shc.acp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
                 {contentbox name="index.userAtHome.boxTitle"}
                     <div id="shc-view-usersAtHomeBox"></div>
@@ -56,6 +59,23 @@
                 setTimeout('updateUserAtHome()', 15000);
             };
             updateUserAtHome();
+            {/premission}
+            {premission premission='shc.acp.warnings'}
+            function updateWarnings() {
+
+                $.get(
+                        "index.php?app=shc&ajax=warnings&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            //Wer ist Online Daten erneuern
+                            $('#shc-view-warnings').html(data);
+                        }
+                );
+
+                $('#shc-view-usersAtHomeBox').tooltip();
+                setTimeout('updateWarnings()', 30000);
+            };
+            updateWarnings();
             {/premission}
         </script>
     </body>

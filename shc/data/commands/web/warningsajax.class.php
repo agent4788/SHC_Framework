@@ -175,7 +175,10 @@ class WarningsAjax extends AjaxCommand {
             }
         }
 
-        $this->data = $message->fetchHtml();
+        if(count($message->getSubMessages()) > 0) {
+
+            $this->data = $message->fetchHtml();
+        }
     }
 
 }
