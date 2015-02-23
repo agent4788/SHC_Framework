@@ -51,7 +51,8 @@ class ProtocolChooser extends Select {
             'silvercrest' => array('Silvercrest Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
             'unitech' => array('Silvercrest Switches (unitech)', ($protocol == 'unitech' ? 1 : 0)),
             'silvercrest' => array('Unitech Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
-            'silvercrest' => array('Silvercrest Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0))
+            'silvercrest' => array('Silvercrest Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
+            'eHome' => array('eHome', ($protocol == 'eHome' ? 1 : 0))
         );
         $this->setValues($values);
     }

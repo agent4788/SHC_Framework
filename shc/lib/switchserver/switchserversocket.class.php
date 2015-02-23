@@ -76,7 +76,8 @@ class SwitchServerSocket {
         'rev2_switch',
         'rev3_switch',
         'techlico_switch',
-        'X10'
+        'X10',
+        'eHome'
     );
 
     /**
@@ -99,6 +100,7 @@ class SwitchServerSocket {
         $readGPIO = RWF::getSetting('shc.switchServer.readGpio');
 
         //Server initialisieren
+
         $this->server = new SocketServer(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'));
         $this->server->startServer();
 
