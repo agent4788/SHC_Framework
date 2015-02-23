@@ -5,22 +5,41 @@
             <thead>
             <tr>
                 <th style="width: 60%;">{lang var="acp.sensorpointsManagement.roomList.table.head.name"}</th>
-                <th style="width: 15%;">{lang var="acp.sensorpointsManagement.roomList.table.head.lastConnect"}</th>
                 <th style="width: 15%;">{lang var="acp.sensorpointsManagement.roomList.table.head.voltage"}</th>
+                <th style="width: 15%;">{lang var="acp.sensorpointsManagement.roomList.table.head.lastConnect"}</th>
                 <th style="width: 10%;">{lang var="acpindex.options"}</th>
             </tr>
             </thead>
             <tbody>
-            {foreach from=$sensorPointsList item='sensorPoint'}
-            <tr>
-                <td>{#$sensorPoint->getName()}</td>
-                <td>{$sensorPoint->getTime()|timeline}</td>
-                <td>{@$sensorPoint->getVoltage()}V</td>
-                <td>
-                    {editlink link='index.php?app=shc&ajax=editsensorpointform&id=' id=$sensorPoint->getId()}
-                    {deletelink link='index.php?app=shc&ajax=deletesensorpoint&id=' id=$sensorPoint->getId() prompt='acp.sensorpointsManagement.prompt.deleteSensorPoint' title='acp.sensorpointsManagement.prompt.deleteSensorPoint.title'}
-                </td>
-            </tr>
+                {foreach from=$sensorPointsList item='sensorPoint'}
+                <tr>
+                    <td>{#$sensorPoint->getName()}</td>
+                    <td>{@$sensorPoint->getVoltage()}V</td>
+                    <td>{$sensorPoint->getTime()|timeline}</td>
+                    <td>
+                        {editlink link='index.php?app=shc&ajax=editsensorpointform&id=' id=$sensorPoint->getId()}
+                        {deletelink link='index.php?app=shc&ajax=deletesensorpoint&id=' id=$sensorPoint->getId() prompt='acp.sensorpointsManagement.prompt.deleteSensorPoint' title='acp.sensorpointsManagement.prompt.deleteSensorPoint.title'}
+                    </td>
+                </tr>
+                {foreach from=$sensorPoint->listSensors('name') item='sensor'}
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{#$sensor->getName()}</td>
+                    <td>
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
+                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                    </td>
+                    <td>{$sensor->getTime()|timeline}</td>
+                    <td></td>
+                </tr>
+                {foreachelse}
+                <tr>
+                    <td colspan="4">{lang var='acpindex.emptyList'}</td>
+                </tr>
+                {/foreach}
             {foreachelse}
             <tr>
                 <td colspan="4">{lang var='acpindex.emptyList'}</td>
