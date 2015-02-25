@@ -58,6 +58,27 @@ class BMP extends AbstractSensor {
      * @var Integer 
      */
     protected $altitudeVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Float
+     */
+    protected $temperatureOffset = 0.0;
+
+    /**
+     * Luftdruck Offset
+     *
+     * @var Float
+     */
+    protected $pressureOffset = 0.0;
+
+    /**
+     * Hoehen Offset
+     *
+     * @var Float
+     */
+    protected $altitudeOffset = 0.0;
     
     /**
      * @param Array   $values   Sensorwerte
@@ -81,7 +102,7 @@ class BMP extends AbstractSensor {
      */
     public function getTemperature() {
         
-        return $this->temperature;
+        return $this->temperature + $this->temperatureOffset;
     }
     
     /**
@@ -91,19 +112,85 @@ class BMP extends AbstractSensor {
      */
     public function getPressure() {
         
-        return $this->pressure;
+        return $this->pressure + $this->pressureOffset;
     }
-    
+
     /**
      * gibt die Standorthoehe zurueck
-     * 
+     *
      * @return Float
      */
     public function getAltitude() {
-        
-        return $this->altitude;
+
+        return $this->altitude + $this->altitudeOffset;
     }
-    
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $temperatureOffset
+     * @return \SHC\Sensor\Sensors\BMP
+     */
+    public function setTemperatureOffset($temperatureOffset) {
+
+        $this->temperatureOffset = $temperatureOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getTemperatureOffset() {
+
+        return $this->temperatureOffset;
+    }
+
+    /**
+     * setzt das Luftdruck Offset
+     *
+     * @param  Float $pressureOffset
+     * @return \SHC\Sensor\Sensors\BMP
+     */
+    public function setPressureOffset($pressureOffset) {
+
+        $this->pressureOffset = $pressureOffset;
+        return $this;
+    }
+
+    /**
+     * gibt das Luftdruck Offset zurueck
+     *
+     * @return Float
+     */
+    public function getPressureOffset() {
+
+        return $this->pressureOffset;
+    }
+
+    /**
+     * setzt das Hoehen Offset
+     *
+     * @param  Float $altitudeOffset
+     * @return \SHC\Sensor\Sensors\BMP
+     */
+    public function setAltitudeOffset($altitudeOffset) {
+
+        $this->altitudeOffset = $altitudeOffset;
+        return $this;
+    }
+
+    /**
+     * gibt das das Hoehen Offset zurueck
+     *
+     * @return Float
+     */
+    public function getAltitudeOffset() {
+
+        return $this->altitudeOffset;
+    }
+
     /**
      * setzt die Sichtbarkeit der Temperatur
      * 

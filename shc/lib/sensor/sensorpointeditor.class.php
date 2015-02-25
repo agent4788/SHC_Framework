@@ -172,6 +172,7 @@ class SensorPointEditor {
 
                     $sensor = new DS18x20($values);
                     $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
                     break;
                 case self::SENSOR_DHT:
 
@@ -190,6 +191,8 @@ class SensorPointEditor {
                     $sensor = new DHT($values);
                     $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
                     $sensor->humidityVisibility(((int) $sensorData['humidityVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    $sensor->setHumidityOffset((float) $sensorData['humidityOffset']);
                     break;
                 case self::SENSOR_BMP:
 
@@ -210,6 +213,9 @@ class SensorPointEditor {
                     $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
                     $sensor->pressureVisibility(((int) $sensorData['pressureVisibility'] == true ? 1 : 0));
                     $sensor->altitudeVisibility(((int) $sensorData['altitudeVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    $sensor->setPressureOffset((float) $sensorData['pressureOffset']);
+                    $sensor->setAltitudeOffset((float) $sensorData['altitudeOffset']);
                     break;
                 case self::SENSOR_RAIN:
 
@@ -226,6 +232,7 @@ class SensorPointEditor {
 
                     $sensor = new RainSensor($values);
                     $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
                     break;
                 case self::SENSOR_HYGROMETER:
 
@@ -242,6 +249,7 @@ class SensorPointEditor {
 
                     $sensor = new Hygrometer($values);
                     $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
                     break;
                 case self::SENSOR_LDR:
 
@@ -258,6 +266,7 @@ class SensorPointEditor {
 
                     $sensor = new LDR($values);
                     $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
                     break;
             }
 
@@ -693,23 +702,30 @@ class SensorPointEditor {
             case self::SENSOR_DS18X20:
 
                 $newSensor['temperatureVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
                 break;
             case self::SENSOR_DHT:
 
                 $newSensor['temperatureVisibility'] = true;
                 $newSensor['humidityVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                $newSensor['humidityOffset'] = 0.0;
                 break;
             case self::SENSOR_BMP:
 
                 $newSensor['temperatureVisibility'] = true;
                 $newSensor['pressureVisibility'] = true;
                 $newSensor['altitudeVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                $newSensor['pressureOffset'] = 0.0;
+                $newSensor['altitudeOffset'] = 0.0;
                 break;
             case self::SENSOR_RAIN:
             case self::SENSOR_HYGROMETER:
             case self::SENSOR_LDR:
 
                 $newSensor['valueVisibility'] = true;
+                $newSensor['valueOffset'] = 0;
                 break;
         }
 
@@ -1046,14 +1062,15 @@ class SensorPointEditor {
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDS18x20($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null) {
+    public function editDS18x20($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null, $temperatureOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'temperatureVisibility' => $temperatureVisibility
+            'temperatureVisibility' => $temperatureVisibility,
+            'temperatureOffset' => $temperatureOffset
         );
         
         //Sensor bearbeiten
@@ -1071,15 +1088,18 @@ class SensorPointEditor {
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $humidityVisibility       Sichtbarkeit Luftfeuchte
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @param  Float   $humidityOffset           Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDHT($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null) {
+    public function editDHT($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null, $temperatureOffset = null, $humidityOffset = null) {
         
         //Zusatzdaten
         $data = array(
             'temperatureVisibility' => $temperatureVisibility,
-            'humidityVisibility' => $humidityVisibility    
+            'humidityVisibility' => $humidityVisibility,
+            'temperatureOffset' => $temperatureOffset,
+            'humidityOffset' => $humidityOffset
         );
         
         //Sensor bearbeiten
@@ -1097,16 +1117,21 @@ class SensorPointEditor {
      * @param  Boolean $pressureVisibility       Sichtbarkeit Luftdruck
      * @param  Boolean $altitudeVisibility       Sichtbarkeit Hoehe
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @param  Float   $pressureOffset           Offset
+     * @param  Float   $altitudeOffset           Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editBMP($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null) {
+    public function editBMP($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null, $temperatureOffset = null, $pressureOffset = null, $altitudeOffset = null) {
         
         //Zusatzdaten
         $data = array(
             'temperatureVisibility' => $temperatureVisibility,
             'pressureVisibility' => $pressureVisibility,
-            'altitudeVisibility' => $altitudeVisibility
+            'altitudeVisibility' => $altitudeVisibility,
+            'temperatureOffset' => $temperatureOffset,
+            'pressureOffset' => $pressureOffset,
+            'altitudeOffset' => $altitudeOffset
         );
         
         //Sensor bearbeiten
@@ -1123,14 +1148,15 @@ class SensorPointEditor {
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRainSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editRainSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
         
         //Sensor bearbeiten
@@ -1147,14 +1173,15 @@ class SensorPointEditor {
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editHygrometer($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editHygrometer($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
         
         //Sensor bearbeiten
@@ -1171,14 +1198,15 @@ class SensorPointEditor {
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editLDR($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editLDR($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
 
         //Sensor bearbeiten

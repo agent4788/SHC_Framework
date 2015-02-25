@@ -44,6 +44,20 @@ class DHT extends AbstractSensor{
      * @var Integer
      */
     protected $humidityVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Float
+     */
+    protected $temperatureOffset = 0.0;
+
+    /**
+     * Luftfeuchte Offset
+     *
+     * @var Float
+     */
+    protected $humidityOffset = 0.0;
     
     /**
      * @param Array   $values   Sensorwerte
@@ -66,7 +80,7 @@ class DHT extends AbstractSensor{
      */
     public function getTemperature() {
         
-        return $this->temperature;
+        return $this->temperature + $this->temperatureOffset;
     }
     
     /**
@@ -76,7 +90,51 @@ class DHT extends AbstractSensor{
      */
     public function getHumidity() {
         
-        return $this->humidity;
+        return $this->humidity + $this->humidityOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $temperatureOffset
+     * @return \SHC\Sensor\Sensors\DHT
+     */
+    public function setTemperatureOffset($temperatureOffset) {
+
+        $this->temperatureOffset = $temperatureOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getTemperatureOffset() {
+
+        return $this->temperatureOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $humidityOffset
+     * @return \SHC\Sensor\Sensors\DHT
+     */
+    public function setHumidityOffset($humidityOffset) {
+
+        $this->humidityOffset = $humidityOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getHumidityOffset() {
+
+        return $this->humidityOffset;
     }
     
     /**

@@ -30,6 +30,13 @@ class DS18x20 extends AbstractSensor {
      * @var Integer
      */
     protected $temperatureVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Float
+     */
+    protected $temperatureOffset = 0.0;
     
     /**
      * @param Array  $values   Sensorwerte
@@ -51,7 +58,29 @@ class DS18x20 extends AbstractSensor {
      */
     public function getTemperature() {
         
-        return $this->temperature;
+        return $this->temperature + $this->temperatureOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $temperatureOffset
+     * @return \SHC\Sensor\Sensors\DS18x20
+     */
+    public function setTemperatureOffset($temperatureOffset) {
+
+        $this->temperatureOffset = $temperatureOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getTemperatureOffset() {
+
+        return $this->temperatureOffset;
     }
     
     /**

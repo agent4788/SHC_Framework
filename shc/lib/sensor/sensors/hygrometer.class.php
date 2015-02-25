@@ -30,6 +30,13 @@ class Hygrometer extends AbstractSensor {
      * @var Integer
      */
     protected $valueVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Integer
+     */
+    protected $valueOffset = 0;
     
     /**
      * @param Array  $values   Sensorwerte
@@ -51,7 +58,29 @@ class Hygrometer extends AbstractSensor {
      */
     public function getValue() {
         
-        return $this->value;
+        return $this->value + $this->valueOffset;
+    }
+
+    /**
+     * setzt das Offset
+     *
+     * @param  Float $offset
+     * @return \SHC\Sensor\Sensors\Hygrometer
+     */
+    public function setOffset($offset) {
+
+        $this->valueOffset = $offset;
+        return $this;
+    }
+
+    /**
+     * gbit das Offset zurueck
+     *
+     * @return Float
+     */
+    public function getOffset() {
+
+        return $this->valueOffset;
     }
     
     /**

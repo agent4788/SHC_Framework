@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\RoomChooser;
@@ -62,6 +63,13 @@ class BMPSensorForm extends DefaultHtmlForm {
         $temperatureVisibility->requiredField(true);
         $this->addFormElement($temperatureVisibility);
 
+        //Temperatur Offset
+        $temperatureOffset = new FloatInputField('tempOffset', ($sensor instanceof BMP ? $sensor->getTemperatureOffset() : 0.0), array('min' => -10.0, 'max' => 10.0, 'step' => 0.1));
+        $temperatureOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureOffset'));
+        $temperatureOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $temperatureOffset->requiredField(true);
+        $this->addFormElement($temperatureOffset);
+
         //Luftdruck sichtbar
         $pressureVisibility = new OnOffOption('pressureVisibility', ($sensor instanceof BMP ? $sensor->isPressureVisible() : true));
         $pressureVisibility->setOnOffLabel();
@@ -70,6 +78,13 @@ class BMPSensorForm extends DefaultHtmlForm {
         $pressureVisibility->requiredField(true);
         $this->addFormElement($pressureVisibility);
 
+        //Luftdruck Offset
+        $pressureOffset = new FloatInputField('pressOffset', ($sensor instanceof BMP ? $sensor->getPressureOffset() : 0.0), array('min' => -100.0, 'max' => 100.0, 'step' => 0.1));
+        $pressureOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureOffset'));
+        $pressureOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $pressureOffset->requiredField(true);
+        $this->addFormElement($pressureOffset);
+
         //Standorthoehe sichtbar
         $altitudeVisibility = new OnOffOption('altitudeVisibility', ($sensor instanceof BMP ? $sensor->isAltitudeVisible() : true));
         $altitudeVisibility->setOnOffLabel();
@@ -77,6 +92,13 @@ class BMPSensorForm extends DefaultHtmlForm {
         $altitudeVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.altitudeVisibility.description'));
         $altitudeVisibility->requiredField(true);
         $this->addFormElement($altitudeVisibility);
+
+        //Hoehen Offset
+        $altitudeOffset = new FloatInputField('altiOffset', ($sensor instanceof BMP ? $sensor->getAltitudeOffset() : 0.0), array('min' => -100.0, 'max' => 100.0, 'step' => 0.1));
+        $altitudeOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.altitudeOffset'));
+        $altitudeOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $altitudeOffset->requiredField(true);
+        $this->addFormElement($altitudeOffset);
 
         //Daten Aufzeichnung
         $dataRecording = new OnOffOption('dataRecording', ($sensor instanceof BMP ? $sensor->isDataRecordingEnabled() : false));

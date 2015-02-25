@@ -62,6 +62,13 @@ class RainSensorForm extends DefaultHtmlForm {
         $valueVisibility->requiredField(true);
         $this->addFormElement($valueVisibility);
 
+        //Werte Offset
+        $valueOffset = new IntegerInputField('valOffset', ($sensor instanceof Hygrometer ? $sensor->getOffset() : 0.0), array('min' => -50, 'max' => 50));
+        $valueOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueOffset'));
+        $valueOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $valueOffset->requiredField(true);
+        $this->addFormElement($valueOffset);
+
         //Daten Aufzeichnung
         $dataRecording = new OnOffOption('dataRecording', ($sensor instanceof RainSensor ? $sensor->isDataRecordingEnabled() : false));
         $dataRecording->setOnOffLabel();

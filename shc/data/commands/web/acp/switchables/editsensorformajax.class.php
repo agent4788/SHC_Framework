@@ -74,12 +74,15 @@ class EditSensorFormAjax extends AjaxCommand {
                 $temperatureVisibility = $bmpSensorForm->getElementByName('temperatureVisibility')->getValue();
                 $pressureVisibility = $bmpSensorForm->getElementByName('pressureVisibility')->getValue();
                 $altitudeVisibility = $bmpSensorForm->getElementByName('altitudeVisibility')->getValue();
+                $temperatureOffset = $bmpSensorForm->getElementByName('tempOffset')->getValue();
+                $pressureOffset = $bmpSensorForm->getElementByName('pressOffset')->getValue();
+                $altitudeOffset = $bmpSensorForm->getElementByName('altiOffset')->getValue();
                 $dataRecording = $bmpSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording, $temperatureOffset, $pressureOffset, $altitudeOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -122,12 +125,14 @@ class EditSensorFormAjax extends AjaxCommand {
                 $visibility = $dhtSensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $dhtSensorForm->getElementByName('temperatureVisibility')->getValue();
                 $humidityVisibility = $dhtSensorForm->getElementByName('humidityVisibility')->getValue();
+                $temperatureOffset = $dhtSensorForm->getElementByName('tempOffset')->getValue();
+                $humidityOffset = $dhtSensorForm->getElementByName('humOffset')->getValue();
                 $dataRecording = $dhtSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording, $temperatureOffset, $humidityOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -169,12 +174,13 @@ class EditSensorFormAjax extends AjaxCommand {
                 $roomId = $ds18x20SensorForm->getElementByName('room')->getValue();
                 $visibility = $ds18x20SensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $ds18x20SensorForm->getElementByName('temperatureVisibility')->getValue();
+                $temperatureOffset = $ds18x20SensorForm->getElementByName('tempOffset')->getValue();
                 $dataRecording = $ds18x20SensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $dataRecording, $temperatureOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -216,12 +222,13 @@ class EditSensorFormAjax extends AjaxCommand {
                 $roomId = $hygrometerSensorForm->getElementByName('room')->getValue();
                 $visibility = $hygrometerSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $hygrometerSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $hygrometerSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $hygrometerSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -263,12 +270,13 @@ class EditSensorFormAjax extends AjaxCommand {
                 $roomId = $rainSensorForm->getElementByName('room')->getValue();
                 $visibility = $rainSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $rainSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $hygrometerSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $rainSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -310,12 +318,13 @@ class EditSensorFormAjax extends AjaxCommand {
                 $roomId = $ldrSensorForm->getElementByName('room')->getValue();
                 $visibility = $ldrSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $ldrSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $hygrometerSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $ldrSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
