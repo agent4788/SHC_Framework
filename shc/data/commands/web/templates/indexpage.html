@@ -11,10 +11,10 @@
         {include file='headline.html'}
         <div id="shc-content">
             <div id="shc-view-errorFrame" style="display:none" title="{lang var='index.room.error.title'}"></div>
-            {premission premission='shc.acp.warnings'}
+            {premission premission='shc.ucp.warnings'}
                 <div id="shc-view-warnings"></div>
             {/premission}
-            {premission premission='shc.acp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
+            {premission premission='shc.ucp.viewUserAtHome' setting='shc.ui.index.showUsersAtHome'}
                 {contentbox name="index.userAtHome.boxTitle"}
                     <div id="shc-view-usersAtHomeBox"></div>
                 {/contentbox}
@@ -60,7 +60,7 @@
             };
             updateUserAtHome();
             {/premission}
-            {premission premission='shc.acp.warnings'}
+            {premission premission='shc.ucp.warnings'}
             function updateWarnings() {
 
                 $.get(
@@ -72,7 +72,6 @@
                         }
                 );
 
-                $('#shc-view-usersAtHomeBox').tooltip();
                 setTimeout('updateWarnings()', 30000);
             };
             updateWarnings();
