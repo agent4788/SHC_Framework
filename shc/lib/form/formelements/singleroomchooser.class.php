@@ -4,7 +4,6 @@ namespace SHC\Form\FormElements;
 
 //Imports
 use RWF\Form\FormElements\Select;
-use RWF\Form\FormElements\SelectMultiple;
 use SHC\Room\RoomEditor;
 
 /**
@@ -16,9 +15,9 @@ use SHC\Room\RoomEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class RoomChooser extends SelectMultiple {
+class SingleRoomChooser extends Select {
 
-    public function __construct($name, array $rooms = array()) {
+    public function __construct($name, $roomId = null) {
 
         //Allgemeine Daten
         $this->setName($name);
@@ -27,7 +26,7 @@ class RoomChooser extends SelectMultiple {
         $values = array();
         foreach(RoomEditor::getInstance()->listRooms(RoomEditor::SORT_BY_ORDER_ID) as $room) {
 
-            $values[$room->getId()] = array($room->getName(), (in_array($room->getId(), $rooms) ? 1 : 0));
+            $values[$room->getId()] = array($room->getName(), ($room->getId() == $roomId ? 1 : 0));
 
         }
         $this->setValues($values);

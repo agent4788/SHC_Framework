@@ -95,7 +95,7 @@ class ElementsForBoxChooser extends SelectMultiple {
 
             //pruefen ob der Sensor dem Raum zugeordnet ist
             /* @var $sensor \SHC\Sensor\Sensor  */
-            if(!$sensor->getRoom() instanceof Room || $sensor->getRoom()->getId() != $box->getRoomId()) {
+            if(!$sensor->isInRoom($box->getRoomId())) {
 
                 continue;
             }

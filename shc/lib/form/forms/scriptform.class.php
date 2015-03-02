@@ -42,19 +42,19 @@ class ScriptForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($script instanceof Script && $script->getRoom() instanceof Room ? $script->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
-
         //Icon
         $icon = new IconChooser('icon', ($script instanceof Script ? $script->getIcon() : ''));
         $icon->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.icon'));
         $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.icon.description'));
         $icon->requiredField(true);
         $this->addFormElement($icon);
+
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($script instanceof Script && count($script->getRooms()) > 0 ? $script->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //An Kommando
         $onCommand = new TextField('onCommand', ($script instanceof Script ? $script->getOnCommand() : ''), array('maxlength' => 255));

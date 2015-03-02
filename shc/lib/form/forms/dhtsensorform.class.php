@@ -40,12 +40,12 @@ class DHTSensorForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($sensor instanceof DHT && $sensor->getRoom() instanceof Room ? $sensor->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($sensor instanceof DHT && count($sensor->getRooms()) > 0 ? $sensor->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Sichtbarkeit
         $visibility = new OnOffOption('visibility', ($sensor instanceof DHT ? $sensor->isVisible() : true));

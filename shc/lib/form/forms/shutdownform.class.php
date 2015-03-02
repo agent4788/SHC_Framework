@@ -40,12 +40,12 @@ class ShutdownForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($shutdown instanceof Shutdown && $shutdown->getRoom() instanceof Room ? $shutdown->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($shutdown instanceof Shutdown && count($shutdown->getRooms()) > 0 ? $shutdown->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($shutdown instanceof Shutdown ? $shutdown->isEnabled() : true));

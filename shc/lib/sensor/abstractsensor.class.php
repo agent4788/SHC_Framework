@@ -39,18 +39,18 @@ abstract class AbstractSensor implements Sensor {
     protected $name = '';
 
     /**
-     * Raum
+     * Raeume
      * 
-     * @var \SHC\Room\Room 
+     * @var Array()
      */
-    protected $room = 0;
+    protected $rooms = array();
 
     /**
-     * Sortierungs ID
+     * Sortierung
      * 
-     * @var Integer 
+     * @var Array
      */
-    protected $orderId = 0;
+    protected $order = array();
 
     /**
      * Sichtbarkeit
@@ -154,47 +154,96 @@ abstract class AbstractSensor implements Sensor {
     }
 
     /**
-     * setzt die Raum ID
-     * 
-     * @param  \SHC\Room\Room $room Raum
+     * fuegt einen Raum hinzu
+     *
+     * @param  Integer $roomId Raum ID
      * @return \SHC\Sensor\Sensor
      */
-    public function setRoom(Room $room) {
+    public function addRoom($roomId) {
 
-        $this->room = $room;
+        $this->rooms[] = $roomId;
         return $this;
     }
 
     /**
-     * gibt den Raum zurueck
-     * 
-     * @return \SHC\Room\Room
+     * setzt eine Liste mit Raeumen
+     *
+     * @param  Array $roomId Raum IDs
+     * @return \SHC\Sensor\Sensor
      */
-    public function getRoom() {
+    public function setRooms(array $rooms) {
 
-        return $this->room;
+        $this->rooms = $rooms;
+        return $this;
+    }
+
+    /**
+     * entfernt einen Raum
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Sensor\Sensor
+     */
+    public function removeRoom($roomId) {
+
+        $this->rooms = array_diff($this->rooms, array($roomId));
+        return $this;
+    }
+
+    /**
+     * prueft on das Element dem Raum mit der uebergebenen ID zugeordnet ist
+     *
+     * @param  Integer $roomId Raum ID
+     * @return Boolean
+     */
+    public function isInRoom($roomId) {
+
+        return in_array($roomId, $this->rooms);
+    }
+
+    /**
+     * gibt eine Liste mit allen Raeumen zurueck
+     *
+     * @return Array
+     */
+    public function getRooms() {
+
+        return $this->rooms;
+    }
+
+    /**
+     * setzt die Sortierung
+     *
+     * @param  Array $order Sortierung
+     * @return \SHC\Sensor\Sensor
+     */
+    public function setOrder(array $order) {
+
+        $this->order = $order;
+        return $this;
     }
 
     /**
      * setzt die Sortierungs ID
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @param  Integer $orderId Sortierungs ID
      * @return \SHC\Sensor\Sensor
      */
-    public function setOrderId($orderId) {
+    public function setOrderId($roomId, $orderId) {
 
-        $this->orderId = $orderId;
+        $this->order[$roomId] = $orderId;
         return $this;
     }
 
     /**
      * gibt die Sortierungs ID zurueck
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @return Integer
      */
-    public function getOrderId() {
+    public function getOrderId($roomId) {
 
-        return $this->orderId;
+        return $this->order[$roomId];
     }
 
     /**

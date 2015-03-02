@@ -21,14 +21,23 @@ use SHC\Switchable\Readables\RpiGpioInput;
 class ReadableViewHelper {
 
     /**
+     * Raum ID
+     *
+     * @var Integer
+     */
+    protected static $roomId = 0;
+
+    /**
      * erstellt das HTML Fragment zur Anzeige eines schaltbaren Elements
-     * 
+     *
+     * @param  Integer                   $roomId     Raum ID
      * @param  \SHC\Switchable\Readable  $readable   lesbares Element
      * @param  Booelan                   $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
-    public static function showReadable(Readable $readable, $ignoreShow = false) {
+    public static function showReadable($roomId, Readable $readable, $ignoreShow = false) {
 
+        self::$roomId = $roomId;
         if ($readable instanceof ArduinoInput) {
 
             return self::showArduinoInput($readable, $ignoreShow);
@@ -59,11 +68,11 @@ class ReadableViewHelper {
                 if($readable->getState() == Readable::STATE_ON) {
 
                     $html .= String::encodeHtml($readable->getName()) .':';
-                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
+                    $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
                 } else {
 
                     $html .= String::encodeHtml($readable->getName()) .':';
-                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
+                    $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
                 }
                 $html .= '</div>';
                 $html .= '</li>';
@@ -72,7 +81,7 @@ class ReadableViewHelper {
                 //Web Ansicht
                 $html = '<div class="shc-contentbox-body-row shc-view-readable">';
                 $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHtml($readable->getName()) . '</span>';
-                $html .= '<span id="shc-view-readable-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
+                $html .= '<span id="shc-view-readable-' . self::$roomId . '-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content"></div>';
                 $html .= '</div>';
             }
@@ -100,11 +109,11 @@ class ReadableViewHelper {
                 if($readable->getState() == Readable::STATE_ON) {
 
                     $html .= String::encodeHtml($readable->getName()) .':';
-                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
+                    $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
                 } else {
 
                     $html .= String::encodeHtml($readable->getName()) .':';
-                    $html .= '<span id="shc-view-switchable-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
+                    $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
                 }
                 $html .= '</div>';
                 $html .= '</li>';
@@ -113,7 +122,7 @@ class ReadableViewHelper {
                 //Web Ansicht
                 $html = '<div class="shc-contentbox-body-row shc-view-readable">';
                 $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHtml($readable->getName()) . '</span>';
-                $html .= '<span id="shc-view-readable-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
+                $html .= '<span id="shc-view-readable-' . self::$roomId . '-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content"></div>';
                 $html .= '</div>';
             }

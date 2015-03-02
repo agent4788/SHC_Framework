@@ -172,7 +172,7 @@ class ViewHelperEditor {
         foreach ($elements as $element) {
 
             /* @var $element \SHC\Switchable\Element */
-            if ($element->getRoom() instanceof Room && $element->getRoom()->getId() == $roomId) {
+            if ($element->isInRoom($roomId)) {
 
                 if ($element instanceof Readable) {
 
@@ -189,7 +189,7 @@ class ViewHelperEditor {
         foreach ($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensor */
-            if ($sensor->getRoom() instanceof Room && $sensor->getRoom()->getId() == $roomId) {
+            if ($sensor->isInRoom($roomId)) {
 
                 $viewHelper->addSensor($sensor);
             }

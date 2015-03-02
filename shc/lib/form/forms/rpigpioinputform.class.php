@@ -44,12 +44,12 @@ class RpiGpioInputForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($rpiGpioInput instanceof RpiGpioInput && $rpiGpioInput->getRoom() instanceof Room ? $rpiGpioInput->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($rpiGpioInput instanceof RpiGpioInput && count($rpiGpioInput->getRooms()) > 0 ? $rpiGpioInput->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Schaltserver Auswahl
         $switchServer = new SwitchServerChooser('switchServer', ($rpiGpioInput instanceof RpiGpioInput ? $rpiGpioInput->getSwitchServer() : 0), SwitchServerChooser::FILTER_READGPIO);

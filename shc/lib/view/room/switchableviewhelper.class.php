@@ -26,16 +26,25 @@ use SHC\Switchable\Switchables\WakeOnLan;
  * @version    2.0.0-0
  */
 class SwitchableViewHelper {
-    
+
+    /**
+     * Raum ID
+     *
+     * @var Integer
+     */
+    protected static $roomId = 0;
+
     /**
      * erstellt das HTML Fragment zur Anzeige eines schaltbaren Elements
-     * 
+     *
+     * @param  Integer                     $roomId     Raum ID
      * @param  \SHC\Switchable\Switchable  $switchable schaltbares Element
      * @param  Booelan                     $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
-    public static function showSwitchable(Switchable $switchable, $ignoreShow = false) {
+    public static function showSwitchable($roomId, Switchable $switchable, $ignoreShow = false) {
 
+        self::$roomId = $roomId;
         if ($switchable instanceof Activity) {
 
             return self::showActivity($switchable, $ignoreShow);
@@ -81,6 +90,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -107,6 +117,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -133,6 +144,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -159,6 +171,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -185,6 +198,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -211,6 +225,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -237,6 +252,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -263,6 +279,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -289,6 +306,7 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht

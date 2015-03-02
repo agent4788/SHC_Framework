@@ -62,7 +62,7 @@ class ViewHelper {
      */
     public function addReadable(Readable $readable) {
 
-        $this->elements[$readable->getOrderId()] = $readable;
+        $this->elements[$readable->getOrderId($this->roomId)] = $readable;
         return $this;
     }
     
@@ -74,9 +74,9 @@ class ViewHelper {
      */
     public function removeReadable(Readable $readable) {
         
-        if(isset($this->elements[$readable->getOrderId()])) {
+        if(isset($this->elements[$readable->getOrderId($this->roomId)])) {
             
-            unset($this->elements[$readable->getOrderId()]);
+            unset($this->elements[$readable->getOrderId($this->roomId)]);
         }
         return $this;
     }
@@ -89,7 +89,7 @@ class ViewHelper {
      */
     public function addSwitchable(Switchable $switchable) {
 
-        $this->elements[$switchable->getOrderId()] = $switchable;
+        $this->elements[$switchable->getOrderId($this->roomId)] = $switchable;
         return $this;
     }
     
@@ -101,9 +101,9 @@ class ViewHelper {
      */
     public function removeSwitchable(Switchable $switchable) {
 
-        if(isset($this->elements[$switchable->getOrderId()])) {
+        if(isset($this->elements[$switchable->getOrderId($this->roomId)])) {
             
-            unset($this->elements[$switchable->getOrderId()]);
+            unset($this->elements[$switchable->getOrderId($this->roomId)]);
         }
         return $this;
     }
@@ -116,7 +116,7 @@ class ViewHelper {
      */
     public function addSensor(Sensor $sensor) {
 
-        $this->elements[$sensor->getOrderId()] = $sensor;
+        $this->elements[$sensor->getOrderId($this->roomId)] = $sensor;
         return $this;
     }
     
@@ -128,9 +128,9 @@ class ViewHelper {
      */
     public function removeSensor(Sensor $sensor) {
         
-        if(isset($this->elements[$sensor->getOrderId()])) {
+        if(isset($this->elements[$sensor->getOrderId($this->roomId)])) {
             
-            unset($this->elements[$sensor->getOrderId()]);
+            unset($this->elements[$sensor->getOrderId($this->roomId)]);
         }
         return $this;
     }
@@ -200,13 +200,13 @@ class ViewHelper {
                 $html .= $element->showAll();
             } elseif($element instanceof Readable) {
                 
-                $html .= ReadableViewHelper::showReadable($element);
+                $html .= ReadableViewHelper::showReadable($this->roomId, $element);
             } elseif($element instanceof Switchable) {
                 
-                $html .= SwitchableViewHelper::showSwitchable($element);
+                $html .= SwitchableViewHelper::showSwitchable($this->roomId, $element);
             } elseif($element instanceof Sensor) {
                 
-                $html .= SensorViewHelper::showSensor($element);
+                $html .= SensorViewHelper::showSensor($this->roomId, $element);
             }
         }
         return $html;
@@ -228,13 +228,13 @@ class ViewHelper {
                 return $element->showAll();
             } elseif($element instanceof Readable) {
                 
-                return ReadableViewHelper::showReadable($element);
+                return ReadableViewHelper::showReadable($this->roomId, $element);
             } elseif($element instanceof Switchable) {
                 
-                return SwitchableViewHelper::showSwitchable($element);
+                return SwitchableViewHelper::showSwitchable($this->roomId, $element);
             } elseif($element instanceof Sensor) {
                 
-                return SensorViewHelper::showSensor($element);
+                return SensorViewHelper::showSensor($this->roomId, $element);
             }
         }
         return '';

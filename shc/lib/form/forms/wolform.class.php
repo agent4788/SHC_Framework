@@ -44,12 +44,12 @@ class WolForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($wakeOnLan instanceof WakeOnLan && $wakeOnLan->getRoom() instanceof Room ? $wakeOnLan->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($wakeOnLan instanceof WakeOnLan && count($wakeOnLan->getRooms()) > 0 ? $wakeOnLan->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //MAC Adresse
         $mac = new MacAddressInputField('mac', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->getMac() : null));
@@ -64,13 +64,6 @@ class WolForm extends DefaultHtmlForm {
         $ip->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.ip.description'));
         $ip->requiredField(true);
         $this->addFormElement($ip);
-
-        //Schaltpunkte Auswahl
-        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->listSwitchPoints() : array()));
-        $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.switchPoints'));
-        $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.switchPoints.description'));
-        $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->isEnabled() : true));

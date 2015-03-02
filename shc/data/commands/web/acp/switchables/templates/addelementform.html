@@ -39,7 +39,7 @@
         {$elementForm->showForm()}
     </div>
     <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
+        <div class="shc-view-buttonSet-return">
             {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
             {resetbutton form="#shc-view-form-addElement"}
             {submitbutton form="#shc-view-form-addElement" action="index.php?app=shc&ajax=addelementform"}
@@ -53,6 +53,11 @@
         <div class="shc-view-buttonSet">
             {acpbackbutton link="index.php?app=shc&ajax=listswitchables"}
         </div>
+        <script type="text/javascript">
+            $(function() {
+                $('.shc-view-buttonSet').buttonset();
+            });
+        </script>
     </div>
     {/if}
 </div>

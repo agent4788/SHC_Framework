@@ -40,12 +40,12 @@ class RebootForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($reboot instanceof Reboot && $reboot->getRoom() instanceof Room ? $reboot->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($reboot instanceof Reboot && count($reboot->getRooms()) > 0 ? $reboot->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($reboot instanceof Reboot ? $reboot->isEnabled() : true));

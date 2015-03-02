@@ -65,18 +65,18 @@ abstract class AbstractSwitchable implements Switchable {
     protected $name = '';
 
     /**
-     * Raum
-     * 
-     * @var \SHC\Room\Room 
+     * Raeume
+     *
+     * @var Array
      */
-    protected $room = null;
+    protected $rooms = array();
     
     /**
      * Sortierungs ID
      * 
-     * @var Integer 
+     * @var Array
      */
-    protected $orderId = 0;
+    protected $order = array();
 
     /**
      * aktiviert/deaktiviert
@@ -315,47 +315,96 @@ abstract class AbstractSwitchable implements Switchable {
     }
 
     /**
-     * setzt den Raum dem das Element zugeordnet ist
-     * 
-     * @param  \SHC\Room\Room $room
-     * @return \SHC\Switchable\Switchable
+     * fuegt einen Raum hinzu
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Switchable\Element
      */
-    public function setRoom(Room $room) {
+    public function addRoom($roomId) {
 
-        $this->room = $room;
+        $this->rooms[] = $roomId;
         return $this;
     }
 
     /**
-     * gibt den Raum zurueck in dem das Element zugeordnet ist
-     * 
-     * @return \SHC\Room\Room
+     * setzt eine Liste mit Raeumen
+     *
+     * @param  Array $roomId Raum IDs
+     * @return \SHC\Switchable\Element
      */
-    public function getRoom() {
+    public function setRooms(array $rooms) {
 
-        return $this->room;
+        $this->rooms = $rooms;
+        return $this;
     }
-    
+
+    /**
+     * entfernt einen Raum
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Switchable\Element
+     */
+    public function removeRoom($roomId) {
+
+        $this->rooms = array_diff($this->rooms, array($roomId));
+        return $this;
+    }
+
+    /**
+     * prueft on das Element dem Raum mit der uebergebenen ID zugeordnet ist
+     *
+     * @param  Integer $roomId Raum ID
+     * @return Boolean
+     */
+    public function isInRoom($roomId) {
+
+        return in_array($roomId, $this->rooms);
+    }
+
+    /**
+     * gibt eine Liste mit allen Raeumen zurueck
+     *
+     * @return Array
+     */
+    public function getRooms() {
+
+        return $this->rooms;
+    }
+
+    /**
+     * setzt die Sortierung
+     *
+     * @param  Array $order Sortierung
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setOrder(array $order) {
+
+        $this->order = $order;
+        return $this;
+    }
+
     /**
      * setzt die Sortierungs ID
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @param  Integer $orderId Sortierungs ID
      * @return \SHC\Switchable\Switchable
      */
-    public function setOrderId($orderId) {
-        
-        $this->orderId = $orderId;
+    public function setOrderId($roomId, $orderId) {
+
+        $this->order[$roomId] = $orderId;
         return $this;
     }
-    
+
     /**
      * gibt die Sortierungs ID zurueck
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @return Integer
      */
-    public function getOrderId() {
-        
-        return $this->orderId;
+    public function getOrderId($roomId) {
+
+        return $this->order[$roomId];
     }
 
     /**

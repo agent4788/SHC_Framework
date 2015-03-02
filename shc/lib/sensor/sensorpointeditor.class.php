@@ -275,13 +275,8 @@ class SensorPointEditor {
             $sensor->setId((string) $sensorData['id']);
             $sensor->setSensorPointId((int) $sensorData['sensorPointId']);
             $sensor->setName((string) $sensorData['name']);
-
-            $room = RoomEditor::getInstance()->getRoomById((int) $sensorData['roomId']);
-            if ($room !== null) {
-
-                $sensor->setRoom($room);
-            }
-            $sensor->setOrderId((int) $sensorData['orderId']);
+            $sensor->setRooms($sensorData['rooms']);
+            $sensor->setOrder( $sensorData['order']);
             $sensor->visibility(((int) $sensorData['visibility'] == true ? true : false));
             $sensor->enableDataRecording(((int) $sensorData['dataRecording'] == 1 ? true : false));
 
@@ -487,8 +482,7 @@ class SensorPointEditor {
      * 
      * @param  String $orderBy Art der Sortierung (
      *      id => nach ID sorieren, 
-     *      name => nach Namen sortieren, 
-     *      orderId => nach Sortierungs ID,
+     *      name => nach Namen sortieren,
      *      unsorted => unsortiert
      *  )
      * @return Array
@@ -506,9 +500,6 @@ class SensorPointEditor {
                 if ($orderBy == 'id') {
 
                     $sensors[$sensor->getId()] = $sensor;
-                } elseif ($orderBy == 'orderId') {
-
-                    $sensors[$sensor->getOrderId()] = $sensor;
                 } else {
 
                     $sensors[] = $sensor;
@@ -519,11 +510,6 @@ class SensorPointEditor {
         if ($orderBy == 'id') {
 
             //nach ID sortieren
-            ksort($sensors, SORT_NUMERIC);
-            return $sensors;
-        } elseif ($orderBy == 'orderId') {
-
-            //nach Sortierungs ID sortieren
             ksort($sensors, SORT_NUMERIC);
             return $sensors;
         } elseif ($orderBy == 'name') {
@@ -571,15 +557,14 @@ class SensorPointEditor {
             foreach ($sensorPoint->listSensors() as $sensor) {
 
                 /* @var $sensor \SHC\Sensor\Sensor */
-                $room = $sensor->getRoom();
-                if($room != null && $room->getId() == $roomId) {
+                if($sensor->isInRoom($roomId)) {
 
                     if ($orderBy == 'id') {
 
                         $sensors[$sensor->getId()] = $sensor;
                     } elseif ($orderBy == 'orderId') {
 
-                        $sensors[$sensor->getOrderId()] = $sensor;
+                        $sensors[$sensor->getOrderId($roomId)] = $sensor;
                     } else {
 
                         $sensors[] = $sensor;
@@ -636,7 +621,7 @@ class SensorPointEditor {
         $sensors = array();
         foreach($this->listSensors(self::SORT_NOTHING) as $sensor) {
 
-            if(!$sensor->getRoom() instanceof Room) {
+            if(count($sensor->getRooms()) == 0) {
 
                 if($orderBy == 'name') {
 
@@ -691,8 +676,8 @@ class SensorPointEditor {
             'sensorPointId' => $spId,
             'type' => $type,
             'name' => '',
-            'roomId' => '',
-            'orderId' => '',
+            'rooms' => array(),
+            'order' => array(),
             'visibility' => true,
             'dataRecording' => true
         );
@@ -936,14 +921,20 @@ class SensorPointEditor {
     public function editSensorOrder(array $order) {
 
         $db = SHC::getDatabase();
-        foreach($order as $sId => $orderId) {
+        foreach($order as $sId => $order) {
 
             if($this->getSensorById($sId) !== null) {
 
-                $sensor = $db->hGet(self::$tableName . ':sensors', $sId);
-                $sensor['orderId'] = $orderId;
+                $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
+                foreach($order as $roomId => $order) {
 
-                if($db->hSet(self::$tableName . ':sensors', $sId, $sensor) != 0) {
+                    if($sensorData['order'][$roomId]) {
+
+                        $sensorData['order'][$roomId] = $order;
+                    }
+                }
+
+                if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
 
                     return false;
                 }
@@ -980,14 +971,14 @@ class SensorPointEditor {
      * 
      * @param  String  $sId           ID
      * @param  String  $name          Name
-     * @param  Integer $roomId        Raum ID
-     * @param  Integer $orderId       Sortierungs ID
+     * @param  Array   $rooms         Raeume
+     * @param  Array   $order         Sortierung
      * @param  Boolean $visibility    Sichtbarkeit
      * @param  Boolean $dataRecording Datenaufzeichnung aktiv
      * @param  Array   $data          Zusatzdaten
      * @return Boolean
      */
-    protected function editSensor($sId, $name = null, $roomId = null, $orderId = null, $visibility = null, $dataRecording = null, array $data = array()) {
+    protected function editSensor($sId, $name = null, $rooms = null, $order = null, $visibility = null, $dataRecording = null, array $data = array()) {
 
         $db = SHC::getDatabase();
         //pruefen ob Datensatz existiert
@@ -1013,20 +1004,42 @@ class SensorPointEditor {
             }
 
             //Raum
-            if ($roomId !== null) {
+            if ($rooms !== null) {
 
-                if((int) $sensor['roomId'] != $roomId && $orderId === null) {
+                //Sortierung der Raeume behabdeln
+                //Vergleichen
+                $oldRooms = $sensor['rooms'];
+                $removedRooms = array_diff($oldRooms, $rooms);
+                $addedRooms = array_diff($rooms, $oldRooms);
 
-                    //Bei Raumwechsel neue Sortieruzngs ID setzen
-                    $sensor['orderId'] = ViewHelperEditor::getInstance()->getNextOrderId();
+                //sortierung vorbereiten
+                if($order === null) {
+
+                    $order = $sensor['order'];
                 }
-                $sensor['roomId'] = $roomId;
+
+                //entfernte Raeume
+                foreach($removedRooms as $roomId) {
+
+                    if(isset($order[$roomId])) {
+
+                        unset($order[$roomId]);
+                    }
+                }
+
+                //hinzugefuegte Raeume
+                foreach($addedRooms as $roomId) {
+
+                    $order[$roomId] = ViewHelperEditor::getInstance()->getNextOrderId();
+                }
+
+                $sensor['rooms'] = $rooms;
             }
 
             //Sortierungs ID
-            if ($orderId !== null) {
+            if ($order !== null) {
 
-                $sensor['orderId'] = $orderId;
+                $sensor['order'] = $order;
             }
 
             //$atenaufzeichnung
@@ -1057,15 +1070,15 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
-     * @param  Integer $orderId                  Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
      * @param  Float   $temperatureOffset        Offset
      * @return Boolean
      */
-    public function editDS18x20($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null, $temperatureOffset = null) {
+    public function editDS18x20($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null, $temperatureOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1074,7 +1087,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1082,8 +1095,8 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
-     * @param  Integer $orderId                  Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $humidityVisibility       Sichtbarkeit Luftfeuchte
@@ -1092,7 +1105,7 @@ class SensorPointEditor {
      * @param  Float   $humidityOffset           Offset
      * @return Boolean
      */
-    public function editDHT($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null, $temperatureOffset = null, $humidityOffset = null) {
+    public function editDHT($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null, $temperatureOffset = null, $humidityOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1103,7 +1116,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1111,7 +1124,8 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $pressureVisibility       Sichtbarkeit Luftdruck
@@ -1122,7 +1136,7 @@ class SensorPointEditor {
      * @param  Float   $altitudeOffset           Offset
      * @return Boolean
      */
-    public function editBMP($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null, $temperatureOffset = null, $pressureOffset = null, $altitudeOffset = null) {
+    public function editBMP($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null, $temperatureOffset = null, $pressureOffset = null, $altitudeOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1135,7 +1149,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1143,15 +1157,15 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @param  Integer $valueOffset        Offset
      * @return Boolean
      */
-    public function editRainSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
+    public function editRainSensor($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1160,7 +1174,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1168,15 +1182,15 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms              Raeume
+     * @param  Array   $order              Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @param  Integer $valueOffset        Offset
      * @return Boolean
      */
-    public function editHygrometer($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
+    public function editHygrometer($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1185,7 +1199,7 @@ class SensorPointEditor {
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1193,15 +1207,15 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms              Raeume
+     * @param  Array   $order              Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
      * @param  Integer $valueOffset        Offset
      * @return Boolean
      */
-    public function editLDR($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
+    public function editLDR($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
@@ -1210,7 +1224,7 @@ class SensorPointEditor {
         );
 
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**

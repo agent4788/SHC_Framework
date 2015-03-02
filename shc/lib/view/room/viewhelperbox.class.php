@@ -106,7 +106,7 @@ class ViewHelperBox {
      * setzt die Raum ID
      * 
      * @param  Integer $roomId ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setRoomId($roomId) {
         
@@ -128,7 +128,7 @@ class ViewHelperBox {
      * setzt die Sortierungs ID der Box
      * 
      * @param  Integer $boxOrderId Sortierungs ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setBoxOrderId($boxOrderId) {
         
@@ -154,7 +154,7 @@ class ViewHelperBox {
      */
     public function addReadable(Readable $readable) {
         
-        $this->elements[$readable->getOrderId()] = $readable;
+        $this->elements[$readable->getOrderId($this->roomId)] = $readable;
         return $this;
     }
     
@@ -178,7 +178,7 @@ class ViewHelperBox {
      */
     public function addSwitchable(Switchable $switchable) {
 
-        $this->elements[$switchable->getOrderId()] = $switchable;
+        $this->elements[$switchable->getOrderId($this->roomId)] = $switchable;
         return $this;
     }
     
@@ -202,7 +202,7 @@ class ViewHelperBox {
      */
     public function addSensor(Sensor $sensor) {
 
-        $this->elements[$sensor->getOrderId()] = $sensor;
+        $this->elements[$sensor->getOrderId($this->roomId)] = $sensor;
         return $this;
     }
     
@@ -278,13 +278,13 @@ class ViewHelperBox {
             
             if($element instanceof Readable) {
                 
-                $html .= ReadableViewHelper::showReadable($element);
+                $html .= ReadableViewHelper::showReadable($this->roomId, $element);
             } elseif($element instanceof Switchable) {
 
-                $html .= SwitchableViewHelper::showSwitchable($element);
+                $html .= SwitchableViewHelper::showSwitchable($this->roomId, $element);
             } elseif($element instanceof Sensor) {
                 
-                $html .= SensorViewHelper::showSensor($element);
+                $html .= SensorViewHelper::showSensor($this->roomId, $element);
             }
         }
         $html .= $this->fetchEndTag();
