@@ -116,29 +116,6 @@ class WarningsAjax extends AjaxCommand {
             $message->addSubMessage(RWF::getLanguage()->get('index.warnings.arduinoSensorReciver.stop'));
         }
 
-        //Sensordata Reciver
-        $sensorDataReciverState = 0;
-        if(RWF::getSetting('shc.sensorReciver.active')) {
-
-            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'sensorDataReciver.flag'));
-            if ($data != '') {
-
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
-                if ($date >= $compareDate) {
-
-                    $sensorDataReciverState = 1;
-                }
-            }
-        } else {
-
-            $sensorDataReciverState = 2;
-        }
-        if($sensorDataReciverState === 0) {
-
-            $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorDataReciver.stop'));
-        }
-
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;
         if(RWF::getSetting('shc.sensorTransmitter.active')) {
