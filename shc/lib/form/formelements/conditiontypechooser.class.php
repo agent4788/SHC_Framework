@@ -40,7 +40,10 @@ class ConditionTypeChooser extends Select {
             13 => RWF::getLanguage()->get('acp.conditionManagement.condition.TimeOfDayCondition'),
             14 => RWF::getLanguage()->get('acp.conditionManagement.condition.SunriseSunsetCondition'),
             15 => RWF::getLanguage()->get('acp.conditionManagement.condition.SunsetSunriseCondition'),
-            16 => RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition')
+            16 => RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition'),
+            17 => RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition'),
+            18 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition'),
+            19 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition')
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);

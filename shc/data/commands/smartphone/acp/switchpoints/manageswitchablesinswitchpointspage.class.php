@@ -5,6 +5,9 @@ namespace SHC\Command\Smartphone;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
+use SHC\Condition\Conditions\HolidaysCondition;
+use SHC\Condition\Conditions\InputHighCondition;
+use SHC\Condition\Conditions\InputLowCondition;
 use SHC\Core\SHC;
 use RWF\Form\FormElements\Select;
 use RWF\Request\Request;
@@ -156,6 +159,15 @@ class ManageSwitchablesInSwitchPointsPage extends PageCommand {
                 } elseif($condition instanceof FileExistsCondition) {
 
                     $type = RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition');
+                } elseif($condition instanceof HolidaysCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition');
+                } elseif($condition instanceof InputHighCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition');
+                } elseif($condition instanceof InputLowCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition');
                 }
                 RWF::getLanguage()->enableAutoHtmlEndocde();
                 $values[$condition->getId()] = $condition->getName() .' ('. $type .')';

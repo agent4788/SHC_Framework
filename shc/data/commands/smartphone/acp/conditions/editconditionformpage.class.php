@@ -12,8 +12,11 @@ use SHC\Condition\ConditionEditor;
 use SHC\Condition\Conditions\DateCondition;
 use SHC\Condition\Conditions\DayOfWeekCondition;
 use SHC\Condition\Conditions\FileExistsCondition;
+use SHC\Condition\Conditions\HolidaysCondition;
 use SHC\Condition\Conditions\HumidityGreaterThanCondition;
 use SHC\Condition\Conditions\HumidityLowerThanCondition;
+use SHC\Condition\Conditions\InputHighCondition;
+use SHC\Condition\Conditions\InputLowCondition;
 use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
 use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
 use SHC\Condition\Conditions\MoistureGreaterThanCondition;
@@ -29,7 +32,10 @@ use SHC\Core\SHC;
 use SHC\Form\Forms\DateConditionForm;
 use SHC\Form\Forms\DayOfWeekConditionForm;
 use SHC\Form\Forms\FileExistsConditionForm;
+use SHC\Form\Forms\HolidayConditionForm;
 use SHC\Form\Forms\HumidityConditionForm;
+use SHC\Form\Forms\InputHighConditionForm;
+use SHC\Form\Forms\InputLowConditionForm;
 use SHC\Form\Forms\LightIntensityConditionForm;
 use SHC\Form\Forms\MoistureConditionForm;
 use SHC\Form\Forms\NobodyAtHomeConditionForm;
@@ -952,6 +958,141 @@ class EditConditionFormPage extends PageCommand {
                 $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
                 $this->response->setBody('');
                 $this->template = '';
+            } elseif($condition instanceof HolidaysCondition) {
+
+                //Feiertage
+                $conditionForm = new HolidayConditionForm($condition);
+                $conditionForm->addId('shc-view-form-editCondition');
+
+                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                    //Werte vorbereiten
+                    $name = $conditionForm->getElementByName('name')->getValue();
+                    $holidays = $conditionForm->getElementByName('holidays')->getHolidays();
+                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                    //Speichern
+                    $message = new Message();
+                    try {
+
+                        ConditionEditor::getInstance()->editHolidaysCondition($conditionId, $name, $holidays, $enabled);
+                        $message->setType(Message::SUCCESSFULLY);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                    } catch(\Exception $e) {
+
+                        if($e->getCode() == 1502) {
+
+                            //Name schon vergeben
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                        } elseif($e->getCode() == 1102) {
+
+                            //fehlende Schreibrechte
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                        } else {
+
+                            //Allgemeiner Fehler
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                        }
+                    }
+                    $tpl->assign('message', $message);
+                } else {
+
+                    $tpl->assign('condition', $condition);
+                    $tpl->assign('conditionForm', $conditionForm);
+                }
+            } elseif($condition instanceof InputHighCondition) {
+
+                //Eingang "1"
+                $conditionForm = new InputHighConditionForm($condition);
+                $conditionForm->addId('shc-view-form-editCondition');
+
+                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                    //Werte vorbereiten
+                    $name = $conditionForm->getElementByName('name')->getValue();
+                    $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                    //Speichern
+                    $message = new Message();
+                    try {
+
+                        ConditionEditor::getInstance()->editInputHighCondition($conditionId, $name, $inputs, $enabled);
+                        $message->setType(Message::SUCCESSFULLY);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                    } catch(\Exception $e) {
+
+                        if($e->getCode() == 1502) {
+
+                            //Name schon vergeben
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                        } elseif($e->getCode() == 1102) {
+
+                            //fehlende Schreibrechte
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                        } else {
+
+                            //Allgemeiner Fehler
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                        }
+                    }
+                    $tpl->assign('message', $message);
+                } else {
+
+                    $tpl->assign('condition', $condition);
+                    $tpl->assign('conditionForm', $conditionForm);
+                }
+            } elseif($condition instanceof InputLowCondition) {
+
+                //Eingang "0"
+                $conditionForm = new InputLowConditionForm($condition);
+                $conditionForm->addId('shc-view-form-editCondition');
+
+                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                    //Werte vorbereiten
+                    $name = $conditionForm->getElementByName('name')->getValue();
+                    $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                    //Speichern
+                    $message = new Message();
+                    try {
+
+                        ConditionEditor::getInstance()->editInputLowCondition($conditionId, $name, $inputs, $enabled);
+                        $message->setType(Message::SUCCESSFULLY);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                    } catch(\Exception $e) {
+
+                        if($e->getCode() == 1502) {
+
+                            //Name schon vergeben
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                        } elseif($e->getCode() == 1102) {
+
+                            //fehlende Schreibrechte
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                        } else {
+
+                            //Allgemeiner Fehler
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                        }
+                    }
+                    $tpl->assign('message', $message);
+                } else {
+
+                    $tpl->assign('condition', $condition);
+                    $tpl->assign('conditionForm', $conditionForm);
+                }
             } else {
 
                 $tpl->assign('conditionForm', $conditionForm);

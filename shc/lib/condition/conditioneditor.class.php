@@ -927,7 +927,7 @@ class ConditionEditor {
      * @return Booelan
      * @throws \Exception
      */
-    public function editFileExistsCondition($id, $name, $path, $invert, $wait, $delete, $enabled = null) {
+    public function editFileExistsCondition($id, $name = null, $path = null, $invert = null, $wait = null, $delete = null, $enabled = null) {
 
         //Daten vorbereiten
         $data = array(
@@ -935,6 +935,126 @@ class ConditionEditor {
             'invert'=> ($invert === null ? null : ($invert == true ? 1 : 0)),
             'wait'=> $wait,
             'delete'=> ($delete === null ? null : ($delete == true ? 1 : 0))
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addInputHighCondition($name,array $inputs, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\InputHighCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editInputHighCondition($id, $name = null, $inputs = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addInputLowCondition($name,array $inputs, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\InputLowCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editInputLowCondition($id, $name = null, $inputs = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Integer $holidays     Feiertage
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addHolidaysCondition($name, $holidays, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'holidays' => $holidays
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\HolidaysCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Integer $holidays     Feiertage
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editHolidaysCondition($id, $name = null, $holidays = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'holidays' => $holidays
         );
 
         //Datensatz bearbeiten

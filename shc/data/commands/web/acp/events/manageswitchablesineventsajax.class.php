@@ -14,8 +14,11 @@ use SHC\Condition\ConditionEditor;
 use SHC\Condition\Conditions\DateCondition;
 use SHC\Condition\Conditions\DayOfWeekCondition;
 use SHC\Condition\Conditions\FileExistsCondition;
+use SHC\Condition\Conditions\HolidaysCondition;
 use SHC\Condition\Conditions\HumidityGreaterThanCondition;
 use SHC\Condition\Conditions\HumidityLowerThanCondition;
+use SHC\Condition\Conditions\InputHighCondition;
+use SHC\Condition\Conditions\InputLowCondition;
 use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
 use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
 use SHC\Condition\Conditions\MoistureGreaterThanCondition;
@@ -390,6 +393,15 @@ class ManageSwitchablesInEventsAjax extends AjaxCommand {
                 } elseif($condition instanceof FileExistsCondition) {
 
                     $type = RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition');
+                } elseif($condition instanceof HolidaysCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition');
+                } elseif($condition instanceof InputHighCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition');
+                } elseif($condition instanceof InputLowCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition');
                 }
                 RWF::getLanguage()->enableAutoHtmlEndocde();
                 $values[$condition->getId()] = $condition->getName() .' ('. $type .')';

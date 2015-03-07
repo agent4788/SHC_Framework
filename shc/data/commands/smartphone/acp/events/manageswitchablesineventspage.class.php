@@ -5,6 +5,9 @@ namespace SHC\Command\Smartphone;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
+use SHC\Condition\Conditions\HolidaysCondition;
+use SHC\Condition\Conditions\InputHighCondition;
+use SHC\Condition\Conditions\InputLowCondition;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use RWF\Form\FormElements\Select;
@@ -222,6 +225,15 @@ class ManageSwitchablesInEventsPage extends PageCommand {
                     } elseif($switchableElement instanceof Script) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
+                    } elseif($condition instanceof HolidaysCondition) {
+
+                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition');
+                    } elseif($condition instanceof InputHighCondition) {
+
+                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition');
+                    } elseif($condition instanceof InputLowCondition) {
+
+                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition');
                     }
                     RWF::getLanguage()->enableAutoHtmlEndocde();
                     $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';
