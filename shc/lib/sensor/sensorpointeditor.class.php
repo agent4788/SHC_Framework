@@ -827,25 +827,6 @@ class SensorPointEditor {
     }
 
     /**
-     * prueft ob der Name des Sensorpunktes schon verwendet wird
-     * 
-     * @param  String  $name Name
-     * @return Boolean
-     */
-    public function isSensorPointNameAvailable($name) {
-
-        foreach ($this->sensorPoints as $sensorPoint) {
-
-            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
-            if (String::toLower($sensorPoint->getName()) == String::toLower($name)) {
-
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * bearbeitet einen Sensorpunkt
      * 
      * @param  Integer $spId         ID
@@ -988,12 +969,6 @@ class SensorPointEditor {
 
             //Name
             if ($name !== null) {
-
-                //Ausnahme wenn Name der Bedingung schon belegt
-                if ($name != (string) $sensor['name'] && !$this->isSensorNameAvailable($name)) {
-
-                    throw new \Exception('Der Name ist schon vergeben', 1507);
-                }
 
                 $sensor['name'] = $name;
             }

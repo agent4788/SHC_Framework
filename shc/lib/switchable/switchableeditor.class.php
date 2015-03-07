@@ -354,25 +354,6 @@ class SwitchableEditor {
     }
 
     /**
-     * prueft ob der Name des Schaltbaren Elements schon verwendet wird
-     * 
-     * @param  String  $name Name
-     * @return Boolean
-     */
-    public function isElementNameAvailable($name) {
-
-        foreach ($this->switchables as $switchable) {
-
-            /* @var $switchable \SHC\Switchable\Switchable */
-            if (String::toLower($switchable->getName()) == String::toLower($name)) {
-
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * gibt eine Liste mit allen Schaltbaren Elementen zurueck
      * 
      * @param  String $orderBy Art der Sortierung (
@@ -665,12 +646,6 @@ class SwitchableEditor {
      */
     protected function addElement($type, $name, $enabled, $visibility, $icon, array $rooms, array $order, array $switchPoints = array(), array $allowedUserGroups = array(), array $data = array()) {
 
-        //Ausnahme wenn Elementname schon belegt
-        if (!$this->isElementNameAvailable($name)) {
-
-            throw new \Exception('Der Name ist schon vergeben', 1507);
-        }
-
         //sortierung vorbereiten
         if(count($order) == 0) {
 
@@ -738,12 +713,6 @@ class SwitchableEditor {
 
             //Name
             if ($name !== null) {
-
-                //Ausnahme wenn Name der Bedingung schon belegt
-                if ($name != (string) $switchable['name'] && !$this->isElementNameAvailable($name)) {
-
-                    throw new \Exception('Der Name ist schon vergeben', 1507);
-                }
 
                 $switchable['name'] = $name;
             }

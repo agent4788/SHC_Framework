@@ -90,12 +90,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editActivity.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -145,12 +140,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editCountdown.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -197,12 +187,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editRadioSocket.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -247,12 +232,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editGpioOutput.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -297,12 +277,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editGpioOutput.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -347,12 +322,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editWol.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -397,12 +367,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editShutdown.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -443,12 +408,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editReboot.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -497,12 +457,7 @@ class EditElementFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);

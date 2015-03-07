@@ -87,12 +87,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -137,12 +132,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -185,12 +175,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -233,12 +218,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -281,12 +261,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -329,12 +304,7 @@ class EditSensorFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
