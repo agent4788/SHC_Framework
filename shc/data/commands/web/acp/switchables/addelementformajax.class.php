@@ -111,14 +111,6 @@ class AddElementFormAjax extends AjaxCommand {
                         $tpl->assign('elementForm', $activityForm);
                     }
                     break;
-                case SwitchableEditor::TYPE_ARDUINO_INPUT:
-
-                    //Nicht Implementiert
-                    break;
-                case SwitchableEditor::TYPE_ARDUINO_OUTPUT:
-
-                    //Nicht Implementiert
-                    break;
                 case SwitchableEditor::TYPE_COUNTDOWN:
 
                     //Countdown

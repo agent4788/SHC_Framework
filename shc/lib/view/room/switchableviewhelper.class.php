@@ -48,9 +48,6 @@ class SwitchableViewHelper {
         if ($switchable instanceof Activity) {
 
             return self::showActivity($switchable, $ignoreShow);
-        } elseif ($switchable instanceof ArduinoOutput) {
-
-            return self::showArduinoOutput($switchable, $ignoreShow);
         } elseif ($switchable instanceof Countdown) {
 
             return self::showCountdown($switchable, $ignoreShow);
@@ -98,33 +95,6 @@ class SwitchableViewHelper {
             } else {
                     //Web Ansicht
                 $html = $tpl->fetchString('activity.html');
-            }
-        }
-        return $html;
-    }
-    
-    /**
-     * bereitet die Daten eines Arduino Ausgangs zur Anzeige vor
-     *  
-     * @param  \SHC\Switchable\Switchables\ArduinoOutput $switchable ArduinoOutput
-     * @param  Boolean                                   $ignoreShow Anzeigeeinstellungen ignorieren
-     * @return String
-     */
-    protected static function showArduinoOutput(ArduinoOutput $switchable, $ignoreShow = false) {
-        
-        $html = '';
-        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
-
-            $tpl = SHC::getTemplate();
-            $tpl->assign('switchable', $switchable);
-            $tpl->assign('roomId', self::$roomId);
-            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
-
-                //Mobil Ansicht
-                $html = $tpl->fetchString('mobileArduinoOutput.html');
-            } else {
-                //Web Ansicht
-                $html = $tpl->fetchString('arduinoOutput.html');
             }
         }
         return $html;

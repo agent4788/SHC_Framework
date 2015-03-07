@@ -39,13 +39,11 @@ $l['acp.switchableManagement.button.addToSwitchableContainer'] = 'hinzufügen';
 
 //Typen
 $l['acp.switchableManagement.element.activity'] = 'Aktivität';
-$l['acp.switchableManagement.element.arduinoOutput'] = 'Arduino Ausgang';
 $l['acp.switchableManagement.element.countdown'] = 'Countdown';
 $l['acp.switchableManagement.element.radiosocket'] = 'Funksteckdose';
-$l['acp.switchableManagement.element.rpiGpioOutput'] = 'RPi GPIO Ausgang';
+$l['acp.switchableManagement.element.rpiGpioOutput'] = 'Ausgang';
 $l['acp.switchableManagement.element.wakeOnLan'] = 'Wake On Lan';
-$l['acp.switchableManagement.element.arduinoInput'] = 'Arduino Eingang';
-$l['acp.switchableManagement.element.rpiGpioInput'] = 'RPi GPIO Eingang';
+$l['acp.switchableManagement.element.rpiGpioInput'] = 'Eingang';
 $l['acp.switchableManagement.element.radioScketDimmer'] = 'Funkdimmer';
 $l['acp.switchableManagement.element.reboot'] = 'Neustart';
 $l['acp.switchableManagement.element.shutdown'] = 'Herunterfahren';

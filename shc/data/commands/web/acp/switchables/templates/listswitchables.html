@@ -31,7 +31,6 @@
                                 <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                                 <td>
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                    {instanceof element=$element class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
@@ -59,7 +58,6 @@
                             <tr>
                                 <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                                 <td>
-                                    {instanceof element=$element class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                                 </td>
                                 <td>
@@ -116,7 +114,6 @@
                                                     <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                     <td>
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
@@ -144,7 +141,6 @@
                                                 <tr>
                                                     <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                     <td>
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                                                     </td>
                                                     <td>

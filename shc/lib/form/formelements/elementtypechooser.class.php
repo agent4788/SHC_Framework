@@ -27,8 +27,6 @@ class ElementTypeChooser extends Select {
         RWF::getLanguage()->disableAutoHtmlEndocde();
         $values = array(
             SwitchableEditor::TYPE_ACTIVITY => RWF::getLanguage()->get('acp.switchableManagement.element.activity'),
-            //SwitchableEditor::TYPE_ARDUINO_INPUT => RWF::getLanguage()->get('acp.switchableManagement.element.arduinoInput'),
-            //SwitchableEditor::TYPE_ARDUINO_OUTPUT => RWF::getLanguage()->get('acp.switchableManagement.element.arduinoOutput'),
             SwitchableEditor::TYPE_COUNTDOWN => RWF::getLanguage()->get('acp.switchableManagement.element.countdown'),
             SwitchableEditor::TYPE_RADIOSOCKET => RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket'),
             SwitchableEditor::TYPE_RPI_GPIO_INPUT => RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioInput'),

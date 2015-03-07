@@ -76,13 +76,6 @@ class SwitchableEditor {
     const TYPE_ACTIVITY = 1;
 
     /**
-     * Arduino Ausgang
-     * 
-     * @var Integer
-     */
-    const TYPE_ARDUINO_OUTPUT = 2;
-
-    /**
      * Countdown
      * 
      * @var Integer
@@ -109,13 +102,6 @@ class SwitchableEditor {
      * @var Integer
      */
     const TYPE_WAKEONLAN = 32;
-    
-    /**
-     * Arduino Eingang
-     * 
-     * @var Integer
-     */
-    const TYPE_ARDUINO_INPUT = 64;
     
     /**
      * Raspberry Pi GPIO Eingang
@@ -222,12 +208,6 @@ class SwitchableEditor {
                     }
                     $this->switchableList[(int) $switchable['id']] = $list;
                     break;
-                case self::TYPE_ARDUINO_OUTPUT:
-
-                    $object = new ArduinoOutput();
-                    $object->setDeviceId((string) $switchable['deviceId']);
-                    $object->setPinNumber((int) $switchable['pinNumber']);
-                    break;
                 case self::TYPE_COUNTDOWN:
 
                     $object = new Countdown();
@@ -261,12 +241,6 @@ class SwitchableEditor {
                     $object = new WakeOnLan();
                     $object->setMac((string) $switchable['mac']);
                     $object->setIpAddress((string) $switchable['ipAddress']);
-                    break;
-                case self::TYPE_ARDUINO_INPUT:
-
-                    $object = new ArduinoInput();
-                    $object->setDeviceId((string) $switchable['deviceId']);
-                    $object->setPinNumber((int) $switchable['pinNumber']);
                     break;
                 case self::TYPE_RPI_GPIO_INPUT:
 
