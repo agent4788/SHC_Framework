@@ -19,6 +19,7 @@ $l['acpindex.save'] = 'speichern';
 $l['acpindex.allUsers'] = 'jede Gruppe';
 $l['acpindex.reload'] = 'aktualisieren';
 $l['acpindex.emptyList'] = 'keine Einträge';
+$l['acpindex.roomLess'] = 'kein Raum';
 
 //Boxen
 $l['acpindex.box.overview'] = 'Übersicht';

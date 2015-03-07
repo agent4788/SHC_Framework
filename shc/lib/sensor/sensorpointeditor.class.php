@@ -621,7 +621,8 @@ class SensorPointEditor {
         $sensors = array();
         foreach($this->listSensors(self::SORT_NOTHING) as $sensor) {
 
-            if(count($sensor->getRooms()) == 0) {
+            $rooms = $sensor->getRooms();
+            if(count($rooms) == 0 || (array_key_exists(0, $rooms) && $rooms[0] === null)) {
 
                 if($orderBy == 'name') {
 

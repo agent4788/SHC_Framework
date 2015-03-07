@@ -107,31 +107,32 @@ class ViewHelperEditor {
         $bexes = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach ($bexes as $box) {
 
+            $boxRoomId = (int) $box['roomId'];
             $boxObject = new ViewHelperBox();
             $boxObject->setBoxId((int) $box['id']);
             $boxObject->setName((string) $box['name']);
             $boxObject->setBoxOrderId((int) $box['orderId']);
-            $boxObject->setRoomId((int) $box['roomId']);
+            $boxObject->setRoomId($boxRoomId);
             foreach ($box['elements'] as $element) {
 
                 if ((int) $element['type'] == self::TYPE_READABLE) {
 
                     $element = SwitchableEditor::getInstance()->getElementById((int) $element['id']);
-                    if($element instanceof Readable) {
+                    if($element instanceof Readable && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addReadable($element);
                     }
                 } elseif ((int) $element['type'] == self::TYPE_SWITCHABLE) {
 
                     $element = SwitchableEditor::getInstance()->getElementById((int) $element['id']);
-                    if($element instanceof Switchable) {
+                    if($element instanceof Switchable && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addSwitchable($element);
                     }
                 } elseif ((int) $element['type'] == self::TYPE_SENSOR) {
 
                     $element = SensorPointEditor::getInstance()->getSensorById((string) $element['id']);
-                    if($element instanceof Sensor) {
+                    if($element instanceof Sensor && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addSensor($element);
                     }

@@ -62,7 +62,7 @@ class ViewHelperBox {
      * setzt die ID der Box
      * 
      * @param  Integer $boxId ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setBoxId($boxId) {
         

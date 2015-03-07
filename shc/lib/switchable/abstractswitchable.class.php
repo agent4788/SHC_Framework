@@ -404,7 +404,11 @@ abstract class AbstractSwitchable implements Switchable {
      */
     public function getOrderId($roomId) {
 
-        return $this->order[$roomId];
+        if(isset($this->order[$roomId])) {
+
+            return $this->order[$roomId];
+        }
+        return 0;
     }
 
     /**

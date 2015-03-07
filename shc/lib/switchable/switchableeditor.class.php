@@ -411,7 +411,8 @@ class SwitchableEditor {
         $elements = array();
         foreach($this->switchables as $element) {
 
-            if(count($element->getRooms()) == 0) {
+            $rooms = $element->getRooms();
+            if(count($rooms) == 0 || (array_key_exists(0, $rooms) && $rooms[0] === null)) {
 
                 if($orderBy == 'name') {
 

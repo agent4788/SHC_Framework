@@ -243,7 +243,11 @@ abstract class AbstractSensor implements Sensor {
      */
     public function getOrderId($roomId) {
 
-        return $this->order[$roomId];
+        if(isset($this->order[$roomId])) {
+
+            return $this->order[$roomId];
+        }
+        return 0;
     }
 
     /**

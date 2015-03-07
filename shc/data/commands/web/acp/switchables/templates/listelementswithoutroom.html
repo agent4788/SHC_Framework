@@ -67,7 +67,9 @@
                     {/instanceof}
                     {foreachelse}
                     <tr>
+                        {if $switchables|count == 0 && $sensors|count == 0}
                         <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                        {/if}
                     </tr>
                     {/foreach}
                     </tbody>
