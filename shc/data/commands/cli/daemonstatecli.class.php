@@ -100,25 +100,6 @@ class DaemonStateCli extends CliCommand {
             $shedulerState = 2;
         }
 
-        //Arduino Sensor Reciver
-        $arduinoSensorReciverState = 0;
-        if(RWF::getSetting('shc.arduinoReciver.active')) {
-
-            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'arduinoSensorReciver.flag'));
-            if ($data != '') {
-
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
-                if ($date >= $compareDate) {
-
-                    $arduinoSensorReciverState = 1;
-                }
-            }
-        } else {
-
-            $arduinoSensorReciverState = 2;
-        }
-
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;
         if(RWF::getSetting('shc.sensorTransmitter.active')) {
@@ -153,6 +134,7 @@ class DaemonStateCli extends CliCommand {
 
             $r->writeLnColored('deaktiviert', 'yellow');
         }
+
         //Sheduler
         $r->write('Scheduler: ');
         if($shedulerState === 0) {
@@ -165,30 +147,7 @@ class DaemonStateCli extends CliCommand {
 
             $r->writeLnColored('deaktiviert', 'yellow');
         }
-        //Arduino Sensor Reciver
-        $r->write('Arduino Sensor Empfänger: ');
-        if($arduinoSensorReciverState === 0) {
 
-            $r->writeLnColored('läuft nicht', 'red');
-        } elseif($arduinoSensorReciverState === 1) {
-
-            $r->writeLnColored('läuft', 'green');
-        } elseif($arduinoSensorReciverState === 2) {
-
-            $r->writeLnColored('deaktiviert', 'yellow');
-        }
-        //Sensor Reciver
-        $r->write('Sensor Empfänger: ');
-        if($sensorDataReciverState === 0) {
-
-            $r->writeLnColored('läuft nicht', 'red');
-        } elseif($sensorDataReciverState === 1) {
-
-            $r->writeLnColored('läuft', 'green');
-        } elseif($sensorDataReciverState === 2) {
-
-            $r->writeLnColored('deaktiviert', 'yellow');
-        }
         //Sensor Transmitter
         $r->write('Sensor Sender: ');
         if($sensorDataTransmitterState === 0) {

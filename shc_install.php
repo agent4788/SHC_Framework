@@ -82,6 +82,16 @@ if(!file_exists('./rwf/data/storage/settings.xml')) {
     $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
 }
 
+//Datenbank Daten Abfragen
+
+
+//Datenbank
+addSetting('shc.redis.host', '127.0.0.1', TYPE_STRING);
+addSetting('shc.redis.port', '6379', TYPE_INTEGER);
+addSetting('shc.redis.timeout', '1', TYPE_INTEGER);
+addSetting('shc.redis.db', '0', TYPE_INTEGER);
+addSetting('shc.redis.pass', '', TYPE_STRING);
+
 //Allgemeine Einstellungen
 addSetting('shc.ui.redirectActive', 'true', TYPE_BOOLEAN);
 addSetting('shc.ui.redirectPcTo', '1', TYPE_INTEGER);
@@ -106,13 +116,6 @@ addSetting('shc.switchServer.rcswitchPiCommand', '/opt/rcswitch-pi/send', TYPE_S
 addSetting('shc.switchServer.sendLedPin', '-1', TYPE_INTEGER);
 addSetting('shc.switchServer.writeGpio', 'true', TYPE_BOOLEAN);
 addSetting('shc.switchServer.readGpio', 'true', TYPE_BOOLEAN);
-
-//Arduino Reciver
-addSetting('shc.arduinoReciver.active', 'false', TYPE_BOOLEAN);
-addSetting('shc.arduinoReciver.interface', '/dev/ttyAMA0', TYPE_STRING);
-addSetting('shc.arduinoReciver.baudRate', '9600', TYPE_INTEGER);
-addSetting('shc.arduinoReciver.ip', '127.0.0.1', TYPE_STRING);
-addSetting('shc.arduinoReciver.port', '9275', TYPE_STRING);
 
 //Sensor Transmitter
 addSetting('shc.sensorTransmitter.active', 'false', TYPE_BOOLEAN);
