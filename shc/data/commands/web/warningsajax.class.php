@@ -52,6 +52,7 @@ class WarningsAjax extends AjaxCommand {
                 //Verbindungsversuch
                 $socket->open();
                 $socket->close();
+                $foundRunningServer = true;
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1150) {
