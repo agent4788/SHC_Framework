@@ -50,12 +50,12 @@ class CountdownForm extends DefaultHtmlForm {
         $icon->requiredField(true);
         $this->addFormElement($icon);
 
-        //Raum
-        $room = new RoomChooser('room', ($countdown instanceof Countdown && $countdown->getRoom() instanceof Room ? $countdown->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($countdown instanceof Countdown && count($countdown->getRooms()) > 0 ? $countdown->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Intervall
         $interval = new IntegerInputField('interval', ($countdown instanceof Countdown ? $countdown->getInterval() : 30), array('min' => 30, 'max' => 14400, 'step' => 5));
@@ -63,13 +63,6 @@ class CountdownForm extends DefaultHtmlForm {
         $interval->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval.description'));
         $interval->requiredField(true);
         $this->addFormElement($interval);
-
-        //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($countdown instanceof Countdown ? $countdown->listSwitchPoints() : array()));
-        $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.switchPoints'));
-        $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.switchPoints.description'));
-        $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($countdown instanceof Countdown ? $countdown->isEnabled() : true));

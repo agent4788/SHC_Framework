@@ -1,0 +1,63 @@
+<div>
+    <div class="shc-view-content">
+        {if $message|isset}
+            {$message->fetchHTML()}
+        {/if}
+        <table class="shc-view-contentTable">
+            <tbody>
+                <tr>
+                    <td style="width: 25%; font-weight: bold;">{lang var='acp.database.version'}</td>
+                    <td style="width: 25%;">{#$info.redis_version}</td>
+                    <td style="width: 25%; font-weight: bold;">{lang var='acp.database.mode'}</td>
+                    <td style="width: 25%;">{#$info.redis_mode}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='acp.database.version'}</td>
+                    <td>{#$info.uptime_in_seconds|seconds:1}</td>
+                    <td style="font-weight: bold;">{lang var='acp.database.config'}</td>
+                    <td>{#$info.config_file}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='acp.database.memory'}</td>
+                    <td>{#$info.used_memory|filesizebinary}</td>
+                    <td style="font-weight: bold;">{lang var='acp.database.memoryPeak'}</td>
+                    <td>{#$info.used_memory_peak|filesizebinary}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='acp.database.lastSave'}</td>
+                    <td>{#$lastSaveDate|timeline}</td>
+                    <td style="font-weight: bold;">{lang var='acp.database.lastSaveState'}</td>
+                    <td>{#$info.rdb_last_bgsave_status}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='acp.database.input'}</td>
+                    <td>{#$info.total_net_input_bytes|filesizebinary}</td>
+                    <td style="font-weight: bold;">{lang var='acp.database.output'}</td>
+                    <td>{#$info.total_net_output_bytes|filesizebinary}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="shc-view-buttons">
+   <div class="shc-view-buttonSet">
+       {acpbackbutton location="index.php?app=shc&page=acp"}
+       <button id="shc-view-button-dump">{lang var="acp.database.buttons.dump"}</button>
+    </div>
+</div>
+<script type="text/javascript">
+    function onLoad() {
+
+        $('#shc-view-acp-contentBox .shc-contentbox-header').first().text('{lang var="acp.database.title"}');
+        $('.shc-view-buttonSet').buttonset();
+
+        $('#shc-view-button-dump').unbind( "click" );
+        $('#shc-view-button-dump').click(function() {
+            $.get("index.php?app=shc&ajax=database&dump=1&hash=" + Math.floor(Math.random() * 11), function(data, textStatus, jqXHR) {
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
+                onLoad();
+            });
+        });
+    }
+    $(onLoad);
+</script>

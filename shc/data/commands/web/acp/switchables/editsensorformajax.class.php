@@ -69,27 +69,25 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $bmpSensorForm->getElementByName('name')->getValue();
-                $roomId = $bmpSensorForm->getElementByName('room')->getValue();
+                $rooms = $bmpSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $bmpSensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $bmpSensorForm->getElementByName('temperatureVisibility')->getValue();
                 $pressureVisibility = $bmpSensorForm->getElementByName('pressureVisibility')->getValue();
                 $altitudeVisibility = $bmpSensorForm->getElementByName('altitudeVisibility')->getValue();
+                $temperatureOffset = $bmpSensorForm->getElementByName('tempOffset')->getValue();
+                $pressureOffset = $bmpSensorForm->getElementByName('pressOffset')->getValue();
+                $altitudeOffset = $bmpSensorForm->getElementByName('altiOffset')->getValue();
                 $dataRecording = $bmpSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording, $temperatureOffset, $pressureOffset, $altitudeOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -118,26 +116,23 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $dhtSensorForm->getElementByName('name')->getValue();
-                $roomId = $dhtSensorForm->getElementByName('room')->getValue();
+                $rooms = $dhtSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $dhtSensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $dhtSensorForm->getElementByName('temperatureVisibility')->getValue();
                 $humidityVisibility = $dhtSensorForm->getElementByName('humidityVisibility')->getValue();
+                $temperatureOffset = $dhtSensorForm->getElementByName('tempOffset')->getValue();
+                $humidityOffset = $dhtSensorForm->getElementByName('humOffset')->getValue();
                 $dataRecording = $dhtSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording, $temperatureOffset, $humidityOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -166,25 +161,21 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $ds18x20SensorForm->getElementByName('name')->getValue();
-                $roomId = $ds18x20SensorForm->getElementByName('room')->getValue();
+                $rooms = $ds18x20SensorForm->getElementByName('rooms')->getValues();
                 $visibility = $ds18x20SensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $ds18x20SensorForm->getElementByName('temperatureVisibility')->getValue();
+                $temperatureOffset = $ds18x20SensorForm->getElementByName('tempOffset')->getValue();
                 $dataRecording = $ds18x20SensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $roomId, null, $visibility, $temperatureVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $dataRecording, $temperatureOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -213,25 +204,21 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $hygrometerSensorForm->getElementByName('name')->getValue();
-                $roomId = $hygrometerSensorForm->getElementByName('room')->getValue();
+                $rooms = $hygrometerSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $hygrometerSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $hygrometerSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $hygrometerSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $hygrometerSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -260,25 +247,21 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $rainSensorForm->getElementByName('name')->getValue();
-                $roomId = $rainSensorForm->getElementByName('room')->getValue();
+                $rooms = $rainSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $rainSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $rainSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $rainSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $rainSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -307,25 +290,21 @@ class EditSensorFormAjax extends AjaxCommand {
 
                 //Speichern
                 $name = $ldrSensorForm->getElementByName('name')->getValue();
-                $roomId = $ldrSensorForm->getElementByName('room')->getValue();
+                $rooms = $ldrSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $ldrSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $ldrSensorForm->getElementByName('valueVisibility')->getValue();
+                $valueOffset = $ldrSensorForm->getElementByName('valOffset')->getValue();
                 $dataRecording = $ldrSensorForm->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $roomId, null, $visibility, $valueVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);

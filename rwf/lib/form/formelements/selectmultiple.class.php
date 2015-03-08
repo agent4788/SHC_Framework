@@ -232,17 +232,17 @@ class SelectMultiple extends AbstractFormElement {
         $size = '';
         if (isset($this->options['size'])) {
 
-            $size = ' size="' . StringUtil::encodeHTML($this->options['size']) . '" ';
+            $size = ' size="' . String::encodeHTML($this->options['size']) . '" ';
         }
 
         //HTML Code
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld
-        $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
+        $html .= '<div class=" ui-field-contain">';
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
-        $html .= '<select name="'. String::encodeHTML($this->getName()) .'[]" multiple="multiple" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-selectmultiple' . $class . '" data-native-menu="false">' . "\n";
+        $html .= '<select name="'. String::encodeHTML($this->getName()) .'[]" multiple="multiple" ' . $id . $disabled . $size . ' class="' . $class . '" data-native-menu="false">' . "\n";
         if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
             
             //Gruppierte Auswahl
@@ -283,7 +283,7 @@ class SelectMultiple extends AbstractFormElement {
         $html .= "</div>\n";
 
         //Pflichtfeld
-        if ($this->isRequiredField() && !count($this->getValues())) {
+        if ($this->isRequiredField() && !count($this->getValues()) && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {
@@ -298,14 +298,6 @@ class SelectMultiple extends AbstractFormElement {
         }
 
         $html .= "</div>\n";
-
-        //JavaScript ueberpruefung
-        $html .= "<script type=\"text/javascript\">\n";
-        $html .= "
-            \$(function() {
-                \$('#a" . $randomId . "').buttonset();
-            });\n";
-        $html .= "</script>\n";
 
         return $html;
     }

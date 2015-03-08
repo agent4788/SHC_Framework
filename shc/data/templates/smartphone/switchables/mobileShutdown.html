@@ -1,0 +1,33 @@
+<li>
+    {#$switchable->getName()}:
+    <div data-role="controlgroup" data-type="horizontal">
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left" style="width: 10em;">{lang var='index.room.button.shutdown'}</a>
+    </div>
+</li>
+<script type="text/javascript">
+    $(function () {
+
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
+
+            //An Button gedrueckt
+            $.getJSON(
+                    "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                    function(data) {
+
+                        if (data.success == true) {
+
+                        } else {
+
+                            $('#errorMessage').text(data.message);
+                            $.mobile.changePage("#errorDialog", { role: "dialog" });
+                        }
+                    }
+            );
+            return false;
+        });
+
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
+        });
+    });
+</script>

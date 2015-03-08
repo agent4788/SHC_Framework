@@ -33,121 +33,6 @@
         </div>
         <script type="text/javascript">
 
-                if (!!window.EventSource) {
-
-                    var eventSource = new EventSource('index.php?app=shc&a&sync=room&id={$room->getId()}', { withCredentials : true });
-
-                    //Ereignishandler registrieren
-                    eventSource.addEventListener('syncSwitchables', function(e) {
-
-                        //JOSN parsen
-                        var data = jQuery.parseJSON(e.data.trim());
-
-                        //schaltbare Elemente Sychronisieren
-                        $.each(data, function(index, value) {
-
-                            if(value == 1) {
-
-                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
-                            } else {
-
-                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
-                            }
-                        });
-                    });
-                    eventSource.addEventListener('syncWOL', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //Wake on Lan Sychronisieren
-                        $.each(data, function(index, value) {
-
-                            if(value == 1) {
-
-                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
-                            } else {
-
-                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-arrow-r ui-btn-b').addClass('ui-icon-power ui-btn-c');
-                            }
-                        });
-                    });
-                    eventSource.addEventListener('syncReadables', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //lesbare Elemente Sychronisieren
-                        $.each(data, function(index, value) {
-
-                            if(value == 1) {
-
-                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-delete').addClass('ui-icon-check');
-                            } else {
-
-                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-check').addClass('ui-icon-delete');
-                            }
-                        });
-                    });
-                    eventSource.addEventListener('syncDS18x20', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //DS18x20 Sensoren
-                        $.each(data, function(index, value) {
-
-                            $('#shc-view-sensor-ds18x20-'+ index +'-temp').text(value.temp);
-                        });
-                    });
-                    eventSource.addEventListener('syncDHT', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //DHT Sensoren
-                        $.each(data, function(index, value) {
-
-                            $('#shc-view-sensor-dht-'+ index +'-temp').text(value.temp);
-                            $('#shc-view-sensor-dht-'+ index +'-hum').text(value.hum);
-                        });
-                    });
-                    eventSource.addEventListener('syncBMP', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //BMP Sensoren
-                        $.each(data, function(index, value) {
-
-                            $('#shc-view-sensor-bmp-'+ index +'-temp').text(value.temp);
-                            $('#shc-view-sensor-bmp-'+ index +'-press').text(value.press);
-                            $('#shc-view-sensor-bmp-'+ index +'-alti').text(value.alti);
-                        });
-                    });
-                    eventSource.addEventListener('syncAnalog', function(e) {
-
-                        //JOSN parsen
-                        var data = JSON.parse(e.data);
-
-                        //Analog Sensoren
-                        $.each(data, function(index, value) {
-
-                            $('#shc-view-sensor-analog-'+ index +'-value').text(value.value);
-                        });
-                    });
-
-                    eventSource.addEventListener('error', function(e) {
-                        if (!e.readyState == EventSource.CLOSED) {
-
-                            console.log(e);
-                        }
-                    });
-
-                } else {
-
                     function sync() {
 
                         // Browser unterstuetzt kein SSE -> Ajax Fallback
@@ -161,12 +46,12 @@
 
                                             if(value == 1) {
 
-                                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
                                             } else {
 
-                                                $("#shc-view-switchable-"+ index +"-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                                $("#shc-view-switchable-"+ index +"-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
                                             }
                                         });
 
@@ -175,10 +60,10 @@
 
                                             if(value == 1) {
 
-                                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
                                             } else {
 
-                                                $("#shc-view-switchable-"+ index +"-on").removeClass('ui-icon-arrow-r ui-btn-b').addClass('ui-icon-power ui-btn-c');
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index +"-on").removeClass('ui-icon-arrow-r ui-btn-b').addClass('ui-icon-power ui-btn-c');
                                             }
                                         });
 
@@ -187,46 +72,45 @@
 
                                             if(value == 1) {
 
-                                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-delete').addClass('ui-icon-check');
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index).removeClass('ui-icon-delete').addClass('ui-icon-check');
                                             } else {
 
-                                                $("#shc-view-switchable-"+ index).removeClass('ui-icon-check').addClass('ui-icon-delete');
+                                                $("#shc-view-switchable-{$room->getId()}-"+ index).removeClass('ui-icon-check').addClass('ui-icon-delete');
                                             }
                                         });
 
                                         //DS18x20 Sensoren
                                         $.each(data.ds18x20, function (index, value) {
 
-                                            $('#shc-view-sensor-ds18x20-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-ds18x20-{$room->getId()}-'+ index +'-temp').text(value.temp);
                                         });
 
                                         //DHT Sensoren
                                         $.each(data.dht, function (index, value) {
 
-                                            $('#shc-view-sensor-dht-'+ index +'-temp').text(value.temp);
-                                            $('#shc-view-sensor-dht-'+ index +'-hum').text(value.hum);
+                                            $('#shc-view-sensor-dht-{$room->getId()}-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-dht-{$room->getId()}-'+ index +'-hum').text(value.hum);
                                         });
 
                                         //BMP Sensoren
                                         $.each(data.bmp, function (index, value) {
 
-                                            $('#shc-view-sensor-bmp-'+ index +'-temp').text(value.temp);
-                                            $('#shc-view-sensor-bmp-'+ index +'-press').text(value.press);
-                                            $('#shc-view-sensor-bmp-'+ index +'-alti').text(value.alti);
+                                            $('#shc-view-sensor-bmp-{$room->getId()}-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-bmp-{$room->getId()}-'+ index +'-press').text(value.press);
+                                            $('#shc-view-sensor-bmp-{$room->getId()}-'+ index +'-alti').text(value.alti);
                                         });
 
                                         //Analog Sensoren
                                         $.each(data.analog, function (index, value) {
 
-                                            $('#shc-view-sensor-analog-'+ index +'-value').text(value.value);
+                                            $('#shc-view-sensor-analog-{$room->getId()}-'+ index +'-value').text(value.value);
                                         });
                                     }
                                 }
                         );
-                        setTimeout("sync()", 5000);
+                        setTimeout("sync()", 2000);
                     }
                     sync();
-                }
         </script>
     </body>
 </html>

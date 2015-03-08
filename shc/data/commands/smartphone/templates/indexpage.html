@@ -35,7 +35,10 @@
 
                     setTimeout("updateWhoIsAtHome()", 15000);
                 }
-                updateWhoIsAtHome();
+                $(document).on('pageinit', '#home', function() {
+
+                    updateWhoIsAtHome();
+                });
             </script>
             {/premission}
             <ul data-role="listview" data-divider-theme="b" data-inset="true">
@@ -50,52 +53,7 @@
                 {/if}
                 {/foreach}
             </ul>
-            {if $user->checkPremission('') || $user->checkPremission('')}
-            <ul data-role="listview" data-divider-theme="b" data-inset="true">
-                <li data-role="list-divider" role="heading">{lang var='index.specialFunctions'}</li>
-                {premission premission='shc.ucp.reboot'}
-                <li data-theme="c">
-                    <a href="#securityDialogReboot" data-rel="dialog">
-                        {lang var='global.button.reboot'}
-                    </a>
-                </li>
-                {/premission}
-                {premission premission='shc.ucp.shutdown'}
-                <li data-theme="c">
-                    <a href="#securityDialogShutdown" data-rel="dialog">
-                        {lang var='global.button.shutdown'}
-                    </a>
-                </li>
-                {/premission}
-            </ul>
-            {/if}
         </div>
     </div>
-    {premission premission='shc.ucp.reboot'}
-    <!-- Sicherheitsabfrage Neustart Dialog -->
-    <div data-role="page" id="securityDialogReboot">
-        <div data-role="header">
-            <h2>{lang var="global.prompt.reboot.title"}</h2>
-        </div>
-        <div data-role="content">
-            {lang var='global.prompt.reboot.text'}
-            <a href="index.php?m&app=shc&action=reboot" data-role="button" data-theme="b">{lang var="global.yes"}</a>
-            <a href="#home" data-role="button">{lang var="global.no"}</a>
-        </div>
-    </div>
-    {/premission}
-    {premission premission='shc.ucp.shutdown'}
-    <!-- Sicherheitsabfrage Neustart Dialog -->
-    <div data-role="page" id="securityDialogShutdown">
-        <div data-role="header">
-            <h2>{lang var="global.prompt.shutdown.title"}</h2>
-        </div>
-        <div data-role="content">
-            {lang var='global.prompt.shutdown.text'}
-            <a href="index.php?m&app=shc&action=shutdown" data-role="button" data-theme="b">{lang var="global.yes"}</a>
-            <a href="#home" data-role="button">{lang var="global.no"}</a>
-        </div>
-    </div>
-    {/premission}
     </body>
 </html>

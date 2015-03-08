@@ -1,5 +1,17 @@
 <div data-theme="b" data-role="header" data-position="fixed">
-    <a href="index.php?app=shc" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">Web</a>
+    {if $user->isUser()}
+        {if $acp|isset == true}
+            {if $acpMenue|isset}
+            <a href="index.php?app=shc&page=index&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.ucp'}</a>
+            {else}
+            <a href="{$backLink}" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.back'}</a>
+            {/if}
+        {else}
+        {premission premission='shc.acp.menu'}
+        <a href="index.php?app=shc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.acpMenu'}</a>
+        {/premission}
+        {/if}
+    {/if}
     <h3>
         {setting name='shc.title' encodeHtml=1}
     </h3>

@@ -56,6 +56,13 @@ class SwitchPointEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'switchpoints';
+
     protected function __construct() {
 
         $this->loadData();
@@ -63,27 +70,24 @@ class SwitchPointEditor {
 
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $switchpoints = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach($switchpoints as $switchPoint) {
 
-        //Daten einlesen
-        foreach ($xml->switchPoint as $switchPoint) {
-
-            //Schaltpunkt konfigurieren
             $sp = new SwitchPoint();
-            $sp->setId((int) $switchPoint->id);
-            $sp->setName((string) $switchPoint->name);
-            $sp->enable(((int) $switchPoint->enabled == 1 ? true : false));
-            $sp->setCommand((int) $switchPoint->command);
-            $sp->setYear(explode(',', (string) $switchPoint->year));
-            $sp->setMonth(explode(',', (string) $switchPoint->month));
-            $sp->setWeek(explode(',', (string) $switchPoint->week));
-            $sp->setDay(explode(',', (string) $switchPoint->day));
-            $sp->setHour(explode(',', (string) $switchPoint->hour));
-            $sp->setMinute(explode(',', (string) $switchPoint->minute));
-            $sp->setLastExecute(DateTime::createFromDatabaseDateTime((string) $switchPoint->lastExecute));
+            $sp->setId((int) $switchPoint['id']);
+            $sp->setName((string) $switchPoint['name']);
+            $sp->enable(((int) $switchPoint['enabled'] == 1 ? true : false));
+            $sp->setCommand((int) $switchPoint['command']);
+            $sp->setYear($switchPoint['year']);
+            $sp->setMonth($switchPoint['month']);
+            $sp->setWeek($switchPoint['week']);
+            $sp->setDay($switchPoint['day']);
+            $sp->setHour($switchPoint['hour']);
+            $sp->setMinute($switchPoint['minute']);
+            $sp->setLastExecute(DateTime::createFromDatabaseDateTime((string) $switchPoint['lastExecute']));
 
             //Bedingungen anhaengen
-            foreach (explode(',', (string) $switchPoint->conditions) as $conditionId) {
+            foreach ($switchPoint['conditions'] as $conditionId) {
 
                 $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
                 if ($condition instanceof Condition) {
@@ -175,6 +179,57 @@ class SwitchPointEditor {
     }
 
     /**
+     * fuegt einem Schaltpunkt eine Bedingung hinzu
+     *
+     * @param  Integer $switchPointId  ID des Schaltpunktes
+     * @param  Integer $conditionId    ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function addConditionToSwitchPoint($switchPointId, $conditionId) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $switchPointId)) {
+
+            $switchPoint = $db->hGet(self::$tableName, $switchPointId);
+            $switchPoint['conditions'][] = $conditionId;
+
+            if($db->hSet(self::$tableName, $switchPointId, $switchPoint) == 0) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * entfernt eine Bedingung aus einem Schaltpunkt
+     *
+     * @param  Integer $switchPointId  ID des Schaltpunktes
+     * @param  Integer $conditionId    ID der Bedingung
+     * @return Boolean
+     * @throws \RWF\Xml\Exception\XmlException
+     */
+    public function removeConditionFromSwitchPoint($switchPointId, $conditionId) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $switchPointId)) {
+
+            $switchPoint = $db->hGet(self::$tableName, $switchPointId);
+            $switchPoint['conditions'] = array_diff($switchPoint['conditions'], array($conditionId));
+
+
+            if($db->hSet(self::$tableName, $switchPointId, $switchPoint) == 0) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * setzt die letzte ausfuehrung auf das uebergebene Datum
      * 
      * @param  Integre $id ID
@@ -184,16 +239,15 @@ class SwitchPointEditor {
      */
     public function editExecutionTime($id, DateTime $time) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->switchPoint as $switchPoint) {
+            $switchPoint = $db->hGet(self::$tableName, $id);
+            $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
 
-            if ((int) $switchPoint->id == $id) {
+            if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
 
-                $switchPoint->lastExecute = $time->getDatabaseDateTime();
-                $xml->save();
                 return true;
             }
         }
@@ -208,8 +262,7 @@ class SwitchPointEditor {
      */
     public function updateSwitchPoints() {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $db = SHC::getDatabase();
 
         //Schaltpunkte suchen
         foreach($this->switchPoints as $switchPoint) {
@@ -219,19 +272,15 @@ class SwitchPointEditor {
 
                 $switchPoint->setLastExecute(DateTime::now(), true);
 
-                //XML Daten update
-                foreach ($xml->switchPoint as $xmlSwitchPoint) {
+                $switchPoint = $db->hGet(self::$tableName, $switchPoint->getId());
+                $switchPoint['lastExecute'] = $switchPoint->getLastExecute()->getDatabaseDateTime();
 
-                    if ((int) $xmlSwitchPoint->id == $switchPoint->getId()) {
+                if($db->hSet(self::$tableName, $switchPoint->getId(), $switchPoint) != 0) {
 
-                        $xmlSwitchPoint->lastExecute = $switchPoint->getLastExecute()->getDatabaseDateTime();
-                    }
+                    return false;
                 }
             }
         }
-
-        //speichern
-        $xml->save();
         return true;
     }
 
@@ -259,30 +308,27 @@ class SwitchPointEditor {
             throw new \Exception('Der Name des Schaltpunktes ist schon vergeben', 1503);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
+        $newSwitchPoint = array(
+            'id' => $index,
+            'name' => $name,
+            'enabled' => ($enabled == true ? true : false),
+            'command' => $command,
+            'conditions' => $conditions,
+            'year' => $year,
+            'month' => $month,
+            'week' => $week,
+            'day' => $day,
+            'hour' => $hour,
+            'minute' => $minute,
+            'lastExecute' => '2000-01-01 00:00:00'
+        );
+        if($db->hSetNx(self::$tableName, $index, $newSwitchPoint) == 0) {
 
-        //Datensatz erstellen
-        $switchPoint = $xml->addChild('switchPoint');
-        $switchPoint->addChild('id', $nextId);
-        $switchPoint->addChild('name', $name);
-        $switchPoint->addChild('enabled', ($enabled == true ? 1 : 0));
-        $switchPoint->addChild('command', $command);
-        $switchPoint->addChild('conditions', implode(',', $conditions));
-        $switchPoint->addChild('year', implode(',', $year));
-        $switchPoint->addChild('month', implode(',', $month));
-        $switchPoint->addChild('week', implode(',', $week));
-        $switchPoint->addChild('day', implode(',', $day));
-        $switchPoint->addChild('hour', implode(',', $hour));
-        $switchPoint->addChild('minute', implode(',', $minute));
-        $switchPoint->addChild('lastExecute', '2000-01-01 00:00:00');
-
-        //Daten Speichern
-        $xml->save();
+            return false;
+        }
         return true;
     }
 
@@ -305,82 +351,80 @@ class SwitchPointEditor {
      */
     public function editSwitchPoint($id, $name = null, $enabled = null, $command = null, array $conditions = null, array $year = null, array $month = null, array $week = null, array $day = null, array $hour = null, array $minute = null) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->switchPoint as $switchPoint) {
+            $switchPoint = $db->hGet(self::$tableName, $id);
 
-            if ((int) $switchPoint->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ((string) $switchPoint['name'] != $name && !$this->isSwitchPointNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ((string) $switchPoint->name != $name && !$this->isSwitchPointNameAvailable($name)) {
-
-                        throw new \Exception('Der Name des Schaltpunktes ist schon vergeben', 1503);
-                    }
-
-                    $switchPoint->name = $name;
+                    throw new \Exception('Der Name des Schaltpunktes ist schon vergeben', 1503);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $switchPoint['name'] = $name;
+            }
 
-                    $switchPoint->enabled = ($enabled == true ? 1 : 0);
-                }
-                
-                //Befehl
-                if($command !== null) {
-                    
-                    $switchPoint->command = $command;
-                }
-                
-                //Bedingungen
-                if($conditions !== null) {
-                    
-                    $switchPoint->conditions = implode(',', $conditions);
-                }
-                
-                //Jahr
-                if($year !== null) {
-                    
-                    $switchPoint->year = implode(',', $year);
-                }
-                
-                //Monat
-                if($month !== null) {
-                    
-                    $switchPoint->month = implode(',', $month);
-                }
-                
-                //Kalenderwoche
-                if($week !== null) {
-                    
-                    $switchPoint->week = implode(',', $week);
-                }
-                
-                //Tag
-                if($day !== null) {
-                    
-                    $switchPoint->day = implode(',', $day);
-                }
-                
-                //Stunde
-                if($hour !== null) {
-                    
-                    $switchPoint->hour = implode(',', $hour);
-                }
-                
-                //Minute
-                if($minute !== null) {
-                    
-                    $switchPoint->minute = implode(',', $minute);
-                }
-                
-                //Daten Speichern
-                $xml->save();
+            //Aktiv
+            if ($enabled !== null) {
+
+                $switchPoint['enabled'] = ($enabled == true ? true : false);
+            }
+
+            //Befehl
+            if($command !== null) {
+
+                $switchPoint['command'] = $command;
+            }
+
+            //Bedingungen
+            if($conditions !== null) {
+
+                $switchPoint['conditions'] = $conditions;
+            }
+
+            //Jahr
+            if($year !== null) {
+
+                $switchPoint['year'] = $year;
+            }
+
+            //Monat
+            if($month !== null) {
+
+                $switchPoint['month'] = $month;
+            }
+
+            //Kalenderwoche
+            if($week !== null) {
+
+                $switchPoint['week'] = $week;
+            }
+
+            //Tag
+            if($day !== null) {
+
+                $switchPoint['day'] = $day;
+            }
+
+            //Stunde
+            if($hour !== null) {
+
+                $switchPoint['hour'] = $hour;
+            }
+
+            //Minute
+            if($minute !== null) {
+
+                $switchPoint['minute'] = $minute;
+            }
+
+            if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+
                 return true;
             }
         }
@@ -396,19 +440,12 @@ class SwitchPointEditor {
      */
     public function removeSwitchPoint($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHPOINTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Bedingung suchen
-        for ($i = 0; $i < count($xml->switchPoint); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            if ((int) $xml->switchPoint[$i]->id == $id) {
-
-                //Raum loeschen
-                unset($xml->switchPoint[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }

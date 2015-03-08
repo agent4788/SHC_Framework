@@ -13,7 +13,10 @@ use SHC\Form\FormElements\ConditionTypeChooser;
 use SHC\Form\Forms\DateConditionForm;
 use SHC\Form\Forms\DayOfWeekConditionForm;
 use SHC\Form\Forms\FileExistsConditionForm;
+use SHC\Form\Forms\HolidayConditionForm;
 use SHC\Form\Forms\HumidityConditionForm;
+use SHC\Form\Forms\InputHighConditionForm;
+use SHC\Form\Forms\InputLowConditionForm;
 use SHC\Form\Forms\LightIntensityConditionForm;
 use SHC\Form\Forms\MoistureConditionForm;
 use SHC\Form\Forms\NobodyAtHomeConditionForm;
@@ -682,6 +685,141 @@ class AddConditionFormAjax extends AjaxCommand {
                         try {
 
                             ConditionEditor::getInstance()->addFileExistsCondition($name, $path, $invert, $wait, $delete, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        $tpl->assign('message', $message);
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 17:
+
+                    //Feiertage
+                    $conditionForm = new HolidayConditionForm();
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $holidays = $conditionForm->getElementByName('holidays')->getHolidays();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addHolidaysCondition($name, $holidays, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        $tpl->assign('message', $message);
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 18:
+
+                    //Eingang "1"
+                    $conditionForm = new InputHighConditionForm();
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addInputHighCondition($name, $inputs, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        $tpl->assign('message', $message);
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 19:
+
+                    //Eingang "0"
+                    $conditionForm = new InputLowConditionForm();
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addInputLowCondition($name, $inputs, $enabled);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
                         } catch(\Exception $e) {

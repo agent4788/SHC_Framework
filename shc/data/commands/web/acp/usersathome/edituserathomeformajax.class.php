@@ -70,7 +70,7 @@ class EditUserAtHomeFormAjax extends AjaxCommand {
             $message = new Message();
             try {
 
-                UserAtHomeEditor::getInstance()->editUseratHome($userAtHomeId, $name, $ip, $enabled, $visibility);
+                UserAtHomeEditor::getInstance()->editUserAtHome($userAtHomeId, $name, $ip, $enabled, $visibility);
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.success.editUser'));
             } catch(\Exception $e) {

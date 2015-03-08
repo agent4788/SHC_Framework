@@ -2,9 +2,9 @@
     <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
     <span class="shc-icon {$switchable->getIcon()}"></span>
     <div class="shc-contentbox-body-row-content">
-        <div id="shc-view-switchable-set-{$switchable->getId()}">
-            <button id="shc-view-switchable-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.on'}</button>
-            <button id="shc-view-switchable-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.off'}</button>
+        <div id="shc-view-switchable-set-{$roomId}-{$switchable->getId()}">
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.on'}</button>
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.off'}</button>
         </div>
     </div>
 </div>
@@ -12,14 +12,14 @@
     $(function () {
 
         //Buttons Initialisieren
-        $('#shc-view-switchable-set-{$switchable->getId()}').buttonset();
+        $('#shc-view-switchable-set-{$roomId}-{$switchable->getId()}').buttonset();
         {if $switchable->getState() == 1}
-        $('#shc-view-switchable-{$switchable->getId()}-on').button({ icons: { primary: 'ui-icon-check' } });
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button({ icons: { primary: 'ui-icon-check' } });
         {else}
-        $('#shc-view-switchable-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
         {/if}
 
-            $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
 
                 //An Button gedrueckt
                 $.getJSON(
@@ -28,8 +28,8 @@
 
                             if (data.success == true) {
 
-                                $("#shc-view-switchable-{$switchable->getId()}-off").button({ icons: { primary: "" } });
-                                $("#shc-view-switchable-{$switchable->getId()}-on").button({ icons: { primary: "ui-icon-check" } });
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").button({ icons: { primary: "" } });
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").button({ icons: { primary: "ui-icon-check" } });
                             } else {
 
                                 $('#shc-view-errorFrame').text(data.message);
@@ -47,7 +47,7 @@
                 );
                 return false;
             });
-            $('#shc-view-switchable-{$switchable->getId()}-off').click(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').click(function() {
 
                 //Aus Button gedrueckt
                 $.getJSON(
@@ -56,8 +56,8 @@
 
                             if (data.success == true) {
 
-                                $("#shc-view-switchable-{$switchable->getId()}-on").button({ icons: { primary: "" } });
-                                $("#shc-view-switchable-{$switchable->getId()}-off").button({ icons: { primary: "ui-icon-check" } });
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").button({ icons: { primary: "" } });
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").button({ icons: { primary: "ui-icon-check" } });
                             } else {
 
                                 $('#shc-view-errorFrame').text(data.message);
@@ -76,9 +76,9 @@
                 return false;
             });
         
-        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
 
-            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
         });
     });
 </script>

@@ -62,7 +62,7 @@ class ViewHelperBox {
      * setzt die ID der Box
      * 
      * @param  Integer $boxId ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setBoxId($boxId) {
         
@@ -106,7 +106,7 @@ class ViewHelperBox {
      * setzt die Raum ID
      * 
      * @param  Integer $roomId ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setRoomId($roomId) {
         
@@ -128,7 +128,7 @@ class ViewHelperBox {
      * setzt die Sortierungs ID der Box
      * 
      * @param  Integer $boxOrderId Sortierungs ID
-     * @return \SHC\View\RoomViewHelperBox
+     * @return \SHC\View\Room\ViewHelperBox
      */
     public function setBoxOrderId($boxOrderId) {
         
@@ -154,7 +154,7 @@ class ViewHelperBox {
      */
     public function addReadable(Readable $readable) {
         
-        $this->elements[$readable->getOrderId()] = $readable;
+        $this->elements[$readable->getOrderId($this->roomId)] = $readable;
         return $this;
     }
     
@@ -166,7 +166,7 @@ class ViewHelperBox {
      */
     public function removeReadable(Readable $readable) {
         
-        $this->elements = array_diff($$this->elements, array($readable));
+        $this->elements = array_diff($this->elements, array($readable));
         return $this;
     }
     
@@ -177,8 +177,8 @@ class ViewHelperBox {
      * @return \SHC\View\Room\ViewHelperBox
      */
     public function addSwitchable(Switchable $switchable) {
-        
-        $this->elements[$switchable->getOrderId()] = $switchable;
+
+        $this->elements[$switchable->getOrderId($this->roomId)] = $switchable;
         return $this;
     }
     
@@ -190,7 +190,7 @@ class ViewHelperBox {
      */
     public function removeSwitchable(Switchable $switchable) {
         
-        $this->elements = array_diff($$this->elements, array($switchable));
+        $this->elements = array_diff($this->elements, array($switchable));
         return $this;
     }
 
@@ -201,8 +201,8 @@ class ViewHelperBox {
      * @return \SHC\View\Room\ViewHelperBox
      */
     public function addSensor(Sensor $sensor) {
-        
-        $this->elements[$sensor->getOrderId()] = $sensor;
+
+        $this->elements[$sensor->getOrderId($this->roomId)] = $sensor;
         return $this;
     }
     
@@ -214,7 +214,7 @@ class ViewHelperBox {
      */
     public function removeSensor(Sensor $sensor) {
         
-        $this->elements = array_diff($$this->elements, array($sensor));
+        $this->elements = array_diff($this->elements, array($sensor));
         return $this;
     }
 
@@ -278,13 +278,13 @@ class ViewHelperBox {
             
             if($element instanceof Readable) {
                 
-                $html .= ReadableViewHelper::showReadable($element);
+                $html .= ReadableViewHelper::showReadable($this->roomId, $element);
             } elseif($element instanceof Switchable) {
-                
-                $html .= SwitchableViewHelper::showSwitchable($element);
+
+                $html .= SwitchableViewHelper::showSwitchable($this->roomId, $element);
             } elseif($element instanceof Sensor) {
                 
-                $html .= SensorViewHelper::showSensor($element);
+                $html .= SensorViewHelper::showSensor($this->roomId, $element);
             }
         }
         $html .= $this->fetchEndTag();
@@ -334,5 +334,39 @@ class ViewHelperBox {
         }
         return $html;
     }
-    
+
+    /**
+     * exportiert das Objekt als Array
+     *
+     * @return Array
+     */
+    public function toArray() {
+
+        $data = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'orderId' => $this->orderId,
+            'roomId' => $this->roomId,
+        );
+
+        foreach($this->elements as $orderId => $element) {
+
+            $type = 0;
+            if($element instanceof Readable) {
+
+                $type = 1;
+            } elseif($element instanceof Switchable) {
+
+                $type = 2;
+            } elseif($element instanceof Sensor) {
+
+                $type = 4;
+            }
+
+            $data['elements'][] = array(
+                'type' => $type,
+                'id' => $element->getId()
+            );
+        }
+    }
 }

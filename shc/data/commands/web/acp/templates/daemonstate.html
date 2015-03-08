@@ -52,30 +52,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.arduinoSensorReciver'}</td>
-                        <td>
-                            {if $arduinoSensorReciverState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $arduinoSensorReciverState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.sensorDataReciver'}</td>
-                        <td>
-                            {if $sensorDataReciverState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $sensorDataReciverState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
                         <td>{lang var='acp.daemonState.box.deamon.sensorDataTransmitter'}</td>
                         <td>
                             {if $sensorDataTransmitterState == 1}
@@ -111,7 +87,7 @@
         $('#shc-view-button-reload').unbind( "click" );
         $('#shc-view-button-reload').click(function() {
             $.get("index.php?app=shc&ajax=daemonstate&hash=" + Math.floor(Math.random() * 11), function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
                 onLoad();
             });
         });

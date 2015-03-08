@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.conditionManagement.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    {foreach from=$conditionList item='condition'}
+                    <li>
+                        <a href="index.php?app=shc&m&page=editconditionform&id={$condition->getId()}">
+                            <h2>{if $condition->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$condition->getName()}{if $condition->isEnabled() == false}</span>{/if}</h2>
+                            <p>
+                                {lang var="acp.conditionManagement.conditionList.table.head.type"}:
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.HumidityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityLowerThanCondition'}{lang var="acp.conditionManagement.condition.HumidityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityLowerThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.MoistureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureLowerThanCondition'}{lang var="acp.conditionManagement.condition.MoistureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureLowerThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\NobodyAtHomeCondition'}{lang var="acp.conditionManagement.condition.NobodyAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DateCondition'}{lang var="acp.conditionManagement.condition.DateCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DayOfWeekCondition'}{lang var="acp.conditionManagement.condition.DayOfWeekCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TimeOfDayCondition'}{lang var="acp.conditionManagement.condition.TimeOfDayCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunriseSunsetCondition'}{lang var="acp.conditionManagement.condition.SunriseSunsetCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunsetSunriseCondition'}{lang var="acp.conditionManagement.condition.SunsetSunriseCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FileExistsCondition'}{lang var="acp.conditionManagement.condition.FileExistsCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
+                            </p>
+                        </a>
+                        <a href="#delete-{$condition->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
+                    </li>
+                    {foreachelse}
+                    <li>
+                        <h2>{lang var='acpindex.emptyList'}</h2>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="index.php?app=shc&m&page=addconditionform" data-icon="plus">{lang var='acp.conditionManagement.button.addCondition'}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {foreach from=$conditionList item='condition'}
+        <div data-role="page" id="delete-{$condition->getId()}">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.conditionManagement.prompt.deleteCondition.title"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p>{lang var="acp.conditionManagement.prompt.deleteCondition"}</p>
+                <a href="index.php?app=shc&m&action=deletecondition&id={$condition->getId()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$condition->getId()}">{lang var="global.no"}</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('#delete-close-{$condition->getId()}').click(function() {
+                $('.ui-dialog').dialog('close');
+            });
+        </script>
+        {/foreach}
+    </body>
+</html>

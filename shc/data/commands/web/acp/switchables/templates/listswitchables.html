@@ -31,11 +31,13 @@
                                 <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                                 <td>
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                    {instanceof element=$element class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
                                 </td>
                                 <td>
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}
@@ -46,7 +48,7 @@
                                     {/instanceof}
                                     {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
                                     {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
-                                    <input type="hidden" name="switchableOrder[{$element->getId()}]" value="{$element->getOrderId()}" />
+                                    <input type="hidden" name="switchableOrder[{$room->getId()}][{$element->getId()}]" value="{$element->getOrderId($room->getId())}" />
                                 </td>
                             </tr>
                             {/instanceof}
@@ -56,13 +58,12 @@
                             <tr>
                                 <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                                 <td>
-                                    {instanceof element=$element class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                                 </td>
                                 <td>
                                     {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
                                     {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
-                                    <input type="hidden" name="switchableOrder[{$element->getId()}]" value="{$element->getOrderId()}" />
+                                    <input type="hidden" name="switchableOrder[{$room->getId()}][{$element->getId()}]" value="{$element->getOrderId($room->getId())}" />
                                 </td>
                             </tr>
                             {/instanceof}
@@ -82,7 +83,7 @@
                                 <td>
                                     {editlink link='index.php?app=shc&ajax=editsensorform&id=' id=$element->getId()}
                                     {deletelink link='index.php?app=shc&ajax=deletesensor&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
-                                    <input type="hidden" name="sensorOrder[{$element->getId()}]" value="{$element->getOrderId()}" />
+                                    <input type="hidden" name="sensorOrder[{$room->getId()}][{$element->getId()}]" value="{$element->getOrderId($room->getId())}" />
                                 </td>
                             </tr>
                             {/instanceof}
@@ -113,11 +114,13 @@
                                                     <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                     <td>
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
+                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
+                                                        {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
                                                     </td>
                                                     <td>
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}
@@ -128,7 +131,7 @@
                                                         {/instanceof}
                                                         {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
                                                         {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
-                                                        <input type="hidden" name="switchableOrder[{$boxElement->getId()}]" value="{$boxElement->getOrderId()}" />
+                                                        <input type="hidden" name="switchableOrder[{$room->getId()}][{$boxElement->getId()}]" value="{$boxElement->getOrderId($room->getId())}" />
                                                     </td>
                                                 </tr>
                                                 {/instanceof}
@@ -138,13 +141,12 @@
                                                 <tr>
                                                     <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                     <td>
-                                                        {instanceof element=$boxElement class='\SHC\Switchable\Readables\ArduinoInput'}{lang var="acp.switchableManagement.element.arduinoInput"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                                                     </td>
                                                     <td>
                                                         {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$boxElement->getId()}
                                                         {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
-                                                        <input type="hidden" name="switchableOrder[{$boxElement->getId()}]" value="{$boxElement->getOrderId()}" />
+                                                        <input type="hidden" name="switchableOrder[{$room->getId()}][{$boxElement->getId()}]" value="{$boxElement->getOrderId($room->getId())}" />
                                                     </td>
                                                 </tr>
                                                 {/instanceof}
@@ -164,7 +166,7 @@
                                                     <td>
                                                         {editlink link='index.php?app=shc&ajax=editsensorform&id=' id=$boxElement->getId()}
                                                         {deletelink link='index.php?app=shc&ajax=deletesensor&id=' id=$boxElement->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
-                                                        <input type="hidden" name="sensorOrder[{$boxElement->getId()}]" value="{$boxElement->getOrderId()}" />
+                                                        <input type="hidden" name="sensorOrder[{$room->getId()}][{$boxElement->getId()}]" value="{$boxElement->getOrderId($room->getId())}" />
                                                     </td>
                                                 </tr>
                                                 {/instanceof}
@@ -297,7 +299,7 @@
 
                request.done(function (response, textStatus, jqXHR) {
                     //Antwort vom Server
-                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(response);
+                    $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(response);
                 });
 
                 request.always(function () {

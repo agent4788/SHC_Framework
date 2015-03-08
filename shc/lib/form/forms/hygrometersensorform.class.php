@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\RoomChooser;
@@ -39,12 +40,12 @@ class HygrometerSensorForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($sensor instanceof Hygrometer && $sensor->getRoom() instanceof Room ? $sensor->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($sensor instanceof Hygrometer && count($sensor->getRooms()) > 0 ? $sensor->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Sichtbarkeit
         $visibility = new OnOffOption('visibility', ($sensor instanceof Hygrometer ? $sensor->isVisible() : true));
@@ -61,6 +62,13 @@ class HygrometerSensorForm extends DefaultHtmlForm {
         $valueVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility.description'));
         $valueVisibility->requiredField(true);
         $this->addFormElement($valueVisibility);
+
+        //Werte Offset
+        $valueOffset = new IntegerInputField('valOffset', ($sensor instanceof Hygrometer ? $sensor->getOffset() : 0.0), array('min' => -50, 'max' => 50));
+        $valueOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueOffset'));
+        $valueOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $valueOffset->requiredField(true);
+        $this->addFormElement($valueOffset);
 
         //Daten Aufzeichnung
         $dataRecording = new OnOffOption('dataRecording', ($sensor instanceof Hygrometer ? $sensor->isDataRecordingEnabled() : false));

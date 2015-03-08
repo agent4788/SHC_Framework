@@ -3,11 +3,9 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Core\RWF;
 use RWF\Date\DateTime;
-use RWF\IO\UDPSocket;
-use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
+use SHC\Core\SHC;
 
 /**
  * Liest Sensordaten vom Arduino aus
@@ -21,27 +19,34 @@ use RWF\Util\FileUtil;
 class SensorDataTransmitter {
 
     /**
-     * verbindet sich mit dem Sensor Reciver
-     * 
-     * @return \RWF\IO\Socket
+     * sendet eine HTTP Anfrage
+     * @param  Array   $getParameter HTTP GET Parameter
+     * @return Boolean
      */
-    protected function connect() {
+    protected function sendHttpRequest(array $getParameter) {
 
-        //Vebindung zum RPi Reader Server aufbauen
-        $sensorReciver = new UDPSocket(RWF::getSetting('shc.sensorTransmitter.ip'), RWF::getSetting('shc.sensorTransmitter.port'), 2);
-        try {
+        //Get Parameter vorbereiten
+        $get = '';
+        foreach($getParameter as $name => $value) {
 
-            $sensorReciver->open();
-        } catch (\Exception $e) {
-
-            $cli = new CliUtil();
-            $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('shc.sensorTransmitter.ip') . ':' . RWF::getSetting('shc.sensorTransmitter.port') . ') konnte nicht hergestellt werden', 'red');
-
-            //30 Sekunden warten dann wieder versuchen
-            sleep(30);
+            $get .= '&' . rawurlencode($name) .'='. rawurlencode($value);
         }
 
-        return $sensorReciver;
+        //HTTP Anfrage
+        $http_options = stream_context_create(array(
+            'http' => array(
+                'method'  => 'GET',
+                'user_agent' => "SHC Framework Sensor Transmitter Version ". SHC::VERSION,
+                'max_redirects' => 3
+            )
+        ));
+        $result = file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
+
+        if($result == 1) {
+
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -70,13 +75,10 @@ class SensorDataTransmitter {
 
                         //Datenpaket vorbereiten
                         $data = array(
-                            'succsess' => true,
-                            'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                            'sensorTypeId' => 1,
-                            'sensorId' => $file,
-                            'sensorValues' => array(
-                                'temp' => $temp
-                            )
+                            'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                            'type' => 1,
+                            'sid' => $file,
+                            'v1' => $temp
                         );
 
                         //Debug Ausgabe
@@ -85,11 +87,12 @@ class SensorDataTransmitter {
                             var_dump($data);
                         }
 
-                        //Daten an den Sensor Reciver senden
-                        $sensorReciver = $this->connect();
-                        $sensorReciver->write(base64_encode(json_encode($data)));
-                        $sensorReciver->close();
-                        $sensorReciver = null;
+                        //Daten senden
+                        if(!$this->sendHttpRequest($data)) {
+
+                            //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
+                            sleep(30);
+                        }
                     }
                 }
             }
@@ -104,14 +107,11 @@ class SensorDataTransmitter {
 
                     //Datenpaket vorbereiten
                     $data = array(
-                        'succsess' => true,
-                        'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                        'sensorTypeId' => 2,
-                        'sensorId' => $dht['id'],
-                        'sensorValues' => array(
-                            'temp' => $values['temp'],
-                            'hum' => $values['hum']
-                        )
+                        'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                        'type' => 2,
+                        'sid' => $dht['id'],
+                        'v1' => $values['temp'],
+                        'v2' => $values['hum']
                     );
 
                     //Debug Ausgabe
@@ -120,11 +120,12 @@ class SensorDataTransmitter {
                         var_dump($data);
                     }
 
-                    //Daten an den Sensor Reciver senden
-                    $sensorReciver = $this->connect();
-                    $sensorReciver->write(base64_encode(json_encode($data)));
-                    $sensorReciver->close();
-                    $sensorReciver = null;
+                    //Daten senden
+                    if(!$this->sendHttpRequest($data)) {
+
+                        //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
+                        sleep(30);
+                    }
                 }
             }
 
@@ -135,15 +136,12 @@ class SensorDataTransmitter {
 
                 //Datenpaket vorbereiten
                 $data = array(
-                    'succsess' => true,
-                    'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                    'sensorTypeId' => 3,
-                    'sensorId' => SensorEditor::getInstance()->getBMPsensorId(),
-                    'sensorValues' => array(
-                        'temp' => $values['temp'],
-                        'press' => $values['press'],
-                        'alti' => $values['alti']
-                    )
+                    'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                    'type' => 3,
+                    'sid' => SensorEditor::getInstance()->getBMPsensorId(),
+                    'v1' => $values['temp'],
+                    'v2' => $values['press'],
+                    'v3' => $values['alti']
                 );
 
                 //Debug Ausgabe
@@ -152,11 +150,12 @@ class SensorDataTransmitter {
                     var_dump($data);
                 }
 
-                //Daten an den Sensor Reciver senden
-                $sensorReciver = $this->connect();
-                $sensorReciver->write(base64_encode(json_encode($data)));
-                $sensorReciver->close();
-                $sensorReciver = null;
+                //Daten senden
+                if(!$this->sendHttpRequest($data)) {
+
+                    //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
+                    sleep(30);
+                }
             }
 
             //MCP3008 oder MCP3208 fuer die Analogsensoren
@@ -177,7 +176,7 @@ class SensorDataTransmitter {
             }
 
             //wartezeit bis zum neachsten Sendevorgang
-            sleep(10);
+            sleep(30);
         }
     }
 

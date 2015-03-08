@@ -10,6 +10,7 @@ use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\Select;
 use RWF\Form\FormElements\TextField;
 use RWF\Runtime\RaspberryPi;
+use SHC\Arduino\Arduino;
 use SHC\Form\FormElements\IpAddressInputField;
 use SHC\SwitchServer\SwitchServer;
 
@@ -66,8 +67,18 @@ class SwitchServerForm extends DefaultHtmlForm {
         $model = new Select('model');
         $model->setValues(array(
             RaspberryPi::MODEL_A => array('Model A', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_A ? 1 : 0)),
+            RaspberryPi::MODEL_A_PLUS => array('Model A+', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_A_PLUS ? 1 : 0)),
             RaspberryPi::MODEL_B => array('Model B', (($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_B) || !$switchServer instanceof SwitchServer ? 1 : 0)),
-            RaspberryPi::MODEL_B_PLUS => array('Model B+', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_B_PLUS ? 1 : 0))
+            RaspberryPi::MODEL_B_PLUS => array('Model B+', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_B_PLUS ? 1 : 0)),
+            RaspberryPi::MODEL_A_PLUS => array('Model A+', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_A_PLUS ? 1 : 0)),
+            RaspberryPi::MODEL_COMPUTE_MODULE => array('Compute Modul', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_COMPUTE_MODULE ? 1 : 0)),
+            RaspberryPi::MODEL_COMPUTE_MODULE => array('Compute Modul', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_COMPUTE_MODULE ? 1 : 0)),
+            RaspberryPi::MODEL_2_B => array('Model 2 B', ($switchServer instanceof SwitchServer && $switchServer->getModel() == RaspberryPi::MODEL_2_B ? 1 : 0)),
+            Arduino::PRO_MINI => array('Arduino Pro Mini', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::PRO_MINI ? 1 : 0)),
+            Arduino::NANO => array('Arduino Nano', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::NANO ? 1 : 0)),
+            Arduino::UNO => array('Arduino Uno', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::UNO ? 1 : 0)),
+            Arduino::MEGA => array('Arduino Mega', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::MEGA ? 1 : 0)),
+            Arduino::DUE => array('Arduino Due', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::DUE ? 1 : 0))
         ));
         $model->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.model'));
         $model->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.model.description'));

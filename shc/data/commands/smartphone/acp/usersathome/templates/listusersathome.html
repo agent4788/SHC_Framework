@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.usersathomeManagement.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    {foreach from=$userAtHomeList item='userAtHome'}
+                    <li>
+                        <a href="index.php?app=shc&m&page=edituserathomeform&id={$userAtHome->getId()}">
+                            <h2>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</h2>
+                            <p>{lang var="acp.usersathomeManagement.userlist.table.head.ip"}: {#$userAtHome->getIpAddress()}</p>
+                        </a>
+                        <a href="#delete-{$userAtHome->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
+                    </li>
+                    {foreachelse}
+                    <li>
+                        <h2>{lang var='acpindex.emptyList'}</h2>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="index.php?app=shc&m&page=adduserathomeform" data-icon="plus">{lang var='acp.usersathomeManagement.button.addUser'}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {foreach from=$userAtHomeList item='userAtHome'}
+        <div data-role="page" id="delete-{$userAtHome->getId()}">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.usersathomeManagement.prompt.deleteUser.title"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p>{lang var="acp.usersathomeManagement.prompt.deleteUser"}</p>
+                <a href="index.php?app=shc&m&action=deleteUserAtHome&id={$userAtHome->getId()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$userAtHome->getId()}">{lang var="global.no"}</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('#delete-close-{$userAtHome->getId()}').click(function() {
+                $('.ui-dialog').dialog('close');
+            });
+        </script>
+        {/foreach}
+    </body>
+</html>

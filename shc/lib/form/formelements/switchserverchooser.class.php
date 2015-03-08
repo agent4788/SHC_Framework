@@ -7,6 +7,7 @@ use RWF\Form\FormElements\Select;
 use RWF\Runtime\RaspberryPi;
 use RWF\User\User;
 use RWF\User\UserEditor;
+use SHC\Arduino\Arduino;
 use SHC\SwitchServer\SwitchServerEditor;
 
 
@@ -63,12 +64,36 @@ class SwitchServerChooser extends Select {
             if($switchServer->getModel() == RaspberryPi::MODEL_A) {
 
                 $model = ' (Model A)';
-            } elseif($switchServer->getModel() == RaspberryPi::MODEL_B) {
+            } elseif($switchServer->getModel() == RaspberryPi::MODEL_A_PLUS) {
+
+                $model = ' (Model A+)';
+            }  elseif($switchServer->getModel() == RaspberryPi::MODEL_B) {
 
                 $model = ' (Model B)';
             } elseif($switchServer->getModel() == RaspberryPi::MODEL_B_PLUS) {
 
                 $model = ' (Model B+)';
+            } elseif($switchServer->getModel() == RaspberryPi::MODEL_COMPUTE_MODULE) {
+
+                $model = ' (Compute Modul)';
+            } elseif($switchServer->getModel() == RaspberryPi::MODEL_2_B) {
+
+                $model = ' (Model 2 B)';
+            } elseif($switchServer->getModel() == Arduino::PRO_MINI) {
+
+                $model = ' (Arduino Pro Mini)';
+            } elseif($switchServer->getModel() == Arduino::NANO) {
+
+                $model = ' (Arduino Nano)';
+            } elseif($switchServer->getModel() == Arduino::UNO) {
+
+                $model = ' (Arduino Uno)';
+            } elseif($switchServer->getModel() == Arduino::MEGA) {
+
+                $model = ' (Arduino Mega)';
+            } elseif($switchServer->getModel() == Arduino::DUE) {
+
+                $model = ' (Arduino DUE)';
             }
             if($filter & self::FILTER_ALL) {
 

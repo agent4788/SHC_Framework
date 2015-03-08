@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Request\Cookie;
 use RWF\Util\FileUtil;
 use RWF\Util\DataTypeUtil;
+use RWF\Util\Message;
 use RWF\Util\String;
 
 /**

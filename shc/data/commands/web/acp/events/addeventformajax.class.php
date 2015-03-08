@@ -73,7 +73,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $sensors = $eventForm->getElementByName('sensors')->getValues();
                         $limit = $eventForm->getElementByName('limit')->getValue();
                         $interval = $eventForm->getElementByName('interval')->getValue();
@@ -84,10 +84,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_HUMIDITY_CLIMB) {
 
-                                EventEditor::getInstance()->addHumidityClimbOverEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addHumidityClimbOverEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } elseif ($type == EventEditor::EVENT_HUMIDITY_FALLS) {
 
-                                EventEditor::getInstance()->addHumidityFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addHumidityFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -133,7 +133,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $inputs = $eventForm->getElementByName('inputs')->getValues();
                         $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -143,10 +143,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_INPUT_HIGH) {
 
-                                EventEditor::getInstance()->addInputHighEvent($name, $enabled, $inputs, $interval, $conditions);
+                                EventEditor::getInstance()->addInputHighEvent($name, $enabled, $inputs, $interval, array());
                             } elseif ($type == EventEditor::EVENT_INPUT_LOW) {
 
-                                EventEditor::getInstance()->addInputLowEvent($name, $enabled, $inputs, $interval, $conditions);
+                                EventEditor::getInstance()->addInputLowEvent($name, $enabled, $inputs, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -192,7 +192,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $sensors = $eventForm->getElementByName('sensors')->getValues();
                         $limit = $eventForm->getElementByName('limit')->getValue();
                         $interval = $eventForm->getElementByName('interval')->getValue();
@@ -203,10 +203,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_LIGHTINTENSITY_CLIMB) {
 
-                                EventEditor::getInstance()->addLightIntensityClimbOverEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addLightIntensityClimbOverEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } elseif ($type == EventEditor::EVENT_LIGHTINTENSITY_FALLS) {
 
-                                EventEditor::getInstance()->addLightIntensityFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addLightIntensityFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -252,7 +252,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $sensors = $eventForm->getElementByName('sensors')->getValues();
                         $limit = $eventForm->getElementByName('limit')->getValue();
                         $interval = $eventForm->getElementByName('interval')->getValue();
@@ -263,10 +263,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_MOISTURE_CLIMB) {
 
-                                EventEditor::getInstance()->addMoistureClimbOverEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addMoistureClimbOverEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } elseif ($type == EventEditor::EVENT_MOISTURE_FALLS) {
 
-                                EventEditor::getInstance()->addMoistureFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addMoistureFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -312,7 +312,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $sensors = $eventForm->getElementByName('sensors')->getValues();
                         $limit = $eventForm->getElementByName('limit')->getValue();
                         $interval = $eventForm->getElementByName('interval')->getValue();
@@ -323,10 +323,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_TEMPERATURE_CLIMB) {
 
-                                EventEditor::getInstance()->addTemperatureClimbOverEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addTemperatureClimbOverEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } elseif ($type == EventEditor::EVENT_TEMPERATURE_FALLS) {
 
-                                EventEditor::getInstance()->addTemperatureFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, $conditions);
+                                EventEditor::getInstance()->addTemperatureFallsBelowEvent($name, $enabled, $sensors, $limit, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -372,7 +372,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
                         $users = $eventForm->getElementByName('users')->getValues();
                         $interval = $eventForm->getElementByName('interval')->getValue();
 
@@ -382,10 +382,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_USER_COMES_HOME) {
 
-                                EventEditor::getInstance()->addUserComesHomeEvent($name, $enabled, $users, $interval, $conditions);
+                                EventEditor::getInstance()->addUserComesHomeEvent($name, $enabled, $users, $interval, array());
                             } elseif ($type == EventEditor::EVENT_USER_LEAVE_HOME) {
 
-                                EventEditor::getInstance()->addUserLeavesHomeEvent($name, $enabled, $users, $interval, $conditions);
+                                EventEditor::getInstance()->addUserLeavesHomeEvent($name, $enabled, $users, $interval, array());
                             } else {
 
                                 //Typfehler
@@ -431,7 +431,7 @@ class AddEventFormAjax extends AjaxCommand {
                         //Werte vorbereiten
                         $name = $eventForm->getElementByName('name')->getValue();
                         $enabled = $eventForm->getElementByName('enabled')->getValue();
-                        $conditions = $eventForm->getElementByName('conditions')->getValues();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
 
                         //speichern
                         $message = new Message();
@@ -439,10 +439,10 @@ class AddEventFormAjax extends AjaxCommand {
 
                             if ($type == EventEditor::EVENT_SUNRISE) {
 
-                                EventEditor::getInstance()->addSunriseEvent($name, $enabled, $conditions);
+                                EventEditor::getInstance()->addSunriseEvent($name, $enabled, array());
                             } elseif ($type == EventEditor::EVENT_SUNSET) {
 
-                                EventEditor::getInstance()->addSunsetEvent($name, $enabled, $conditions);
+                                EventEditor::getInstance()->addSunsetEvent($name, $enabled, array());
                             } else {
 
                                 //Typfehler

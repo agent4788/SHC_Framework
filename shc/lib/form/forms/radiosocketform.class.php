@@ -51,12 +51,12 @@ class RadiosocketForm extends DefaultHtmlForm {
         $icon->requiredField(true);
         $this->addFormElement($icon);
 
-        //Raum
-        $room = new RoomChooser('room', ($radioSocket instanceof RadioSocket && $radioSocket->getRoom() instanceof Room ? $radioSocket->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($radioSocket instanceof RadioSocket && count($radioSocket->getRooms()) > 0 ? $radioSocket->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Protokoll
         $protocol = new ProtocolChooser('protocol', ($radioSocket instanceof RadioSocket ? $radioSocket->getProtocol() : null));
@@ -96,13 +96,6 @@ class RadiosocketForm extends DefaultHtmlForm {
         $continuous->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.continuous.description'));
         $continuous->requiredField(true);
         $this->addFormElement($continuous);
-
-        //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($radioSocket instanceof RadioSocket ? $radioSocket->listSwitchPoints() : array()));
-        $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.switchPoints'));
-        $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.switchPoints.description'));
-        $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($radioSocket instanceof RadioSocket ? $radioSocket->isEnabled() : true));

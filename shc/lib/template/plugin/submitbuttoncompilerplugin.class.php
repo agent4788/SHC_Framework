@@ -60,7 +60,7 @@ class SubmitButtonCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '          data: serializedData';
         $html .= '      });';
         $html .= '      request.done(function(response, textStatus, jqXHR) {';
-        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(response);';
+        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-inner\').html(response);';
         $html .= '      });';
         $html .= '      request.always(function() {';
         $html .= '          $inputs.prop("disabled", false);';

@@ -124,7 +124,7 @@ class SocketServer {
     /**
      * verarbeitet ankommende Verbindungen und gibt die Verbindungsobjekte zurueck
      * 
-     * @return io\Socket
+     * @return \RWF\IO\Socket
      */
     public function accept() {
 

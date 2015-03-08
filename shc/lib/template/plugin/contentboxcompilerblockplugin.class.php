@@ -51,7 +51,7 @@ class ContentBoxCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
         $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
         $html .= $name;
         $html .= '</div>';
-        $html .= '<div class="shc-contentbox-body">';
+        $html .= '<div class="shc-contentbox-inner">';
         return $html;
     }
 

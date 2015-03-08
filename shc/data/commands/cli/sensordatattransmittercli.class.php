@@ -402,12 +402,16 @@ class SensorDatatTransmitterCli extends CliCommand {
                 break;
             }
 
-            if ((int) $id <= 0 || (int) $id >= 999) {
+            if ((int) $id <= 0 || (int) $id >= 998) {
 
                 $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId.invalid'), 'red');
                 $n++;
                 $valid = false;
                 continue;
+            } else {
+
+                $n++;
+                $valid = true;
             }
 
             if ($valid === true) {

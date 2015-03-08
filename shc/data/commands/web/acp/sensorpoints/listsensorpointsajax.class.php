@@ -25,7 +25,7 @@ class ListSensorPointsAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('sensorpointsmanagement', 'acpindex');
+    protected $languageModules = array('sensorpointsmanagement', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten

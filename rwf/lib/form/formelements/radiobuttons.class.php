@@ -159,7 +159,7 @@ class RadioButtons extends AbstractFormElement {
         $html .= '</fieldset>' . "\n";
 
         //Pflichtfeld
-        if ($this->isRequiredField() && $this->getValue() == '') {
+        if ($this->isRequiredField() && $this->getValue() == '' && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {

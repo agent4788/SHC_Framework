@@ -51,6 +51,13 @@ class RaspberryPi {
      * @var Integer
      */
     const MODEL_COMPUTE_MODULE = 16;
+
+    /**
+     * Schaltserver auf einem Model 2 B
+     *
+     * @var Integer
+     */
+    const MODEL_2_B = 32;
     
     /**
      * CPU Info

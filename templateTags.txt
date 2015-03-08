@@ -108,6 +108,9 @@ $Zeitobjekt|time[:'format']                                                     
 $Zeitobjekt|date[:'format']                                                     //Formatiert ein Datum
 $Zeitobjekt|datetime[:'format']                                                 //Formatiert Datum und Zeit
 $Zeitobjekt|timeline[:'format']                                                 //Formatiert eine Zeitschiene
+$Zeitobjekt|seconds[:0|1]                                                       //Formatiert einen Wert aus Sekunden in ein lesbares Format
+$bytes|filesize                                                                 //Formatiert einen Wert aus Bytes in ein lesbares Format Basis 1000
+$bytes|filesizebinary                                                           //Formatiert einen Wert aus Bytes in ein lesbares Format Basis 1024
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Block Plugins

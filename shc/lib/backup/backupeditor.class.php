@@ -5,6 +5,7 @@ namespace SHC\Backup;
 //Imports
 use RWF\Date\DateTime;
 use RWF\Util\FileUtil;
+use RWF\XML\XmlFileManager;
 
 /**
  * Backup Verwaltung
@@ -208,11 +209,31 @@ class BackupEditor {
         $zip = new \ZipArchive();
         if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
 
+            /* Dateibackup
             if($this->addDir($zip, PATH_BASE, '', $ignoreHiddenFiles)) {
 
                 $zip->close();
                 return true;
             }
+            */
+            $xmlFiles = XmlFileManager::getInstance()->listKnownXmlFiles();
+            foreach($xmlFiles as $xmlFile) {
+
+                $dir = dirname($xmlFile['file']);
+                $filename = str_replace($dir, '', $xmlFile['file']);
+
+                if(file_exists($xmlFile['file'])) {
+
+                    $archivePath = str_replace(PATH_BASE, '', $dir);
+                    $zip->addEmptyDir($archivePath);
+                    $zip->addFile($xmlFile['file'], $archivePath . $filename);
+                }
+            }
+            $zip->close();
+            return true;
+            //var_dump($xmlFiles);
+            //$zip->addEmptyDir('rwf/data/storage');
+            //$zip->addFile();
         }
         return false;
     }

@@ -59,6 +59,13 @@ class UserAtHomeEditor {
      * @var \SHC\UserAtHome\UserAtHomeEditor
      */
     protected static $instance = null;
+
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'usersrathome';
     
     protected function __construct() {
 
@@ -69,20 +76,18 @@ class UserAtHomeEditor {
      * Daten laden
      */
     public function loadData() {
-        
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
-        
-        //Daten einlesen
-        foreach($xml->user as $usersAtHome) {
+
+        $usersAtHome = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach($usersAtHome as $usersAtHome) {
             
-            $this->usersAtHome[(int) $usersAtHome->id] = new UserAtHome(
-                    (int) $usersAtHome->id,
-                    (string) $usersAtHome->name,
-                    (string) $usersAtHome->ipAddress,
-                    (int) $usersAtHome->orderId,
-                    ((int) $usersAtHome->enabled == 1 ? true : false),
-                    (int) $usersAtHome->visibility,
-                    (int) $usersAtHome->state
+            $this->usersAtHome[(int) $usersAtHome['id']] = new UserAtHome(
+                    (int) $usersAtHome['id'],
+                    (string) $usersAtHome['name'],
+                    (string) $usersAtHome['ipAddress'],
+                    (int) $usersAtHome['orderId'],
+                    ((int) $usersAtHome['enabled'] == true ? true : false),
+                    (int) $usersAtHome['visibility'],
+                    (int) $usersAtHome['state']
             );
         }
         
@@ -187,20 +192,20 @@ class UserAtHomeEditor {
      */
     public function editOrder(array $order) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
+        $db = SHC::getDatabase();
+        foreach($order as $userAtHomeId => $orderId) {
 
-        //Benutzer durchlaufen und deren Sortierungs ID anpassen
-        foreach ($xml->user as $userAtHome) {
+            if(isset($this->usersAtHome[$userAtHomeId])) {
 
-            if (isset($order[(int) $userAtHome->id])) {
+                $userAtHomeData = $db->hGet(self::$tableName, $userAtHomeId);
+                $userAtHomeData['orderId'] = $orderId;
 
-                $userAtHome->orderId = $order[(int) $userAtHome->id];
+                if($db->hSet(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
+
+                    return false;
+                }
             }
         }
-
-        //Daten Speichern
-        $xml->save();
         return true;
     }
     
@@ -211,30 +216,24 @@ class UserAtHomeEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function updateState() {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
-        
-        //Alle Elemente durchlaufen
+
+        $db = SHC::getDatabase();
         foreach($this->usersAtHome as $userAtHome) {
-            
+
             //Wenn der Status veraendert wurde Speichern
             if($userAtHome->isStateModified()) {
-                
+
                 //Nach Objekt suchen
                 $id = $userAtHome->getId();
-                foreach($xml->user as $xmlUserAtHome) {
-                    
-                    if((int) $xmlUserAtHome->id == $id) {
-                        
-                        $xmlUserAtHome->state = $userAtHome->getState();
-                    }
+                $userAtHomeData = $db->hGet(self::$tableName, $id);
+                $userAtHomeData['state'] = $userAtHome->getState();
+
+                if($db->hSet(self::$tableName, $id, $userAtHomeData) != 0) {
+
+                    return false;
                 }
             }
         }
-        
-        //Daten Speichern
-        $xml->save();
         return true;
     }
     
@@ -255,27 +254,24 @@ class UserAtHomeEditor {
 
             throw new \Exception('Der Name ist schon vergeben', 1507);
         }
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-        
-        //Datensatz erstellen
-        /* @var $user \SimpleXmlElement */
-        $user = $xml->addChild('user');
-        $user->addChild('id', $nextId);
-        $user->addChild('name', $name);
-        $user->addChild('ipAddress', $ipAddress);
-        $user->addChild('orderId', $nextId);
-        $user->addChild('enabled', ($enabled == true ? 1 : 0));
-        $user->addChild('visibility', ($visibility == true ? 1 : 0));
-        $user->addChild('state', 0);
-        
-        //Daten Speichern
-        $xml->save();
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+
+        $newUserAtHome = array(
+            'id' => $index,
+            'name' => $name,
+            'orderId' => $index,
+            'enabled' => ($enabled == true ? true : false),
+            'ipAddress' => $ipAddress,
+            'visibility' => ($visibility == true ? true : false),
+            'state' => 0
+        );
+
+        if($db->hSetNx(self::$tableName, $index, $newUserAtHome) == 0) {
+
+            return false;
+        }
         return true;
     }
     
@@ -290,51 +286,49 @@ class UserAtHomeEditor {
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editUseratHome($id, $name = null, $ipAddress = null, $enabled = null, $visibility = null) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
+    public function editUserAtHome($id, $name = null, $ipAddress = null, $enabled = null, $visibility = null) {
 
-        //Benutzer Suchen
-        foreach ($xml->user as $userAtHome) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-            /* @var $userAtHome \SimpleXmlElement */
-            if ((int) $userAtHome->id == $id) {
+            $userAtHome = $db->hGet(self::$tableName, $id);
 
-                //Name
-                if ($name !== null) {
+            //Name
+            if ($name !== null) {
 
-                    //Ausnahme wenn Name des Benutzers schon belegt
-                    if ((string) $userAtHome->name != $name && !$this->isUserAtHomeNameAvailable($name)) {
+                //Ausnahme wenn Name des Benutzers schon belegt
+                if ((string) $userAtHome['name'] != $name && !$this->isUserAtHomeNameAvailable($name)) {
 
-                        throw new \Exception('Der Name ist schon vergeben', 1507);
-                    }
-
-                    $userAtHome->name = $name;
+                    throw new \Exception('Der Name ist schon vergeben', 1507);
                 }
 
-                //IP Adresse
-                if ($ipAddress !== null) {
+                $userAtHome['name'] = $name;
+            }
 
-                    $userAtHome->ipAddress = $ipAddress;
-                }
-                
-                //Aktiv
-                if ($enabled !== null) {
+            //IP Adresse
+            if ($ipAddress !== null) {
 
-                    $userAtHome->enabled = ($enabled == true ? 1 : 0);
-                }
+                $userAtHome['ipAddress'] = $ipAddress;
+            }
 
-                //Sichtbarkeit
-                if ($visibility !== null) {
+            //Aktiv
+            if ($enabled !== null) {
 
-                    $userAtHome->visibility = ($visibility == true ? 1 : 0);
-                 }
+                $userAtHome['enabled'] = ($enabled == true ? true : false);
+            }
 
-                //Daten Speichern
-                $xml->save();
+            //Sichtbarkeit
+            if ($visibility !== null) {
+
+                $userAtHome['visibility'] = ($visibility == true ? true : false);
+            }
+
+            if($db->hSet(self::$tableName, $id, $userAtHome) == 0) {
+
                 return true;
             }
+
         }
         return false;
     }
@@ -347,20 +341,13 @@ class UserAtHomeEditor {
      * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeUserAtHome($id) {
-        
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_USERS_AT_HOME, true);
 
-        //Element suchen
-        for ($i = 0; $i < count($xml->user); $i++) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-            if ((int) $xml->user[$i]->id == $id) {
+            if($db->hDel(self::$tableName, $id)) {
 
-                //Element loeschen
-                unset($xml->user[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }

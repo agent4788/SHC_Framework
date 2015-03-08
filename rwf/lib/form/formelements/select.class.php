@@ -168,10 +168,13 @@ class Select extends AbstractFormElement {
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld
-        $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
-        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        $html .= '<div class="ui-field-contain">';
+        if ($this->getTitle() != '') {
 
-        $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" data-native-menu="false">' . "\n";
+            $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        }
+
+        $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="' . $class . '" data-native-menu="false">' . "\n";
         if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
 
             //Gruppierte Auswahl
@@ -212,7 +215,7 @@ class Select extends AbstractFormElement {
         $html .= "</div>\n";
         
         //Pflichtfeld
-        if ($this->isRequiredField() && $this->getValue() == '') {
+        if ($this->isRequiredField() && $this->getValue() == ''  && !$this->isDefaultValue()) {
             
             $html .= '<div class="rwf-ui-form-content-required">'. RWF::getLanguage()->val('form.message.mobile.required') .'</div>';
         } elseif(!$this->isValid) {

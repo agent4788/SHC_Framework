@@ -52,7 +52,7 @@ class EditListCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '  });';
         $html .= '  $(\'#<?php echo $randomId; ?>\').click(function() {';
         $html .= '      $.get(\''. $link .'\', function(data, textStatus, jqXHR) {;';
-        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
+        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-inner\').html(data);';
         $html .= '      });';
         $html .= '  });';
         $html .= '});';

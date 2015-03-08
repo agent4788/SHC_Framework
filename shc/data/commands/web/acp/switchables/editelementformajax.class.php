@@ -11,8 +11,11 @@ use RWF\Util\Message;
 use SHC\Form\Forms\ActivityForm;
 use SHC\Form\Forms\CountdownForm;
 use SHC\Form\Forms\RadiosocketForm;
+use SHC\Form\Forms\RebootForm;
 use SHC\Form\Forms\RpiGpioInputForm;
 use SHC\Form\Forms\RpiGpioOutputForm;
+use SHC\Form\Forms\ScriptForm;
+use SHC\Form\Forms\ShutdownForm;
 use SHC\Form\Forms\WolForm;
 use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
@@ -20,8 +23,15 @@ use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\RadioSocketDimmer;
+use SHC\Switchable\Switchables\Reboot;
+use SHC\Switchable\Switchables\RemoteReboot;
+use SHC\Switchable\Switchables\RemoteShutdown;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
+use SHC\View\Room\ViewHelperEditor;
 
 /**
  * bearbeitet ein Element
@@ -67,8 +77,7 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $activityForm->getElementByName('name')->getValue();
                 $icon = $activityForm->getElementByName('icon')->getValue();;
-                $roomId = $activityForm->getElementByName('room')->getValue();
-                $switchPoints = $activityForm->getElementByName('switchPoints')->getValues();
+                $rooms = $activityForm->getElementByName('rooms')->getValues();
                 $enabled = $activityForm->getElementByName('enabled')->getValue();
                 $visibility = $activityForm->getElementByName('visibility')->getValue();
                 $allowedUsers = $activityForm->getElementByName('allowedUsers')->getValues();
@@ -76,17 +85,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editAcrivity($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $switchPoints, $allowedUsers);
+                    SwitchableEditor::getInstance()->editAcrivity($elementId, $name, $enabled, $visibility, $icon, $rooms, null, null, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editActivity.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -122,9 +126,8 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $countdownForm->getElementByName('name')->getValue();
                 $icon = $countdownForm->getElementByName('icon')->getValue();;
-                $roomId = $countdownForm->getElementByName('room')->getValue();
+                $rooms = $countdownForm->getElementByName('rooms')->getValues();
                 $interval = $countdownForm->getElementByName('interval')->getValue();
-                $switchPoints = $countdownForm->getElementByName('switchPoints')->getValues();
                 $enabled = $countdownForm->getElementByName('enabled')->getValue();
                 $visibility = $countdownForm->getElementByName('visibility')->getValue();
                 $allowedUsers = $countdownForm->getElementByName('allowedUsers')->getValues();
@@ -132,17 +135,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editCountdown($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $interval, $switchPoints, $allowedUsers);
+                    SwitchableEditor::getInstance()->editCountdown($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $interval, null, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editCountdown.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -172,12 +170,11 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $radiosocketForm->getElementByName('name')->getValue();
                 $icon = $radiosocketForm->getElementByName('icon')->getValue();
-                $roomId = $radiosocketForm->getElementByName('room')->getValue();
+                $rooms = $radiosocketForm->getElementByName('rooms')->getValues();
                 $protocol = $radiosocketForm->getElementByName('protocol')->getValue();
                 $systemCode = $radiosocketForm->getElementByName('systemCode')->getValue();
                 $deviceCode = $radiosocketForm->getElementByName('deviceCode')->getValue();
                 $continuous = $radiosocketForm->getElementByName('continuous')->getValue();
-                $switchPoints = $radiosocketForm->getElementByName('switchPoints')->getValues();
                 $enabled = $radiosocketForm->getElementByName('enabled')->getValue();
                 $visibility = $radiosocketForm->getElementByName('visibility')->getValue();
                 $allowedUsers = $radiosocketForm->getElementByName('allowedUsers')->getValues();
@@ -185,17 +182,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editRadioSocket($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $protocol, $systemCode, $deviceCode, $continuous, $switchPoints, $allowedUsers);
+                    SwitchableEditor::getInstance()->editRadioSocket($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $protocol, $systemCode, $deviceCode, $continuous, null, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editRadioSocket.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -225,7 +217,7 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $gpioInputForm->getElementByName('name')->getValue();
                 $icon = '';
-                $roomId = $gpioInputForm->getElementByName('room')->getValue();
+                $rooms = $gpioInputForm->getElementByName('rooms')->getValues();
                 $switchServer = $gpioInputForm->getElementByName('switchServer')->getValue();
                 $gpioPin = $gpioInputForm->getElementByName('gpio')->getValue();
                 $enabled = $gpioInputForm->getElementByName('enabled')->getValue();
@@ -235,17 +227,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editRpiGpioInput($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $switchServer, $gpioPin, $allowedUsers);
+                    SwitchableEditor::getInstance()->editRpiGpioInput($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $switchServer, $gpioPin, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editGpioOutput.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -275,10 +262,9 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $gpioOutputForm->getElementByName('name')->getValue();
                 $icon = $gpioOutputForm->getElementByName('icon')->getValue();
-                $roomId = $gpioOutputForm->getElementByName('room')->getValue();
+                $rooms = $gpioOutputForm->getElementByName('rooms')->getValues();
                 $switchServer = $gpioOutputForm->getElementByName('switchServer')->getValue();
                 $gpioPin = $gpioOutputForm->getElementByName('gpio')->getValue();
-                $switchPoints = $gpioOutputForm->getElementByName('switchPoints')->getValues();
                 $enabled = $gpioOutputForm->getElementByName('enabled')->getValue();
                 $visibility = $gpioOutputForm->getElementByName('visibility')->getValue();
                 $allowedUsers = $gpioOutputForm->getElementByName('allowedUsers')->getValues();
@@ -286,17 +272,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editRpiGpioOutput($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $switchServer, $gpioPin, $switchPoints, $allowedUsers);
+                    SwitchableEditor::getInstance()->editRpiGpioOutput($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $switchServer, $gpioPin, null, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editGpioOutput.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -326,10 +307,9 @@ class EditElementFormAjax extends AjaxCommand {
                 //Speichern
                 $name = $wolForm->getElementByName('name')->getValue();
                 $icon = '';
-                $roomId = $wolForm->getElementByName('room')->getValue();
+                $rooms = $wolForm->getElementByName('rooms')->getValues();
                 $mac = $wolForm->getElementByName('mac')->getValue();
                 $ip = $wolForm->getElementByName('ip')->getValue();
-                $switchPoints = $wolForm->getElementByName('switchPoints')->getValues();
                 $enabled = $wolForm->getElementByName('enabled')->getValue();
                 $visibility = $wolForm->getElementByName('visibility')->getValue();
                 $allowedUsers = $wolForm->getElementByName('allowedUsers')->getValues();
@@ -337,17 +317,12 @@ class EditElementFormAjax extends AjaxCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editWakeOnLan($elementId, $name, $enabled, $visibility, $icon, $roomId, null, $mac, $ip, $switchPoints, $allowedUsers);
+                    SwitchableEditor::getInstance()->editWakeOnLan($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $mac, $ip, null, $allowedUsers);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editWol.success'));
                 } catch(\Exception $e) {
 
-                    if($e->getCode() == 1507) {
-
-                        //Name schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.error.1507'));
-                    } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);
@@ -365,6 +340,140 @@ class EditElementFormAjax extends AjaxCommand {
                 //Formular anzeigen
                 $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $wolForm);
+            }
+        } elseif($element instanceof RadioSocketDimmer) {
+
+            //nicht Implementiert
+        } elseif($element instanceof Shutdown) {
+
+            $shutdownForm = new ShutdownForm($element);
+            $shutdownForm->addId('shc-view-form-editElement');
+
+            if($shutdownForm->isSubmitted() && $shutdownForm->validate()) {
+
+                //Speichern
+                $name = $shutdownForm->getElementByName('name')->getValue();
+                $icon = '';
+                $rooms = $shutdownForm->getElementByName('rooms')->getValues();
+                $enabled = $shutdownForm->getElementByName('enabled')->getValue();
+                $visibility = $shutdownForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $shutdownForm->getElementByName('allowedUsers')->getValues();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editShutdown($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editShutdown.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $shutdownForm);
+            }
+        } elseif($element instanceof Reboot) {
+
+            $rebootForm = new RebootForm($element);
+            $rebootForm->addId('shc-view-form-editElement');
+
+            if($rebootForm->isSubmitted() && $rebootForm->validate()) {
+
+                //Speichern
+                $name = $rebootForm->getElementByName('name')->getValue();
+                $icon = '';
+                $rooms = $rebootForm->getElementByName('rooms')->getValues();
+                $enabled = $rebootForm->getElementByName('enabled')->getValue();
+                $visibility = $rebootForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $rebootForm->getElementByName('allowedUsers')->getValues();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editReboot($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editReboot.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $rebootForm);
+            }
+        } elseif($element instanceof RemoteShutdown) {
+
+            //nicht Implementiert
+        } elseif($element instanceof RemoteReboot) {
+
+            //nicht Implementiert
+        } elseif($element instanceof Script) {
+
+            $scriptForm = new ScriptForm($element);
+            $scriptForm->addId('shc-view-form-editElement');
+
+            if($scriptForm->isSubmitted() && $scriptForm->validate()) {
+
+                //Speichern
+                $name = $scriptForm->getElementByName('name')->getValue();
+                $icon = $scriptForm->getElementByName('icon')->getValue();
+                $rooms = $scriptForm->getElementByName('rooms')->getValues();
+                $onCommand = $scriptForm->getElementByName('onCommand')->getValue();
+                $offCommand = $scriptForm->getElementByName('offCommand')->getValue();
+                $enabled = $scriptForm->getElementByName('enabled')->getValue();
+                $visibility = $scriptForm->getElementByName('visibility')->getValue();
+                $allowedUsers = $scriptForm->getElementByName('allowedUsers')->getValues();
+
+                $message = new Message();
+                try {
+
+                    SwitchableEditor::getInstance()->editScript($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $onCommand, $offCommand, $allowedUsers);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error'));
+                    }
+                }
+                $tpl->assign('message', $message);
+            } else {
+
+                $tpl->assign('element', $element);
+                $tpl->assign('elementForm', $scriptForm);
             }
         } else {
 

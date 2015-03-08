@@ -276,7 +276,7 @@ abstract class AbstractFormElement extends AbstractHtmlElement implements FormEl
      */
     public function fetch($view = Form::DEFAULT_VIEW) {
 
-        if ($view === Form::TABLET_VIEW || $view === Form::SMARTPHONE_VIEW) {
+        if ($view == Form::TABLET_VIEW || $view == Form::SMARTPHONE_VIEW) {
 
             //Mobile Ansicht
             return $this->fetchMobileView();

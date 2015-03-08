@@ -21,6 +21,7 @@ use SHC\Sensor\Sensors\RainSensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -84,7 +85,13 @@ class RoomSync extends SyncCommand {
                         $wolValues[$switchable->getId()] = $switchable->getState();
                     } elseif ($switchable instanceof Switchable) {
 
-                        $switchableValues[$switchable->getId()] = $switchable->getState();
+                        if($switchable instanceof Script && $switchable->getOnCommand() != '' && $switchable->getOffCommand() != '') {
+
+                            $switchableValues[$switchable->getId()] = $switchable->getState();
+                        } elseif(!$switchable instanceof Script) {
+
+                            $switchableValues[$switchable->getId()] = $switchable->getState();
+                        }
                     } elseif ($switchable instanceof Readable) {
 
                         //Status lesen ohne ihn zu speichern

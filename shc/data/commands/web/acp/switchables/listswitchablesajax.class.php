@@ -64,46 +64,57 @@ class ListSwitchablesAjax extends AjaxCommand {
             $switchableFilteredOrder = array();
             $valid = true;
             if(count($switchableOrder)) {
-                foreach ($switchableOrder as $id => $orderId) {
 
-                    $switchable = SwitchableEditor::getInstance()->getElementById($id);
-                    if ($switchable instanceof Element) {
+                foreach($switchableOrder as $roomId => $order) {
 
-                        $switchableFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
-                    } else {
+                    foreach ($order as $id => $orderId) {
 
-                        //Fehlerhafte Eingaben
-                        $valid = false;
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
-                        break;
+                        $switchable = SwitchableEditor::getInstance()->getElementById($id);
+                        if ($switchable instanceof Element) {
+
+                            $switchableFilteredOrder[$id][$roomId] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
+                        } else {
+
+                            //Fehlerhafte Eingaben
+                            $valid = false;
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
+                            break;
+                        }
                     }
                 }
             }
+
             //Sensoren
             $sensorOrder = $r->getParam('sensorOrder', Request::POST);
             $sensorFilteredOrder = array();
             if(count($sensorOrder)) {
-                foreach ($sensorOrder as $id => $orderId) {
 
-                    $sensor = SensorPointEditor::getInstance()->getSensorById($id);
-                    if ($sensor instanceof Sensor) {
+                foreach($sensorOrder as $roomId => $order) {
 
-                        $sensorFilteredOrder[$id] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
-                    } else {
+                    foreach ($order as $id => $orderId) {
 
-                        //Fehlerhafte Eingaben
-                        $valid = false;
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
-                        break;
+                        $sensor = SensorPointEditor::getInstance()->getSensorById($id);
+                        if ($sensor instanceof Sensor) {
+
+                            $sensorFilteredOrder[$id][$roomId] = DataTypeUtil::convert($orderId, DataTypeUtil::INTEGER);
+                        } else {
+
+                            //Fehlerhafte Eingaben
+                            $valid = false;
+                            $message->setType(Message::ERROR);
+                            $message->setMessage(RWF::getLanguage()->get('form.message.typedWrong'));
+                            break;
+                        }
                     }
                 }
             }
+
             //Boxen
             $boxOrder = $r->getParam('boxOrder', Request::POST);
             $boxFilteredOrder = array();
             if(count($boxOrder)) {
+
                 foreach ($boxOrder as $id => $orderId) {
 
                     $box = ViewHelperEditor::getInstance()->getBoxById($id);

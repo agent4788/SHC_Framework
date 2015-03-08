@@ -4,9 +4,12 @@ namespace SHC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Session\Session;
+use RWF\Settings\Settings;
 use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
+use SHC\Database\NoSQL\Redis;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -27,67 +30,11 @@ class SHC extends RWF {
     const VERSION = '2.2.0';
 
     /**
-     * Raeume XML Datei
-     * 
-     * @var String
-     */
-    const XML_ROOM = 'rooms';
-    
-    /**
-     * Raeume UI XML Datei
-     * 
-     * @var String
-     */
-    const XML_ROOM_VIEW = 'roomview';
-    
-    /**
-     * Schaltserver XML Datei
-     * 
-     * @var String
-     */
-    const XML_SWITCHSERVER = 'switchserver';
-    
-    /**
-     * Bedingungen XML
-     * 
-     * @var String
-     */
-    const XML_CONDITIONS = 'conditions';
-    
-    /**
-     * Schaltpunkte XML
-     * 
-     * @var String
-     */
-    const XML_SWITCHPOINTS = 'switchpoints';
-    
-    /**
-     * Schaltbare Elemente
-     * 
-     * @var String
-     */
-    const XML_SWITCHABLES = 'switchables';
-    
-    /**
-     * Benutzer zu Hause
-     *
-     * @var String
-     */
-    const XML_USERS_AT_HOME = 'usersathome';
-
-    /**
      * Sensor Transmitter
      *
      * @var String
      */
     const XML_SENSOR_TRANSMITTER = 'sensortransmitter';
-
-    /**
-     * Ereignisse
-     *
-     * @var String
-     */
-    const XML_EVENTS = 'events';
     
     /**
      * Style
@@ -95,8 +42,17 @@ class SHC extends RWF {
      * @var \RWF\Style\Style 
      */
     protected static $style = null;
+
+    /**
+     * Datenbank
+     *
+     * @var \SHC\Database\NoSQL\Redis
+     */
+    protected static $redis = null;
     
     public function __construct() {
+
+        global $argv;
 
         //XML Initialisieren
         $this->initXml();
@@ -107,10 +63,19 @@ class SHC extends RWF {
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
 
+            //Datenbank Initalisieren
+            $this->initDatabase();
+
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
             $this->redirection();
             $this->initStyle();
+        } elseif(ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) {
+
+            //Sheduler initalisieren
+
+            //Datenbank Initalisieren
+            $this->initDatabase();
         }
     }
 
@@ -120,15 +85,18 @@ class SHC extends RWF {
     protected function initXml() {
         
         $fileManager = XmlFileManager::getInstance();
-        $fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
-        $fileManager->registerXmlFile(self::XML_ROOM_VIEW, PATH_SHC_STORAGE . 'roomview.xml', PATH_SHC_STORAGE . 'default/defaultRoomview.xml');
-        $fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
-        $fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
-        $fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
-        $fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
-        $fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
-        $fileManager->registerXmlFile(self::XML_EVENTS, PATH_SHC_STORAGE . 'events.xml', PATH_SHC_STORAGE . 'default/defaultEvents.xml');
+    }
+
+    /**
+     * Datenbankverbindung Initalisieren
+     *
+     * @throws \Exception
+     */
+    protected function initDatabase() {
+
+        self::$redis = new Redis();
+        self::$redis->connect();
     }
     
     /**
@@ -168,26 +136,28 @@ class SHC extends RWF {
      */
     protected function redirection() {
 
+        //Mobil Detect einbinden
+        require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
+
+        $mobilDetect = new \Mobile_Detect();
+
         //Umleitung fuer PC/Tablet/Smartphone
-        if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive')) {
 
-            //Mobil Detect einbinden
-            require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
+        /**
+         * Einstellung der Umleitung
+         *
+         * 1 => auf PC oberflaeche leiten
+         * 2 => auf Tablet Oberflache leiten
+         * 3 => auf Smartphone oberflaeche leiten
+         */
+        //Geraet feststellen und Umleiten nach den jeweiligen Einstellungen
+        $location = 'index.php?app=' . APP_NAME;
+        if ($mobilDetect->isTablet()) {
 
-            $mobilDetect = new \Mobile_Detect();
+            define('SHC_DETECTED_DEVICE', 'tablet');
 
-            /**
-             * Einstellung der Umleitung
-             *
-             * 1 => auf PC oberflaeche leiten
-             * 2 => auf Tablet Oberflache leiten
-             * 3 => auf Smartphone oberflaeche leiten
-             */
-            //Geraet feststellen und Umleiten nach den jeweiligen Einstellungen
-            $location = 'index.php?app=' . APP_NAME;
-            if ($mobilDetect->isTablet()) {
-
-                //Tablet
+            //Tablet
+            if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive')) {
                 switch (self::$settings->getValue('shc.ui.redirectTabletTo')) {
 
                     case 1:
@@ -202,9 +172,13 @@ class SHC extends RWF {
                         //auf Tablet Oberflaeche
                         $location .= '&t';
                 }
-            } elseif ($mobilDetect->isMobile()) {
+            }
+        } elseif ($mobilDetect->isMobile()) {
 
-                //Smartphone
+            define('SHC_DETECTED_DEVICE', 'smartphone');
+
+            //Smartphone
+            if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive')) {
                 switch (self::$settings->getValue('shc.ui.redirectSmartphoneTo')) {
 
                     case 1:
@@ -219,9 +193,13 @@ class SHC extends RWF {
                         //auf Smartphone Oberflaeche
                         $location .= '&m';
                 }
-            } else {
+            }
+        } else {
 
-                //PC und alles andere
+            define('SHC_DETECTED_DEVICE', 'pc');
+
+            //PC und alles andere
+            if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive')) {
                 switch (self::$settings->getValue('shc.ui.redirectPcTo')) {
 
                     case 2:
@@ -237,8 +215,10 @@ class SHC extends RWF {
                         //es muss nicht umgeleitet werden
                 }
             }
+        }
 
-            //Header setzen, senden und beenden
+        //Header setzen, senden und beenden
+        if (self::$session->isNewSession() && self::$settings->getValue('shc.ui.redirectActive') && $location != 'index.php?app=' . APP_NAME) {
             self::$response->addLocationHeader($location);
             self::$response->setBody('');
             self::$response->flush();
@@ -255,5 +235,39 @@ class SHC extends RWF {
     public static function getStyle() {
         
         return self::$style;
+    }
+
+    /**
+     * gibt das Datenbankobjekt zutueck
+     *
+     * @return \SHC\Database\NoSQL\Redis
+     */
+    public static function getDatabase() {
+
+        return self::$redis;
+    }
+
+    /**
+     * beendet die Anwendung
+     */
+    public function finalize() {
+
+        //Einstellungen Speichern
+        if (self::$settings instanceof Settings) {
+
+            self::$settings->finalize();
+        }
+
+        //Sessionobjekt abschliesen
+        if (self::$session instanceof Session) {
+
+            self::$session->finalize();
+        }
+
+        //Datenbankverbindung beenden
+        if(self::$redis instanceof Redis) {
+
+            self::$redis->close();
+        }
     }
 }
