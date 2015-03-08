@@ -82,15 +82,214 @@ if(!file_exists('./rwf/data/storage/settings.xml')) {
     $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
 }
 
-//Datenbank Daten Abfragen
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Datenbank Einstellungen /////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//IP Adresse
+$n = 0;
+$valid = true;
+$valid_address = '127.0.0.1';
+$address_not_change = false;
+while ($n < 5) {
+
+    $address = $cli->input('Redis IP Adresse (127.0.0.1): ');
+
+    //Adresse nicht aendern
+    if (strlen($address) == 0) {
+
+        $address_not_change = true;
+        $valid = true;
+        break;
+    }
+
+    //Adresse pruefen
+    $parts = explode('.', $address);
+    for ($i = 0; $i < 3; $i++) {
+
+        if (isset($parts[$i]) && (int) $parts[$i] >= 0 && (int) $parts[$i] <= 255) {
+
+            continue;
+        }
+
+        $response->writeLnColored('ungültige IP Adresse', 'red');
+        $n++;
+        $valid = false;
+        break;
+    }
+
+    if ($valid === true) {
+
+        $valid_address = $address;
+        break;
+    }
+}
+
+if ($valid === false) {
+
+    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    exit(1);
+}
+
+//Port
+$n = 0;
+$valid = true;
+$valid_port = '6379';
+$port_not_change = false;
+while ($n < 5) {
+
+    $port = $cli->input('Redis Port (6379)');
+
+    //Port nicht aendern
+    if (strlen($port) == 0) {
+
+        $port_not_change = true;
+        $valid = true;
+        break;
+    }
+
+    if (!preg_match('#^[0-9]{1,5}$#', $port) || (int) $port <= 0 || (int) $port >= 65000) {
+
+        $response->writeLnColored('ungültiger Port', 'red');
+        $n++;
+        $valid = false;
+        continue;
+    }
+
+    if ($valid === true) {
+
+        $valid_port = $port;
+        break;
+    }
+}
+
+if ($valid === false) {
+
+    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    exit(1);
+}
+
+//Timeout
+$n = 0;
+$valid = true;
+$valid_timeout = '6379';
+$timeout_not_change = false;
+while ($n < 5) {
+
+    $timeout = $cli->input('Redis Port (6379): ');
+
+    //Port nicht aendern
+    if (strlen($timeout) == 0) {
+
+        $timeout_not_change = true;
+        $valid = true;
+        break;
+    }
+
+    if (!preg_match('#^[0-9]{1,2}$#', $timeout) || (int) $timeout <= 0 || (int) $timeout >= 10) {
+
+        $response->writeLnColored('ungültiger Timeout', 'red');
+        $n++;
+        $valid = false;
+        continue;
+    }
+
+    if ($valid === true) {
+
+        $valid_timeout = $timeout;
+        break;
+    }
+}
+
+if ($valid === false) {
+
+    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    exit(1);
+}
 
 //Datenbank
-addSetting('shc.redis.host', '127.0.0.1', TYPE_STRING);
-addSetting('shc.redis.port', '6379', TYPE_INTEGER);
-addSetting('shc.redis.timeout', '1', TYPE_INTEGER);
-addSetting('shc.redis.db', '0', TYPE_INTEGER);
-addSetting('shc.redis.pass', '', TYPE_STRING);
+$n = 0;
+$valid = true;
+$valid_db = '0';
+$db_not_change = false;
+while ($n < 5) {
+
+    $db = $cli->input('Redis Datenbank (0): ');
+
+    //Port nicht aendern
+    if (strlen($db) == 0) {
+
+        $db_not_change = true;
+        $valid = true;
+        break;
+    }
+
+    if (!preg_match('#^[0-9]{1,5}$#', $db) || (int) $db <= 0 || (int) $db >= 30) {
+
+        $response->writeLnColored('ungültige Datenbank', 'red');
+        $n++;
+        $valid = false;
+        continue;
+    }
+
+    if ($valid === true) {
+
+        $valid_db = $db;
+        break;
+    }
+}
+
+if ($valid === false) {
+
+    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    exit(1);
+}
+
+//IP Adresse
+$n = 0;
+$valid = true;
+$valid_password = '';
+$password_not_change = false;
+while ($n < 5) {
+
+    $password = $cli->input('Redis Passwort (): ');
+
+    //Adresse nicht aendern
+    if (strlen($password) == 0) {
+
+        $password_not_change = true;
+        $valid = true;
+        break;
+    }
+
+    //Adresse pruefen
+    if(strlen($password) == 0 || strlen($password) > 20) {
+
+        $response->writeLnColored('ungültiges Passwort', 'red');
+        $n++;
+        $valid = false;
+        break;
+    }
+
+    if ($valid === true) {
+
+        $valid_password = $password;
+        break;
+    }
+}
+
+if ($valid === false) {
+
+    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    exit(1);
+}
+
+//Datenbank
+addSetting('shc.redis.host', $valid_address, TYPE_STRING);
+addSetting('shc.redis.port', $valid_port, TYPE_INTEGER);
+addSetting('shc.redis.timeout', $valid_timeout, TYPE_INTEGER);
+addSetting('shc.redis.db', $valid_db, TYPE_INTEGER);
+addSetting('shc.redis.pass', $valid_password, TYPE_STRING);
 
 //Allgemeine Einstellungen
 addSetting('shc.ui.redirectActive', 'true', TYPE_BOOLEAN);
