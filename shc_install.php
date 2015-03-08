@@ -451,7 +451,7 @@ $valid_timeout = '6379';
 $timeout_not_change = false;
 while ($n < 5) {
 
-    $timeout = $cli->input('Redis Port (6379): ');
+    $timeout = $cli->input('Redis Timeout (1): ');
 
     //Port nicht aendern
     if (strlen($timeout) == 0) {
