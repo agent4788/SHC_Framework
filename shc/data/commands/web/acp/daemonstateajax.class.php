@@ -85,7 +85,7 @@ class DaemonStateAjax extends AjaxCommand {
         //Dienste
         //Sheduler
         $shedulerState = 0;
-        if(RWF::getSetting('shedulerDaemon')) {
+        if(RWF::getSetting('shc.shedulerDaemon.active')) {
             $data = trim(@file_get_contents(PATH_RWF_CACHE . 'shedulerRun.flag'));
             if ($data != '') {
 
@@ -101,26 +101,6 @@ class DaemonStateAjax extends AjaxCommand {
             $shedulerState = 2;
         }
         $tpl->assign('shedulerState', $shedulerState);
-
-        //Arduino Sensor Reciver
-        $arduinoSensorReciverState = 0;
-        if(RWF::getSetting('shc.arduinoReciver.active')) {
-
-            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'arduinoSensorReciver.flag'));
-            if ($data != '') {
-
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
-                if ($date >= $compareDate) {
-
-                    $arduinoSensorReciverState = 1;
-                }
-            }
-        } else {
-
-            $arduinoSensorReciverState = 2;
-        }
-        $tpl->assign('arduinoSensorReciverState', $arduinoSensorReciverState);
 
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;

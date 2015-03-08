@@ -96,37 +96,23 @@ class DaemonStatePage extends PageCommand {
         //Dienste
         //Sheduler
         $shedulerState = 0;
-        $data = trim(@file_get_contents(PATH_RWF_CACHE . 'shedulerRun.flag'));
-        if($data != '') {
+        if(RWF::getSetting('shc.shedulerDaemon.active')) {
 
-            $date = DateTime::createFromDatabaseDateTime($data);
-            $compareDate = DateTime::now()->sub(new \DateInterval('PT3M'));
-            if ($date >= $compareDate) {
-
-                $shedulerState = 1;
-            }
-        }
-        $tpl->assign('shedulerState', $shedulerState);
-
-        //Arduino Sensor Reciver
-        $arduinoSensorReciverState = 0;
-        if(RWF::getSetting('shc.arduinoReciver.active')) {
-
-            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'arduinoSensorReciver.flag'));
-            if ($data != '') {
+            $data = trim(@file_get_contents(PATH_RWF_CACHE . 'shedulerRun.flag'));
+            if($data != '') {
 
                 $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
+                $compareDate = DateTime::now()->sub(new \DateInterval('PT3M'));
                 if ($date >= $compareDate) {
 
-                    $arduinoSensorReciverState = 1;
+                    $shedulerState = 1;
                 }
             }
         } else {
 
-            $arduinoSensorReciverState = 2;
+            $shedulerState = 2;
         }
-        $tpl->assign('arduinoSensorReciverState', $arduinoSensorReciverState);
+        $tpl->assign('shedulerState', $shedulerState);
 
         //Sensordatat Transmitter
         $sensorDataTransmitterState = 0;
