@@ -92,6 +92,8 @@ $l['acp.userManagement.form.error.id.group'] =  'Ungültige Gruppen ID';
 //Rechte
 $l['acp.userManagement.premissions.shc.ucp.viewUserAtHome'] =  'Benutzer zu Hause';
 $l['acp.userManagement.premissions.shc.ucp.viewUserAtHome.description'] =  'bekommt die Benutzer zu Hause auf der Indexseite angezeigt';
+$l['acp.userManagement.premissions.shc.ucp.warnings'] =  'Warnmeldungen';
+$l['acp.userManagement.premissions.shc.ucp.warnings.description'] =  'Der Benutzer bekommt eine Warnmeldung angezeigt wenn Wichtige Funktionen des SHC nicht laufen';
 
 $l['acp.userManagement.premissions.shc.acp.menu'] =  'ACP Menü';
 $l['acp.userManagement.premissions.shc.acp.menu.description'] =  'das ACP Menü betreten und die Funktionen verwenden die keine gesonderten Berechtigungen erfordern';
