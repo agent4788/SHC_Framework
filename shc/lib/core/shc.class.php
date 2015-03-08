@@ -30,67 +30,11 @@ class SHC extends RWF {
     const VERSION = '2.2.0';
 
     /**
-     * Raeume XML Datei
-     * 
-     * @var String
-     */
-    const XML_ROOM = 'rooms';
-    
-    /**
-     * Raeume UI XML Datei
-     * 
-     * @var String
-     */
-    const XML_ROOM_VIEW = 'roomview';
-    
-    /**
-     * Schaltserver XML Datei
-     * 
-     * @var String
-     */
-    const XML_SWITCHSERVER = 'switchserver';
-    
-    /**
-     * Bedingungen XML
-     * 
-     * @var String
-     */
-    const XML_CONDITIONS = 'conditions';
-    
-    /**
-     * Schaltpunkte XML
-     * 
-     * @var String
-     */
-    const XML_SWITCHPOINTS = 'switchpoints';
-    
-    /**
-     * Schaltbare Elemente
-     * 
-     * @var String
-     */
-    const XML_SWITCHABLES = 'switchables';
-    
-    /**
-     * Benutzer zu Hause
-     *
-     * @var String
-     */
-    const XML_USERS_AT_HOME = 'usersathome';
-
-    /**
      * Sensor Transmitter
      *
      * @var String
      */
     const XML_SENSOR_TRANSMITTER = 'sensortransmitter';
-
-    /**
-     * Ereignisse
-     *
-     * @var String
-     */
-    const XML_EVENTS = 'events';
     
     /**
      * Style
@@ -108,6 +52,8 @@ class SHC extends RWF {
     
     public function __construct() {
 
+        global $argv;
+
         //XML Initialisieren
         $this->initXml();
 
@@ -124,6 +70,12 @@ class SHC extends RWF {
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
             $this->redirection();
             $this->initStyle();
+        } elseif(ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) {
+
+            //Sheduler initalisieren
+
+            //Datenbank Initalisieren
+            $this->initDatabase();
         }
     }
 
@@ -133,15 +85,7 @@ class SHC extends RWF {
     protected function initXml() {
         
         $fileManager = XmlFileManager::getInstance();
-        //$fileManager->registerXmlFile(self::XML_ROOM, PATH_SHC_STORAGE . 'rooms.xml', PATH_SHC_STORAGE . 'default/defaultRooms.xml');
-        //$fileManager->registerXmlFile(self::XML_ROOM_VIEW, PATH_SHC_STORAGE . 'roomview.xml', PATH_SHC_STORAGE . 'default/defaultRoomview.xml');
-        //$fileManager->registerXmlFile(self::XML_SWITCHSERVER, PATH_SHC_STORAGE . 'switchserver.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserver.xml');
-        //$fileManager->registerXmlFile(self::XML_CONDITIONS, PATH_SHC_STORAGE . 'conditions.xml', PATH_SHC_STORAGE . 'default/defaultConditions.xml');
-        //$fileManager->registerXmlFile(self::XML_SWITCHPOINTS, PATH_SHC_STORAGE . 'switchpoints.xml', PATH_SHC_STORAGE . 'default/defaultSwitchpoints.xml');
-        //$fileManager->registerXmlFile(self::XML_SWITCHABLES, PATH_SHC_STORAGE . 'switchables.xml', PATH_SHC_STORAGE . 'default/defaultSwitchables.xml');
-        //$fileManager->registerXmlFile(self::XML_USERS_AT_HOME, PATH_SHC_STORAGE . 'usersathome.xml', PATH_SHC_STORAGE . 'default/defaultUsersathome.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
-        //$fileManager->registerXmlFile(self::XML_EVENTS, PATH_SHC_STORAGE . 'events.xml', PATH_SHC_STORAGE . 'default/defaultEvents.xml');
     }
 
     /**
