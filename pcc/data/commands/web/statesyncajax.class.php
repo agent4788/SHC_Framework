@@ -4,6 +4,7 @@ namespace PCC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Date\DateTime;
 use RWF\Date\LanguageDateTime;
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
@@ -76,6 +77,7 @@ class StateSyncAjax extends AjaxCommand {
             $date = new LanguageDateTime();
             $date->setTimestamp($rpi->getLastBootTime());
             $data['lastBootTime'] = $date->showDateTime();
+            $data['clock'] = DateTime::now()->format('d.m.Y H:i:s');
 
             //CPU
             $sysload = $rpi->getSysLoad();

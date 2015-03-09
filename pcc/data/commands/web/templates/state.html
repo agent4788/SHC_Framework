@@ -18,6 +18,13 @@
                 <span id="state_lastBootTime"></span>
             </div>
         </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.time.clock'}</span>
+            <span class="pcc-icon pcc-icon-clock"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_clock" title=""></span>
+            </div>
+        </div>
         {/contentbox}
         {contentbox name='index.box.system.title'}
         <div class="pcc-contentbox-body-row">
@@ -165,6 +172,7 @@
                             $('#state_uptime').text(data.uptimeSort);
                             $('#state_uptime').attr('title', data.uptime);
                             $('#state_lastBootTime').text(data.lastBootTime);
+                            $('#state_clock').text(data.clock);
 
                             $('#state_sysload_0').text(data.sysload_0);
                             $('#state_sysload_1').text(data.sysload_1);

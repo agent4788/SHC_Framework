@@ -35,6 +35,7 @@ $l['index.tabs.data'] = 'Systemdaten';
 $l['index.box.time.title'] = 'Systemzeit';
 $l['index.box.time.uptime'] = 'Laufzeit';
 $l['index.box.time.bootTime'] = 'letzter Start';
+$l['index.box.time.clock'] = 'Datum/Urzeit';
 
 $l['index.box.system.title'] = 'System';
 $l['index.box.system.coreAvg'] = 'CPU Auslastung';
