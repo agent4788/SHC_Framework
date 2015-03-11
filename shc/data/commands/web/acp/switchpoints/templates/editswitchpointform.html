@@ -37,7 +37,7 @@
         $('#shc-view-switchpointsManagment-extendetForm').click(function() {
 
             $.get("index.php?app=shc&ajax=editswitchpointform&type=extendet&id={$switchPoint->getId()}", function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
             });
         });
         {/if}
