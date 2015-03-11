@@ -387,7 +387,7 @@ while ($n < 5) {
             continue;
         }
 
-        $response->writeLnColored('ungültige IP Adresse', 'red');
+        $cli->writeLnColored('ungültige IP Adresse', 'red');
         $n++;
         $valid = false;
         break;
@@ -402,7 +402,7 @@ while ($n < 5) {
 
 if ($valid === false) {
 
-    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
     exit(1);
 }
 
@@ -425,7 +425,7 @@ while ($n < 5) {
 
     if (!preg_match('#^[0-9]{1,5}$#', $port) || (int) $port <= 0 || (int) $port >= 65000) {
 
-        $response->writeLnColored('ungültiger Port', 'red');
+        $cli->writeLnColored('ungültiger Port', 'red');
         $n++;
         $valid = false;
         continue;
@@ -440,7 +440,7 @@ while ($n < 5) {
 
 if ($valid === false) {
 
-    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
     exit(1);
 }
 
@@ -461,9 +461,9 @@ while ($n < 5) {
         break;
     }
 
-    if (!preg_match('#^[0-9]{1,2}$#', $timeout) || (int) $timeout <= 0 || (int) $timeout >= 10) {
+    if (!preg_match('#^[0-9]{1,2}$#', $timeout) || (int) $timeout <= 0 || (int) $timeout > 10) {
 
-        $response->writeLnColored('ungültiger Timeout', 'red');
+        $cli->writeLnColored('ungültiger Timeout', 'red');
         $n++;
         $valid = false;
         continue;
@@ -478,7 +478,7 @@ while ($n < 5) {
 
 if ($valid === false) {
 
-    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
     exit(1);
 }
 
@@ -499,9 +499,9 @@ while ($n < 5) {
         break;
     }
 
-    if (!preg_match('#^[0-9]{1,5}$#', $db) || (int) $db <= 0 || (int) $db >= 30) {
+    if (!preg_match('#^[0-9]{1,2}$#', $db) || (int) $db < 0 || (int) $db > 30) {
 
-        $response->writeLnColored('ungültige Datenbank', 'red');
+        $cli->writeLnColored('ungültige Datenbank', 'red');
         $n++;
         $valid = false;
         continue;
@@ -516,7 +516,7 @@ while ($n < 5) {
 
 if ($valid === false) {
 
-    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
     exit(1);
 }
 
@@ -540,7 +540,7 @@ while ($n < 5) {
     //Adresse pruefen
     if(strlen($password) == 0 || strlen($password) > 20) {
 
-        $response->writeLnColored('ungültiges Passwort', 'red');
+        $cli->writeLnColored('ungültiges Passwort', 'red');
         $n++;
         $valid = false;
         break;
@@ -555,7 +555,7 @@ while ($n < 5) {
 
 if ($valid === false) {
 
-    $response->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+    $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
     exit(1);
 }
 
