@@ -85,9 +85,34 @@ class StateSyncAjax extends AjaxCommand {
             $data['sysload_1'] = $sysload[1];
             $data['sysload_2'] = $sysload[2];
 
-            $data['cpuClock'] = String::formatFloat($rpi->getCpuClock());
-            $data['cpuMinClock'] = String::formatFloat($rpi->getCpuMinClock());
-            $data['cpuMaxClock'] = String::formatFloat($rpi->getCpuMaxClock());
+            $html = '';
+            $brake = '';
+            foreach($rpi->getCpuClock() as $cpuId => $value) {
+
+                if($cpuId == 0) {
+
+                    $data['cpuClockCpu0'] = ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                }
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $brake = '<br/>';
+            }
+            $data['cpuClock'] = $html;
+            $html = '';
+            $brake = '';
+            foreach($rpi->getCpuMinClock() as $cpuId => $value) {
+
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $brake = '<br/>';
+            }
+            $data['cpuMinClock'] = $html;
+            $html = '';
+            $brake = '';
+            foreach($rpi->getCpuMaxClock() as $cpuId => $value) {
+
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $brake = '<br/>';
+            }
+            $data['cpuMaxClock'] = $html;
 
             $data['coreTemp'] = String::formatFloat($rpi->getCoreTemprature());
 
