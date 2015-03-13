@@ -112,14 +112,18 @@ class RaspberryPi {
 
         if (!isset($this->cache['hostaddr'])) {
 
-            if (!isset($_SERVER['SERVER_ADDR'])) {
+            if (isset($_SERVER['SERVER_ADDR'])) {
+
+                if (preg_match('#[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}#', $_SERVER['SERVER_ADDR'])) {
+
+                    $this->cache['hostaddr'] = trim($_SERVER['SERVER_ADDR']);
+                } else {
+
+                    $this->cache['hostaddr'] = gethostbyname($this->getHostname());
+                }
+            } else {
 
                 $this->cache['hostaddr'] = 'unknown';
-            }
-
-            if (!$ip = $_SERVER['SERVER_ADDR']) {
-
-                $this->cache['hostaddr'] = gethostbyname($this->getHostname());
             }
         }
         return $this->cache['hostaddr'];
@@ -185,16 +189,16 @@ class RaspberryPi {
 
         if (!isset($this->cache['cpuClock'])) {
 
-            if (file_exists('/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq')) {
+            for($i = 0; $i < 8; $i++) {
 
-                $file = trim(file_get_contents('/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq'));
-                $this->cache['cpuClock'] = floatval($file) / 1000;
-            } else {
+                if(file_exists('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/scaling_cur_freq')) {
 
-                $match = array();
-                $file = file_get_contents('/proc/cpuinfo');
-                preg_match('#BogoMIPS\s*:\s*(\d*\.\d*)#i', $file, $match);
-                $this->cache['cpuClock'] = floatval($match[1]);
+                    $file = trim(file_get_contents('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/scaling_cur_freq'));
+                    $this->cache['cpuClock'][$i] = floatval($file) / 1000;
+                } else {
+
+                    break;
+                }
             }
         }
         return $this->cache['cpuClock'];
@@ -209,13 +213,16 @@ class RaspberryPi {
 
         if (!isset($this->cache['cpuMinClock'])) {
 
-            $file = @file_get_contents('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq');
-            if ($file != false) {
+            for($i = 0; $i < 8; $i++) {
 
-                $this->cache['cpuMinClock'] = floatval(trim($file)) / 1000;
-            } else {
+                if(file_exists('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/cpuinfo_min_freq')) {
 
-                $this->cache['cpuMinClock'] = 0.0;
+                    $file = trim(file_get_contents('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/cpuinfo_min_freq'));
+                    $this->cache['cpuMinClock'][$i] = floatval($file) / 1000;
+                } else {
+
+                    break;
+                }
             }
         }
 
@@ -231,13 +238,16 @@ class RaspberryPi {
 
         if (!isset($this->cache['cpuMaxClock'])) {
 
-            $file = @file_get_contents('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq');
-            if ($file != false) {
+            for($i = 0; $i < 8; $i++) {
 
-                $this->cache['cpuMaxClock'] = floatval(trim($file)) / 1000;
-            } else {
+                if(file_exists('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/cpuinfo_max_freq')) {
 
-                $this->cache['cpuMaxClock'] = 0.0;
+                    $file = trim(file_get_contents('/sys/devices/system/cpu/cpu'. $i .'/cpufreq/cpuinfo_max_freq'));
+                    $this->cache['cpuMaxClock'][$i] = floatval($file) / 1000;
+                } else {
+
+                    break;
+                }
             }
         }
 
@@ -261,7 +271,13 @@ class RaspberryPi {
                 $this->cache['overclockInfo']['cpu'] = $this->config['arm_freq'];
             } else {
 
-                $this->cache['overclockInfo']['cpu'] = 700;
+                if($this->getModel() == self::MODEL_2_B) {
+
+                    $this->cache['overclockInfo']['cpu'] = 900;
+                } else {
+
+                    $this->cache['overclockInfo']['cpu'] = 700;
+                }
             }
 
             //GPU Frequenz
@@ -372,20 +388,21 @@ class RaspberryPi {
      */
     public function getRpiRevision() {
 
-        //'0002' => 'Model B Revision 1.0',
-        //'0003' => 'Model B Revision 1.0 + Fuses mod and D14 removed',
-        //'0004' => 'Model B Revision 2.0 256MB', (Sony)
-        //'0005' => 'Model B Revision 2.0 256MB', (Qisda)
-        //'0006' => 'Model B Revision 2.0 256MB', (Egoman)
-        //'0007' => 'Model A Revision 2.0 256MB', (Egoman)
-        //'0008' => 'Model A Revision 2.0 256MB', (Sony)
-        //'0009' => 'Model A Revision 2.0 256MB', (Qisda)
-        //'000d' => 'Model B Revision 2.0 512MB', (Egoman)
-        //'000e' => 'Model B Revision 2.0 512MB', (Sony)
-        //'000f' => 'Model B Revision 2.0 512MB', (Qisda)
-        //'0010' => 'Model B+ Revision 2.0 512MB', (Sony)
-        //'0011' => 'Compute Module Revision 1.0 512MB', (Sony)
-        //'0012' => 'Model A+ Revision 1.0 256MB', (Sony)
+        //'000002' => 'Model B Revision 1.0',
+        //'000003' => 'Model B Revision 1.0 + Fuses mod and D14 removed',
+        //'000004' => 'Model B Revision 2.0 256MB', (Sony)
+        //'000005' => 'Model B Revision 2.0 256MB', (Qisda)
+        //'000006' => 'Model B Revision 2.0 256MB', (Egoman)
+        //'000007' => 'Model A Revision 2.0 256MB', (Egoman)
+        //'000008' => 'Model A Revision 2.0 256MB', (Sony)
+        //'000009' => 'Model A Revision 2.0 256MB', (Qisda)
+        //'00000d' => 'Model B Revision 2.0 512MB', (Egoman)
+        //'00000e' => 'Model B Revision 2.0 512MB', (Sony)
+        //'00000f' => 'Model B Revision 2.0 512MB', (Qisda)
+        //'000010' => 'Model B+ Revision 2.0 512MB', (Sony)
+        //'000011' => 'Compute Module Revision 1.0 512MB', (Sony)
+        //'000012' => 'Model A+ Revision 1.0 256MB', (Sony)
+        //'a01041' => 'Model 2 B 1GB Ram 4x900MHz'
         if (!isset($this->cache['rpiRevision'])) {
 
             $match = array();
@@ -409,138 +426,148 @@ class RaspberryPi {
     public function getModel() {
         
         $rev = $this->getRpiRevision();
-        if(($rev >= 1 && $rev <= 6) || ($rev >= 10 && $rev <= 15)) {
-            
-            return self::MODEL_B;
-        } elseif($rev >= 7 && $rev <= 9) {
-            
-            return self::MODEL_A;
-        } elseif($rev == 17) {
+        switch($rev) {
 
-            return self::MODEL_COMPUTE_MODULE;
-        } elseif($rev == 18) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
 
-            return self::MODEL_A_PLUS;
+                return self::MODEL_B;
+                break;
+
+            case 7:
+            case 8:
+            case 9:
+
+                return self::MODEL_A;
+                break;
+
+            case 16:
+
+                return self::MODEL_B_PLUS;
+                break;
+
+            case 17:
+
+                return self::MODEL_COMPUTE_MODULE;
+                break;
+
+            case 18:
+
+                return self::MODEL_A_PLUS;
+                break;
+
+            case 10489921:
+
+                return self::MODEL_2_B;
+                break;
+
+            default:
+
+                return self::MODEL_A;
         }
-        return self::MODEL_B_PLUS;
     }
 
     /**
-     * gibt ein Array mit der AUfteilung von System und Videospeicher zurueck
-     * 
-     * @return Array
+     * gibt die Ram groesse in Bytes zurueck
+     *
+     * @return Integer
      */
-    public function getMemorySplit() {
+    public function getTotalMemory() {
 
-        if (!isset($this->cache['memorySplit'])) {
+        $rev = $this->getRpiRevision();
+        $model = $this->getModel();
 
-            //Revision
-            $rev = $this->getRpiRevision();
+        //Gesamten Ram Ermitteln
+        if($model == Self::MODEL_A || $model == Self::MODEL_A_PLUS) {
 
-            //split in der config
-            $gpuMem = array();
-            if (isset($this->config['gpu_mem'])) {
-                $gpuMem[0] = $this->config['gpu_mem'];
-            }
-            if (isset($this->config['gpu_mem_256'])) {
-                $gpuMem[1] = $this->config['gpu_mem_256'];
-            }
-            if (isset($this->config['gpu_mem_512'])) {
-                $gpuMem[2] = $this->config['gpu_mem_512'];
-            }
+            $ramTotal = 256;
+        } elseif($model == Self::MODEL_B) {
 
-            //512 MB RPi
-            if ($rev == 13 || $rev == 14 || $rev == 15 || $rev == 16 || $rev == 17) {
+            if($rev >= 13 && $rev <= 15) {
 
-                if (isset($gpuMem[2])) {
-
-                    $total = $gpuMem[2];
-                } elseif (isset($gpuMem[0])) {
-
-                    $total = $gpuMem[0];
-                } else {
-
-                    $mem = $this->getMemoryUsage();
-                    $total = round($mem ['total'] / 1024 / 1024, 0);
-                    if ($total <= 256) {
-
-                        $total = 256;
-                    } elseif ($total > 256 && $total <= 384) {
-
-                        $total = 128;
-                    } elseif ($total > 384 && $total <= 448) {
-
-                        $total = 64;
-                    } elseif ($total > 448 && $total <= 480) {
-
-                        $total = 32;
-                    } else {
-
-                        $total = 16;
-                    }
-                }
-
-                if ($total == 16) {
-
-                    $this->cache['memorySplit'] = array('system' => '496 MiB', 'video' => '16 MiB');
-                } elseif ($total == 32) {
-
-                    $this->cache['memorySplit'] = array('system' => '480 MiB', 'video' => '32 MiB');
-                } elseif ($total == 64) {
-
-                    $this->cache['memorySplit'] = array('system' => '448 MiB', 'video' => '64 MiB');
-                } elseif ($total == 128) {
-
-                    $this->cache['memorySplit'] = array('system' => '384 MiB', 'video' => '128 MiB');
-                } else {
-
-                    $this->cache['memorySplit'] = array('system' => '256 MiB', 'video' => '256 MiB');
-                }
+                $ramTotal = 512;
             } else {
 
-                //256MB RPi
-                if (isset($gpuMem[1])) {
+                $ramTotal = 256;
+            }
+        } elseif($model == Self::MODEL_B_PLUS || $model == self::MODEL_COMPUTE_MODULE) {
 
-                    $total = $gpuMem[1];
-                } elseif (isset($gpuMem[0])) {
+            $ramTotal = 512;
+        } elseif($model == self::MODEL_2_B) {
 
-                    $total = $gpuMem[0];
-                } else {
+            $ramTotal = 1024;
+        }
+        return $ramTotal * 1024 * 1024;
+    }
 
-                    $mem = $this->getMemoryUsage();
-                    $total = round($mem ['total'] / 1024 / 1024, 0);
+    /**
+     * gibt die groesse des Speichers welcher der GPU zur verfuegung steht in Bytes zurueck
+     * 
+     * @return Integer
+     */
+    public function getGPUMemory() {
 
-                    if ($total <= 128) {
+        if (!isset($this->cache['gpuMemory'])) {
 
-                        $total = 128;
-                    } elseif ($total > 128 && $total <= 192) {
+            $ramTotal = $this->getTotalMemory();
 
-                        $total = 64;
-                    } elseif ($total > 192 && $total <= 224) {
+            //Split Vorgabe ermitteln
+            $gpuMem = 64;
+            if($ramTotal == (1024 * 1024 * 1024)) {
 
-                        $total = 32;
-                    } else {
+                if (isset($this->config['gpu_mem_1024'])) {
 
-                        $total = 16;
-                    }
+                    $gpuMem = (int) $this->config['gpu_mem_1024'];
+                } elseif(isset($this->config['gpu_mem'])) {
+
+                    $gpuMem = (int) $this->config['gpu_mem'];
                 }
+            } elseif($ramTotal == (512 * 1024 * 1024)) {
 
-                if ($total == 16) {
+                if (isset($this->config['gpu_mem_512'])) {
 
-                    $this->cache['memorySplit'] = array('system' => '240 MiB', 'video' => '16 MiB');
-                } elseif ($total == 32) {
+                    $gpuMem = (int) $this->config['gpu_mem_512'];
+                } elseif(isset($this->config['gpu_mem'])) {
 
-                    $this->cache['memorySplit'] = array('system' => '224 MiB', 'video' => '32 MiB');
-                } elseif ($total == 64) {
+                    $gpuMem = (int) $this->config['gpu_mem'];
+                }
+            } elseif($ramTotal == (256 * 1024 * 1024)) {
 
-                    $this->cache['memorySplit'] = array('system' => '192 MiB', 'video' => '64 MiB');
-                } else {
+                if (isset($this->config['gpu_mem_256'])) {
 
-                    $this->cache['memorySplit'] = array('system' => '128 MiB', 'video' => '128 MiB');
+                    $gpuMem = (int) $this->config['gpu_mem_256'];
+                } elseif(isset($this->config['gpu_mem'])) {
+
+                    $gpuMem = (int) $this->config['gpu_mem'];
                 }
             }
+
+            $this->cache['gpuMemory'] = $gpuMem * 1024 * 1024;
         }
-        return $this->cache['memorySplit'];
+        return $this->cache['gpuMemory'];
+    }
+
+    /**
+     * gibt die groesse des Speichers welcher der CPU zur verfuegung steht in Bytes zurueck
+     *
+     * @return Integer
+     */
+    public function getCpuMemory() {
+
+        $ramTotal = $this->getTotalMemory();
+        $gpuMemory = $this->getGPUMemory();
+
+        return ($ramTotal - $gpuMemory);
     }
 
     /**
