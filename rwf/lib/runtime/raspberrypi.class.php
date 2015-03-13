@@ -488,10 +488,10 @@ class RaspberryPi {
         $model = $this->getModel();
 
         //Gesamten Ram Ermitteln
-        if($model == Self::MODEL_A || $model == Self::MODEL_A_PLUS) {
+        if($model == self::MODEL_A || $model == self::MODEL_A_PLUS) {
 
             $ramTotal = 256;
-        } elseif($model == Self::MODEL_B) {
+        } elseif($model == self::MODEL_B) {
 
             if($rev >= 13 && $rev <= 15) {
 
@@ -500,7 +500,7 @@ class RaspberryPi {
 
                 $ramTotal = 256;
             }
-        } elseif($model == Self::MODEL_B_PLUS || $model == self::MODEL_COMPUTE_MODULE) {
+        } elseif($model == self::MODEL_B_PLUS || $model == self::MODEL_COMPUTE_MODULE) {
 
             $ramTotal = 512;
         } elseif($model == self::MODEL_2_B) {
