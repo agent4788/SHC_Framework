@@ -53,7 +53,16 @@ class DatabaseAjax extends AjaxCommand {
         }
 
         $info = $db->info();
-        $lastSave = $info['rdb_last_save_time'];
+        if(isset($info['rdb_last_save_time'])){
+
+            $lastSave = $info['rdb_last_save_time'];
+        } elseif($info['last_save_time']) {
+
+            $lastSave = $info['last_save_time'];
+        } else {
+
+            $lastSave = 0;
+        }
         $lastSaveDate = DateTime::now();
         $lastSaveDate->setTimestamp($lastSave);
 
