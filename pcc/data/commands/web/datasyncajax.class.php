@@ -8,6 +8,7 @@ use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Runtime\RaspberryPi;
 use RWF\Util\String;
+use RWF\Util\FileUtil;
 
 /**
  * liest die Statusdaten und sendet sie an die Oberflaeche
@@ -69,9 +70,10 @@ class DataSyncAjax extends AjaxCommand {
             $data['kernel'] = String::encodeHTML($rpi->getKernelVersion());
             $data['firmwareShort'] = String::encodeHTML(String::subString($rpi->getFirmwareVersion(), 0, 45) . ' ...');
             $data['firmware'] = String::encodeHTML($rpi->getFirmwareVersion());
-            $split = $rpi->getMemorySplit();
-            $data['splitSystem'] = String::encodeHTML($split['system']);
-            $data['splitVideo'] = String::encodeHTML($split['video']);
+            $cpuMemory = $rpi->getCpuMemory();
+            $gpuMemory = $rpi->getGPUMemory();
+            $data['splitSystem'] = FileUtil::formatBytesBinary($cpuMemory);
+            $data['splitVideo'] = FileUtil::formatBytesBinary($gpuMemory);
             $data['hostname'] = String::encodeHTML($rpi->getHostname());
 
             //Systemdaten
@@ -115,6 +117,8 @@ class DataSyncAjax extends AjaxCommand {
                 $data['revision'] = 'Compute Module Revision 1.0 512MB (Sony)';
             } elseif ($rev == 18) {
                 $data['revision'] = 'Model A+ Revision 1.0 256MB (Sony)';
+            } elseif ($rev == 10489921) {
+                $data['revision'] = 'Model 2B 1GB Ram 4x900MHz (Sony)';
             } else {
                 $data['revision'] = RWF::getLanguage()->get('global.unknown');
             }

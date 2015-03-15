@@ -7,6 +7,10 @@ span.pcc-icon-bootTime {
     background-image: url(../../../img/icons/bootTime.png);
 }
 
+span.pcc-icon-clock {
+    background-image: url(../../../img/icons/clock.png);
+}
+
 /* System */
 span.pcc-icon-coreAvg {
     background-image: url(../../../img/icons/coreAvg.png);

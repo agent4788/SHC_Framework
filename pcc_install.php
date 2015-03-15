@@ -111,10 +111,8 @@ if(!file_exists('./rwf/data/storage/users.xml')) {
 foreach($usersXml->groups->group as $group) {
 
     $group = $group->premissions;
-    addPremission($group, 'pcc.ucp.viewSysState', '0');
-    addPremission($group, 'pcc.ucp.viewSysData', '0');
-    addPremission($group, 'pcc.ucp.reboot', '0');
-    addPremission($group, 'pcc.ucp.shutdown', '0');
+    addPremission($group, 'pcc.ucp.viewSysState', '1');
+    addPremission($group, 'pcc.ucp.viewSysData', '1');
     addPremission($group, 'pcc.acp.menu', '0');
     addPremission($group, 'pcc.acp.userManagement', '0');
     addPremission($group, 'pcc.acp.settings', '0');

@@ -18,6 +18,13 @@
                 <span id="state_lastBootTime"></span>
             </div>
         </div>
+        <div class="pcc-contentbox-body-row">
+            <span class="pcc-contentbox-body-row-title">{lang var='index.box.time.clock'}</span>
+            <span class="pcc-icon pcc-icon-clock"></span>
+            <div class="pcc-contentbox-body-row-content">
+                <span id="state_clock" title=""></span>
+            </div>
+        </div>
         {/contentbox}
         {contentbox name='index.box.system.title'}
         <div class="pcc-contentbox-body-row">
@@ -35,14 +42,22 @@
             <span class="pcc-contentbox-body-row-title">{lang var='index.box.system.coreClock'}</span>
             <span class="pcc-icon pcc-icon-coreClock"></span>
             <div class="pcc-contentbox-body-row-content" id="cpuClockTooltip" title="">
-                <span id="state_cpuClock"></span> MHz
+                <span id="state_cpuClockCpu0"></span>
             </div>
             <div style="display: none;" id="cpuClockTooltipData">
                 <div class="tootlip_row">
-                    <span class="tooltip_strong">{lang var='index.box.system.coreClock.min'}</span>: <span id="state_minCpuClock"></span> MHz
+                    <span class="tooltip_strong" style="text-decoration: underline">{lang var='index.box.system.coreClock.current'}</span>
+                    <br/>
+                    <span id="state_cpuClock"></span>
+                </div><div class="tootlip_row">
+                    <span class="tooltip_strong" style="text-decoration: underline">{lang var='index.box.system.coreClock.min'}</span>
+                    <br/>
+                    <span id="state_minCpuClock"></span>
                 </div>
                 <div class="tootlip_row">
-                    <span class="tooltip_strong">{lang var='index.box.system.coreClock.max'}</span>: <span id="state_maxCpuClock"></span> MHz
+                    <span class="tooltip_strong" style="text-decoration: underline">{lang var='index.box.system.coreClock.max'}</span>
+                    <br/>
+                    <span id="state_maxCpuClock"></span>
                 </div>
             </div>
         </div>
@@ -165,13 +180,15 @@
                             $('#state_uptime').text(data.uptimeSort);
                             $('#state_uptime').attr('title', data.uptime);
                             $('#state_lastBootTime').text(data.lastBootTime);
+                            $('#state_clock').text(data.clock);
 
                             $('#state_sysload_0').text(data.sysload_0);
                             $('#state_sysload_1').text(data.sysload_1);
                             $('#state_sysload_2').text(data.sysload_2);
-                            $('#state_cpuClock').text(data.cpuClock);
-                            $('#state_minCpuClock').text(data.cpuMinClock);
-                            $('#state_maxCpuClock').text(data.cpuMaxClock);
+                            $('#state_cpuClockCpu0').html(data.cpuClockCpu0);
+                            $('#state_cpuClock').html(data.cpuClock);
+                            $('#state_minCpuClock').html(data.cpuMinClock);
+                            $('#state_maxCpuClock').html(data.cpuMaxClock);
                             $('#state_coreTemp').text(data.coreTemp);
 
                             $('#state_memoryPercentDisplay').text(data.memoryPercentDisplay);

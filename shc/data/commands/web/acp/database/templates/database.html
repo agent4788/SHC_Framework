@@ -9,13 +9,13 @@
                     <td style="width: 25%; font-weight: bold;">{lang var='acp.database.version'}</td>
                     <td style="width: 25%;">{#$info.redis_version}</td>
                     <td style="width: 25%; font-weight: bold;">{lang var='acp.database.mode'}</td>
-                    <td style="width: 25%;">{#$info.redis_mode}</td>
+                    <td style="width: 25%;">{if $info.redis_mode|isset}{#$info.redis_mode}{elseif $info.role}{#$info.role}{/if}</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold;">{lang var='acp.database.version'}</td>
+                    <td style="font-weight: bold;">{lang var='acp.database.uptime'}</td>
                     <td>{#$info.uptime_in_seconds|seconds:1}</td>
                     <td style="font-weight: bold;">{lang var='acp.database.config'}</td>
-                    <td>{#$info.config_file}</td>
+                    <td>{if $info.config_file|isset}{#$info.config_file}{else}unknown{/if}</td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;">{lang var='acp.database.memory'}</td>
@@ -27,14 +27,16 @@
                     <td style="font-weight: bold;">{lang var='acp.database.lastSave'}</td>
                     <td>{#$lastSaveDate|timeline}</td>
                     <td style="font-weight: bold;">{lang var='acp.database.lastSaveState'}</td>
-                    <td>{#$info.rdb_last_bgsave_status}</td>
+                    <td>{if $info.rdb_last_bgsave_status|isset}{#$info.rdb_last_bgsave_status}{else}unknown{/if}</td>
                 </tr>
+                {if $info.total_net_input_bytes|isset || $info.total_net_output_bytes|isset}
                 <tr>
                     <td style="font-weight: bold;">{lang var='acp.database.input'}</td>
-                    <td>{#$info.total_net_input_bytes|filesizebinary}</td>
+                    <td>{if $info.total_net_input_bytes|isset}{#$info.total_net_input_bytes|filesizebinary}{else}unknown{/if}</td>
                     <td style="font-weight: bold;">{lang var='acp.database.output'}</td>
-                    <td>{#$info.total_net_output_bytes|filesizebinary}</td>
+                    <td>{if $info.total_net_output_bytes|isset}{#$info.total_net_output_bytes|filesizebinary}{else}unknown{/if}</td>
                 </tr>
+                {/if}
             </tbody>
         </table>
     </div>

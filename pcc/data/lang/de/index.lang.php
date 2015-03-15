@@ -35,10 +35,12 @@ $l['index.tabs.data'] = 'Systemdaten';
 $l['index.box.time.title'] = 'Systemzeit';
 $l['index.box.time.uptime'] = 'Laufzeit';
 $l['index.box.time.bootTime'] = 'letzter Start';
+$l['index.box.time.clock'] = 'Datum/Urzeit';
 
 $l['index.box.system.title'] = 'System';
 $l['index.box.system.coreAvg'] = 'CPU Auslastung';
 $l['index.box.system.coreClock'] = 'CPU Takt';
+$l['index.box.system.coreClock.current'] = 'Aktuell';
 $l['index.box.system.coreClock.min'] = 'Min';
 $l['index.box.system.coreClock.max'] = 'Max';
 $l['index.box.system.coreTemp'] = 'Core Temperatur';

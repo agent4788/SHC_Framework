@@ -7,12 +7,6 @@
         <a href="index.php?app=pcc&page=acp" id="pcc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
         {/if}
         {/premission}
-        {premission premission='pcc.ucp.reboot'}
-        <img src="./pcc/inc/img/buttons/reboot.png" style="width: 32px; height: 32px;" id="pcc-view-buttons-reboot" title="{lang var='global.button.reboot'}" />
-        {/premission}
-        {premission premission='pcc.ucp.shutdown'}
-        <img src="./pcc/inc/img/buttons/shutdown.png" style="width: 32px; height: 32px;" id="pcc-view-buttons-shutdown" title="{lang var='global.button.shutdown'}" />
-        {/premission}
     </div>
     <div id="pcc-headline-left">
         {if $acp|isset == true}
@@ -178,66 +172,6 @@
         position: 'absolute',
         top: '32px',
         right: '24px'
-    });
-</script>
-{/premission}
-{premission premission='pcc.ucp.reboot'}
-<script type="text/javascript">
-    $('#pcc-view-buttons-reboot').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '332px'
-    }).tooltip();
-    $('#pcc-view-buttons-reboot').click(function() {
-
-        //Prompt
-        $('#pcc-view-safetyPrompt').text("{lang var='global.prompt.reboot.text'}");
-        $('#pcc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.reboot.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#pcc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=pcc&action=reboot';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#pcc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
-    });
-</script>
-{/premission}
-{premission premission='pcc.ucp.shutdown'}
-<script type="text/javascript">
-    $('#pcc-view-buttons-shutdown').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '300px'
-    }).tooltip();
-    $('#pcc-view-buttons-shutdown').click(function() {
-
-        //Prompt
-        $('#pcc-view-safetyPrompt').text("{lang var='global.prompt.shutdown.text'}");
-        $('#pcc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.shutdown.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#pcc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=pcc&action=shutdown';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#pcc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
     });
 </script>
 {/premission}
