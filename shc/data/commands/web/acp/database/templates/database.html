@@ -29,12 +29,14 @@
                     <td style="font-weight: bold;">{lang var='acp.database.lastSaveState'}</td>
                     <td>{if $info.rdb_last_bgsave_status|isset}{#$info.rdb_last_bgsave_status}{else}unknown{/if}</td>
                 </tr>
+                {if $info.total_net_input_bytes|isset || $info.total_net_output_bytes|isset}
                 <tr>
                     <td style="font-weight: bold;">{lang var='acp.database.input'}</td>
                     <td>{if $info.total_net_input_bytes|isset}{#$info.total_net_input_bytes|filesizebinary}{else}unknown{/if}</td>
                     <td style="font-weight: bold;">{lang var='acp.database.output'}</td>
                     <td>{if $info.total_net_output_bytes|isset}{#$info.total_net_output_bytes|filesizebinary}{else}unknown{/if}</td>
                 </tr>
+                {/if}
             </tbody>
         </table>
     </div>
