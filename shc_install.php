@@ -617,9 +617,7 @@ if(!file_exists('./rwf/data/storage/users.xml')) {
 foreach($usersXml->groups->group as $group) {
 
     $group = $group->premissions;
-    addPremission($group, 'shc.ucp.viewUserAtHome', '0');
-    addPremission($group, 'shc.ucp.reboot', '0');
-    addPremission($group, 'shc.ucp.shutdown', '0');
+    addPremission($group, 'shc.ucp.viewUserAtHome', '1');
     addPremission($group, 'shc.acp.menu', '0');
     addPremission($group, 'shc.acp.userManagement', '0');
     addPremission($group, 'shc.acp.settings', '0');
