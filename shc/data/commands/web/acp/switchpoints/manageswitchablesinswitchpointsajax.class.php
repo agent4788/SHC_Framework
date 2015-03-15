@@ -383,10 +383,7 @@ class ManageSwitchablesInSwitchpointsAjax extends AjaxCommand {
 
                     $type = '';
                     RWF::getLanguage()->disableAutoHtmlEndocde();
-                    if($switchableElement instanceof ArduinoOutput) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.arduinoOutput');
-                    } elseif($switchableElement instanceof RadioSocket) {
+                    if($switchableElement instanceof RadioSocket) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket');
                     } elseif($switchableElement instanceof RpiGpioOutput) {
