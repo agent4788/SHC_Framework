@@ -28,7 +28,24 @@
                             {* schaltbare Elemente *}
                             {instanceof element=$element class='\SHC\Switchable\Switchable'}
                             <tr>
-                                <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
+                                <td>
+                                    <a href="#" id="shc-view-show-switchFunctions-{$element->getId()}">{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</a>
+                                    <script type="text/javascript">
+                                        $('#shc-view-show-switchFunctions-{$element->getId()}').click(function() {
+
+                                            $.get("index.php?app=shc&ajax=listswitchfunctions&id={$element->getId()}", function(data, textStatus, jqXHR) {
+                                                $('#shc-view-showSwitchFunctions-frame').html(data);
+                                                $('#shc-view-showSwitchFunctions-frame').attr('title', '{#$element->getName()}');
+                                                $('#shc-view-showSwitchFunctions-frame').dialog( {
+                                                    resizable: false,
+                                                    height: 500,
+                                                    width: 500,
+                                                    modal: true
+                                                } );
+                                            });
+                                        });
+                                    </script>
+                                </td>
                                 <td>
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
@@ -96,7 +113,9 @@
                                         <table class="shc-view-contentTable" id="shc-view-contentTable-innerTable-{$element->getBoxId()}">
                                             <thead>
                                                 <tr class="shc-view-contentTable-head">
-                                                    <th style="width: 70%;">{#$element->getName()}</th>
+                                                    <th style="width: 70%;">
+                                                        {#$element->getName()}
+                                                    </th>
                                                     <th style="width: 20%;">{lang var="acp.switchableManagement.element.box"}</th>
                                                     <th style="width: 10%;">
                                                         {editlink link='index.php?app=shc&ajax=editboxform&id=' id=$element->getBoxId()}
@@ -111,7 +130,24 @@
                                                 {* schaltbare Elemente *}
                                                 {instanceof element=$boxElement class='\SHC\Switchable\Switchable'}
                                                 <tr>
-                                                    <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
+                                                    <td>
+                                                        <a href="#" id="shc-view-show-switchFunctions-{$boxElement->getId()}">{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</a>
+                                                        <script type="text/javascript">
+                                                            $('#shc-view-show-switchFunctions-{$boxElement->getId()}').click(function() {
+
+                                                                $.get("index.php?app=shc&ajax=listswitchfunctions&id={$boxElement->getId()}", function(data, textStatus, jqXHR) {
+                                                                    $('#shc-view-showSwitchFunctions-frame').html(data);
+                                                                    $('#shc-view-showSwitchFunctions-frame').attr('title', '{#$boxElement->getName()}');
+                                                                    $('#shc-view-showSwitchFunctions-frame').dialog( {
+                                                                        resizable: false,
+                                                                        height: 500,
+                                                                        width: 500,
+                                                                        modal: true
+                                                                    } );
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </td>
                                                     <td>
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
                                                         {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
@@ -192,6 +228,7 @@
                 {/foreach}
             </form>
         </div>
+        <div id="shc-view-showSwitchFunctions-frame" title="" style="display: none;"></div>
     </div>
     <div class="shc-view-buttons">
         <div class="shc-view-buttonSet">

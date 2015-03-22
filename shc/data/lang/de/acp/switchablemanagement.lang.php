@@ -17,6 +17,9 @@ $l['acp.switchableManagement.radioSockets'] = 'Funksteckdosen';
 $l['acp.switchableManagement.gpios'] = 'GPIO\'s';
 $l['acp.switchableManagement.gpios.switchserver'] = 'Schaltserver:';
 $l['acp.switchableManagement.radioSockets.sysCode'] = 'Systemcode/Unit ID:';
+$l['acp.switchableManagement.title.switchPoints'] = 'Schaltpunkte:';
+$l['acp.switchableManagement.title.events'] = 'Ereignisse:';
+$l['acp.switchableManagement.title.nothing'] = 'keine:';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
@@ -67,6 +70,7 @@ $l['acp.switchableManagement.prompt.deleteSensor.title'] = 'Sensor löschen';
 $l['acp.switchableManagement.prompt.deleteSensor'] = 'Willst du den Sensor wirklich löschen?';
 $l['acp.switchableManagement.prompt.deleteBox.title'] = 'Box löschen';
 $l['acp.switchableManagement.prompt.deleteBox'] = 'Willst du die Box wirklich löschen?';
+$l['acp.switchableManagement.prompt.error.notSwitchable'] = 'Die Anzeige der Schaltpunkte und Ereignise geht nur fuer schaltbare Elemente';
 
 //Formularelemente
 $l['acp.switchableManagement.form.addActivity.name'] = 'Name';

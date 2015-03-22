@@ -1,0 +1,56 @@
+<div>
+    {if $message|isset == false}
+    <h2>{lang var="acp.switchableManagement.title.switchPoints"}</h2>
+    <hr/>
+    <br/>
+    {foreach from=$switchPoints item='switchPoint'}
+    <div>
+        <h3>{#$switchPoint->getName()}</h3>
+        <p>
+            <span style="font-weight: bold;">{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute"}: </span>
+            {if $switchPoint->getLastExecute()|datetime != '01.01.2000'}{$switchPoint->getLastExecute()|timeline}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}
+        </p>
+    </div>
+    {foreachelse}
+    <div>
+        <p>{lang var="acp.switchableManagement.title.nothing"}</p>
+    </div>
+    {/foreach}
+    <br/>
+    <h2>{lang var="acp.switchableManagement.title.events"}</h2>
+    <hr/>
+    <br/>
+    {foreach from=$eventList item='event'}
+    <div>
+        <h3>{#$event->getName()} (
+            {instanceof element=$event class='\SHC\Event\Events\HumidityClimbOver'}{lang var="acp.eventsManagement.events.HumidityClimbOver"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\HumidityFallsBelow'}{lang var="acp.eventsManagement.events.HumidityFallsBelow"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\InputHigh'}{lang var="acp.eventsManagement.events.InputHigh"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\InputLow'}{lang var="acp.eventsManagement.events.InputLow"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\LightIntensityClimbOver'}{lang var="acp.eventsManagement.events.LightIntensityClimbOver"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\LightIntensityFallBelow'}{lang var="acp.eventsManagement.events.LightIntensityFallBelow"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\MoistureClimbOver'}{lang var="acp.eventsManagement.events.MoistureClimbOver"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\MoistureFallsBelow'}{lang var="acp.eventsManagement.events.MoistureFallsBelow"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\TemperatureClimbOver'}{lang var="acp.eventsManagement.events.TemperatureClimbOver"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\TemperatureFallsBelow'}{lang var="acp.eventsManagement.events.TemperatureFallsBelow"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\UserComesHome'}{lang var="acp.eventsManagement.events.UserComesHome"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\UserLeavesHome'}{lang var="acp.eventsManagement.events.UserLeavesHome"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\Sunrise'}{lang var="acp.eventsManagement.events.Sunrise"}{/instanceof}
+            {instanceof element=$event class='\SHC\Event\Events\Sunset'}{lang var="acp.eventsManagement.events.Sunset"}{/instanceof}
+            )</h3>
+        <p>
+            <span style="font-weight: bold;">{lang var="acp.eventsManagement.eventList.table.head.lastExecute"}: </span>
+            {if $event->getLastExecute()|datetime != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}
+        </p>
+    </div>
+    {foreachelse}
+    <div>
+        <p>{lang var="acp.switchableManagement.title.nothing"}</p>
+    </div>
+    {/foreach}
+    {else}
+    <div>
+        {$message->fetchHtml()}
+    </div>
+    {/if}
+</div>
