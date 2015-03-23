@@ -28,7 +28,7 @@ class ListSensorPointsPage extends PageCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('index', 'sensorpointsmanagement', 'acpindex');
+    protected $languageModules = array('index', 'sensorpointsmanagement', 'acpindex', 'switchablemanagement');
 
     /**
      * Daten verarbeiten
