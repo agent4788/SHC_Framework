@@ -118,7 +118,7 @@ class DataSyncAjax extends AjaxCommand {
                 } elseif ($rev == 15) {
                     $data['revision'] = 'Model B Revision 2.0 512MB (Qisda)';
                 } elseif ($rev == 16) {
-                    $data['revision'] = 'Model B+ Revision 2.0 512MB';
+                    $data['revision'] = 'Model B+ Revision 2.0 512MB (Sony)';
                 } elseif ($rev == 17) {
                     $data['revision'] = 'Compute Module Revision 1.0 512MB (Sony)';
                 } elseif ($rev == 18) {

@@ -15,14 +15,21 @@ use RWF\Request\Commands\PageCommand;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class IndexPage extends PageCommand {
+class StatePage extends PageCommand {
 
     /**
      * Template
      *
      * @var String
      */
-    protected $template = 'indexpage.html';
+    protected $template = 'state.html';
+
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var type
+     */
+    protected $requiredPremission = 'pcc.ucp.viewSysState';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -40,8 +47,11 @@ class IndexPage extends PageCommand {
 
         //Headline Daten
         $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', false);
         $tpl->assign('style', PCC::getStyle());
         $tpl->assign('user', PCC::getVisitor());
+        $tpl->assign('backLink', 'index.php?app=pcc&m&page=index');
         $tpl->assign('device', PCC_DETECTED_DEVICE);
+        $tpl->assign('title', PCC::getLanguage()->get('index.tabs.state'));
     }
 }
