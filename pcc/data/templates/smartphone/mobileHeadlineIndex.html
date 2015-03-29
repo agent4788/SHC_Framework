@@ -1,0 +1,83 @@
+<div data-theme="b" data-role="header" data-position="fixed">
+    {if $user->isUser()}
+        {if $acp|isset == true}
+            {if $acpMenue|isset}
+            <a href="index.php?app=pcc&page=index&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.ucp'}</a>
+            {else}
+            <a href="{$backLink}" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.back'}</a>
+            {/if}
+        {else}
+        {premission premission='pcc.acp.menu'}
+        <a href="index.php?app=pcc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.acpMenu'}</a>
+        {/premission}
+        {/if}
+    {/if}
+    <h3>
+        {setting name='pcc.title' encodeHtml=1}
+    </h3>
+    {if $user->isUser()}
+    <a data-role="button" href="index.php?app=pcc&action=logout&m" data-icon="minus" data-iconpos="left" class="ui-btn-right">
+        {lang var='index.button.logout'}
+    </a>
+    {else}
+    <a href="#popupLogin" data-rel="popup" data-position-to="window" data-inline="true" data-role="button" data-icon="check" data-theme="b" data-transition="pop" data-iconpos="left" class="ui-btn-right">
+        {lang var='index.button.login'}
+    </a>
+    <div data-role="popup" id="popupLogin" data-theme="b" class="ui-corner-all">
+        <form method="post" id="popupLoginForm">
+            <div style="padding:10px 20px;">
+                <h3>{lang var='index.login.boxTitle'}</h3>
+                <div id="login_error_message" style="display: none; color: red;"></div>
+                <label for="un" class="ui-hidden-accessible">{lang var='index.login.name'}:</label>
+                <input name="user" id="un" value="" placeholder="{lang var='index.login.name'}" data-theme="a" type="text">
+                <label for="pw" class="ui-hidden-accessible">{lang var='index.login.password'}:</label>
+                <input name="password" id="pw" value="" placeholder="{lang var='index.login.password'}" data-theme="a" type="password">
+                {ifsetting name='rwf.session.allowLongTimeLogin'}
+                <label>
+                    <input name="longTime" type="checkbox" value="1" data-theme="c">{lang var='index.login.longTime'}
+                </label>
+                {/ifsetting}
+                <button type="submit" data-theme="b" data-role="button" data-icon="check" id="login">{lang var='index.login.submit'}</button>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $('#popupLoginForm').submit(function() {
+
+            var $form = $('#popupLoginForm');
+            var $inputs = $form.find("input, select, button, textarea");
+            var serializedData = $form.serialize();
+
+            request = $.ajax({
+                url: "index.php?m&app=pcc&ajax=login",
+                type: "post",
+                data: serializedData
+            });
+
+            request.done(function(response, textStatus, jqXHR) {
+
+                if (response.success == true) {
+                    window.location = 'index.php?m&app=pcc&page=index';
+                } else if (response.success == false) {
+                    $('#login_error_message').text(response.message);
+                    $('#login_error_message').css({ display: 'block' });
+                    return false;
+                } else {
+                    $('#login_error_message').text("{lang var='index.login.requestError'}");
+                    $('#login_error_message').css({ display: 'block' });
+                    return false;
+                }
+            });
+
+            request.fail(function(jqXHR, textStatus, errorThrown) {
+                //Anfrage Fehlgeschlagen
+                $('#login_error_message').text("{lang var='index.login.requestError'}");
+                $('#login_error').css({ display: 'block' });
+                return false;
+            });
+
+            return false;
+        });
+    </script>
+    {/if}
+</div>
