@@ -1,11 +1,11 @@
 <?php
 
-namespace PCC\Command\Web;
+namespace PCC\Command\Smartphone;
 
 //Imports
 use PCC\Core\PCC;
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\FileUtil;
 
 /**
@@ -17,7 +17,9 @@ use RWF\Util\FileUtil;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class InfoAjax extends AjaxCommand {
+class InfoPage extends PageCommand {
+
+    protected $template = 'acpinfo.html';
 
     protected $premission = 'pcc.acp.menu';
 
@@ -26,14 +28,22 @@ class InfoAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('acpinfo', 'acpindex');
+    protected $languageModules = array('index', 'acpinfo', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        $tpl = RWF::getTemplate();
+        $tpl = PCC::getTemplate();
+
+        //Headline Daten
+        $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', PCC::getStyle());
+        $tpl->assign('user', PCC::getVisitor());
+        $tpl->assign('device', PCC_DETECTED_DEVICE);
+        $tpl->assign('backLink', 'index.php?app=pcc&m&page=acp');
 
         //SHC Version
         $tpl->assign('rwfVersion', RWF::VERSION);
@@ -57,8 +67,5 @@ class InfoAjax extends AjaxCommand {
         $tpl->assign('writePccLog', is_writeable(PATH_PCC_LOG));
         $tpl->assign('pccStorage', str_replace(PATH_BASE, '', PATH_PCC_STORAGE));
         $tpl->assign('writePccStorage', is_writeable(PATH_PCC_STORAGE));
-
-        $this->data = $tpl->fetchString('acpinfo.html');
     }
-
 }
