@@ -1,0 +1,65 @@
+{* ACP Startseite *}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+        <style type="text/css">
+            @media all and (max-width: 35em) {
+                .my-breakpoint .ui-block-a,
+                .my-breakpoint .ui-block-b,
+                .my-breakpoint .ui-block-c,
+                .my-breakpoint .ui-block-d,
+                .my-breakpoint .ui-block-e {
+                    width: 100%;
+                    float: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var='acpindex.box.acpMenue'}</h2>
+                <div class="ui-grid-a ui-responsive">
+                    <div class="ui-block-a">
+                        <ul data-role="listview" data-inset="true">
+                            <li data-role="list-divider">{lang var='acpindex.menu.group.main'}</li>
+                            {premission premission='pcc.acp.userManagement'}
+                            <li>
+                                <a href="index.php?app=shc&page=listusers&m">
+                                    <img src="./shc/inc/img/acpmenue/usermanagement.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.users'}
+                                </a>
+                            </li>
+                            {/premission}
+                            {premission premission='pcc.acp.settings'}
+                            <li>
+                                <a href="index.php?app=shc&page=settingsform&m">
+                                    <img src="./shc/inc/img/acpmenue/settings.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.settings'}
+                                </a>
+                            </li>
+                            {/premission}
+                        </ul>
+                    </div>
+                    <div class="ui-block-b">
+                        <ul data-role="listview" data-inset="true">
+                            <li data-role="list-divider">{lang var='acpindex.menu.group.other'}</li>
+                            {premission premission='pcc.acp.menu'}
+                            <li>
+                                <a href="index.php?app=shc&page=info&m">
+                                    <img src="./shc/inc/img/acpmenue/info.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.info'}
+                                </a>
+                            </li>
+                            {/premission}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
