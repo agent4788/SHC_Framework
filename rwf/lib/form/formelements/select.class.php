@@ -230,7 +230,6 @@ class Select extends AbstractFormElement {
         }
 
         $html .= "</div>\n";
-
         return $html;
     }
 
