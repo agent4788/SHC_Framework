@@ -48,14 +48,9 @@
             <div data-role="main" class="ui-content">
                 <p>{lang var="acp.roomManagement.prompt.deleteRoom"}</p>
                 <a href="index.php?app=shc&m&action=deleteRoom&id={$room->getId()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
-                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$room->getId()}">{lang var="global.no"}</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" data-rel="back">{lang var="global.no"}</a>
             </div>
         </div>
-        <script type="text/javascript">
-            $('#delete-close-{$room->getId()}').click(function() {
-                $('.ui-dialog').dialog('close');
-            });
-        </script>
         {/foreach}
         <script type="text/javascript">
 
