@@ -5,6 +5,7 @@ namespace SHC\Command\Web;
 //Imports
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use SHC\Room\RoomEditor;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\RadioSocket;
@@ -60,14 +61,28 @@ class AssignmentAjax extends AjaxCommand {
                     $sysCode = RadioSocketsUtil::convertBinaryToDec($sysCode);
                 }
 
+                $rooms = array();
+                foreach($switchable->getRooms() as $roomId) {
+
+                    $room = RoomEditor::getInstance()->getRoomById($roomId);
+                    $rooms[] = $room->getName();
+                }
+
                 $radioSockets[$sysCode][$switchable->getDeviceCode()] = array(
                     'sysCodeDec' => $sysCode,
                     'sysCodeBin' => RadioSocketsUtil::convertDecToBinary($sysCode),
                     'devCode' => $switchable->getDeviceCode(),
                     'name' => $switchable->getName(),
-                    'room' => $switchable->getRoom()->getName()
+                    'rooms' => $rooms
                 );
             } elseif($switchable instanceof RpiGpioInput || $switchable instanceof RpiGpioOutput) {
+
+                $rooms = array();
+                foreach($switchable->getRooms() as $roomId) {
+
+                    $room = RoomEditor::getInstance()->getRoomById($roomId);
+                    $rooms[] = $room->getName();
+                }
 
                 //GPIO
                 $gpios[$switchable->getSwitchServer()][$switchable->getPinNumber()] = array(
@@ -75,7 +90,7 @@ class AssignmentAjax extends AjaxCommand {
                     'type' => ($switchable instanceof RpiGpioInput ? 'Input' : 'Output'),
                     'pin' => $switchable->getPinNumber(),
                     'name' => $switchable->getName(),
-                    'room' => $switchable->getRoom()->getName()
+                    'rooms' => $rooms
                 );
             }
         }

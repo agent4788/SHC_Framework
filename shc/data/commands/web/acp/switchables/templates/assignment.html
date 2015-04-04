@@ -23,7 +23,7 @@
                                 {/if}
                                 <tr>
                                     <td>{$radioSocket.devCode}</td>
-                                    <td>{#$radioSocket.name} ({#$radioSocket.room})</td>
+                                    <td>{#$radioSocket.name} ({#$radioSocket.rooms|implode:', '})</td>
                                 </tr>
                                 {if $tpl.foreach.radioSockets.last}
                             </tbody>
@@ -54,7 +54,7 @@
                                     <tr>
                                         <td>{$gpio.pin}</td>
                                         <td>{#$gpio.type}</td>
-                                        <td>{#$gpio.name} ({#$gpio.room})</td>
+                                        <td>{#$gpio.name} ({#$gpio.rooms|implode:', '})</td>
                                     </tr>
                         {if $tpl.foreach.gpios.last}
                                 </tbody>
