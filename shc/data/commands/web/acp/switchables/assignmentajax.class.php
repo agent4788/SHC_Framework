@@ -85,8 +85,10 @@ class AssignmentAjax extends AjaxCommand {
                 }
 
                 //GPIO
+                $switchServer = SwitchServerEditor::getInstance()->getSwitchServerById($switchable->getSwitchServer());
                 $gpios[$switchable->getSwitchServer()][$switchable->getPinNumber()] = array(
-                    'switchServer' => SwitchServerEditor::getInstance()->getSwitchServerById($switchable->getSwitchServer())->getName(),
+                    'switchServer' => $switchServer->getName(),
+                    'model' => $switchServer->getModel(),
                     'type' => ($switchable instanceof RpiGpioInput ? 'Input' : 'Output'),
                     'pin' => $switchable->getPinNumber(),
                     'name' => $switchable->getName(),
