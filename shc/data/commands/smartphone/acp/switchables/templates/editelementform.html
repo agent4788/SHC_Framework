@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            {if $message|isset}
+            {$message->fetchHtml()}
+            {else}
+            {$elementForm->fetchStartTag()}
+            <div data-role="content">
+                {$elementForm->fetchDescription()}
+                {$elementForm->fetchMessages()}
+                {$elementForm->fetchAllElements()}
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><button type="reset" data-icon="back" id="resetForm">{lang var='form.button.reset'}</button></li>
+                        <li><button type="submit" data-icon="check" id="submitForm">{lang var='form.button.submit'}</button></li>
+                    </ul>
+                </div>
+            </div>
+            {$elementForm->fetchEndTag()}
+            {/if}
+        </div>
+    </body>
+</html>
