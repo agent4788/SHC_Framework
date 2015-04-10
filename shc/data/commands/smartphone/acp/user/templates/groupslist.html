@@ -42,9 +42,14 @@
                 <h1>{lang var="acp.userManagement.prompt.deleteGroup.title"}</h1>
             </div>
             <div data-role="main" class="ui-content">
+                {if $group->isSystemGroup() == true}
+                <p>{lang var="acp.userManagement.form.error.1111.group.del"}</p>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$user->getId()}">{lang var="global.button.back"}</a>
+                {else}
                 <p>{lang var="acp.userManagement.prompt.deleteGroup"}</p>
                 <a href="index.php?app=shc&m&action=deleteGroup&id={$group->getId()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
                 <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$group->getId()}">{lang var="global.no"}</a>
+                {/if}
             </div>
         </div>
         <script type="text/javascript">
