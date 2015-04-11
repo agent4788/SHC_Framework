@@ -28,16 +28,17 @@ class ProtocolChooser extends Select {
                 'elro_rc' => array('Elro', ($protocol == 'elro_rc' ? 1 : 0)),
             ),
             'pilight' => array(
-                'brennenstuhl' => array('Brennenstuhl Comfort (brennenstuhl)', ($protocol == 'brennenstuhl' ? 1 : 0)),
+                'beamish_switch' => array('Beamish 4-AE4 (beamish_switch)', ($protocol == 'beamish_switch' ? 1 : 0)),
                 'byebyestandbye' => array('Bye Bye Standbye Switches (byebyestandbye)', ($protocol == 'byebyestandbye' ? 1 : 0)),
+                'brennenstuhl' => array('Brennenstuhl Comfort (brennenstuhl)', ($protocol == 'brennenstuhl' ? 1 : 0)),
                 'clarus_switch' => array('Clarus Switches (clarus_switch)', ($protocol == 'clarus_switch' ? 1 : 0)),
                 'cleverwatts ' => array('Cleverwatts Switches (cleverwatts )', ($protocol == 'cleverwatts ' ? 1 : 0)),
                 'coco_switch' => array('CoCo Technologies Switches (coco_switch)', ($protocol == 'coco_switch' ? 1 : 0)),
                 'cogex' => array('Cogex Switches (cogex)', ($protocol == 'cogex' ? 1 : 0)),
                 'dio_switch' => array(' D-IO Switches (dio_switch)', ($protocol == 'dio_switch' ? 1 : 0)),
-                'elro_ad' => array('Elro Home Easy Advanced Switches (elro_ad)', ($protocol == 'elro_ad' ? 1 : 0)),
-                'elro_hc' => array('Elro Home Control Switches (elro_hc)', ($protocol == 'elro_hc' ? 1 : 0)),
-                'elro_he' => array('Elro Home Easy Switches (elro_he)', ($protocol == 'elro_he' ? 1 : 0)),
+                'elro_300' => array('Elro 300 Series (elro_300)', ($protocol == 'elro_300' ? 1 : 0)),
+                'elro_400' => array('Elro 400 Series (elro_400)', ($protocol == 'elro_400' ? 1 : 0)),
+                'elro_800_switch' => array('Elro 800 Series (elro_800_switch)', ($protocol == 'elro_800_switch' ? 1 : 0)),
                 'home_easy_old' => array('Old Home Easy Switches (home_easy_old)', ($protocol == 'home_easy_old' ? 1 : 0)),
                 'impuls' => array('Impuls Switches (impuls)', ($protocol == 'impuls' ? 1 : 0)),
                 'intertechno_old' => array('Old Intertechno Switches (intertechno_old)', ($protocol == 'intertechno_old' ? 1 : 0)),
@@ -56,7 +57,10 @@ class ProtocolChooser extends Select {
                 'unitech' => array('Silvercrest Switches (unitech)', ($protocol == 'unitech' ? 1 : 0)),
                 'silvercrest' => array('Unitech Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
                 'silvercrest' => array('Silvercrest Switches (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
-                'eHome' => array('eHome', ($protocol == 'eHome' ? 1 : 0))
+                'eHome' => array('eHome (eHome)', ($protocol == 'eHome' ? 1 : 0)),
+                'rc101' => array('RC101 (rc101)', ($protocol == 'rc101' ? 1 : 0)),
+                'rc102' => array('RC102 (rc102)', ($protocol == 'rc102' ? 1 : 0)),
+                'techlico_switch' => array('TechLiCo (techlico_switch)', ($protocol == 'techlico_switch' ? 1 : 0))
             )
 
         );
