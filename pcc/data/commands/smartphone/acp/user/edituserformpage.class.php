@@ -65,7 +65,7 @@ class EditUserFormPage extends PageCommand {
         //Formular erstellen
         $userForm = new UserForm($user);
         $userForm->setView(UserForm::SMARTPHONE_VIEW);
-        $userForm->setAction('index.php?app=shc&m&page=edituserform&id='. $user->getId());
+        $userForm->setAction('index.php?app=pcc&m&page=edituserform&id='. $user->getId());
         $userForm->addId('shc-view-form-editUser');
         $userForm->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.editDescription'));
 

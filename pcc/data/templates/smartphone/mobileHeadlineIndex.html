@@ -8,8 +8,16 @@
             {/if}
         {else}
         {premission premission='pcc.acp.menu'}
-        <a href="index.php?app=pcc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.acpMenu'}</a>
+            {if $backLink|isset == true}
+            <a href="{$backLink}" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.back'}</a>
+            {else}
+            <a href="index.php?app=pcc&page=acp&m" data-icon="star" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.mobile.acpMenu'}</a>
+            {/if}
         {/premission}
+        {/if}
+    {else}
+        {if $backLink|isset == true}
+        <a href="{$backLink}" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left" rel="external">{lang var='index.button.back'}</a>
         {/if}
     {/if}
     <h3>

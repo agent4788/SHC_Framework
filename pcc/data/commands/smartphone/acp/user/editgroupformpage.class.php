@@ -64,7 +64,7 @@ class EditGroupFormPage extends PageCommand {
         //Formular erstellen
         $groupForm = new UserGroupForm($group);
         $groupForm->setView(UserGroupForm::SMARTPHONE_VIEW);
-        $groupForm->setAction('index.php?app=shc&m&page=editgroupform&id='. $group->getId());
+        $groupForm->setAction('index.php?app=pcc&m&page=editgroupform&id='. $group->getId());
         $groupForm->addId('shc-view-form-editGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {

@@ -48,7 +48,6 @@ class DataPage extends PageCommand {
 
         //Headline Daten
         $tpl->assign('apps', PCC::listApps());
-        $tpl->assign('acp', false);
         $tpl->assign('style', PCC::getStyle());
         $tpl->assign('user', PCC::getVisitor());
         $tpl->assign('backLink', 'index.php?app=pcc&m&page=index');
