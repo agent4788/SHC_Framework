@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.switchableManagement.title"}</h2>
+                <div data-role="collapsibleset">
+                    <div data-role="collapsible" data-collapsed="false" >
+                        <h3>{lang var='acp.switchableManagement.radioSockets'}</h3>
+                            {foreach from=$radioSockets item='radioSocketGroup'}
+                                {foreach from=$radioSocketGroup item='radioSocket' name='radioSockets'}
+                                {if $tpl.foreach.radioSockets.first}
+                                    <ul data-role="listview" data-inset="true">
+                                    <li data-role="list-divider" role="heading" data-theme="b" class="shc-view-sort-disabled">
+                                        {lang var='acp.switchableManagement.radioSockets.sysCode'} {$radioSocket.sysCodeBin} ({$radioSocket.sysCodeDec})
+                                    </li>
+                                {/if}
+                                <li>
+                                    <span style="font-weight: bold;">{lang var='acp.switchableManagement.elementTable.table.head.devCode'}:</span>
+                                    {$radioSocket.devCode}
+                                    <br/>
+                                    <span style="font-weight: bold;">{lang var='acp.switchableManagement.elementTable.table.head.name'}:</span>
+                                    {#$radioSocket.name} ({#$radioSocket.rooms|implode:', '})
+                                </li>
+                                {if $tpl.foreach.radioSockets.first}
+                                    </ul>
+                                {/if}
+                                {/foreach}
+                            {foreachelse}
+                            <li>{lang var='acpindex.emptyList'}</li>
+                            {/foreach}
+                    </div>
+                    <div data-role="collapsible" data-collapsed="true" >
+                        <h3>{lang var='acp.switchableManagement.gpios'}</h3>
+                            {foreach from=$gpios item='gpioGroup'}
+                                {foreach from=$gpioGroup item='gpio' name='gpios'}
+                                    {if $tpl.foreach.gpios.first}
+                                        <ul data-role="listview" data-inset="true">
+                                        <li data-role="list-divider" role="heading" data-theme="b" class="shc-view-sort-disabled">
+                                            {lang var='acp.switchableManagement.gpios.switchserver'} {#$gpio.switchServer}
+                                            (
+                                            {if $gpio.model == 1}
+                                            Raspberry Pi Model A
+                                            {elseif $gpio.model == 2}
+                                            Raspberry Pi Model B
+                                            {elseif $gpio.model == 4}
+                                            Raspberry Pi Model B+
+                                            {elseif $gpio.model == 8}
+                                            Raspberry Pi Model A+
+                                            {elseif $gpio.model == 16}
+                                            Raspberry Pi Compute Modul
+                                            {elseif $gpio.model == 32}
+                                            Raspberry Pi 2 Model B
+                                            {elseif $gpio.model == 65536}
+                                            Arduino Pro Mini
+                                            {elseif $gpio.model == 131072}
+                                            Arduino Nano
+                                            {elseif $gpio.model == 262144}
+                                            Arduino Uno
+                                            {elseif $gpio.model == 524288}
+                                            Arduino Mega
+                                            {elseif $gpio.model == 1048576}
+                                            Arduino Due
+                                            {/if}
+                                            )
+                                        </li>
+                                    {/if}
+                                    <li>
+                                        <span style="font-weight: bold;">{lang var='acp.switchableManagement.elementTable.table.head.pin'}:</span>
+                                        {$gpio.pin}
+                                        <br/>
+                                        <span style="font-weight: bold;">{lang var='acp.switchableManagement.elementTable.table.head.type'}:</span>
+                                        {#$gpio.type}
+                                        <br/>
+                                        <span style="font-weight: bold;">{lang var='acp.switchableManagement.elementTable.table.head.name'}:</span>
+                                        {#$gpio.name} ({#$gpio.rooms|implode:', '})
+                                    </li>
+                                    {if $tpl.foreach.gpios.first}
+                                    </ul>
+                                    {/if}
+                                {/foreach}
+                            {foreachelse}
+                            <li>{lang var='acpindex.emptyList'}</li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

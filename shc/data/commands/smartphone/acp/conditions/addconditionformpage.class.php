@@ -811,6 +811,8 @@ class AddConditionFormPage extends PageCommand {
 
                     //Feiertage
                     $conditionForm = new HolidayConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -846,7 +848,12 @@ class AddConditionFormPage extends PageCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -856,6 +863,8 @@ class AddConditionFormPage extends PageCommand {
 
                     //Eingang "1"
                     $conditionForm = new InputHighConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -891,7 +900,12 @@ class AddConditionFormPage extends PageCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -901,6 +915,8 @@ class AddConditionFormPage extends PageCommand {
 
                     //Eingang "0"
                     $conditionForm = new InputLowConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -936,7 +952,12 @@ class AddConditionFormPage extends PageCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);

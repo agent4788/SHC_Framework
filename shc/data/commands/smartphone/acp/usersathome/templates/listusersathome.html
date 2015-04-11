@@ -4,6 +4,8 @@
         <title>{setting name='shc.title' encodeHtml=1}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {$style->fetchHtmlHeaderTags()}
+        <script type="text/javascript" src="./shc/inc/js/jquery-ui.min.sortable.js"></script>
+        <script type="text/javascript" src="./shc/inc/style/5-jquery.ui.touch-punch.min.js"></script>
     </head>
     <body>
         <div data-role="page" id="home">
@@ -11,25 +13,29 @@
             <div data-role="content">
                 <h2 style="text-align: center;">{lang var="acp.usersathomeManagement.title"}</h2>
                 {if $message|isset}{$message->fetchHtml()}{/if}
-                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
-                    {foreach from=$userAtHomeList item='userAtHome'}
-                    <li>
-                        <a href="index.php?app=shc&m&page=edituserathomeform&id={$userAtHome->getId()}">
-                            <h2>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</h2>
-                            <p>{lang var="acp.usersathomeManagement.userlist.table.head.ip"}: {#$userAtHome->getIpAddress()}</p>
-                        </a>
-                        <a href="#delete-{$userAtHome->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
-                    </li>
-                    {foreachelse}
-                    <li>
-                        <h2>{lang var='acpindex.emptyList'}</h2>
-                    </li>
-                    {/foreach}
-                </ul>
+                <form id="shc-view-contentTable-sortable-form" action="index.php?app=shc&m&action=saveuserathomeorder" method="post">
+                    <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a" id="shc-view-sortableList">
+                        {foreach from=$userAtHomeList item='userAtHome'}
+                        <li>
+                            <a href="index.php?app=shc&m&page=edituserathomeform&id={$userAtHome->getId()}">
+                                <h2>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</h2>
+                                <p>{lang var="acp.usersathomeManagement.userlist.table.head.ip"}: {#$userAtHome->getIpAddress()}</p>
+                                <input type="hidden" name="userOrder[{$userAtHome->getId()}]" value="{$userAtHome->getOrderId()}" />
+                            </a>
+                            <a href="#delete-{$userAtHome->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
+                        </li>
+                        {foreachelse}
+                        <li>
+                            <h2>{lang var='acpindex.emptyList'}</h2>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </form>
             </div>
             <div data-role="footer" data-theme="b" data-position="fixed">
                 <div data-role="navbar" data-iconpos="top">
                     <ul>
+                        <li><a href="#" data-icon="bars" id="shc-view-button-sort">{lang var='acpindex.sort'}</a></li>
                         <li><a href="index.php?app=shc&m&page=adduserathomeform" data-icon="plus">{lang var='acp.usersathomeManagement.button.addUser'}</a></li>
                     </ul>
                 </div>
@@ -52,5 +58,37 @@
             });
         </script>
         {/foreach}
+        <script type="text/javascript">
+
+            $(document).bind('pageinit', function() {
+
+                $(function () {
+
+                    //Sortierung
+                    $('#shc-view-button-sort').click(function () {
+
+                        $('#shc-view-sortableList').sortable({
+                            stop: function () {
+
+                                $('#shc-view-sortableList').listview('refresh');
+                                //Sortierungs IDs in die versteckten Felder eintragen
+                                $('#shc-view-sortableList').find('input').each(function (index) {
+                                    $(this).val(index + 1);
+                                });
+                            }
+                        });
+                        $('#shc-view-sortableList').disableSelection();
+
+                        $('#shc-view-button-sort').button({
+                            label: '{lang var="acpindex.save"}'
+                        });
+                        $('#shc-view-button-sort').click(function () {
+
+                            $('#shc-view-contentTable-sortable-form').submit();
+                        });
+                    })
+                });
+            });
+        </script>
     </body>
 </html>

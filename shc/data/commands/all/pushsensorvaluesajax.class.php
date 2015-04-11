@@ -8,6 +8,7 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use SHC\Core\SHC;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Timer\SwitchPointEditor;
 
 /**
  * Sensordaten Empfangen
@@ -32,7 +33,7 @@ class PushSensorValuesAjax extends AjaxCommand {
         $value2 = SHC::getRequest()->getParam('v2', Request::GET, DataTypeUtil::STRING);
         $value3 = SHC::getRequest()->getParam('v3', Request::GET, DataTypeUtil::STRING);
 
-        if($spId === null || $sId === null || $type === null || $value1 === null) {
+        if($spId === null || $type === null || $value1 === null) {
 
             //Fehlende Plichtangabe
             $this->data = 2;
@@ -42,6 +43,13 @@ class PushSensorValuesAjax extends AjaxCommand {
         switch($type) {
 
             case SensorPointEditor::SENSOR_DS18X20:
+
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
 
                 //Sensor ID pruefen
                 if(preg_match('#^(10)|(22)|(28)-[0-9a-f]{6,12}#i', $sId)) {
@@ -61,6 +69,13 @@ class PushSensorValuesAjax extends AjaxCommand {
                 break;
             case SensorPointEditor::SENSOR_DHT:
 
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
+
                 //Sensor ID pruefen
                 if($spId >= 1 && $spId <= 999 && $sId >= 1 && $sId <= 998 && $value2 !== null) {
 
@@ -79,6 +94,13 @@ class PushSensorValuesAjax extends AjaxCommand {
                 return;
                 break;
             case SensorPointEditor::SENSOR_BMP:
+
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
 
                 //Sensor ID pruefen
                 if($spId >= 1 && $spId <= 999 && $sId >= 1 && $sId <= 998 && $value2 !== null && $value3 !== null) {
@@ -100,6 +122,13 @@ class PushSensorValuesAjax extends AjaxCommand {
                 break;
             case SensorPointEditor::SENSOR_RAIN:
 
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
+
                 //Sensor ID pruefen
                 if($spId >= 1 && $spId <= 999 && $sId >= 1 && $sId <= 998) {
 
@@ -118,6 +147,13 @@ class PushSensorValuesAjax extends AjaxCommand {
                 break;
             case SensorPointEditor::SENSOR_HYGROMETER:
 
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
+
                 //Sensor ID pruefen
                 if($spId >= 1 && $spId <= 999 && $sId >= 1 && $sId <= 998) {
 
@@ -135,6 +171,13 @@ class PushSensorValuesAjax extends AjaxCommand {
                 return;
                 break;
             case SensorPointEditor::SENSOR_LDR:
+
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
 
                 //Sensor ID pruefen
                 if($spId >= 1 && $spId <= 999 && $sId >= 1 && $sId <= 998) {
@@ -155,6 +198,18 @@ class PushSensorValuesAjax extends AjaxCommand {
             case 999:
 
                 //Sensorpunkt Spannung
+
+                $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($spId);
+                if($sensorPoint->setVoltage($value1)) {
+
+                    //erfolgreich gespeichert
+                    $this->data = 1;
+                    return;
+                }
+
+                //Speichern fehlgeschlagen
+                $this->data = 3;
+                return;
                 break;
             default:
 

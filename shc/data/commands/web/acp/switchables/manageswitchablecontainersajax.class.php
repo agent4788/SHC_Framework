@@ -10,12 +10,10 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Form\FormElements\SwitchCommandChooser;
-use SHC\Form\FormElements\SwitchServerChooser;
 use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
-use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
@@ -239,8 +237,7 @@ class ManageSwitchableContainersAjax extends AjaxCommand {
                 foreach(SwitchableEditor::getInstance()->listElements(SwitchableEditor::SORT_BY_NAME) as $switchableElement) {
 
                     if(
-                        $switchableElement instanceof ArduinoOutput
-                        || $switchableElement instanceof RadioSocket
+                        $switchableElement instanceof RadioSocket
                         || $switchableElement instanceof RpiGpioOutput
                         || $switchableElement instanceof WakeOnLan
                         || $switchableElement instanceof Shutdown
@@ -265,10 +262,7 @@ class ManageSwitchableContainersAjax extends AjaxCommand {
                         }
 
                         $type = '';
-                        if($switchableElement instanceof ArduinoOutput) {
-
-                            $type = RWF::getLanguage()->get('acp.switchableManagement.element.arduinoOutput');
-                        } elseif($switchableElement instanceof RadioSocket) {
+                        if($switchableElement instanceof RadioSocket) {
 
                             $type = RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket');
                         } elseif($switchableElement instanceof RpiGpioOutput) {

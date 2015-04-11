@@ -958,141 +958,159 @@ class EditConditionFormPage extends PageCommand {
                 $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
                 $this->response->setBody('');
                 $this->template = '';
-            } elseif($condition instanceof HolidaysCondition) {
+            } else {
 
-                //Feiertage
-                $conditionForm = new HolidayConditionForm($condition);
-                $conditionForm->addId('shc-view-form-editCondition');
+                $tpl->assign('conditionForm', $conditionForm);
+            }
+        } elseif($condition instanceof HolidaysCondition) {
 
-                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+            //Feiertage
+            $conditionForm = new HolidayConditionForm($condition);
+            $conditionForm->setView(UserForm::SMARTPHONE_VIEW);
+            $conditionForm->setAction('index.php?app=shc&m&page=editconditionform&id=' . $condition->getId());
+            $conditionForm->addId('shc-view-form-editCondition');
 
-                    //Werte vorbereiten
-                    $name = $conditionForm->getElementByName('name')->getValue();
-                    $holidays = $conditionForm->getElementByName('holidays')->getHolidays();
-                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+            if($conditionForm->isSubmitted() && $conditionForm->validate()) {
 
-                    //Speichern
-                    $message = new Message();
-                    try {
+                //Werte vorbereiten
+                $name = $conditionForm->getElementByName('name')->getValue();
+                $holidays = $conditionForm->getElementByName('holidays')->getHolidays();
+                $enabled = $conditionForm->getElementByName('enabled')->getValue();
 
-                        ConditionEditor::getInstance()->editHolidaysCondition($conditionId, $name, $holidays, $enabled);
-                        $message->setType(Message::SUCCESSFULLY);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
-                    } catch(\Exception $e) {
+                //Speichern
+                $message = new Message();
+                try {
 
-                        if($e->getCode() == 1502) {
+                    ConditionEditor::getInstance()->editHolidaysCondition($conditionId, $name, $holidays, $enabled);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                } catch(\Exception $e) {
 
-                            //Name schon vergeben
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
-                        } elseif($e->getCode() == 1102) {
+                    if($e->getCode() == 1502) {
 
-                            //fehlende Schreibrechte
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
-                        } else {
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                    } elseif($e->getCode() == 1102) {
 
-                            //Allgemeiner Fehler
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
-                        }
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                     }
-                    $tpl->assign('message', $message);
-                } else {
-
-                    $tpl->assign('condition', $condition);
-                    $tpl->assign('conditionForm', $conditionForm);
                 }
-            } elseif($condition instanceof InputHighCondition) {
+                RWF::getSession()->setMessage($message);
 
-                //Eingang "1"
-                $conditionForm = new InputHighConditionForm($condition);
-                $conditionForm->addId('shc-view-form-editCondition');
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
 
-                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+                $tpl->assign('conditionForm', $conditionForm);
+            }
+        } elseif($condition instanceof InputHighCondition) {
 
-                    //Werte vorbereiten
-                    $name = $conditionForm->getElementByName('name')->getValue();
-                    $inputs = $conditionForm->getElementByName('inputs')->getValues();
-                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+            //Eingang "1"
+            $conditionForm = new InputHighConditionForm($condition);
+            $conditionForm->setView(UserForm::SMARTPHONE_VIEW);
+            $conditionForm->setAction('index.php?app=shc&m&page=editconditionform&id=' . $condition->getId());
+            $conditionForm->addId('shc-view-form-editCondition');
 
-                    //Speichern
-                    $message = new Message();
-                    try {
+            if($conditionForm->isSubmitted() && $conditionForm->validate()) {
 
-                        ConditionEditor::getInstance()->editInputHighCondition($conditionId, $name, $inputs, $enabled);
-                        $message->setType(Message::SUCCESSFULLY);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
-                    } catch(\Exception $e) {
+                //Werte vorbereiten
+                $name = $conditionForm->getElementByName('name')->getValue();
+                $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                $enabled = $conditionForm->getElementByName('enabled')->getValue();
 
-                        if($e->getCode() == 1502) {
+                //Speichern
+                $message = new Message();
+                try {
 
-                            //Name schon vergeben
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
-                        } elseif($e->getCode() == 1102) {
+                    ConditionEditor::getInstance()->editInputHighCondition($conditionId, $name, $inputs, $enabled);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                } catch(\Exception $e) {
 
-                            //fehlende Schreibrechte
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
-                        } else {
+                    if($e->getCode() == 1502) {
 
-                            //Allgemeiner Fehler
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
-                        }
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                     }
-                    $tpl->assign('message', $message);
-                } else {
-
-                    $tpl->assign('condition', $condition);
-                    $tpl->assign('conditionForm', $conditionForm);
                 }
-            } elseif($condition instanceof InputLowCondition) {
+                RWF::getSession()->setMessage($message);
 
-                //Eingang "0"
-                $conditionForm = new InputLowConditionForm($condition);
-                $conditionForm->addId('shc-view-form-editCondition');
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
 
-                if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+                $tpl->assign('conditionForm', $conditionForm);
+            }
+        } elseif($condition instanceof InputLowCondition) {
 
-                    //Werte vorbereiten
-                    $name = $conditionForm->getElementByName('name')->getValue();
-                    $inputs = $conditionForm->getElementByName('inputs')->getValues();
-                    $enabled = $conditionForm->getElementByName('enabled')->getValue();
+            //Eingang "0"
+            $conditionForm = new InputLowConditionForm($condition);
+            $conditionForm->setView(UserForm::SMARTPHONE_VIEW);
+            $conditionForm->setAction('index.php?app=shc&m&page=editconditionform&id=' . $condition->getId());
+            $conditionForm->addId('shc-view-form-editCondition');
 
-                    //Speichern
-                    $message = new Message();
-                    try {
+            if($conditionForm->isSubmitted() && $conditionForm->validate()) {
 
-                        ConditionEditor::getInstance()->editInputLowCondition($conditionId, $name, $inputs, $enabled);
-                        $message->setType(Message::SUCCESSFULLY);
-                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
-                    } catch(\Exception $e) {
+                //Werte vorbereiten
+                $name = $conditionForm->getElementByName('name')->getValue();
+                $inputs = $conditionForm->getElementByName('inputs')->getValues();
+                $enabled = $conditionForm->getElementByName('enabled')->getValue();
 
-                        if($e->getCode() == 1502) {
+                //Speichern
+                $message = new Message();
+                try {
 
-                            //Name schon vergeben
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
-                        } elseif($e->getCode() == 1102) {
+                    ConditionEditor::getInstance()->editInputLowCondition($conditionId, $name, $inputs, $enabled);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                } catch(\Exception $e) {
 
-                            //fehlende Schreibrechte
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
-                        } else {
+                    if($e->getCode() == 1502) {
 
-                            //Allgemeiner Fehler
-                            $message->setType(Message::ERROR);
-                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
-                        }
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                     }
-                    $tpl->assign('message', $message);
-                } else {
-
-                    $tpl->assign('condition', $condition);
-                    $tpl->assign('conditionForm', $conditionForm);
                 }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
                 $tpl->assign('conditionForm', $conditionForm);

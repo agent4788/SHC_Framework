@@ -140,7 +140,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectPc = new Select('pcc_ui_redirectPcTo');
         $redirectPc->setValues(array(
                 1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('pcc.ui.redirectPcTo') == 1 ? 1 : 0)),
-                2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('pcc.ui.redirectPcTo') == 2 ? 1 : 0)),
                 3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('pcc.ui.redirectPcTo') == 3 ? 1 : 0))
         ));
         $redirectPc->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectPcTo'));
@@ -152,7 +151,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectTablet = new Select('pcc_ui_redirectTabletTo');
         $redirectTablet->setValues(array(
             1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('pcc.ui.redirectTabletTo') == 1 ? 1 : 0)),
-            2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('pcc.ui.redirectTabletTo') == 2 ? 1 : 0)),
             3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('pcc.ui.redirectTabletTo') == 3 ? 1 : 0))
         ));
         $redirectTablet->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectTabletTo'));
@@ -164,7 +162,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectSmartphone = new Select('pcc_ui_redirectSmartphoneTo');
         $redirectSmartphone->setValues(array(
             1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('pcc.ui.redirectSmartphoneTo') == 1 ? 1 : 0)),
-            2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('pcc.ui.redirectSmartphoneTo') == 2 ? 1 : 0)),
             3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('pcc.ui.redirectSmartphoneTo') == 3 ? 1 : 0))
         ));
         $redirectSmartphone->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectSmartphoneTo'));

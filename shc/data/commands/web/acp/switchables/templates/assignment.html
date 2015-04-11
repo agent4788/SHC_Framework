@@ -23,7 +23,7 @@
                                 {/if}
                                 <tr>
                                     <td>{$radioSocket.devCode}</td>
-                                    <td>{#$radioSocket.name} ({#$radioSocket.room})</td>
+                                    <td>{#$radioSocket.name} ({#$radioSocket.rooms|implode:', '})</td>
                                 </tr>
                                 {if $tpl.foreach.radioSockets.last}
                             </tbody>
@@ -39,7 +39,34 @@
                     {foreach from=$gpioGroup item='gpio' name='gpios'}
                         {if $tpl.foreach.gpios.first}
                             <br/>
-                            <h2>{lang var='acp.switchableManagement.gpios.switchserver'} {#$gpio.switchServer}</h2>
+                            <h2>
+                                {lang var='acp.switchableManagement.gpios.switchserver'} {#$gpio.switchServer}
+                                (
+                                {if $gpio.model == 1}
+                                Raspberry Pi Model A
+                                {elseif $gpio.model == 2}
+                                Raspberry Pi Model B
+                                {elseif $gpio.model == 4}
+                                Raspberry Pi Model B+
+                                {elseif $gpio.model == 8}
+                                Raspberry Pi Model A+
+                                {elseif $gpio.model == 16}
+                                Raspberry Pi Compute Modul
+                                {elseif $gpio.model == 32}
+                                Raspberry Pi 2 Model B
+                                {elseif $gpio.model == 65536}
+                                Arduino Pro Mini
+                                {elseif $gpio.model == 131072}
+                                Arduino Nano
+                                {elseif $gpio.model == 262144}
+                                Arduino Uno
+                                {elseif $gpio.model == 524288}
+                                Arduino Mega
+                                {elseif $gpio.model == 1048576}
+                                Arduino Due
+                                {/if}
+                                )
+                            </h2>
                             <hr/>
                             <table class="shc-view-contentTable">
                                 <thead>
@@ -54,7 +81,7 @@
                                     <tr>
                                         <td>{$gpio.pin}</td>
                                         <td>{#$gpio.type}</td>
-                                        <td>{#$gpio.name} ({#$gpio.room})</td>
+                                        <td>{#$gpio.name} ({#$gpio.rooms|implode:', '})</td>
                                     </tr>
                         {if $tpl.foreach.gpios.last}
                                 </tbody>

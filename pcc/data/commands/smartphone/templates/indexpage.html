@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                    {premission premission='pcc.ucp.viewSysState'}
+                    <li data-theme="c">
+                        <a href="index.php?app=pcc&m&page=state" data-transition="slide">
+                            {lang var='index.tabs.state'}
+                        </a>
+                    </li>
+                    {/premission}
+                    {premission premission='pcc.ucp.viewSysData'}
+                    <li data-theme="c">
+                        <a href="index.php?app=pcc&m&page=data" data-transition="slide">
+                            {lang var='index.tabs.data'}
+                        </a>
+                    </li>
+                    {/premission}
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

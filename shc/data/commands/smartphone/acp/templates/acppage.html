@@ -43,6 +43,14 @@
                                 </a>
                             </li>
                             {/premission}
+                            {premission premission='shc.acp.databaseManagement'}
+                            <li>
+                                <a href="index.php?app=shc&page=database&m">
+                                    <img src="./shc/inc/img/acpmenue/database.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.database'}
+                                </a>
+                            </li>
+                            {/premission}
                             {premission premission='shc.acp.backupsManagement'}
                             <li>
                                 <a href="index.php?app=shc&page=listbackups&m">

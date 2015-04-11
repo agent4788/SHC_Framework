@@ -850,7 +850,13 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {elseif} Tag', $this->templateName, $this->line);
                 } else {
 
-                    $this->closeTag('if');
+                    if($last == 'if') {
+
+                        $this->closeTag('if');
+                    } else {
+
+                        $this->closeTag('elseif');
+                    }
                     $this->openTag('elseif');
                 }
                 return $this->compileIfTag($argString, true);
@@ -864,7 +870,13 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {else} Tag', $this->templateName, $this->line);
                 } else {
 
-                    $this->closeTag('if');
+                    if($last == 'if') {
+
+                        $this->closeTag('if');
+                    } else {
+
+                        $this->closeTag('elseif');
+                    }
                     $this->openTag('else');
                 }
 

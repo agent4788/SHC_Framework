@@ -19,7 +19,7 @@ use RWF\Util\FileUtil;
  */
 class InfoAjax extends AjaxCommand {
 
-    protected $premission = 'shc.acp.menu';
+    protected $premission = 'pcc.acp.menu';
 
     /**
      * Sprachpakete die geladen werden sollen

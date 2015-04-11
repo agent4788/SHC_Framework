@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{setting name='pcc.title' encodeHtml=1}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {$style->fetchHtmlHeaderTags()}
+</head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                    <li data-role="list-divider" role="heading">{lang var='index.box.os.title'}</li>
+                    <li>
+                        {if $device != 'smartphone'}
+                        <span class="pcc-icon pcc-icon-os"></span>
+                        {/if}
+                        <h1>{lang var='index.box.os.os'}:</h1>
+                        <p>
+                            {#$rpi->getOsName()}
+                        </p>
+                    </li>
+                    <li>
+                        {if $device != 'smartphone'}
+                        <span class="pcc-icon pcc-icon-kernel"></span>
+                        {/if}
+                        <h1>{lang var='index.box.os.kernel'}:</h1>
+                        <p>
+                            {#$rpi->getKernelVersion()}
+                        </p>
+                    </li>
+                    <li>
+                        {if $device != 'smartphone'}
+                        <span class="pcc-icon pcc-icon-firmware"></span>
+                        {/if}
+                        <h1>{lang var='index.box.os.firmware'}:</h1>
+                        <p>
+                            {#$rpi->getFirmwareVersion()}
+                        </p>
+                    </li>
+                    <li>
+                        {if $device != 'smartphone'}
+                        <span class="pcc-icon pcc-icon-hostname"></span>
+                        {/if}
+                        <h1>{lang var='index.box.os.hostname'}:</h1>
+                        <p>
+                            {#$rpi->getHostname()}
+                        </p>
+                    </li>
+                </ul>
+                {if $rpi->getRpiRevision() != null}
+                    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                        <li data-role="list-divider" role="heading">{lang var='index.box.data.title'}</li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-core"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.core'}:</h1>
+                            <p>
+                                {#$rpi->getCPUType()}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-ramSplit"></span>
+                            {/if}
+                            <h1>{lang var='index.box.os.ramSplit'}:</h1>
+                            <p>
+                                <span style="font-weight: bold;">{lang var='index.box.os.ramSplit.ram'} :</span> {$rpi->getCpuMemory()|filesizebinary}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.box.os.ramSplit.video'} :</span> {$rpi->getGPUMemory()|filesizebinary}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-overclock"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.overclock'}:</h1>
+                            <p>
+                                <span style="font-weight: bold;">{lang var='index.box.data.overclock.cpu'}:</span> {@$overclock.cpu} MHz
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.box.data.overclock.gpu'}:</span> {@$overclock.gpu} MHz
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.box.data.overclock.ram'}:</span> {@$overclock.ram} MHz
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.box.data.overclock.voltage'}:</span> {@$overclock.voltage}V
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-coreFeatures"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.coreFeatures'}:</h1>
+                            <p>
+                                {#$rpi->getCPUFeatures()}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-serial"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.serial'}:</h1>
+                            <p>
+                                {#$rpi->getRpiSerial()}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-revision"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.revision'}:</h1>
+                            <p>
+                                {if $rpi->getRpiRevision() == 1}
+                                    Beta
+                                {elseif $rpi->getRpiRevision() == 2}
+                                    Model B Revision 1.0
+                                {elseif $rpi->getRpiRevision() == 3}
+                                    Model B Revision 1.0 + Fuses mod and D14 removed
+                                {elseif $rpi->getRpiRevision() == 4}
+                                    Model B Revision 2.0 256MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 5}
+                                    Model B Revision 2.0 256MB (Qisda)
+                                {elseif $rpi->getRpiRevision() == 6}
+                                    Model B Revision 2.0 256MB (Egoman)
+                                {elseif $rpi->getRpiRevision() == 7}
+                                    Model A Revision 2.0 256MB (Egoman)
+                                {elseif $rpi->getRpiRevision() == 8}
+                                    Model A Revision 2.0 256MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 9}
+                                    Model A Revision 2.0 256MB (Qisda)
+                                {elseif $rpi->getRpiRevision() == 13}
+                                    Model B Revision 2.0 512MB (Egoman)
+                                {elseif $rpi->getRpiRevision() == 14}
+                                    Model B Revision 2.0 512MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 15}
+                                    Model B Revision 2.0 512MB (Qisda)
+                                {elseif $rpi->getRpiRevision() == 16}
+                                    Model B+ Revision 2.0 512MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 17}
+                                Compute Module Revision 1.0 512MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 18}
+                                    Model A+ Revision 1.0 256MB (Sony)
+                                {elseif $rpi->getRpiRevision() == 10489921}
+                                    Model 2B 1GB Ram 4x900MHz (Sony)
+                                {else}
+                                    {lang var='global.unknown'}
+                                {/if}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-usbCurrent"></span>
+                            {/if}
+                            <h1>{lang var='index.box.data.usbCurrent'}:</h1>
+                            <p>
+                                {@$rpi->getUsbCurrent()} mA
+                            </p>
+                        </li>
+                    </ul>
+                    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                        <li data-role="list-divider" role="heading">{lang var='index.box.video.title'}</li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-video"></span>
+                            {/if}
+                            <h1>{lang var='index.box.video.h264'}:</h1>
+                            <p>
+                                {lang var='index.box.video.active'}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-video"></span>
+                            {/if}
+                            <h1>{lang var='index.box.video.mpeg2'}:</h1>
+                            <p>
+                                {if $rpi->isSetMPEGCode() == true}
+                                    {lang var='index.box.video.active'}
+                                {else}
+                                    {lang var='index.box.video.inactive'}
+                                {/if}
+                            </p>
+                        </li>
+                        <li>
+                            {if $device != 'smartphone'}
+                            <span class="pcc-icon pcc-icon-video"></span>
+                            {/if}
+                            <h1>{lang var='index.box.video.vc1'}:</h1>
+                            <p>
+                                {if $rpi->isSetVC1Code() == true}
+                                    {lang var='index.box.video.active'}
+                                {else}
+                                    {lang var='index.box.video.inactive'}
+                                {/if}
+                            </p>
+                        </li>
+                    </ul>
+                {/if}
+                <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                    <li data-role="list-divider" role="heading">{lang var='index.box.usb.title'}</li>
+                    {foreach from=$rpi->getUsbDevices() item='device'}
+                    <li>
+                        <h1>{#$device.vendor} {#$device.produkt}</h1>
+                        <p>
+                            <span style="font-weight: bold;">{lang var='index.box.usb.count'}:</span> {@$device.count}
+                            <br/>
+                            <span style="font-weight: bold;">{lang var='index.box.usb.class'}:</span> {#$device.interface}
+                            <br/>
+                            <span style="font-weight: bold;">{lang var='index.box.usb.current'}:</span> {#$device.maxPower}
+                        </p>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

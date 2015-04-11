@@ -96,26 +96,28 @@ class PCC extends RWF {
      */
     protected function redirection() {
 
+        //Mobil Detect einbinden
+        require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
+
+        $mobilDetect = new \Mobile_Detect();
+
         //Umleitung fuer PC/Tablet/Smartphone
-        if (self::$session->isNewSession() && self::$settings->getValue('pcc.ui.redirectActive')) {
 
-            //Mobil Detect einbinden
-            require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
+        /**
+         * Einstellung der Umleitung
+         *
+         * 1 => auf PC oberflaeche leiten
+         * 2 => auf Tablet Oberflache leiten
+         * 3 => auf Smartphone oberflaeche leiten
+         */
+        //Geraet feststellen und Umleiten nach den jeweiligen Einstellungen
+        $location = 'index.php?app=' . APP_NAME;
+        if ($mobilDetect->isTablet()) {
 
-            $mobilDetect = new \Mobile_Detect();
+            define('PCC_DETECTED_DEVICE', 'tablet');
 
-            /**
-             * Einstellung der Umleitung
-             *
-             * 1 => auf PC oberflaeche leiten
-             * 2 => auf Tablet Oberflache leiten
-             * 3 => auf Smartphone oberflaeche leiten
-             */
-            //Geraet feststellen und Umleiten nach den jeweiligen Einstellungen
-            $location = 'index.php?app=' . APP_NAME;
-            if ($mobilDetect->isTablet()) {
-
-                //Tablet
+            //Tablet
+            if (self::$session->isNewSession() && self::$settings->getValue('pcc.ui.redirectActive')) {
                 switch (self::$settings->getValue('pcc.ui.redirectTabletTo')) {
 
                     case 1:
@@ -130,9 +132,13 @@ class PCC extends RWF {
                         //auf Tablet Oberflaeche
                         $location .= '&t';
                 }
-            } elseif ($mobilDetect->isMobile()) {
+            }
+        } elseif ($mobilDetect->isMobile()) {
 
-                //Smartphone
+            define('PCC_DETECTED_DEVICE', 'smartphone');
+
+            //Smartphone
+            if (self::$session->isNewSession() && self::$settings->getValue('pcc.ui.redirectActive')) {
                 switch (self::$settings->getValue('pcc.ui.redirectSmartphoneTo')) {
 
                     case 1:
@@ -147,9 +153,13 @@ class PCC extends RWF {
                         //auf Smartphone Oberflaeche
                         $location .= '&m';
                 }
-            } else {
+            }
+        } else {
 
-                //PC und alles andere
+            define('PCC_DETECTED_DEVICE', 'pc');
+
+            //PC und alles andere
+            if (self::$session->isNewSession() && self::$settings->getValue('pcc.ui.redirectActive')) {
                 switch (self::$settings->getValue('pcc.ui.redirectPcTo')) {
 
                     case 2:
@@ -165,8 +175,10 @@ class PCC extends RWF {
                         //es muss nicht umgeleitet werden
                 }
             }
+        }
 
-            //Header setzen, senden und beenden
+        //Header setzen, senden und beenden
+        if (self::$session->isNewSession() && self::$settings->getValue('pcc.ui.redirectActive') && $location != 'index.php?app=' . APP_NAME) {
             self::$response->addLocationHeader($location);
             self::$response->setBody('');
             self::$response->flush();

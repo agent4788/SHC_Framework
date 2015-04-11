@@ -20,6 +20,9 @@ $l['acp.switchableManagement.radioSockets.sysCode'] = 'Systemcode/Unit ID:';
 $l['acp.switchableManagement.title.switchPoints'] = 'Schaltpunkte:';
 $l['acp.switchableManagement.title.events'] = 'Ereignisse:';
 $l['acp.switchableManagement.title.nothing'] = 'keine:';
+$l['acp.switchableManagement.message.id.error'] = 'Ungültige Raum ID';
+$l['acp.switchableManagement.title.addSwitchable'] = 'schaltbares Element hinzufügen';
+$l['acp.switchableManagement.button.switchFunctions'] = 'Schaltfunktionen';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';

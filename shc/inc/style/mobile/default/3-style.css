@@ -134,3 +134,16 @@ span.tooltip_strong {
     font-weight: bold;
     display: inline-block;
 }
+
+/* Icons */
+span.shc-icon {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    top: 10px;
+    margin: 0 10px;
+    float: left;
+    background-size: 48px;
+    background-position: center;
+    background-repeat: no-repeat;
+}

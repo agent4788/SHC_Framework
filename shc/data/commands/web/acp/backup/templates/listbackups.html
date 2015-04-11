@@ -50,7 +50,7 @@
 
             //Ajax Anfrage Senden
             $.get("index.php?app=shc&ajax=makebackup", function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
+                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
             });
         });
     });

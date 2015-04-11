@@ -109,12 +109,6 @@ class EditElementFormAjax extends AjaxCommand {
                 $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $activityForm);
             }
-        } elseif($element instanceof ArduinoInput) {
-
-            //nicht Implementiert
-        } elseif($element instanceof ArduinoInput) {
-
-            //nicht Implementiert
         } elseif($element instanceof Countdown) {
 
             //Countdown
