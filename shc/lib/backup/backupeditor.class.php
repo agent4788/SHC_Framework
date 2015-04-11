@@ -6,6 +6,7 @@ namespace SHC\Backup;
 use RWF\Date\DateTime;
 use RWF\Util\FileUtil;
 use RWF\XML\XmlFileManager;
+use SHC\Core\SHC;
 
 /**
  * Backup Verwaltung
@@ -182,7 +183,162 @@ class BackupEditor {
      */
     protected function makeFileBackup($ignoreHiddenFiles = false) {
 
-        $filename = '';
+        $filename = $this->backupPath . 'shc__' . DateTime::now()->format('Y_m_d__H_i') .'__'. md5(DateTime::now()->getTimestamp()) . '.zip';
+        $zip = new \ZipArchive();
+        if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
+
+            //Datanbank verbindung aufbauen
+            $db = SHC::getDatabase();
+
+            //Daten aus Redis in eine JSON Datei schreiben
+            $data = array();
+
+            //AutoIncrements
+            $data['autoIncrement:conditions'] = $db->get('autoIncrement:conditions');
+            $data['autoIncrement:events'] = $db->get('autoIncrement:events');
+            $data['autoIncrement:roomView'] = $db->get('autoIncrement:roomView');
+            $data['autoIncrement:roomView_order'] = $db->get('autoIncrement:roomView_order');
+            $data['autoIncrement:rooms'] = $db->get('autoIncrement:rooms');
+            $data['autoIncrement:switchServers'] = $db->get('autoIncrement:switchServers');
+            $data['autoIncrement:switchables'] = $db->get('autoIncrement:switchables');
+            $data['autoIncrement:switchpoints'] = $db->get('autoIncrement:switchpoints');
+            $data['autoIncrement:usersrathome'] = $db->get('autoIncrement:usersrathome');
+
+            //Bedingungen
+            if($db->exists('conditions')) {
+
+                $data['conditions'] = array();
+                foreach($db->hGetAll('conditions') as $id => $value) {
+
+                    $data['conditions:'. $id] = $value;
+                }
+            }
+
+            //Ereignisse
+            if($db->exists('events')) {
+
+                $data['events'] = array();
+                foreach($db->hGetAll('events') as $id => $value) {
+
+                    $data['events:'. $id] = $value;
+                }
+            }
+
+            //Raum uebersicht
+            if($db->exists('roomView')) {
+
+                $data['roomView'] = array();
+                foreach($db->hGetAll('roomView') as $id => $value) {
+
+                    $data['roomView:'. $id] = $value;
+                }
+            }
+
+            //Raeume
+            if($db->exists('rooms')) {
+
+                $data['rooms'] = array();
+                foreach($db->hGetAll('rooms') as $id => $value) {
+
+                    $data['rooms:'. $id] = $value;
+                }
+            }
+
+            //Sensorpunkte
+            if($db->exists('sensors:sensorPoints')) {
+
+                $data['sensors:sensorPoints'] = array();
+                foreach($db->hGetAll('sensors:sensorPoints') as $id => $value) {
+
+                    $data['sensors:sensorPoints:'. $id] = $value;
+                }
+            }
+
+            //Sensoren
+            if($db->exists('sensors:sensors')) {
+
+                $data['sensors:sensors'] = array();
+                foreach($db->hGetAll('sensors:sensors') as $id => $value) {
+
+                    $data['sensors:sensors.'. $id] = $value;
+                }
+            }
+
+            //Sensordaten
+            if($db->exists('sensors:sensorData')) {
+
+                $data['sensors:sensorData'] = array();
+                for($i = 0; $i <= 999; $i++) {
+
+                    if($db->exists('sensors:sensorData:'. $i)) {
+
+                        foreach($db->hGetAll('sensors:sensorData:'. $i) as $id => $value) {
+
+
+                            $data['sensors:sensorData:'. $i .'.'. $id] = $value;
+                        }
+                    }
+                }
+            }
+
+            //Schaltserver
+            if($db->exists('switchServers')) {
+
+                $data['switchServers'] = array();
+                foreach($db->hGetAll('switchServers') as $id => $value) {
+
+                    $data['switchServers:'. $id] = $value;
+                }
+            }
+
+            //schaltbare Elemente
+            if($db->exists('switchables')) {
+
+                $data['switchables'] = array();
+                foreach($db->hGetAll('switchables') as $id => $value) {
+
+                    $data['switchables:'. $id] = $value;
+                }
+            }
+
+            //Schaltpunkte
+            if($db->exists('switchpoints')) {
+
+                $data['switchpoints'] = array();
+                foreach($db->hGetAll('switchpoints') as $id => $value) {
+
+                    $data['switchpoints:'. $id] = $value;
+                }
+            }
+
+            //Benutzer zu Hause
+            if($db->exists('usersrathome')) {
+
+                $data['usersrathome'] = array();
+                foreach($db->hGetAll('usersrathome') as $id => $value) {
+
+                    $data['usersrathome:'. $id] = $value;
+                }
+            }
+
+            $zip->addFromString('database_dump.json', json_encode($data));
+
+            //XML Dateien ins Archiv kopieren
+            $xmlFiles = XmlFileManager::getInstance()->listKnownXmlFiles();
+            foreach($xmlFiles as $xmlFile) {
+
+                $info = pathinfo($xmlFile['file']);
+                $zip->addFile($xmlFile['file'], $info['basename']);
+            }
+
+            //Archiv schliesen
+            $zip->close();
+            return true;
+        }
+        return false;
+
+
+        /*
         if(file_exists($this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '.zip')) {
 
             for($i = 1; $i <= 20; $i++) {
@@ -215,7 +371,7 @@ class BackupEditor {
                 $zip->close();
                 return true;
             }
-            */
+
             $xmlFiles = XmlFileManager::getInstance()->listKnownXmlFiles();
             foreach($xmlFiles as $xmlFile) {
 
@@ -236,6 +392,7 @@ class BackupEditor {
             //$zip->addFile();
         }
         return false;
+*/
     }
 
     /**
