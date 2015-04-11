@@ -45,6 +45,4 @@ sensor = BMP085.BMP085()
 # consumption are primarily the differences).  The default mode is STANDARD.
 #sensor = BMP085.BMP085(mode=BMP085.BMP085_ULTRAHIGHRES)
 
-print '{0:0.2f};'.format(sensor.read_temperature())
-print '{0:0.2f};'.format(sensor.read_pressure())
-print '{0:0.2f}'.format(sensor.read_altitude())
+print '{0:0.2f};{1:0.2f};{2:0.2f}'.format(sensor.read_temperature(), sensor.read_pressure(), sensor.read_altitude())
