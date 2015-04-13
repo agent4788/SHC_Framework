@@ -253,10 +253,35 @@ class Select extends AbstractFormElement {
         }
 
         //Pruefen ob der Wert existiert
-        if (!array_key_exists($value, $this->values)) {
+        if(isset($this->options['grouped']) && $this->options['grouped'] == true) {
 
-            $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
-            $valid = false;
+            //Gruppiert
+            $found = false;
+            foreach ($this->values as $group => $entrys) {
+
+                foreach ($entrys as $entryValue => $index) {
+
+                    if ($value == $entryValue) {
+
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($found === false) {
+
+                $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
+                $valid = false;
+            }
+        } else {
+
+            //nicht Gruppiert
+            if (!array_key_exists($value, $this->values)) {
+
+                $this->messages[] = $lang->get('form.message.invalidField', $this->getTitle());
+                $valid = false;
+            }
         }
 
         if ($valid === false) {
