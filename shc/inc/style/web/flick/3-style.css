@@ -115,6 +115,10 @@ div.shc-contentbox-body-row-content {
     display: inline-block;
 }
 
+.shc-view-content {
+    margin-top: 10px;
+}
+
 /* Allgemeine Links */
 
 a.shc-view-buttons-edit {

@@ -4,9 +4,10 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Date\DateTime;
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\SwitchServer\SwitchServerEditor;
 
 /**
@@ -18,16 +19,18 @@ use SHC\SwitchServer\SwitchServerEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DaemonStateAjax extends AjaxCommand {
+class DaemonStatePage extends PageCommand {
 
     protected $premission = 'shc.acp.menu';
+
+    protected $template = 'daemonstate.html';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('daemonstate', 'acpindex');
+    protected $languageModules = array('index', 'daemonstate', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -35,6 +38,12 @@ class DaemonStateAjax extends AjaxCommand {
     public function processData() {
 
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Schaltserver verbindungsversuch um lebenszeichen ab zu fragen
         $switchServers = array();
@@ -121,9 +130,6 @@ class DaemonStateAjax extends AjaxCommand {
             $sensorDataTransmitterState = 2;
         }
         $tpl->assign('sensorDataTransmitterState', $sensorDataTransmitterState);
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('daemonstate.html');
     }
 
 }
