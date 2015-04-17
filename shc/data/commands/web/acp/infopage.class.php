@@ -3,8 +3,8 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\FileUtil;
 use SHC\Core\SHC;
 
@@ -17,16 +17,18 @@ use SHC\Core\SHC;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class InfoAjax extends AjaxCommand {
+class InfoPage extends PageCommand {
 
     protected $premission = 'shc.acp.menu';
+
+    protected $template = 'acpinfo.html';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('acpinfo', 'acpindex');
+    protected $languageModules = array('index', 'acpinfo', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -34,6 +36,12 @@ class InfoAjax extends AjaxCommand {
     public function processData() {
 
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //SHC Version
         $tpl->assign('rwfVersion', RWF::VERSION);
@@ -67,8 +75,6 @@ class InfoAjax extends AjaxCommand {
         $tpl->assign('writeShcLog', is_writeable(PATH_SHC_LOG));
         $tpl->assign('shcStorage', str_replace(PATH_BASE, '', PATH_SHC_STORAGE));
         $tpl->assign('writeShcStorage', is_writeable(PATH_RWF_STORAGE));
-
-        $this->data = $tpl->fetchString('acpinfo.html');
     }
 
 }
