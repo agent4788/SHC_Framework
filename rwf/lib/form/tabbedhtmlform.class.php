@@ -398,10 +398,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
     public function showForm() {
 
         $html = $this->fetchStartTag();
-        if ($this->description != '') {
-
-            $html .= $this->fetchDescription();
-        }
+        $html .= $this->fetchDescription();
         $html .= $this->fetchMessages();
         $html .= $this->fetchTabContainerStart();
         $html .= $this->fetchTabList();
