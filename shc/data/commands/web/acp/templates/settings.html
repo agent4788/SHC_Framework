@@ -1,31 +1,55 @@
-{* Einstellungen bearbeiten Formular *}
-<div>
-    {if $message|isset}
-    <div class="shc-view-content">
-        {$message->fetchHtml()}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.settings.title" id='shc-view-acp-contentBox'}
+            <div>
+                {if $message|isset}
+                <div class="shc-view-content">
+                    {$message->fetchHtml()}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                    </div>
+                </div>
+                {elseif $settingsForm|isset}
+                {$settingsForm->fetchStartTag()}
+                <div class="shc-view-content">
+                    {$settingsForm->fetchDescription()}
+                    {$settingsForm->fetchMessages()}
+                    {$settingsForm->fetchTabContainerStart()}
+                    {$settingsForm->fetchTabList()}
+                    {foreach from=$settingsForm->listTabs() item='tab'}
+                        {$settingsForm->fetchTab($tab)}
+                    {/foreach}
+                    {$settingsForm->fetchTabContainerEnd()}
+                    {$settingsForm->fetchContainerJavaScript()}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                        <input type="reset" value="{lang var='form.button.reset'}" />
+                        <input type="submit" value="{lang var='form.button.submit'}" />
+                    </div>
+                </div>
+                {$settingsForm->fetchEndTag()}
+                {/if}
+            </div>
+            {/contentbox}
         </div>
-    </div>
-    {elseif $settingsForm|isset}
-    <div class="shc-view-content">
-        {$settingsForm->showForm()}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
-            {resetbutton form="#shc-view-form-settings"}
-            {submitbutton form="#shc-view-form-settings" action="index.php?app=shc&ajax=settingsform"}
-        </div>
-    </div>
-    {/if}
-</div>
-<script type="text/javascript">
-    $(function() {
+        <script type="text/javascript">
+            $(function() {
 
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.settings.title"}');
-        $('.shc-view-buttonSet').buttonset();
-    });
-</script>
+                $('.shc-view-buttonSet').buttonset();
+            });
+        </script>
+    </body>
+</html>

@@ -5,7 +5,9 @@ namespace SHC\Command\Web;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\SettingsForm;
 
 /**
@@ -17,16 +19,18 @@ use SHC\Form\Forms\SettingsForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class SettingsFormAjax extends AjaxCommand {
+class SettingsFormPage extends PageCommand {
 
     protected $premission = 'shc.acp.settings';
+
+    protected $template = 'settings.html';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('settings', 'acpindex');
+    protected $languageModules = array('index', 'form', 'settings', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -36,8 +40,15 @@ class SettingsFormAjax extends AjaxCommand {
         //Template holen
         $tpl = RWF::getTemplate();
 
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
         //Formular erstellen
         $settingsForm = new SettingsForm();
+        $settingsForm->setAction('index.php?app=shc&page=settingsform');
         $settingsForm->addId('shc-view-form-settings');
 
         if($settingsForm->isSubmitted() && $settingsForm->validate()) {
@@ -76,6 +87,5 @@ class SettingsFormAjax extends AjaxCommand {
 
         //Formular Anzeigen
         $tpl->assign('settingsForm', $settingsForm);
-        $this->data = $tpl->fetchString('settings.html');
     }
 }
