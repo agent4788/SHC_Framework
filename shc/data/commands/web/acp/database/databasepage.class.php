@@ -4,13 +4,13 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Date\DateTime;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 
 /**
- * Datenbankverwaltung
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -18,7 +18,9 @@ use SHC\Core\SHC;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DatabaseAjax extends AjaxCommand {
+class DatabasePage extends PageCommand {
+
+    protected $template = 'database.html';
 
     protected $premission = 'shc.acp.databaseManagement';
 
@@ -27,7 +29,7 @@ class DatabaseAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('acpindex', 'database');
+    protected $languageModules = array('acpindex', 'database', 'index');
 
     /**
      * Daten verarbeiten
@@ -37,6 +39,17 @@ class DatabaseAjax extends AjaxCommand {
         $tpl = SHC::getTemplate();
         $db = SHC::getDatabase();
 
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+        if(SHC::getSession()->getMessage() != null) {
+            $tpl->assign('message', SHC::getSession()->getMessage());
+            SHC::getSession()->removeMessage();
+        }
+
+        //Datenbank Dump
         if($this->request->issetParam('dump', Request::GET)) {
 
             $message = new Message();
@@ -52,6 +65,7 @@ class DatabaseAjax extends AjaxCommand {
             $tpl->assign('message', $message);
         }
 
+        //Daten
         $info = $db->info();
         if(isset($info['rdb_last_save_time'])){
 
@@ -68,8 +82,6 @@ class DatabaseAjax extends AjaxCommand {
 
         $tpl->assign('info', $info);
         $tpl->assign('lastSaveDate', $lastSaveDate);
-
-        $this->data = $tpl->fetchString('database.html');
     }
 
 }
