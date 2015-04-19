@@ -4,11 +4,13 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Form\Form;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Condition\ConditionEditor;
+use SHC\Core\SHC;
 use SHC\Form\FormElements\ConditionTypeChooser;
 use SHC\Form\Forms\DateConditionForm;
 use SHC\Form\Forms\DayOfWeekConditionForm;
@@ -27,15 +29,17 @@ use SHC\Form\Forms\TimeOfDayConditionForm;
 use SHC\Form\Forms\UserAtHomeConditionForm;
 
 /**
- * erstellt eine neue Bedingung
+ * erstellt einen neuen Schaltserver
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.2-0
+ * @version    2.0.0-0
  */
-class AddConditionFormAjax extends AjaxCommand {
+class AddConditionFormPage extends PageCommand {
+
+    protected $template = 'addconditionform.html';
 
     protected $premission = 'shc.acp.conditionsManagement';
 
@@ -44,15 +48,20 @@ class AddConditionFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('conditionmanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Typ ermitteln
         if(RWF::getRequest()->issetParam('type', Request::GET) || RWF::getSession()->issetVar('type')) {
@@ -75,6 +84,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Luftfeuchte groeßer/kleiner als
                     $conditionForm = new HumidityConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -122,7 +132,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -133,6 +148,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Lichtstaerke groeßer/kleiner als
                     $conditionForm = new LightIntensityConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -180,7 +196,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -191,6 +212,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Feuchtigkeit groeßer/kleiner als
                     $conditionForm = new MoistureConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -238,7 +260,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -249,6 +276,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Temperatur groeßer/kleiner als
                     $conditionForm = new TemperatureConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -296,7 +324,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -306,6 +339,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Niemand zu Hause
                     $conditionForm = new NobodyAtHomeConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -340,7 +374,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -350,6 +389,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Benutzer zu Hause
                     $conditionForm = new UserAtHomeConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -385,7 +425,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -395,6 +440,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Datumsbereich
                     $conditionForm = new DateConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     //Formular Validieren
@@ -476,7 +522,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -486,6 +537,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Tag der Woche
                     $conditionForm = new DayOfWeekConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -522,7 +574,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -532,6 +589,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Tageszeit
                     $conditionForm = new TimeOfDayConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -570,7 +628,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -580,6 +643,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Tag
                     $conditionForm = new SunriseSunsetConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -614,7 +678,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -624,6 +693,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Nacht
                     $conditionForm = new SunsetSunriseConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -658,7 +728,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -668,6 +743,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Datei vorhanden/nicht vorhanden
                     $conditionForm = new FileExistsConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -706,7 +782,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -716,6 +797,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Feiertage
                     $conditionForm = new HolidayConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -751,7 +833,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -761,6 +848,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Eingang "1"
                     $conditionForm = new InputHighConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -796,7 +884,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -806,6 +899,7 @@ class AddConditionFormAjax extends AjaxCommand {
 
                     //Eingang "0"
                     $conditionForm = new InputLowConditionForm();
+                    $conditionForm->setAction('index.php?app=shc&page=addconditionform');
                     $conditionForm->addId('shc-view-form-addCondition');
 
                     if($conditionForm->isSubmitted() && $conditionForm->validate()) {
@@ -841,7 +935,12 @@ class AddConditionFormAjax extends AjaxCommand {
                                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
                             }
                         }
-                        $tpl->assign('message', $message);
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
                     } else {
 
                         $tpl->assign('conditionForm', $conditionForm);
@@ -854,9 +953,6 @@ class AddConditionFormAjax extends AjaxCommand {
             $elementTypeChooser = new ConditionTypeChooser('type');
             $tpl->assign('conditionTypeChooser', $elementTypeChooser);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('addconditionform.html');
     }
 
 }

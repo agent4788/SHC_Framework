@@ -1,10 +1,9 @@
 <?php
-
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
@@ -12,7 +11,7 @@ use SHC\Condition\AbstractCondition;
 use SHC\Condition\ConditionEditor;
 
 /**
- * loescht eine Bedingung
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -20,24 +19,33 @@ use SHC\Condition\ConditionEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteConditionAjax extends AjaxCommand {
+class DeleteConditionAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.conditionsManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.conditionsManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listconditions';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('conditionmanagement', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Bedingung Objekt laden
         $conditionId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -46,9 +54,7 @@ class DeleteConditionAjax extends AjaxCommand {
         //pruefen ob das Element existiert
         if(!$condition instanceof AbstractCondition) {
 
-            //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.id')));
-            $this->data = $tpl->fetchString('deletecondition.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.id')));
             return;
         }
 
@@ -73,8 +79,6 @@ class DeleteConditionAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.delete.error'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deletecondition.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

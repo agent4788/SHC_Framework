@@ -3,10 +3,10 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use SHC\Condition\ConditionEditor;
-use SHC\Room\RoomEditor;
+use SHC\Core\SHC;
 
 
 /**
@@ -18,21 +18,37 @@ use SHC\Room\RoomEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class ListConditionsAjax extends AjaxCommand {
+class ListConditionsPage extends PageCommand {
 
     protected $premission = 'shc.acp.conditionsManagement';
+
+    protected $template = 'listconditions.html';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('conditionmanagement', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
+
+        $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Meldungen
+        if(RWF::getSession()->getMessage() != null) {
+            $tpl->assign('message', RWF::getSession()->getMessage());
+            RWF::getSession()->removeMessage();
+        }
 
         //Typ zuruecksetzen falls vorhanden
         if(RWF::getSession()->issetVar('type')) {
@@ -40,9 +56,7 @@ class ListConditionsAjax extends AjaxCommand {
             RWF::getSession()->remove('type');
         }
 
-        $tpl = RWF::getTemplate();
         $tpl->assign('conditionList', ConditionEditor::getInstance()->listConditions(ConditionEditor::SORT_BY_NAME));
-        $this->data = $tpl->fetchString('listconditions.html');
     }
 
 }
