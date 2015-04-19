@@ -49,22 +49,6 @@ class DatabasePage extends PageCommand {
             SHC::getSession()->removeMessage();
         }
 
-        //Datenbank Dump
-        if($this->request->issetParam('dump', Request::GET)) {
-
-            $message = new Message();
-            if($db->bgsave()) {
-
-                $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(SHC::getLanguage()->get('acp.database.dump.success'));
-            } else {
-
-                $message->setType(Message::ERROR);
-                $message->setMessage(SHC::getLanguage()->get('acp.database.dump.error'));
-            }
-            $tpl->assign('message', $message);
-        }
-
         //Daten
         $info = $db->info();
         if(isset($info['rdb_last_save_time'])){
