@@ -3,13 +3,13 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Util\Message;
 use SHC\Backup\BackupEditor;
 
 /**
- * listet alle Backups auf
+ * erstellt ein neues Backup
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -17,21 +17,33 @@ use SHC\Backup\BackupEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class MakeBackupAjax extends AjaxCommand {
+class MakeBackupAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.backupsManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.backupsManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listbackups';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('backupsmanagement', 'acpindex');
+    protected $languageModules = array('index', 'backupsmanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
+    public function executeAction() {
 
         $message = new Message();
         if(BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP)->makeBackup(true)) {
@@ -43,10 +55,6 @@ class MakeBackupAjax extends AjaxCommand {
             $message->setType(Message::ERROR);
             $message->setMessage(RWF::getLanguage()->get('acp.backupsManagement.error.makeBackup'));
         }
-
-        $tpl = RWF::getTemplate();
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('makebackup.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

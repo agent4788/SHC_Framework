@@ -3,9 +3,11 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
+use RWF\Session\Session;
+use RWF\Settings\Settings;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Backup\Backup;
@@ -20,24 +22,26 @@ use SHC\Backup\BackupEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class LoadBackupAjax extends AjaxCommand {
+class LoadBackupAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.backupsManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.backupsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('backupsmanagement', 'acpindex');
+    protected $languageModules = array('index', 'backupsmanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Backuppfad setzen
         BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP);
@@ -49,8 +53,7 @@ class LoadBackupAjax extends AjaxCommand {
         //pruefen ob das Backup existiert
         if(!$backup instanceof Backup) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.backupsManagement.error.hash')));
-            $this->data = $tpl->fetchString('loadbackup.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.backupsManagement.error.hash')));
             return;
         }
 
@@ -90,5 +93,4 @@ class LoadBackupAjax extends AjaxCommand {
         }
         exit(0);
     }
-
 }
