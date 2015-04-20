@@ -3,8 +3,9 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
+use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 
 /**
@@ -16,21 +17,38 @@ use SHC\Event\EventEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class ListEventsAjax extends AjaxCommand {
+class ListEventsPage extends PageCommand {
 
     protected $premission = 'shc.acp.eventsManagement';
+
+    protected $template = 'listevents.html';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('eventmanagement', 'acpindex');
+    protected $languageModules = array('index', 'eventmanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
+
+        //Template Objekt holen
+        $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Meldungen
+        if(RWF::getSession()->getMessage() != null) {
+            $tpl->assign('message', RWF::getSession()->getMessage());
+            RWF::getSession()->removeMessage();
+        }
 
         //Typ zuruecksetzen falls vorhanden
         if(RWF::getSession()->issetVar('type')) {
@@ -38,12 +56,8 @@ class ListEventsAjax extends AjaxCommand {
             RWF::getSession()->remove('type');
         }
 
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
-
         //Ereignisse auflisten
         $tpl->assign('eventList', EventEditor::getInstance()->listEvents(EventEditor::SORT_BY_NAME));
-        $this->data = $tpl->fetchString('listevents.html');
     }
 
 }

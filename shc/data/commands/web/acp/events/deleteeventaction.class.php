@@ -1,20 +1,17 @@
 <?php
-
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Condition\AbstractCondition;
-use SHC\Condition\ConditionEditor;
 use SHC\Event\Event;
 use SHC\Event\EventEditor;
 
 /**
- * loescht ein Ereignis
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -22,24 +19,33 @@ use SHC\Event\EventEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteEventAjax extends AjaxCommand {
+class DeleteEventAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.eventsManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.eventsManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listevents';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('eventmanagement', 'acpindex');
+    protected $languageModules = array('index', 'eventmanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Ereignis Objekt laden
         $eventId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -49,8 +55,7 @@ class DeleteEventAjax extends AjaxCommand {
         if(!$event instanceof Event) {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deleteevent.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
             return;
         }
 
@@ -75,8 +80,6 @@ class DeleteEventAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.delete.error'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deleteevent.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

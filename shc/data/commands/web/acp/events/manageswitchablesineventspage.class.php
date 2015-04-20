@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Command\Smartphone;
+namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
@@ -76,13 +76,13 @@ class ManageSwitchablesInEventsPage extends PageCommand {
 
         $tpl = RWF::getTemplate();
 
-        //Headline Daten
+        //Header Daten
         $tpl->assign('apps', SHC::listApps());
         $tpl->assign('acp', true);
         $tpl->assign('style', SHC::getStyle());
         $tpl->assign('user', SHC::getVisitor());
-        $tpl->assign('backLink', 'index.php?app=shc&m&page=listevents');
-        $tpl->assign('device', SHC_DETECTED_DEVICE);
+
+        //Meldungen
         if(RWF::getSession()->getMessage() != null) {
             $tpl->assign('message', RWF::getSession()->getMessage());
             RWF::getSession()->removeMessage();

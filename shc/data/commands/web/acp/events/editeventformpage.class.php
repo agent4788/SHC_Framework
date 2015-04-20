@@ -4,10 +4,11 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use SHC\Event\Events\HumidityClimbOver;
 use SHC\Event\Events\HumidityFallsBelow;
@@ -30,9 +31,10 @@ use SHC\Form\Forms\MoistureEventForm;
 use SHC\Form\Forms\SunriseEventForm;
 use SHC\Form\Forms\TemperatureEventForm;
 use SHC\Form\Forms\UserEventForm;
+use SHC\Form\Forms\UserForm;
 
 /**
- * bearbeitet ein Ereignis
+ * bearbeitet einen Schaltserver
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -40,8 +42,9 @@ use SHC\Form\Forms\UserEventForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditEventFormAjax extends AjaxCommand
-{
+class EditEventFormPage extends PageCommand {
+
+    protected $template = 'editeventform.html';
 
     protected $premission = 'shc.acp.eventsManagement';
 
@@ -50,15 +53,20 @@ class EditEventFormAjax extends AjaxCommand
      *
      * @var Array
      */
-    protected $languageModules = array('eventmanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'eventmanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Ereignis Objekt laden
         $eventId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -68,6 +76,7 @@ class EditEventFormAjax extends AjaxCommand
 
             //Luftfeuchte steigt
             $eventForm = new HumidityEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -106,16 +115,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof HumidityFallsBelow) {
 
             //Luftfeuchte faellt
             $eventForm = new HumidityEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -154,16 +168,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof InputHigh) {
 
             //Eingangs 0 => 1
             $eventForm = new InputEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -201,16 +220,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof InputLow) {
 
             //Eingangs 1 => 0
             $eventForm = new InputEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -248,16 +272,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof LightIntensityClimbOver) {
 
             //Lichstaerke steigt
             $eventForm = new LightIntensityEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -296,16 +325,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof LightIntensityFallsBelow) {
 
             //Lichstaerke faellt
             $eventForm = new LightIntensityEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -344,16 +378,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof MoistureClimbOver) {
 
             //Feuchtigkeit steigt
             $eventForm = new MoistureEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -392,16 +431,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof MoistureFallsBelow) {
 
             //Feuchtigkeit faellt
             $eventForm = new MoistureEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -440,16 +484,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof TemperatureClimbOver) {
 
             //Temperatur steigt
             $eventForm = new TemperatureEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -488,16 +537,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof TemperatureFallsBelow) {
 
             //Temperatur faellt
             $eventForm = new TemperatureEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -536,16 +590,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof UserComesHome) {
 
             //Benutzer kommt nach Hause
             $eventForm = new UserEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -583,16 +642,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof UserLeavesHome) {
 
             //Benutzer verlaesst das Haus
             $eventForm = new UserEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -630,16 +694,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof Sunrise) {
 
             //Sonnenaufgang
             $eventForm = new SunriseEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -675,16 +744,21 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } elseif($event instanceof Sunset) {
 
             //Sonnenuntergang
             $eventForm = new SunriseEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
             $eventForm->addId('shc-view-form-editEvent');
 
             if($eventForm->isSubmitted() && $eventForm->validate()) {
@@ -720,22 +794,22 @@ class EditEventFormAjax extends AjaxCommand
                         $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('event', $event);
                 $tpl->assign('eventForm', $eventForm);
             }
         } else {
 
             //Ungueltige ID
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editeventform.html');
             return;
         }
-
-        //Template ausgeben
-        $this->data = $tpl->fetchString('editeventform.html');
     }
 
 }

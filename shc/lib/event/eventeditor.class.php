@@ -1202,7 +1202,6 @@ class EventEditor {
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @param  Integer $command      Befehl
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function setEventSwitchableCommand($eventId, $switchableId, $command) {
 
@@ -1211,11 +1210,11 @@ class EventEditor {
         if($db->hExists(self::$tableName, $eventId)) {
 
             $event = $db->hGet(self::$tableName, $eventId);
-            foreach($event['switchable'] as $switchable) {
+            foreach($event['switchable'] as $index => $switchable) {
 
                 if($switchable['id'] == $switchableId) {
 
-                    $switchable['command'] = $command;
+                    $event['switchable'][$index]['command'] = $command;
                     break;
                 }
             }
