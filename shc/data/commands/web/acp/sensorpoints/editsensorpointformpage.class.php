@@ -4,16 +4,18 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\SensorPointForm;
+use SHC\Form\Forms\UserGroupForm;
 use SHC\Sensor\SensorPoint;
 use SHC\Sensor\SensorPointEditor;
 
 /**
- * bearbeitet einen Sensorpunkt
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,7 +23,9 @@ use SHC\Sensor\SensorPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditSensorPointFormAjax extends AjaxCommand {
+class EditSensorPointFormPage extends PageCommand {
+
+    protected $template = 'sensorpointform.html';
 
     protected $premission = 'shc.acp.sensorpointsManagement';
 
@@ -30,15 +34,20 @@ class EditSensorPointFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('sensorpointsmanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'sensorpointsmanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //SensorPunkt Objekt laden
         $sensorPointId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -47,13 +56,16 @@ class EditSensorPointFormAjax extends AjaxCommand {
         //pruefen ob der Sensorpunkt existiert
         if(!$sensorPoint instanceof SensorPoint) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editsensorpointform.html');
-            return;
+            SHC::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id')));
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&m&page=listsensorpoints');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
         //Formular erstellen
         $sensorPointForm = new SensorPointForm($sensorPoint);
+        $sensorPointForm->setAction('index.php?app=shc&page=editsensorpointform&id='. $sensorPoint->getId());
         $sensorPointForm->addId('shc-view-form-editSensorPoint');
 
         if($sensorPointForm->isSubmitted() && $sensorPointForm->validate() === true) {
@@ -87,15 +99,15 @@ class EditSensorPointFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.sensorpointsManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listsensorpoints');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
-            $tpl->assign('sensorPoint', $sensorPoint);
             $tpl->assign('sensorPointForm', $sensorPointForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editsensorpointform.html');
     }
-
 }

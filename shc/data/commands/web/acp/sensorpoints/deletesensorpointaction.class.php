@@ -3,17 +3,18 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Room\Room;
+use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPoint;
 use SHC\Sensor\SensorPointEditor;
 
-
 /**
- * loescht einen Sensorpunkt
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,24 +22,33 @@ use SHC\Sensor\SensorPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteSensorPointAjax extends AjaxCommand {
+class DeleteSensorPointAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.sensorpointsManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.sensorpointsManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listsensorpoints';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('sensorpointsmanagement');
+    protected $languageModules = array('index', 'sensorpointsmanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //SensorPunkt Objekt laden
         $sensorPointId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -47,8 +57,7 @@ class DeleteSensorPointAjax extends AjaxCommand {
         //pruefen ob der Sensorpunkt existiert
         if(!$sensorPoint instanceof SensorPoint) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deletesensorpoint.html');
+            RWF::getSession()->setMessage(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id'));
             return;
         }
 
@@ -59,8 +68,6 @@ class DeleteSensorPointAjax extends AjaxCommand {
             SensorPointEditor::getInstance()->removeSensorPoint($sensorPointId);
             $message->setType(Message::SUCCESSFULLY);
             $message->setMessage(RWF::getLanguage()->get('acp.sensorpointsManagement.form.success.del'));
-            $message1 = new Message(Message::MESSAGE, RWF::getLanguage()->get('acp.sensorpointsManagement.form.success.del.info'));
-            $tpl->assign('message1', $message1);
         } catch(\Exception $e) {
 
             if($e->getCode() == 1102) {
@@ -75,8 +82,6 @@ class DeleteSensorPointAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.del'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deletesensorpoint.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }
