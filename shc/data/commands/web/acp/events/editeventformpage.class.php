@@ -807,8 +807,11 @@ class EditEventFormPage extends PageCommand {
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
-            return;
+            SHC::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+            $this->response->setBody('');
+            $this->template = '';
         }
     }
 
