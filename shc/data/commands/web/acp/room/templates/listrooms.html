@@ -1,109 +1,103 @@
-{* Liste aller Raeume *}
-<div>
-    <div class="shc-view-content">
-        {if $message|isset}
-            {$message->fetchHtml()}
-        {/if}
-        <form id="shc-view-contentTable-sortable-form">
-            <table class="shc-view-contentTable" id="shc-view-contentTable-sortable">
-                <thead>
-                <tr>
-                    <th style="width: 90%;">{lang var="acp.roomManagement.roomList.table.head.name"}</th>
-                    <th style="width: 10%;">{lang var="acpindex.options"}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {foreach from=$roomList item='room'}
-                <tr>
-                    <td>{if $room->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$room->getName()}{if $room->isEnabled() == false}</span>{/if}</td>
-                    <td>
-                        {editlink link='index.php?app=shc&ajax=editroomform&id=' id=$room->getId()}
-                        {deletelink link='index.php?app=shc&ajax=deleteroom&id=' id=$room->getId() prompt='acp.roomManagement.prompt.deleteRoom' title='acp.roomManagement.prompt.deleteRoom.title'}
-                        <input type="hidden" name="roomOrder[{$room->getId()}]" value="{$room->getOrderId()}" />
-                    </td>
-                </tr>
-                {foreachelse}
-                <tr>
-                    <td colspan="2">{lang var='acpindex.emptyList'}</td>
-                </tr>
-                {/foreach}
-                </tbody>
-            </table>
-        </form>
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
-            <button id="shc-view-button-sort">{lang var="acpindex.sort"}</button>
-            {acpbutton link="index.php?app=shc&ajax=addroomform" text="acp.roomManagement.button.addRoom"}
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.roomManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="shc-view-content">
+                    <form id="shc-view-contentTable-sortable-form" action="index.php?app=shc&action=saveroomorder" method="post">
+                        <table class="shc-view-contentTable" id="shc-view-contentTable-sortable">
+                            <thead>
+                            <tr>
+                                <th style="width: 90%;">{lang var="acp.roomManagement.roomList.table.head.name"}</th>
+                                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$roomList item='room'}
+                            <tr>
+                                <td>{if $room->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$room->getName()}{if $room->isEnabled() == false}</span>{/if}</td>
+                                <td>
+                                    {editlink link='index.php?app=shc&page=editroomform&id=' id=$room->getId()}
+                                    {deletelink link='index.php?app=shc&action=deleteroom&id=' id=$room->getId() prompt='acp.roomManagement.prompt.deleteRoom' title='acp.roomManagement.prompt.deleteRoom.title'}
+                                    <input type="hidden" name="roomOrder[{$room->getId()}]" value="{$room->getOrderId()}" />
+                                </td>
+                            </tr>
+                            {foreachelse}
+                            <tr>
+                                <td colspan="2">{lang var='acpindex.emptyList'}</td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                        <button id="shc-view-button-sort">{lang var="acpindex.sort"}</button>
+                        <a href="index.php?app=shc&page=addroomform">{lang var='acp.roomManagement.button.addRoom'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
 
-    //Hilfsfunktion sortierung
-    var fixHelper = function(e, ui) {
-        ui.children().each(function() {
-            $(this).width($(this).width());
-        });
-        return ui;
-    };
-
-    $(function() {
-
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.roomManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-
-        //Sortierung
-        $('#shc-view-button-sort').click(function() {
-
-            $('#shc-view-contentTable-sortable tbody').sortable({
-                handle: "td",
-                cursor: 'move',
-                helper: fixHelper,
-                placeholder: {
-                    element: function(currentItem) {
-                        return $('<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>')[0];
-                    },
-                    update: function(container, p) {
-                        return;
-                    }
-                },
-                stop: function() {
-
-                    //Sortierungs IDs in die versteckten Felder eintragen
-                    $('#shc-view-contentTable-sortable').find('input').each(function(index) {
-                        $(this).val(index + 1);
+                //Hilfsfunktion sortierung
+                var fixHelper = function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
                     });
-                }
-            });
+                    return ui;
+                };
 
-            $('#shc-view-button-sort').button({
-                label: '{lang var="acpindex.save"}'
-            });
-            $('#shc-view-button-sort').click(function() {
 
-                var $form = $('#shc-view-contentTable-sortable-form');
-                var $inputs = $form.find("input");
-                var serializedData = $form.serialize();
-                $inputs.prop("disabled", true);
+                $(function() {
 
-                request = $.ajax({
-                    url: "index.php?app=shc&ajax=listrooms&req=saveorder",
-                    type: "post",
-                    data: serializedData
+                    $('.shc-view-buttonSet').buttonset();
+
+                    //Sortierung
+                    $('#shc-view-button-sort').click(function() {
+
+                        $('#shc-view-contentTable-sortable tbody').sortable({
+                            handle: "td",
+                            cursor: 'move',
+                            helper: fixHelper,
+                            placeholder: {
+                                element: function(currentItem) {
+                                    return $('<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>')[0];
+                                },
+                                update: function(container, p) {
+                                    return;
+                                }
+                            },
+                            stop: function() {
+
+                                //Sortierungs IDs in die versteckten Felder eintragen
+                                $('#shc-view-contentTable-sortable').find('input').each(function(index) {
+                                    $(this).val(index + 1);
+                                });
+                            }
+                        });
+
+                        $('#shc-view-button-sort').button({
+                            label: '{lang var="acpindex.save"}'
+                        });
+                        $('#shc-view-button-sort').click(function() {
+
+                            $('#shc-view-contentTable-sortable-form').submit();
+                        });
+                    })
                 });
-
-                request.done(function(response, textStatus, jqXHR) {
-                    //Antwort vom Server
-                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(response);
-                });
-
-                request.always(function() {
-                    $inputs.prop("disabled", false);
-                });
-            });
-        })
-
-    });
-</script>
+            </script>
+        </div>
+    </body>
+</html>

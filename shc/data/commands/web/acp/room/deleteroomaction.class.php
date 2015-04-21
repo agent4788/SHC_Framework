@@ -3,17 +3,16 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 
-
 /**
- * loescht einen Raum
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,24 +20,33 @@ use SHC\Room\RoomEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteRoomAjax extends AjaxCommand {
+class DeleteRoomAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.roomManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.roomManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listrooms';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('roommanagement');
+    protected $languageModules = array('index', 'roommanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Raum Objekt laden
         $roomId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -47,8 +55,7 @@ class DeleteRoomAjax extends AjaxCommand {
         //pruefen ob der Raum existiert
         if(!$room instanceof Room) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.roomManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deleteroom.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
             return;
         }
 
@@ -73,8 +80,6 @@ class DeleteRoomAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.del'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deleteroom.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }
