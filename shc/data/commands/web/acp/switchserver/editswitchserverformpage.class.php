@@ -4,16 +4,15 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\SwitchServerForm;
-use SHC\Form\Forms\UserAtHomeForm;
+use SHC\Form\Forms\UserForm;
 use SHC\SwitchServer\SwitchServer;
 use SHC\SwitchServer\SwitchServerEditor;
-use SHC\UserAtHome\UserAtHome;
-use SHC\UserAtHome\UserAtHomeEditor;
 
 /**
  * bearbeitet einen Schaltserver
@@ -24,7 +23,9 @@ use SHC\UserAtHome\UserAtHomeEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditSwitchServerFormAjax extends AjaxCommand {
+class EditSwitchServerFormPage extends PageCommand {
+
+    protected $template = 'switchserverform.html';
 
     protected $premission = 'shc.acp.switchserverManagement';
 
@@ -33,15 +34,20 @@ class EditSwitchServerFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchservermanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchservermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Schaltserver Objekt laden
         $switchServerId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -51,13 +57,13 @@ class EditSwitchServerFormAjax extends AjaxCommand {
         if(!$switchServer instanceof SwitchServer) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchserverManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editswitchserverform.html');
             return;
         }
-
+        
         //Formular erstellen
         $switchServerForm = new SwitchServerForm($switchServer);
-        $switchServerForm->addId('shc-view-form-editSwitchServer');
+        $switchServerForm->setAction('index.php?app=shc&page=editswitchserverform&id='. $switchServer->getId());
+        $switchServerForm->addId('shc-view-form-addSwitchServer');
 
         if($switchServerForm->isSubmitted() && $switchServerForm->validate() === true) {
 
@@ -77,12 +83,12 @@ class EditSwitchServerFormAjax extends AjaxCommand {
 
                 SwitchServerEditor::getInstance()->editSwitchServer($switchServerId, $name, $ip, $port, $timeout, $model, $radioSockets, $writeGPIO, $readGPIO, $enabled);
                 $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.success.editSwitchServer'));
+                $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.success.addSwitchServer'));
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1501) {
 
-                    //Raumname schon vergeben
+                    //Name schon vergeben
                     $message->setType(Message::ERROR);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.error.1501'));
                 }  elseif($e->getCode() == 1102) {
@@ -97,15 +103,16 @@ class EditSwitchServerFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchservers');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
-            $tpl->assign('switchServer', $switchServer);
             $tpl->assign('switchServerForm', $switchServerForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editswitchserverform.html');
     }
 
 }

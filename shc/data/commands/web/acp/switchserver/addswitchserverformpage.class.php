@@ -4,8 +4,9 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\SwitchServerForm;
 use SHC\SwitchServer\SwitchServerEditor;
 
@@ -18,7 +19,9 @@ use SHC\SwitchServer\SwitchServerEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddSwitchServerFormAjax extends AjaxCommand {
+class AddSwitchServerFormPage extends PageCommand {
+
+    protected $template = 'switchserverform.html';
 
     protected $premission = 'shc.acp.switchserverManagement';
 
@@ -27,18 +30,24 @@ class AddSwitchServerFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchservermanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchservermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Formular erstellen
         $switchServerForm = new SwitchServerForm();
+        $switchServerForm->setAction('index.php?app=shc&page=addswitchserverform');
         $switchServerForm->addId('shc-view-form-addSwitchServer');
 
         if($switchServerForm->isSubmitted() && $switchServerForm->validate() === true) {
@@ -79,14 +88,16 @@ class AddSwitchServerFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchservers');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
             $tpl->assign('switchServerForm', $switchServerForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('addswitchserverform.html');
     }
 
 }
