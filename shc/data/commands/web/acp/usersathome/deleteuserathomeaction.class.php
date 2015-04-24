@@ -3,8 +3,8 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
@@ -13,9 +13,8 @@ use SHC\Room\RoomEditor;
 use SHC\UserAtHome\UserAtHome;
 use SHC\UserAtHome\UserAtHomeEditor;
 
-
 /**
- * loescht einen Raum
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -23,24 +22,33 @@ use SHC\UserAtHome\UserAtHomeEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteUserAtHomeAjax extends AjaxCommand {
+class DeleteUserAtHomeAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.usersathomeManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.usersathomeManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listusersathome';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('usersathomemanagement');
+    protected $languageModules = array('index', 'usersathomemanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Benutzer Objekt laden
         $userAtHomeId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -49,8 +57,7 @@ class DeleteUserAtHomeAjax extends AjaxCommand {
         //pruefen ob der Benutzer existiert
         if(!$userAtHome instanceof UserAtHome) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.usersathomeManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deleteuserathome.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.usersathomeManagement.form.error.id')));
             return;
         }
 
@@ -75,8 +82,6 @@ class DeleteUserAtHomeAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.error.del'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deleteuserathome.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

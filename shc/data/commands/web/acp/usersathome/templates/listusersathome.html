@@ -1,110 +1,103 @@
-{* Liste aller Benutzer zu Hause *}
-<div>
-    <div class="shc-view-content">
-        {if $message|isset}
-        {$message->fetchHtml()}
-        {/if}
-        <form id="shc-view-contentTable-sortable-form">
-            <table class="shc-view-contentTable" id="shc-view-contentTable-sortable">
-                <thead>
-                <tr>
-                    <th style="width: 70%;">{lang var="acp.usersathomeManagement.userlist.table.head.name"}</th>
-                    <th style="width: 20%;">{lang var="acp.usersathomeManagement.userlist.table.head.ip"}</th>
-                    <th style="width: 10%;">{lang var="acpindex.options"}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {foreach from=$userAtHomeList item='userAtHome'}
-                <tr>
-                    <td>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</td>
-                    <td>{#$userAtHome->getIpAddress()}</td>
-                    <td>
-                        {editlink link='index.php?app=shc&ajax=edituserathomeform&id=' id=$userAtHome->getId()}
-                        {deletelink link='index.php?app=shc&ajax=deleteuserathome&id=' id=$userAtHome->getId() prompt='acp.usersathomeManagement.prompt.deleteUser' title='acp.usersathomeManagement.prompt.deleteUser.title'}
-                        <input type="hidden" name="userOrder[{$userAtHome->getId()}]" value="{$userAtHome->getOrderId()}" />
-                    </td>
-                </tr>
-                {foreachelse}
-                <tr>
-                    <td colspan="3">{lang var='acpindex.emptyList'}</td>
-                </tr>
-                {/foreach}
-                </tbody>
-            </table>
-        </form>
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
-            <button id="shc-view-button-sort">{lang var="acpindex.sort"}</button>
-            {acpbutton link="index.php?app=shc&ajax=adduserathomeform" text="acp.usersathomeManagement.button.addUser"}
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-
-    //Hilfsfunktion sortierung
-    var fixHelper = function(e, ui) {
-        ui.children().each(function() {
-            $(this).width($(this).width());
-        });
-        return ui;
-    };
-
-    $(function() {
-
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.usersathomeManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-
-        //Sortierung
-        $('#shc-view-button-sort').click(function() {
-
-            $('#shc-view-contentTable-sortable tbody').sortable({
-                handle: "td",
-                cursor: 'move',
-                helper: fixHelper,
-                placeholder: {
-                    element: function(currentItem) {
-                        return $('<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>')[0];
-                    },
-                    update: function(container, p) {
-                        return;
-                    }
-                },
-                stop: function() {
-
-                    //Sortierungs IDs in die versteckten Felder eintragen
-                    $('#shc-view-contentTable-sortable').find('input').each(function(index) {
-                        $(this).val(index + 1);
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.usersathomeManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="shc-view-content">
+                    <form id="shc-view-contentTable-sortable-form" action="index.php?app=shc&action=saveuserathomeorder" method="post">
+                        <table class="shc-view-contentTable" id="shc-view-contentTable-sortable">
+                            <thead>
+                            <tr>
+                                <th style="width: 70%;">{lang var="acp.usersathomeManagement.userlist.table.head.name"}</th>
+                                <th style="width: 20%;">{lang var="acp.usersathomeManagement.userlist.table.head.ip"}</th>
+                                <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$userAtHomeList item='userAtHome'}
+                            <tr>
+                                <td>{if $userAtHome->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$userAtHome->getName()}{if $userAtHome->isEnabled() == false}</span>{/if}</td>
+                                <td>{#$userAtHome->getIpAddress()}</td>
+                                <td>
+                                    {editlink link='index.php?app=shc&page=edituserathomeform&id=' id=$userAtHome->getId()}
+                                    {deletelink link='index.php?app=shc&action=deleteuserathome&id=' id=$userAtHome->getId() prompt='acp.usersathomeManagement.prompt.deleteUser' title='acp.usersathomeManagement.prompt.deleteUser.title'}
+                                    <input type="hidden" name="userOrder[{$userAtHome->getId()}]" value="{$userAtHome->getOrderId()}" />
+                                </td>
+                            </tr>
+                            {foreachelse}
+                            <tr>
+                                <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                        <button id="shc-view-button-sort">{lang var="acpindex.sort"}</button>
+                        <a href="index.php?app=shc&page=adduserathomeform">{lang var='acp.usersathomeManagement.button.addUser'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                //Hilfsfunktion sortierung
+                var fixHelper = function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
                     });
-                }
-            });
+                    return ui;
+                };
 
-            $('#shc-view-button-sort').button({
-                label: '{lang var="acpindex.save"}'
-            });
-            $('#shc-view-button-sort').click(function() {
+                $(function() {
 
-                var $form = $('#shc-view-contentTable-sortable-form');
-                var $inputs = $form.find("input");
-                var serializedData = $form.serialize();
-                $inputs.prop("disabled", true);
+                    $('.shc-view-buttonSet').buttonset();
 
-                request = $.ajax({
-                    url: "index.php?app=shc&ajax=listusersathome&req=saveorder",
-                    type: "post",
-                    data: serializedData
+                    //Sortierung
+                    $('#shc-view-button-sort').click(function() {
+
+                        $('#shc-view-contentTable-sortable tbody').sortable({
+                            handle: "td",
+                            cursor: 'move',
+                            helper: fixHelper,
+                            placeholder: {
+                                element: function(currentItem) {
+                                    return $('<tr class="shc-view-contentTable-sortable-placeholder"><td colspan="2"></td></tr>')[0];
+                                },
+                                update: function(container, p) {
+                                    return;
+                                }
+                            },
+                            stop: function() {
+
+                                //Sortierungs IDs in die versteckten Felder eintragen
+                                $('#shc-view-contentTable-sortable').find('input').each(function(index) {
+                                    $(this).val(index + 1);
+                                });
+                            }
+                        });
+
+                        $('#shc-view-button-sort').button({
+                            label: '{lang var="acpindex.save"}'
+                        });
+                        $('#shc-view-button-sort').click(function() {
+
+                            $('#shc-view-contentTable-sortable-form').submit();
+                        });
+                    })
                 });
-
-                request.done(function(response, textStatus, jqXHR) {
-                    //Antwort vom Server
-                    $('#shc-view-acp-contentBox div.shc-contentbox-body').html(response);
-                });
-
-                request.always(function() {
-                    $inputs.prop("disabled", false);
-                });
-            });
-        })
-    });
-</script>
+            </script>
+        </div>
+    </body>
+</html>

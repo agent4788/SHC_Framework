@@ -4,19 +4,14 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
-use RWF\Request\Request;
-use RWF\Util\DataTypeUtil;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
-use SHC\Form\Forms\RoomForm;
+use SHC\Core\SHC;
 use SHC\Form\Forms\UserAtHomeForm;
-use SHC\Room\Room;
-use SHC\Room\RoomEditor;
-use SHC\UserAtHome\UserAtHome;
 use SHC\UserAtHome\UserAtHomeEditor;
 
 /**
- * bearbeitet einen benutzer zu Hause
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -24,7 +19,9 @@ use SHC\UserAtHome\UserAtHomeEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditUserAtHomeFormAjax extends AjaxCommand {
+class AddUserAthomeFormPage extends PageCommand {
+
+    protected $template = 'userathomeform.html';
 
     protected $premission = 'shc.acp.usersathomeManagement';
 
@@ -33,31 +30,25 @@ class EditUserAtHomeFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usersathomemanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'usersathomemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
 
-        //Benutzer Objekt laden
-        $userAtHomeId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
-        $userAtHome = UserAtHomeEditor::getInstance()->getUserTaHomeById($userAtHomeId);
-
-        //pruefen ob der Benutzer existiert
-        if(!$userAtHome instanceof UserAtHome) {
-
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.usersathomeManagement.form.error.id')));
-            $this->data = $tpl->fetchString('edituserathomeform.html');
-            return;
-        }
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Formular erstellen
-        $userAtHomeForm = new UserAtHomeForm($userAtHome);
-        $userAtHomeForm->addId('shc-view-form-editUserAtHome');
+        $userAtHomeForm = new UserAtHomeForm();
+        $userAtHomeForm->setAction('index.php?app=shc&page=adduserathomeform');
+        $userAtHomeForm->addId('shc-view-form-addUserAtHome');
 
         if($userAtHomeForm->isSubmitted() && $userAtHomeForm->validate() === true) {
 
@@ -70,14 +61,14 @@ class EditUserAtHomeFormAjax extends AjaxCommand {
             $message = new Message();
             try {
 
-                UserAtHomeEditor::getInstance()->editUserAtHome($userAtHomeId, $name, $ip, $enabled, $visibility);
+                UserAtHomeEditor::getInstance()->addUserAtHome($name, $ip, $enabled, $visibility);
                 $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.success.editUser'));
+                $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.success.addUser'));
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1507) {
 
-                    //Raumname schon vergeben
+                    //Name schon vergeben
                     $message->setType(Message::ERROR);
                     $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.error.1507'));
                 }  elseif($e->getCode() == 1102) {
@@ -92,15 +83,15 @@ class EditUserAtHomeFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.usersathomeManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listusersathome');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
-            $tpl->assign('userAtHome', $userAtHome);
             $tpl->assign('userAtHomeForm', $userAtHomeForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('edituserathomeform.html');
     }
-
 }
