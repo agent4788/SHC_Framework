@@ -4,8 +4,8 @@ namespace PCC\Command\Web;
 
 //Imports
 use PCC\Core\PCC;
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\FileUtil;
 
 /**
@@ -17,9 +17,11 @@ use RWF\Util\FileUtil;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class InfoAjax extends AjaxCommand {
+class InfoAjax extends PageCommand {
 
     protected $premission = 'pcc.acp.menu';
+
+    protected $template = 'acpinfo.html';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -57,8 +59,6 @@ class InfoAjax extends AjaxCommand {
         $tpl->assign('writePccLog', is_writeable(PATH_PCC_LOG));
         $tpl->assign('pccStorage', str_replace(PATH_BASE, '', PATH_PCC_STORAGE));
         $tpl->assign('writePccStorage', is_writeable(PATH_PCC_STORAGE));
-
-        $this->data = $tpl->fetchString('acpinfo.html');
     }
 
 }
