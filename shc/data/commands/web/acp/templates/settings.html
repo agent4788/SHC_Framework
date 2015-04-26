@@ -12,15 +12,8 @@
             {contentbox name="acp.settings.title" id='shc-view-acp-contentBox'}
             <div>
                 {if $message|isset}
-                <div class="shc-view-content">
                     {$message->fetchHtml()}
-                </div>
-                <div class="shc-view-buttons">
-                    <div class="shc-view-buttonSet">
-                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
-                    </div>
-                </div>
-                {elseif $settingsForm|isset}
+                {/if}
                 {$settingsForm->fetchStartTag()}
                 <div class="shc-view-content">
                     {$settingsForm->fetchDescription()}
@@ -41,7 +34,6 @@
                     </div>
                 </div>
                 {$settingsForm->fetchEndTag()}
-                {/if}
             </div>
             {/contentbox}
         </div>
