@@ -17,7 +17,7 @@ use RWF\Util\FileUtil;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class InfoAjax extends PageCommand {
+class InfoPage extends PageCommand {
 
     protected $premission = 'pcc.acp.menu';
 
@@ -36,6 +36,12 @@ class InfoAjax extends PageCommand {
     public function processData() {
 
         $tpl = RWF::getTemplate();
+
+        //Headline
+        $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', PCC::getStyle());
+        $tpl->assign('user', PCC::getVisitor());
 
         //SHC Version
         $tpl->assign('rwfVersion', RWF::VERSION);
