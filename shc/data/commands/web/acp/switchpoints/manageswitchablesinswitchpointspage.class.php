@@ -4,21 +4,21 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
+use SHC\Condition\Conditions\HolidaysCondition;
+use SHC\Condition\Conditions\InputHighCondition;
+use SHC\Condition\Conditions\InputLowCondition;
+use SHC\Core\SHC;
 use RWF\Form\FormElements\Select;
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Condition\Condition;
 use SHC\Condition\ConditionEditor;
 use SHC\Condition\Conditions\DateCondition;
 use SHC\Condition\Conditions\DayOfWeekCondition;
 use SHC\Condition\Conditions\FileExistsCondition;
-use SHC\Condition\Conditions\HolidaysCondition;
 use SHC\Condition\Conditions\HumidityGreaterThanCondition;
 use SHC\Condition\Conditions\HumidityLowerThanCondition;
-use SHC\Condition\Conditions\InputHighCondition;
-use SHC\Condition\Conditions\InputLowCondition;
 use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
 use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
 use SHC\Condition\Conditions\MoistureGreaterThanCondition;
@@ -30,10 +30,6 @@ use SHC\Condition\Conditions\TemperatureGreaterThanCondition;
 use SHC\Condition\Conditions\TemperatureLowerThanCondition;
 use SHC\Condition\Conditions\TimeOfDayCondition;
 use SHC\Condition\Conditions\UserAtHomeCondition;
-use SHC\Event\Event;
-use SHC\Event\EventEditor;
-use SHC\Form\FormElements\SwitchCommandChooser;
-use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
@@ -45,12 +41,11 @@ use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
-use SHC\SwitchServer\SwitchServerEditor;
 use SHC\Timer\SwitchPoint;
 use SHC\Timer\SwitchPointEditor;
 
 /**
- * verwaltet die Elemente von Ereignissen
+ * Zeigt eine Liste mit allen Schaltservern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -58,205 +53,38 @@ use SHC\Timer\SwitchPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class ManageSwitchablesInSwitchpointsAjax extends AjaxCommand {
+class ManageSwitchablesInSwitchPointsPage extends PageCommand {
+
+    protected $template = 'manageswitchablesinswitchpoints.html';
 
     protected $premission = 'shc.acp.switchpointsManagement';
 
-    /**
-     * Sprachpakete die geladen werden sollen
-     *
-     * @var Array
-     */
-    protected $languageModules = array('switchablemanagement', 'conditionmanagement', 'acpindex', 'form', 'switchpointsmanagment');
+    protected $languageModules = array('switchablemanagement', 'conditionmanagement', 'acpindex', 'form', 'switchpointsmanagment', 'index');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Meldungen
+        if(RWF::getSession()->getMessage() != null) {
+            $tpl->assign('message', RWF::getSession()->getMessage());
+            RWF::getSession()->removeMessage();
+        }
 
         //Schaltpunkt Objekt laden
         $switchPointId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
         $switchPoint = SwitchPointEditor::getInstance()->getSwitchPointById($switchPointId);
 
         if ($switchPoint instanceof SwitchPoint) {
-
-            if(RWF::getRequest()->issetParam('command', Request::GET)) {
-
-                //Befehl
-                $command = RWF::getRequest()->getParam('command', Request::GET, DataTypeUtil::STRING);
-
-                $message = new Message();
-                if($command == 'addCondition') {
-
-                    //Bedingung Objekt laden
-                    $conditionId = RWF::getRequest()->getParam('condition', Request::GET, DataTypeUtil::INTEGER);
-                    $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
-
-                    //Eingaben pruefen
-                    $error = false;
-                    if (!$condition instanceof Condition) {
-
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id'));
-                        $error = true;
-
-                    }
-
-                    //Element hinzufuegen
-                    if ($error === false) {
-
-                        try {
-
-                            //Speichern
-                            SwitchPointEditor::getInstance()->addConditionToSwitchPoint($switchPointId, $conditionId);
-                            $message->setType(Message::SUCCESSFULLY);
-                            $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.success'));
-                            SwitchPointEditor::getInstance()->loadData();
-                            $switchPoint = SwitchPointEditor::getInstance()->getSwitchPointById($switchPointId);
-                        } catch (\Exception $e) {
-
-                            if($e->getCode() == 1102) {
-
-                                //fehlende Schreibrechte
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.error.1102'));
-                            } else {
-
-                                //Allgemeiner Fehler
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.error'));
-                            }
-                        }
-                    }
-                } elseif($command == 'deleteCondition') {
-
-                    //Bedingung Objekt laden
-                    $conditionId = RWF::getRequest()->getParam('condition', Request::GET, DataTypeUtil::INTEGER);
-                    $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
-
-                    //Eingaben pruefen
-                    $error = false;
-                    if (!$condition instanceof Condition) {
-
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id'));
-                        $error = true;
-
-                    }
-
-                    //Element hinzufuegen
-                    if ($error === false) {
-
-                        try {
-
-                            //loeschen
-                            SwitchPointEditor::getInstance()->removeConditionFromSwitchPoint($switchPointId, $conditionId);
-                            $message->setType(Message::SUCCESSFULLY);
-                            $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.success.delete'));
-                            SwitchPointEditor::getInstance()->loadData();
-                            $switchPoint = SwitchPointEditor::getInstance()->getSwitchPointById($switchPointId);
-                        } catch (\Exception $e) {
-
-                            if($e->getCode() == 1102) {
-
-                                //fehlende Schreibrechte
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.removeError.1102'));
-                            } else {
-
-                                //Allgemeiner Fehler
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addCondition.removeError'));
-                            }
-                        }
-                    }
-                } elseif($command == 'addElement') {
-
-                    //element hinzufuegen
-                    $switchableElementId = RWF::getRequest()->getParam('element', Request::GET, DataTypeUtil::INTEGER);
-
-                    //Eingaben pruefen
-                    $error = false;
-                    $switchableElementObject = SwitchableEditor::getInstance()->getElementById($switchableElementId);
-                    if (!$switchableElementObject instanceof Switchable) {
-
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id'));
-                        $error = true;
-                    }
-
-                    //Element hinzufuegen
-                    if ($error === false) {
-
-                        try {
-
-                            //Speichern
-                            SwitchableEditor::getInstance()->addSwitchPointToSwitchable($switchableElementId, $switchPointId);
-                            $message->setType(Message::SUCCESSFULLY);
-                            $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.success'));
-                            SwitchableEditor::getInstance()->loadData();
-                        } catch (\Exception $e) {
-
-                            if($e->getCode() == 1102) {
-
-                                //fehlende Schreibrechte
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.error.1102'));
-                            } else {
-
-                                //Allgemeiner Fehler
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.error'));
-                            }
-                        }
-                    }
-                } elseif($command = 'delete') {
-
-                    //element loeschen
-                    $switchableElementId = RWF::getRequest()->getParam('element', Request::GET, DataTypeUtil::INTEGER);
-
-                    //Eingaben pruefen
-                    $error = false;
-                    $switchableElementObject = SwitchableEditor::getInstance()->getElementById($switchableElementId);
-                    if (!$switchableElementObject instanceof Switchable) {
-
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id'));
-                        $error = true;
-                    }
-
-                    //Element hinzufuegen
-                    if ($error === false) {
-
-                        try {
-
-                            //loeschen
-                            SwitchableEditor::getInstance()->removeSwitchpointFromSwitchable($switchableElementId, $switchPointId);
-                            $message->setType(Message::SUCCESSFULLY);
-                            $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.removeSuccesss'));
-                            SwitchableEditor::getInstance()->loadData();
-                        } catch (\Exception $e) {
-
-                            if($e->getCode() == 1102) {
-
-                                //fehlende Schreibrechte
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.removeError.1102'));
-                            } else {
-
-                                //Allgemeiner Fehler
-                                $message->setType(Message::ERROR);
-                                $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.addElement.removeError'));
-                            }
-                        }
-                    }
-                }
-
-                $tpl->assign('message', $message);
-            }
 
             //Formularfelder erstellen
 
@@ -383,7 +211,10 @@ class ManageSwitchablesInSwitchpointsAjax extends AjaxCommand {
 
                     $type = '';
                     RWF::getLanguage()->disableAutoHtmlEndocde();
-                    if($switchableElement instanceof RadioSocket) {
+                    if($switchableElement instanceof ArduinoOutput) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.arduinoOutput');
+                    } elseif($switchableElement instanceof RadioSocket) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket');
                     } elseif($switchableElement instanceof RpiGpioOutput) {
@@ -420,14 +251,16 @@ class ManageSwitchablesInSwitchpointsAjax extends AjaxCommand {
             $tpl->assign('elementChooser', $elementChooser);
             $tpl->assign('elementList', $switchablesInSwitchPoint);
             $tpl->assign('conditionList', $switchPoint->listConditions());
-            $this->data = $tpl->fetchString('manageswitchablesinswitchables.html');
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id')));
-            $this->data = $tpl->fetchString('manageswitchablesinswitchables.html');
-            return;
-        }
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id')));
 
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchpoints');
+            $this->response->setBody('');
+            $this->template = '';
+        }
     }
+
 }

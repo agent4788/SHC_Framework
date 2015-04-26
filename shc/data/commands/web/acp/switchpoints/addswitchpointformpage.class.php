@@ -4,16 +4,18 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\ExtendetSwitchPointForm;
 use SHC\Form\Forms\SimpleSwitchPointForm;
+use SHC\Form\Forms\UserForm;
 use SHC\Timer\SwitchPointEditor;
 
 /**
- * erstellt einen neuen Schaltpunkt
+ * erstellt einen neuen Schaltserver
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,7 +23,9 @@ use SHC\Timer\SwitchPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddSwitchPointFormAjax extends AjaxCommand {
+class AddSwitchPointFormPage extends PageCommand {
+
+    protected $template = 'switchpointform.html';
 
     protected $premission = 'shc.acp.switchpointsManagement';
 
@@ -30,24 +34,31 @@ class AddSwitchPointFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchpointsmanagment', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchpointsmanagment', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Formular erstellen
         if(RWF::getRequest()->issetParam('type', Request::GET) && RWF::getRequest()->getParam('type', Request::GET, DataTypeUtil::STRING) == 'extendet') {
 
             $switchPointForm = new ExtendetSwitchPointForm();
+            $switchPointForm->setAction('index.php?app=shc&page=addswitchpointform&type=extendet');
             $tpl->assign('type', 'extendet');
         } else {
 
             $switchPointForm = new SimpleSwitchPointForm();
+            $switchPointForm->setAction('index.php?app=shc&page=addswitchpointform');
             $tpl->assign('type', 'simple');
         }
         $switchPointForm->addId('shc-view-form-addSwitchPoint');
@@ -98,7 +109,12 @@ class AddSwitchPointFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchpoints');
+                $this->response->setBody('');
+                $this->template = '';
             } elseif ($switchPointForm instanceof ExtendetSwitchPointForm) {
 
                 //Erweitertes Formular Speichern
@@ -133,15 +149,17 @@ class AddSwitchPointFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchpoints');
+                $this->response->setBody('');
+                $this->template = '';
             }
         } else {
 
             $tpl->assign('switchPointForm', $switchPointForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('addswitchpointform.html');
     }
 
 }

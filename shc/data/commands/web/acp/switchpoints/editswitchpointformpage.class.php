@@ -4,17 +4,19 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\ExtendetSwitchPointForm;
 use SHC\Form\Forms\SimpleSwitchPointForm;
+use SHC\Form\Forms\UserForm;
 use SHC\Timer\SwitchPoint;
 use SHC\Timer\SwitchPointEditor;
 
 /**
- * bearbeitet einen Schaltpunkt
+ * bearbeitet einen Schaltserver
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -22,7 +24,9 @@ use SHC\Timer\SwitchPointEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditSwitchPointFormAjax extends AjaxCommand {
+class EditSwitchPointFormPage extends PageCommand {
+
+    protected $template = 'switchpointform.html';
 
     protected $premission = 'shc.acp.switchpointsManagement';
 
@@ -31,15 +35,20 @@ class EditSwitchPointFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchpointsmanagment', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchpointsmanagment', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Schaltpunkt Objekt laden
         $switchPointId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -49,7 +58,6 @@ class EditSwitchPointFormAjax extends AjaxCommand {
         if (!$switchPoint instanceof SwitchPoint) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id')));
-            $this->data = $tpl->fetchString('editswitchpointform.html');
             return;
         }
 
@@ -101,10 +109,12 @@ class EditSwitchPointFormAjax extends AjaxCommand {
         if($extendetForm) {
 
             $switchPointForm = new ExtendetSwitchPointForm($switchPoint);
+            $switchPointForm->setAction('index.php?app=shc&page=editswitchpointform&type=extendet&id='. $switchPoint->getId());
             $tpl->assign('type', 'extendet');
         } else {
 
             $switchPointForm = new SimpleSwitchPointForm($switchPoint);
+            $switchPointForm->setAction('index.php?app=shc&page=editswitchpointform&id='. $switchPoint->getId());
             $tpl->assign('type', 'simple');
         }
         $switchPointForm->addId('shc-view-form-editSwitchPoint');
@@ -155,7 +165,12 @@ class EditSwitchPointFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchpoints');
+                $this->response->setBody('');
+                $this->template = '';
             } elseif ($switchPointForm instanceof ExtendetSwitchPointForm) {
 
                 //Erweitertes Formular Speichern
@@ -191,15 +206,17 @@ class EditSwitchPointFormAjax extends AjaxCommand {
                     }
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchpoints');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
             $tpl->assign('switchPoint', $switchPoint);
             $tpl->assign('switchPointForm', $switchPointForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editswitchpointform.html');
     }
 
 }
