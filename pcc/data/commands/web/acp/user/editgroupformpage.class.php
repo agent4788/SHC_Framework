@@ -3,17 +3,18 @@
 namespace PCC\Command\Web;
 
 //Imports
+use PCC\Core\PCC;
+use PCC\Form\Forms\UserGroupForm;
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\User\UserEditor;
 use RWF\User\UserGroup;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use PCC\Form\Forms\UserGroupForm;
 
 /**
- * Bearbeitet eine Benutzergruppe
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,7 +22,9 @@ use PCC\Form\Forms\UserGroupForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditGroupFormAjax extends AjaxCommand {
+class EditGroupFormPage extends PageCommand {
+
+    protected $template = 'groupform.html';
 
     protected $premission = 'pcc.acp.userManagement';
 
@@ -30,15 +33,20 @@ class EditGroupFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', PCC::getStyle());
+        $tpl->assign('user', PCC::getVisitor());
 
         //Gruppen Objekt laden
         $groupId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -48,17 +56,16 @@ class EditGroupFormAjax extends AjaxCommand {
         if(!$group instanceof UserGroup) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
-            $this->data = $tpl->fetchString('editgroupform.html');
             return;
         }
 
         //Formular erstellen
         $groupForm = new UserGroupForm($group);
+        $groupForm->setAction('index.php?app=pcc&page=editgroupform&id='. $group->getId());
         $groupForm->addId('pcc-view-form-editGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 
-            $tpl->assign('group', $group);
             $tpl->assign('groupForm', $groupForm);
         } else {
 
@@ -100,11 +107,13 @@ class EditGroupFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=pcc&page=listgroups');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editgroupform.html');
     }
-
 }

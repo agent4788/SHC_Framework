@@ -51,9 +51,7 @@ class EditListCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '      }';
         $html .= '  });';
         $html .= '  $(\'#<?php echo $randomId; ?>\').click(function() {';
-        $html .= '      $.get(\''. $link .'\', function(data, textStatus, jqXHR) {;';
-        $html .= '          $(\'#pcc-view-acp-contentBox div.pcc-contentbox-body\').html(data);';
-        $html .= '      });';
+        $html .= '      window.location = \''. $link .'\';';
         $html .= '  });';
         $html .= '});';
         $html .= '</script>';

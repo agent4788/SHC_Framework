@@ -72,9 +72,7 @@ class DeleteLinkCompilerPlugin implements TemplateCompilerPlugin {
         $html .= '          position: {my: "center top", at: "center bottom", of: $(\'#pcc-headline\')},';
         $html .= '          buttons: {';
         $html .= '              \'<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.yes\'); ?>\': function() {';
-        $html .= '                   $.get(\''. $link .'\', function(data, textStatus, jqXHR) {;';
-        $html .= '                       $(\'#pcc-view-acp-contentBox div.pcc-contentbox-body\').html(data);';
-        $html .= '                  });';
+        $html .= '                  window.location = \''. $link .'\';';
         $html .= '                  $(\'#<?php echo $randomId2; ?>\').dialog(\'close\');';
         $html .= '               },';
         $html .= '            \'<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.no\'); ?>\': function() {';

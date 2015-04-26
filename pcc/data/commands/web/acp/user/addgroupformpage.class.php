@@ -3,14 +3,15 @@
 namespace PCC\Command\Web;
 
 //Imports
+use PCC\Core\PCC;
+use PCC\Form\Forms\UserGroupForm;
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
 use RWF\User\UserEditor;
 use RWF\Util\Message;
-use PCC\Form\Forms\UserGroupForm;
 
 /**
- * Erstellt eine neue Benutzergruppe
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -18,7 +19,9 @@ use PCC\Form\Forms\UserGroupForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddGroupFormAjax extends AjaxCommand {
+class AddGroupFormPage extends PageCommand {
+
+    protected $template = 'groupform.html';
 
     protected $premission = 'pcc.acp.userManagement';
 
@@ -27,18 +30,24 @@ class AddGroupFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', PCC::getStyle());
+        $tpl->assign('user', PCC::getVisitor());
 
         //Formular erstellen
         $groupForm = new UserGroupForm();
+        $groupForm->setAction('index.php?app=pcc&page=addgroupform');
         $groupForm->addId('pcc-view-form-addGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
@@ -52,7 +61,7 @@ class AddGroupFormAjax extends AjaxCommand {
             $premissions = array();
             foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
 
-                if(preg_match('#^pcc\.#', $premissionName)) {
+                if(preg_match('#^shc\.#', $premissionName)) {
 
                     $value = $groupForm->getElementByName(str_replace('.', '_', $premissionName))->getValue();
                     $premissions[$premissionName] = ($value === null ? false : $value);
@@ -84,11 +93,13 @@ class AddGroupFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=pcc&page=listgroups');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('groupform.html');
     }
-
 }

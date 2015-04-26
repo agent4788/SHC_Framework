@@ -3,18 +3,15 @@
 namespace PCC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
-use RWF\Core\RWF;
-use RWF\Request\Request;
-use RWF\User\User;
-use RWF\User\UserEditor;
-use RWF\Util\DataTypeUtil;
-use RWF\Util\Message;
+use PCC\Core\PCC;
 use PCC\Form\Forms\UserForm;
-
+use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
+use RWF\User\UserEditor;
+use RWF\Util\Message;
 
 /**
- * Formular zum bearbeiten eines neuen Benutzers
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -22,7 +19,9 @@ use PCC\Form\Forms\UserForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditUserFormAjax extends AjaxCommand {
+class AddUserFormPage extends PageCommand {
+
+    protected $template = 'userform.html';
 
     protected $premission = 'pcc.acp.userManagement';
 
@@ -31,32 +30,25 @@ class EditUserFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
 
-        //Benutzer Objekt laden
-        $userId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
-        $user = UserEditor::getInstance()->getUserById($userId);
+        //Header Daten
+        $tpl->assign('apps', PCC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', PCC::getStyle());
+        $tpl->assign('user', PCC::getVisitor());
 
-        //pruefen ob der Benutzer existiert
-        if(!$user instanceof User) {
-
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
-            $this->data = $tpl->fetchString('adduserform.html');
-            return;
-        }
-
-        //Formular erstellen
-        $userForm = new UserForm($user);
-        $userForm->addId('pcc-view-form-editUser');
-        $userForm->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.editDescription'));
+        //Formular
+        $userForm = new UserForm();
+        $userForm->setAction('index.php?app=pcc&page=adduserform');
+        $userForm->addId('pcc-view-form-addUser');
 
         //Eingaben pruefen
         $valid = true;
@@ -72,30 +64,27 @@ class EditUserFormAjax extends AjaxCommand {
                 $userForm->markElementAsInvalid('name', RWF::getLanguage()->get('acp.userManagement.form.error.invalidName'));
                 $valid = false;
             }
-            if($user->getName() != $userForm->getElementByName('name')->getValue() && !UserEditor::getInstance()->isUserNameAvailable($userForm->getElementByName('name')->getValue())) {
+            if(!UserEditor::getInstance()->isUserNameAvailable($userForm->getElementByName('name')->getValue())) {
 
                 $userForm->markElementAsInvalid('name',RWF::getLanguage()->get('acp.userManagement.form.error.nameNotAvailable'));
                 $valid = false;
             }
 
             //Passwoerter pruefen
+            if (!$userForm->validateByName('password')) {
+
+                $valid = false;
+            }
+            if (!$userForm->validateByName('passwordCompare')) {
+
+                $valid = false;
+            }
             $pass1 = $userForm->getElementByName('password')->getValue();
             $pass2 = $userForm->getElementByName('passwordCompare')->getValue();
-            if($pass1 != '' || $pass2 != '') {
+            if ($pass1 != '' && $pass1 != $pass2) {
 
-                if (!$userForm->validateByName('password')) {
-
-                    $valid = false;
-                }
-                if (!$userForm->validateByName('passwordCompare')) {
-
-                    $valid = false;
-                }
-                if ($pass1 != '' && $pass1 != $pass2) {
-
-                    $userForm->markElementAsInvalid('password', RWF::getLanguage()->get('acp.userManagement.form.error.passwordError'));;
-                    $valid = false;
-                }
+                $userForm->markElementAsInvalid('password', RWF::getLanguage()->get('acp.userManagement.form.error.passwordError'));;
+                $valid = false;
             }
 
             //Benutzergruppen
@@ -115,23 +104,17 @@ class EditUserFormAjax extends AjaxCommand {
             }
         }
 
+        $tpl = RWF::getTemplate();
         if(!$userForm->isSubmitted() || $valid !== true) {
 
             //Formular Anzeigen
-            $tpl->assign('user', $user);
             $tpl->assign('userForm', $userForm);
 
         } else {
 
             //Eingaben i.O. -> speichern
             $name = $userForm->getElementByName('name')->getValue();
-            if($userForm->getElementByName('password')->getValue() != '') {
-
-                $password = $userForm->getElementByName('password')->getValue();
-            } else {
-
-                $password = null;
-            }
+            $password = $userForm->getElementByName('password')->getValue();
             $mainGroup = $userForm->getElementByName('mainGroup')->getValue();
             $userGroups = $userForm->getElementByName('userGroups')->getValues();
             $lang = $userForm->getElementByName('lang')->getValue();
@@ -140,9 +123,9 @@ class EditUserFormAjax extends AjaxCommand {
             $message = new Message();
             try {
 
-                UserEditor::getInstance()->editUser($userId, $name, $password, $mainGroup, $userGroups, $lang, $webStyle);
+                UserEditor::getInstance()->addUser($name, $password, $mainGroup, $userGroups, $lang, $webStyle);
                 $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.editUser'));
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.addUser'));
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1110) {
@@ -162,9 +145,13 @@ class EditUserFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=pcc&page=listusers');
+            $this->response->setBody('');
+            $this->template = '';
         }
-        $this->data = $tpl->fetchString('edituserform.html');
     }
 
 }
