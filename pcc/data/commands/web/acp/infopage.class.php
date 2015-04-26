@@ -28,7 +28,7 @@ class InfoPage extends PageCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('acpinfo', 'acpindex');
+    protected $languageModules = array('index', 'acpinfo', 'acpindex');
 
     /**
      * Daten verarbeiten

@@ -29,7 +29,7 @@ class SettingsFormPage extends PageCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('settings', 'acpindex');
+    protected $languageModules = array('index', 'settings', 'acpindex');
 
     /**
      * Daten verarbeiten
