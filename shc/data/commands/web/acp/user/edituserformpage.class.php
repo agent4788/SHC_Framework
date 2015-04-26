@@ -3,19 +3,18 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\User\User;
 use RWF\User\UserEditor;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use RWF\XML\Exception\XmlException;
+use SHC\Core\SHC;
 use SHC\Form\Forms\UserForm;
 
-
 /**
- * Formular zum bearbeiten eines neuen Benutzers
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -23,7 +22,9 @@ use SHC\Form\Forms\UserForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditUserFormAjax extends AjaxCommand {
+class EditUserFormPage extends PageCommand {
+
+    protected $template = 'userform.html';
 
     protected $premission = 'shc.acp.userManagement';
 
@@ -32,7 +33,7 @@ class EditUserFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -42,6 +43,12 @@ class EditUserFormAjax extends AjaxCommand {
         //Template Objekt holen
         $tpl = RWF::getTemplate();
 
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
         //Benutzer Objekt laden
         $userId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
         $user = UserEditor::getInstance()->getUserById($userId);
@@ -50,12 +57,12 @@ class EditUserFormAjax extends AjaxCommand {
         if(!$user instanceof User) {
 
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
-            $this->data = $tpl->fetchString('adduserform.html');
             return;
         }
 
         //Formular erstellen
         $userForm = new UserForm($user);
+        $userForm->setAction('index.php?app=shc&page=edituserform&id='. $user->getId());
         $userForm->addId('shc-view-form-editUser');
         $userForm->setDescription(RWF::getLanguage()->get('acp.userManagement.form.user.editDescription'));
 
@@ -119,7 +126,6 @@ class EditUserFormAjax extends AjaxCommand {
         if(!$userForm->isSubmitted() || $valid !== true) {
 
             //Formular Anzeigen
-            $tpl->assign('user', $user);
             $tpl->assign('userForm', $userForm);
 
         } else {
@@ -163,9 +169,14 @@ class EditUserFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listusers');
+            $this->response->setBody('');
+            $this->template = '';
         }
-        $this->data = $tpl->fetchString('edituserform.html');
+
     }
 
 }

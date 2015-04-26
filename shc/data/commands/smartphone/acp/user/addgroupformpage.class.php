@@ -21,7 +21,7 @@ use SHC\Form\Forms\UserGroupForm;
  */
 class AddGroupFormPage extends PageCommand {
 
-    protected $template = 'addgroupform.html';
+    protected $template = 'groupform.html';
 
     protected $premission = 'shc.acp.userManagement';
 

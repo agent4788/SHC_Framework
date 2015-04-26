@@ -88,7 +88,7 @@ class AddGroupFormAjax extends AjaxCommand {
         }
 
         //Template anzeigen
-        $this->data = $tpl->fetchString('addgroupform.html');
+        $this->data = $tpl->fetchString('groupform.html');
     }
 
 }

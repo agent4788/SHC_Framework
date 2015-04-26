@@ -4,16 +4,14 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
-use RWF\Request\Request;
+use RWF\Request\Commands\PageCommand;
 use RWF\User\UserEditor;
-use RWF\User\UserGroup;
-use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\UserGroupForm;
 
 /**
- * Bearbeitet eine Benutzergruppe
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,7 +19,9 @@ use SHC\Form\Forms\UserGroupForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditGroupFormAjax extends AjaxCommand {
+class AddGroupFormPage extends PageCommand {
+
+    protected $template = 'groupform.html';
 
     protected $premission = 'shc.acp.userManagement';
 
@@ -30,35 +30,28 @@ class EditGroupFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
 
-        //Gruppen Objekt laden
-        $groupId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
-        $group = UserEditor::getInstance()->getUserGroupById($groupId);
-
-        //pruefen ob die Benutzergruppe existiert
-        if(!$group instanceof UserGroup) {
-
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
-            $this->data = $tpl->fetchString('editgroupform.html');
-            return;
-        }
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Formular erstellen
-        $groupForm = new UserGroupForm($group);
-        $groupForm->addId('shc-view-form-editGroup');
+        $groupForm = new UserGroupForm();
+        $groupForm->setAction('index.php?app=shc&page=addgroupform');
+        $groupForm->addId('shc-view-form-addGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 
-            $tpl->assign('group', $group);
             $tpl->assign('groupForm', $groupForm);
         } else {
 
@@ -78,16 +71,16 @@ class EditGroupFormAjax extends AjaxCommand {
             $message = new Message();
             try {
 
-                UserEditor::getInstance()->editUserGroup($groupId, $name, $description, $premissions);
+                UserEditor::getInstance()->addUserGroup($name, $description, $premissions);
                 $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.editGroup'));
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.addGroup'));
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1112) {
 
-                    //Gruppenname schon vergeben
+                    //Benutzername schon vergeben
                     $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1112.group'));
+                    $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1112'));
                 }  elseif($e->getCode() == 1102) {
 
                     //fehlende Schreibrechte
@@ -100,11 +93,13 @@ class EditGroupFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listgroups');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editgroupform.html');
     }
-
 }

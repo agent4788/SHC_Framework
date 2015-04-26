@@ -3,16 +3,15 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
 use RWF\User\UserEditor;
 use RWF\Util\Message;
-use RWF\XML\Exception\XmlException;
+use SHC\Core\SHC;
 use SHC\Form\Forms\UserForm;
 
-
 /**
- * Formular zum erstellen eines neuen Benutzers
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -20,7 +19,9 @@ use SHC\Form\Forms\UserForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddUserFormAjax extends AjaxCommand {
+class AddUserFormPage extends PageCommand {
+
+    protected $template = 'userform.html';
 
     protected $premission = 'shc.acp.userManagement';
 
@@ -29,14 +30,24 @@ class AddUserFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
+        $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Formular
         $userForm = new UserForm();
+        $userForm->setAction('index.php?app=shc&page=adduserform');
         $userForm->addId('shc-view-form-addUser');
 
         //Eingaben pruefen
@@ -134,9 +145,13 @@ class AddUserFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listusers');
+            $this->response->setBody('');
+            $this->template = '';
         }
-        $this->data = $tpl->fetchString('adduserform.html');
     }
 
 }

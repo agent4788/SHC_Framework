@@ -3,17 +3,16 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\User\User;
 use RWF\User\UserEditor;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 
-
 /**
- * loescht einen Benutzer
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -21,24 +20,33 @@ use RWF\Util\Message;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteUserAjax extends AjaxCommand {
+class DeleteUserAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.userManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.userManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listusers';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         //Benutzer Objekt laden
         $userId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -47,8 +55,7 @@ class DeleteUserAjax extends AjaxCommand {
         //pruefen ob der Benutzer existiert
         if(!$user instanceof User) {
 
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deleteuser.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id')));
             return;
         }
 
@@ -78,8 +85,6 @@ class DeleteUserAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.del'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deleteuser.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

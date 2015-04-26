@@ -4,13 +4,17 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Request\Commands\PageCommand;
+use RWF\Request\Request;
 use RWF\User\UserEditor;
+use RWF\User\UserGroup;
+use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\UserGroupForm;
 
 /**
- * Erstellt eine neue Benutzergruppe
+ * Zeigt eine Liste mit allen Benutzern an
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -18,7 +22,9 @@ use SHC\Form\Forms\UserGroupForm;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddGroupFormAjax extends AjaxCommand {
+class EditGroupFormPage extends PageCommand {
+
+    protected $template = 'groupform.html';
 
     protected $premission = 'shc.acp.userManagement';
 
@@ -27,19 +33,36 @@ class AddGroupFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('usermanagement', 'form');
+    protected $languageModules = array('index', 'usermanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
 
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Gruppen Objekt laden
+        $groupId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
+        $group = UserEditor::getInstance()->getUserGroupById($groupId);
+
+        //pruefen ob die Benutzergruppe existiert
+        if(!$group instanceof UserGroup) {
+
+            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.userManagement.form.error.id.group')));
+            return;
+        }
+
         //Formular erstellen
-        $groupForm = new UserGroupForm();
-        $groupForm->addId('shc-view-form-addGroup');
+        $groupForm = new UserGroupForm($group);
+        $groupForm->setAction('index.php?app=shc&page=editgroupform&id='. $group->getId());
+        $groupForm->addId('shc-view-form-editGroup');
 
         if(!$groupForm->isSubmitted() || ($groupForm->isSubmitted() && !$groupForm->validate() === true)) {
 
@@ -62,16 +85,16 @@ class AddGroupFormAjax extends AjaxCommand {
             $message = new Message();
             try {
 
-                UserEditor::getInstance()->addUserGroup($name, $description, $premissions);
+                UserEditor::getInstance()->editUserGroup($groupId, $name, $description, $premissions);
                 $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.addGroup'));
+                $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.success.editGroup'));
             } catch(\Exception $e) {
 
                 if($e->getCode() == 1112) {
 
-                    //Benutzername schon vergeben
+                    //Gruppenname schon vergeben
                     $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1112'));
+                    $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.1112.group'));
                 }  elseif($e->getCode() == 1102) {
 
                     //fehlende Schreibrechte
@@ -84,11 +107,13 @@ class AddGroupFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.userManagement.form.error.group'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listgroups');
+            $this->response->setBody('');
+            $this->template = '';
         }
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('addgroupform.html');
     }
-
 }

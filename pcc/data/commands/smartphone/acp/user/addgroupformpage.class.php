@@ -21,7 +21,7 @@ use RWF\Util\Message;
  */
 class AddGroupFormPage extends PageCommand {
 
-    protected $template = 'addgroupform.html';
+    protected $template = 'groupform.html';
 
     protected $premission = 'pcc.acp.userManagement';
 
