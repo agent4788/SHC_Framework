@@ -3,20 +3,16 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Switchable\Readable;
-use SHC\Switchable\Switchable;
-use SHC\Switchable\SwitchableEditor;
 use SHC\View\Room\ViewHelperBox;
 use SHC\View\Room\ViewHelperEditor;
 
-
 /**
- * loescht ein Element
+ * Herunterfahren
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -24,24 +20,33 @@ use SHC\View\Room\ViewHelperEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DeleteBoxAjax extends AjaxCommand {
+class DeleteBoxAction extends ActionCommand {
 
-    protected $premission = 'shc.acp.switchableManagement';
+    /**
+     * benoetigte Berechtigung
+     *
+     * @var String
+     */
+    protected $requiredPremission = 'shc.acp.switchableManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=shc&page=listswitchables';
 
     /**
      * Sprachpakete die geladen werden sollen
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'acpindex');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
-     * Daten verarbeiten
+     * Aktion ausfuehren
      */
-    public function processData() {
-
-        //Template Objekt holen
-        $tpl = RWF::getTemplate();
+    public function executeAction() {
 
         $boxId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
         $box = ViewHelperEditor::getInstance()->getBoxById($boxId);
@@ -50,8 +55,7 @@ class DeleteBoxAjax extends AjaxCommand {
         if(!$box instanceof ViewHelperBox) {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
-            $this->data = $tpl->fetchString('deletebox.html');
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
             return;
         }
 
@@ -76,8 +80,6 @@ class DeleteBoxAjax extends AjaxCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.deleteBox.error'));
             }
         }
-        $tpl->assign('message', $message);
-        $this->data = $tpl->fetchString('deletebox.html');
+        RWF::getSession()->setMessage($message);
     }
-
 }

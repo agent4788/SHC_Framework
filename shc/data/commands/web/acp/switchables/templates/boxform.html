@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.switchableManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                {$boxForm->fetchStartTag()}
+                <div class="shc-view-content">
+                    {$boxForm->fetchDescription()}
+                    {$boxForm->fetchMessages()}
+                    {$boxForm->fetchAllElements()}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=listswitchables">{lang var='global.button.back'}</a>
+                        <input type="reset" value="{lang var='form.button.reset'}" />
+                        <input type="submit" value="{lang var='form.button.submit'}" />
+                    </div>
+                </div>
+                {$boxForm->fetchEndTag()}
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

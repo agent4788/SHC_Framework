@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Command\Smartphone;
+namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
@@ -49,13 +49,13 @@ class ManageSwitchableContainersPage extends PageCommand {
 
         $tpl = RWF::getTemplate();
 
-        //Headline Daten
+        //Header Daten
         $tpl->assign('apps', SHC::listApps());
         $tpl->assign('acp', true);
         $tpl->assign('style', SHC::getStyle());
         $tpl->assign('user', SHC::getVisitor());
-        $tpl->assign('backLink', 'index.php?app=shc&m&page=listswitchables');
-        $tpl->assign('device', SHC_DETECTED_DEVICE);
+
+        //Meldungen
         if(RWF::getSession()->getMessage() != null) {
             $tpl->assign('message', RWF::getSession()->getMessage());
             RWF::getSession()->removeMessage();
@@ -136,7 +136,7 @@ class ManageSwitchableContainersPage extends PageCommand {
             RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
 
             //Umleiten
-            $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
             $this->response->setBody('');
             $this->template = '';
         }

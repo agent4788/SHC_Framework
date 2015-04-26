@@ -4,10 +4,12 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Form\Form;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\ActivityForm;
 use SHC\Form\Forms\CountdownForm;
 use SHC\Form\Forms\RadiosocketForm;
@@ -17,7 +19,6 @@ use SHC\Form\Forms\RpiGpioOutputForm;
 use SHC\Form\Forms\ScriptForm;
 use SHC\Form\Forms\ShutdownForm;
 use SHC\Form\Forms\WolForm;
-use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
@@ -31,10 +32,9 @@ use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
-use SHC\View\Room\ViewHelperEditor;
 
 /**
- * bearbeitet ein Element
+ * Listet die schaltbaren Elemente
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -42,7 +42,9 @@ use SHC\View\Room\ViewHelperEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditElementFormAjax extends AjaxCommand {
+class EditElementFormPage extends PageCommand {
+
+    protected $template = 'elementform.html';
 
     protected $premission = 'shc.acp.switchableManagement';
 
@@ -51,15 +53,20 @@ class EditElementFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'acpindex', 'form');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Element Objekt laden
         $elementId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -70,6 +77,7 @@ class EditElementFormAjax extends AjaxCommand {
 
             //Aktivitaet
             $activityForm = new ActivityForm($element);
+            $activityForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $activityForm->addId('shc-view-form-editElement');
 
             if($activityForm->isSubmitted() && $activityForm->validate()) {
@@ -102,17 +110,21 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $activityForm);
             }
         } elseif($element instanceof Countdown) {
 
             //Countdown
             $countdownForm = new CountdownForm($element);
+            $countdownForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $countdownForm->addId('shc-view-form-editElement');
 
             if($countdownForm->isSubmitted() && $countdownForm->validate()) {
@@ -146,17 +158,21 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $countdownForm);
             }
         } elseif($element instanceof RadioSocket) {
 
             //Funksteckdose
             $radiosocketForm = new RadiosocketForm($element);
+            $radiosocketForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $radiosocketForm->addId('shc-view-form-editElement');
 
             if($radiosocketForm->isSubmitted() && $radiosocketForm->validate()) {
@@ -193,17 +209,21 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $radiosocketForm);
             }
         } elseif($element instanceof RpiGpioInput) {
 
             //GPIO Eingang
             $gpioInputForm = new RpiGpioInputForm($element);
+            $gpioInputForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $gpioInputForm->addId('shc-view-form-editElement');
 
             if($gpioInputForm->isSubmitted() && $gpioInputForm->validate()) {
@@ -238,17 +258,21 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $gpioInputForm);
             }
         } elseif($element instanceof RpiGpioOutput) {
 
             //GPIO Ausgang
             $gpioOutputForm = new RpiGpioOutputForm($element);
+            $gpioOutputForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $gpioOutputForm->addId('shc-view-form-editElement');
 
             if($gpioOutputForm->isSubmitted() && $gpioOutputForm->validate()) {
@@ -283,17 +307,21 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $gpioOutputForm);
             }
         } elseif($element instanceof WakeOnLan) {
 
             //Wake On Lan
             $wolForm = new WolForm($element);
+            $wolForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $wolForm->addId('shc-view-form-editElement');
 
             if($wolForm->isSubmitted() && $wolForm->validate()) {
@@ -328,11 +356,14 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $wolForm);
             }
         } elseif($element instanceof RadioSocketDimmer) {
@@ -341,6 +372,7 @@ class EditElementFormAjax extends AjaxCommand {
         } elseif($element instanceof Shutdown) {
 
             $shutdownForm = new ShutdownForm($element);
+            $shutdownForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $shutdownForm->addId('shc-view-form-editElement');
 
             if($shutdownForm->isSubmitted() && $shutdownForm->validate()) {
@@ -373,15 +405,20 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $shutdownForm);
             }
         } elseif($element instanceof Reboot) {
 
             $rebootForm = new RebootForm($element);
+            $rebootForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $rebootForm->addId('shc-view-form-editElement');
 
             if($rebootForm->isSubmitted() && $rebootForm->validate()) {
@@ -414,10 +451,14 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addReboot.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $rebootForm);
             }
         } elseif($element instanceof RemoteShutdown) {
@@ -429,6 +470,7 @@ class EditElementFormAjax extends AjaxCommand {
         } elseif($element instanceof Script) {
 
             $scriptForm = new ScriptForm($element);
+            $scriptForm->setAction('index.php?app=shc&page=editelementform&id='. $element->getId());
             $scriptForm->addId('shc-view-form-editElement');
 
             if($scriptForm->isSubmitted() && $scriptForm->validate()) {
@@ -463,22 +505,22 @@ class EditElementFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                $tpl->assign('element', $element);
                 $tpl->assign('elementForm', $scriptForm);
             }
         } else {
 
             //Ungueltige ID
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editelementform.html');
             return;
         }
-
-        //Template ausgeben
-        $this->data = $tpl->fetchString('editelementform.html');
     }
 
 }

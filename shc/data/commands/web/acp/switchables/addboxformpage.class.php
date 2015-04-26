@@ -4,13 +4,15 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Form\Form;
+use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\BoxForm;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
- * erstellt eine neue Box
+ * Listet die schaltbaren Elemente
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -18,7 +20,9 @@ use SHC\View\Room\ViewHelperEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AddBoxFormAjax extends AjaxCommand {
+class AddBoxFormPage extends PageCommand {
+
+    protected $template = 'boxform.html';
 
     protected $premission = 'shc.acp.switchableManagement';
 
@@ -27,18 +31,24 @@ class AddBoxFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Formular erstellen
         $boxForm = new BoxForm();
+        $boxForm->setAction('index.php?app=shc&page=addboxform');
         $boxForm->addId('shc-view-form-addBox');
 
         if($boxForm->isSubmitted() && $boxForm->validate()) {
@@ -73,14 +83,16 @@ class AddBoxFormAjax extends AjaxCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addbox.error'));
                 }
             }
-            $tpl->assign('message', $message);
+            RWF::getSession()->setMessage($message);
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+            $this->response->setBody('');
+            $this->template = '';
         } else {
 
             $tpl->assign('boxForm', $boxForm);
         }
-
-        //Template anzeigen
-        $this->data = $tpl->fetchString('addboxform.html');
     }
 
 }

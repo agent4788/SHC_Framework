@@ -3,8 +3,10 @@
 namespace SHC\Command\Web;
 
 //Imports
-use RWF\Request\Commands\AjaxCommand;
 use RWF\Core\RWF;
+use RWF\Request\Commands\PageCommand;
+use SHC\Core\SHC;
+use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
@@ -14,7 +16,7 @@ use SHC\SwitchServer\SwitchServerEditor;
 use SHC\Util\RadioSocketsUtil;
 
 /**
- * Zeigt eine Liste mit den Belegten System/Unit Codes und ID's an
+ * Listet die schaltbaren Elemente
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -22,7 +24,9 @@ use SHC\Util\RadioSocketsUtil;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AssignmentAjax extends AjaxCommand {
+class AssignmentPage extends PageCommand {
+
+    protected $template = 'assignment.html';
 
     protected $premission = 'shc.acp.switchableManagement';
 
@@ -31,12 +35,20 @@ class AssignmentAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'acpindex');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
+
+        $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Typ zuruecksetzen falls vorhanden
         if(RWF::getSession()->issetVar('type')) {
@@ -65,7 +77,10 @@ class AssignmentAjax extends AjaxCommand {
                 foreach($switchable->getRooms() as $roomId) {
 
                     $room = RoomEditor::getInstance()->getRoomById($roomId);
-                    $rooms[] = $room->getName();
+                    if($room instanceof Room) {
+
+                        $rooms[] = $room->getName();
+                    }
                 }
 
                 $radioSockets[$sysCode][$switchable->getDeviceCode()] = array(
@@ -108,9 +123,8 @@ class AssignmentAjax extends AjaxCommand {
         }
 
         //Template vorbereiten und Anzeigen
-        $tpl = RWF::getTemplate();
         $tpl->assign('radioSockets', $radioSockets);
         $tpl->assign('gpios', $gpios);
-        $this->data = $tpl->fetchString('assignment.html');
     }
+
 }

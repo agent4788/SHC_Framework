@@ -4,18 +4,18 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Form\Form;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Form\Forms\ActivityForm;
+use SHC\Core\SHC;
 use SHC\Form\Forms\BMPSensorForm;
 use SHC\Form\Forms\DHTSensorForm;
 use SHC\Form\Forms\DS18x20SensorForm;
 use SHC\Form\Forms\HygrometerSensorForm;
 use SHC\Form\Forms\LDRSensorForm;
 use SHC\Form\Forms\RainSensorForm;
-use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
@@ -23,11 +23,9 @@ use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
-use SHC\Switchable\SwitchableEditor;
-
 
 /**
- * bearbeitet einen Sensor
+ * Listet die schaltbaren Elemente
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -35,7 +33,9 @@ use SHC\Switchable\SwitchableEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditSensorFormAjax extends AjaxCommand {
+class EditSensorFormPage extends PageCommand {
+
+    protected $template = 'sensorform.html';
 
     protected $premission = 'shc.acp.switchableManagement';
 
@@ -44,15 +44,20 @@ class EditSensorFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'acpindex', 'form');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Sensor Objekt laden
         $sensorId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::STRING);
@@ -63,6 +68,7 @@ class EditSensorFormAjax extends AjaxCommand {
 
             //BMP Sensor
             $bmpSensorForm = new BMPSensorForm($sensor);
+            $bmpSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $bmpSensorForm->addId('shc-view-form-editSensor');
 
             if($bmpSensorForm->isSubmitted() && $bmpSensorForm->validate()) {
@@ -99,17 +105,21 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $bmpSensorForm);
+                $tpl->assign('sensorForm', $bmpSensorForm);
             }
         } elseif($sensor instanceof DHT) {
 
             //DHT Sensor
             $dhtSensorForm = new DHTSensorForm($sensor);
+            $dhtSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $dhtSensorForm->addId('shc-view-form-editSensor');
 
             if($dhtSensorForm->isSubmitted() && $dhtSensorForm->validate()) {
@@ -144,17 +154,21 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $dhtSensorForm);
+                $tpl->assign('sensorForm', $dhtSensorForm);
             }
         } elseif($sensor instanceof DS18x20) {
 
             //DHT Sensor
             $ds18x20SensorForm = new DS18x20SensorForm($sensor);
+            $ds18x20SensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $ds18x20SensorForm->addId('shc-view-form-editSensor');
 
             if($ds18x20SensorForm->isSubmitted() && $ds18x20SensorForm->validate()) {
@@ -187,17 +201,21 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $ds18x20SensorForm);
+                $tpl->assign('sensorForm', $ds18x20SensorForm);
             }
         } elseif($sensor instanceof Hygrometer) {
 
             //Hygrometer Sensor
             $hygrometerSensorForm = new HygrometerSensorForm($sensor);
+            $hygrometerSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $hygrometerSensorForm->addId('shc-view-form-editSensor');
 
             if($hygrometerSensorForm->isSubmitted() && $hygrometerSensorForm->validate()) {
@@ -230,17 +248,21 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $hygrometerSensorForm);
+                $tpl->assign('sensorForm', $hygrometerSensorForm);
             }
         } elseif($sensor instanceof RainSensor) {
 
             //Regensensor
             $rainSensorForm = new RainSensorForm($sensor);
+            $rainSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $rainSensorForm->addId('shc-view-form-editSensor');
 
             if($rainSensorForm->isSubmitted() && $rainSensorForm->validate()) {
@@ -273,17 +295,21 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $rainSensorForm);
+                $tpl->assign('sensorForm', $rainSensorForm);
             }
         } elseif($sensor instanceof LDR) {
 
             //Lichtsensor
             $ldrSensorForm = new LDRSensorForm($sensor);
+            $ldrSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
             $ldrSensorForm->addId('shc-view-form-editSensor');
 
             if($ldrSensorForm->isSubmitted() && $ldrSensorForm->validate()) {
@@ -316,23 +342,26 @@ class EditSensorFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
-                //Formular anzeigen
-                $tpl->assign('sensor', $sensor);
-                $tpl->assign('elementForm', $ldrSensorForm);
+                $tpl->assign('sensorForm', $ldrSensorForm);
             }
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editsensorform.html');
-            return;
-        }
+            RWF::getSession()->setMessage(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id'));
 
-        //Template ausgeben
-        $this->data = $tpl->fetchString('editsensorform.html');
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+            $this->response->setBody('');
+            $this->template = '';
+        }
     }
 
 }

@@ -4,10 +4,12 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Request\Commands\AjaxCommand;
+use RWF\Form\Form;
+use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
+use SHC\Core\SHC;
 use SHC\Form\Forms\BoxForm;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Switchable\Readable;
@@ -17,7 +19,7 @@ use SHC\View\Room\ViewHelperBox;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
- * bearbeitet eine Box
+ * Listet die schaltbaren Elemente
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -25,7 +27,9 @@ use SHC\View\Room\ViewHelperEditor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class EditBoxFormAjax extends AjaxCommand {
+class EditBoxFormPage extends PageCommand {
+
+    protected $template = 'boxform.html';
 
     protected $premission = 'shc.acp.switchableManagement';
 
@@ -34,15 +38,20 @@ class EditBoxFormAjax extends AjaxCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('switchablemanagement', 'form', 'acpindex');
+    protected $languageModules = array('index', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
      */
     public function processData() {
 
-        //Template Objekt holen
         $tpl = RWF::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
 
         //Box Objekt laden
         $boxId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -52,6 +61,7 @@ class EditBoxFormAjax extends AjaxCommand {
 
             //Formular erstellen
             $boxForm = new BoxForm($box);
+            $boxForm->setAction('index.php?app=shc&page=editboxform&id='. $box->getBoxId());
             $boxForm->addId('shc-view-form-editBox');
 
             if ($boxForm->isSubmitted() && $boxForm->validate()) {
@@ -146,7 +156,12 @@ class EditBoxFormAjax extends AjaxCommand {
                         $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addbox.error'));
                     }
                 }
-                $tpl->assign('message', $message);
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
             } else {
 
                 $tpl->assign('box', $box);
@@ -155,13 +170,13 @@ class EditBoxFormAjax extends AjaxCommand {
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
-            $this->data = $tpl->fetchString('editboxform.html');
-            return;
-        }
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
 
-        //Template anzeigen
-        $this->data = $tpl->fetchString('editboxform.html');
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+            $this->response->setBody('');
+            $this->template = '';
+        }
     }
 
 }

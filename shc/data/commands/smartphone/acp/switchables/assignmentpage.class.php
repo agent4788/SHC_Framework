@@ -6,6 +6,7 @@ namespace SHC\Command\Smartphone;
 use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
 use SHC\Core\SHC;
+use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
@@ -78,7 +79,10 @@ class AssignmentPage extends PageCommand {
                 foreach($switchable->getRooms() as $roomId) {
 
                     $room = RoomEditor::getInstance()->getRoomById($roomId);
-                    $rooms[] = $room->getName();
+                    if($room instanceof Room) {
+
+                        $rooms[] = $room->getName();
+                    }
                 }
 
                 $radioSockets[$sysCode][$switchable->getDeviceCode()] = array(

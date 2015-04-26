@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.switchableManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                {if $elementTypeChooser|isset}
+
+                    {* Typauswahl *}
+                    <div class="shc-view-content">
+                        <form>
+                            <div style="text-align: center;">
+                                {$elementTypeChooser->fetch()}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="shc-view-buttons">
+                        <div class="shc-view-buttonSet">
+                            <a href="index.php?app=shc&page=listswitchables">{lang var='global.button.back'}</a>
+                            <button id="shc-view-switchableManagement-button-next">{lang var="acp.switchableManagement.button.next"}</button>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+
+                            $('#shc-view-switchableManagement-button-next').click(function() {
+
+                                window.location = 'index.php?app=shc&page=addelementform&type=' + $('select[name=type]').val();
+                            });
+                        });
+                    </script>
+                {else}
+
+                    {* Formular Anzeigen *}
+                    {$elementForm->fetchStartTag()}
+                    <div class="shc-view-content">
+                        {$elementForm->fetchDescription()}
+                        {$elementForm->fetchMessages()}
+                        {$elementForm->fetchAllElements()}
+                    </div>
+                    <div class="shc-view-buttons">
+                        <div class="shc-view-buttonSet">
+                            <a href="index.php?app=shc&page=listswitchables">{lang var='global.button.back'}</a>
+                            <input type="reset" value="{lang var='form.button.reset'}" />
+                            <input type="submit" value="{lang var='form.button.submit'}" />
+                        </div>
+                    </div>
+                    {$elementForm->fetchEndTag()}
+                    <script type="text/javascript">
+                        $(function() {
+
+                            {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioOutputForm'}
+                            var value = $('select[name=gpio]').val();
+                            var switchServerId = $('select[name=switchServer]').val();
+                            $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                                $('select[name=gpio]').html(data);
+                                $('select[name=gpio]').val(value);
+                            });
+                            $('select[name=switchServer]').change(function () {
+                                var switchServerId = $('select[name=switchServer]').val();
+
+                                $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                                    var value = $('select[name=gpio]').val();
+                                    $('select[name=gpio]').html(data);
+                                    $('select[name=gpio]').val(value);
+                                });
+                            });
+                            {/instanceof}
+                            {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioInputForm'}
+                            var value = $('select[name=gpio]').val();
+                            var switchServerId = $('select[name=switchServer]').val();
+                            $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                                $('select[name=gpio]').html(data);
+                                $('select[name=gpio]').val(value);
+                            });
+                            $('select[name=switchServer]').change(function () {
+                                var switchServerId = $('select[name=switchServer]').val();
+
+                                $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
+
+                                    var value = $('select[name=gpio]').val();
+                                    $('select[name=gpio]').html(data);
+                                    $('select[name=gpio]').val(value);
+                                });
+                            });
+                            {/instanceof}
+                        });
+                    </script>
+                {/if}
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>
