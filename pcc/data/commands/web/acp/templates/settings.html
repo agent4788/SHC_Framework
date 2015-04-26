@@ -1,31 +1,45 @@
-{* Einstellungen bearbeiten Formular *}
-<div>
-    {if $message|isset}
-    <div class="pcc-view-content">
-        {$message->fetchHtml()}
-    </div>
-    <div class="pcc-view-buttons">
-        <div class="pcc-view-buttonSet">
-            {acpbackbutton location="index.php?app=pcc&page=acp"}
-        </div>
-    </div>
-    {elseif $settingsForm|isset}
-    <div class="pcc-view-content">
-        {$settingsForm->showForm()}
-    </div>
-    <div class="pcc-view-buttons">
-        <div class="pcc-view-buttonSet">
-            {acpbackbutton location="index.php?app=pcc&page=acp"}
-            {resetbutton form="#pcc-view-form-settings"}
-            {submitbutton form="#pcc-view-form-settings" action="index.php?app=pcc&ajax=settingsform"}
-        </div>
-    </div>
-    {/if}
-</div>
-<script type="text/javascript">
-    $(function() {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="pcc-content">
+            {contentbox name="acp.settings.title" id='pcc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                {$settingsForm->fetchStartTag()}
+                <div class="pcc-view-content">
+                    {$settingsForm->fetchDescription()}
+                    {$settingsForm->fetchMessages()}
+                    {$settingsForm->fetchTabContainerStart()}
+                    {$settingsForm->fetchTabList()}
+                    {foreach from=$settingsForm->listTabs() item='tab'}
+                    {$settingsForm->fetchTab($tab)}
+                    {/foreach}
+                    {$settingsForm->fetchTabContainerEnd()}
+                    {$settingsForm->fetchContainerJavaScript()}
+                </div>
+                <div class="pcc-view-buttons">
+                    <div class="pcc-view-buttonSet">
+                        <a href="index.php?app=pcc&page=acp">{lang var='global.button.back'}</a>
+                        <input type="reset" value="{lang var='form.button.reset'}" />
+                        <input type="submit" value="{lang var='form.button.submit'}" />
+                    </div>
+                </div>
+                {$settingsForm->fetchEndTag()}
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
 
-        $('#pcc-view-acp-contentBox .pcc-contentbox-header').text('{lang var="acp.settings.title"}');
-        $('.pcc-view-buttonSet').buttonset();
-    });
-</script>
+                    $('.pcc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

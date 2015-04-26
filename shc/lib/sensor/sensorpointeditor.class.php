@@ -803,6 +803,25 @@ class SensorPointEditor {
     }
 
     /**
+     * prueft ob der Name des Sensorpunktes schon vergeben ist
+     *
+     * @param  String  $name
+     * @return Boolean
+     */
+    public function isSensorPointNameAvailable($name) {
+
+        foreach($this->sensorPoints as $sensorPoint) {
+
+            /* @var $sensorPoint \SHC\Sensor\Sensorpoint */
+            if (String::toLower($sensorPoint->getName()) == String::toLower($name)) {
+
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * bearbeitet die Sortierung der Sensorpunkte
      * 
      * @param  Array   $order Array mit Element ID als Index und Sortierungs ID als Wert
@@ -865,7 +884,7 @@ class SensorPointEditor {
                     $sensorPoint['warningLevel'] = $warningLevel;
                 }
 
-                if($db->hSet(self::$tableName, $spId, $sensorPoint) == 0) {
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
 
                     return true;
                 }

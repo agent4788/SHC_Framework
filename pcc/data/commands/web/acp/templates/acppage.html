@@ -1,4 +1,3 @@
-{* ACP Startseite *}
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,15 +14,15 @@
                 <h2>{lang var='acpindex.menu.group.main'}</h2>
                 <hr/>
                 <div class="pcc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.users' icon='pcc-view-acp-menu-usermanagement' link='index.php?app=pcc&ajax=listusers' premission='pcc.acp.userManagement'}
-                    {acpmenuitem text='acpindex.menu.settings' icon='pcc-view-acp-menu-settings' link='index.php?app=pcc&ajax=settingsform' premission='pcc.acp.settings'}
+                    {acpmenuitem text='acpindex.menu.users' icon='pcc-view-acp-menu-usermanagement' link='index.php?app=pcc&page=listusers' premission='pcc.acp.userManagement'}
+                    {acpmenuitem text='acpindex.menu.settings' icon='pcc-view-acp-menu-settings' link='index.php?app=pcc&page=settingsform' premission='pcc.acp.settings'}
                 </div>
             </div>
             <div class="pcc-view-acp-menuGroup">
                 <h2>{lang var='acpindex.menu.group.other'}</h2>
                 <hr/>
                 <div class="pcc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.info' icon='pcc-view-acp-menu-info' link='index.php?app=pcc&ajax=info' premission='pcc.acp.menu'}
+                    {acpmenuitem text='acpindex.menu.info' icon='pcc-view-acp-menu-info' link='index.php?app=pcc&page=info' premission='pcc.acp.menu'}
                 </div>
             </div>
             {/contentbox}

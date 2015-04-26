@@ -84,7 +84,7 @@ class EditSwitchServerFormPage extends PageCommand {
             $message = new Message();
             try {
 
-                SwitchServerEditor::getInstance()->addSwitchServer($name, $ip, $port, $timeout, $model, $radioSockets, $writeGPIO, $readGPIO, $enabled);
+                SwitchServerEditor::getInstance()->editSwitchServer($switchServerId, $name, $ip, $port, $timeout, $model, $radioSockets, $writeGPIO, $readGPIO, $enabled);
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.switchserverManagement.form.success.addSwitchServer'));
             } catch(\Exception $e) {

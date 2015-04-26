@@ -1,135 +1,149 @@
-{* Info Menue *}
-<div>
-    <div class="shc-view-content">
-        {contentbox name='acp.acpinfo.box.shcVersion'}
-        <table class="shc-view-contentTable">
-            <tbody>
-                <tr>
-                    <td style="width: 50%;">{lang var='acp.acpinfo.box.shcVersion.rwf'}</td>
-                    <td style="width: 50%;">{#$rwfVersion}</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.shcVersion.shc'}</td>
-                    <td>{#$shcVersion}</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.shcVersion.size'}</td>
-                    <td>{$size}</td>
-                </tr>
-            </tbody>
-        </table>
-        {/contentbox}
-        {contentbox name='acp.acpinfo.box.version'}
-        <table class="shc-view-contentTable">
-            <tbody>
-                <tr>
-                    <td style="width: 50%;">{lang var='acp.acpinfo.box.version.php'}</td>
-                    <td style="width: 50%;">{#$php}</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.wiringPi'}</td>
-                    <td>{#$wiringPi}</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.jQuery'}</td>
-                    <td><span id="jqueryVersion"></span></td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.jQueryUi'}</td>
-                    <td><span id="jqueryUiVersion"></span></td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.jQueryMobile'}</td>
-                    <td>1.4.5</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.jQueryCookie'}</td>
-                    <td>1.4.1</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.version.mobileDetect'}</td>
-                    <td>{#$mobileDetect}</td>
-                </tr>
-            </tbody>
-        </table>
-        {/contentbox}
-        {contentbox name='acp.acpinfo.box.writePremissions'}
-        <table class="shc-view-contentTable">
-            <tbody>
-                <tr>
-                    <td style="width: 50%;">{#$cache}</td>
-                    <td style="width: 50%;">
-                        <span class="{if $writeCache == true}green{else}red{/if}">
-                            {if $writeCache == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{#$rwfLog}</td>
-                    <td>
-                        <span class="{if $writeRwfLog == true}green{else}red{/if}">
-                            {if $writeRwfLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{#$rwfStorage}</td>
-                    <td>
-                        <span class="{if $writeRwfStorage == true}green{else}red{/if}">
-                            {if $writeRwfStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{#$shcLog}</td>
-                    <td>
-                        <span class="{if $writeShcLog == true}green{else}red{/if}">
-                            {if $writeShcLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{#$shcStorage}</td>
-                    <td>
-                        <span class="{if $writeShcStorage == true}green{else}red{/if}">
-                            {if $writeShcStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        {/contentbox}
-        {contentbox name='acp.acpinfo.box.credits'}
-        <table class="shc-view-contentTable">
-            <tbody>
-                <tr>
-                    <td width="50%">{lang var='acp.acpinfo.box.credits.engineer'}</td>
-                    <td width="50%">Oliver Kleditzsch</td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.credits.projectPage'}</td>
-                    <td><a href="http://agent4788.github.io/SHC_Framework/">{lang var='acp.acpinfo.box.credits.page'}</a></td>
-                </tr>
-                <tr>
-                    <td>{lang var='acp.acpinfo.box.credits.licence'}</td>
-                    <td><a href="http://opensource.org/licenses/gpl-license.php">GNU Public License</a></td>
-                </tr>
-            </tbody>
-        </table>
-        {/contentbox}
-    </div>
-</div>
-<div class="shc-view-buttons">
-    <div class="shc-view-buttonSet">
-        {acpbackbutton location="index.php?app=shc&page=acp"}
-    </div>
-</div>
-<script type="text/javascript">
-    $(function() {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.acpinfo.title" id='shc-view-acp-contentBox'}
+            <div>
+                <div class="shc-view-content">
+                    {contentbox name='acp.acpinfo.box.shcVersion'}
+                    <table class="shc-view-contentTable">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;">{lang var='acp.acpinfo.box.shcVersion.rwf'}</td>
+                                <td style="width: 50%;">{#$rwfVersion}</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.shcVersion.shc'}</td>
+                                <td>{#$shcVersion}</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.shcVersion.size'}</td>
+                                <td>{$size}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                    {contentbox name='acp.acpinfo.box.version'}
+                    <table class="shc-view-contentTable">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;">{lang var='acp.acpinfo.box.version.php'}</td>
+                                <td style="width: 50%;">{#$php}</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.wiringPi'}</td>
+                                <td>{#$wiringPi}</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.jQuery'}</td>
+                                <td><span id="jqueryVersion"></span></td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.jQueryUi'}</td>
+                                <td><span id="jqueryUiVersion"></span></td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.jQueryMobile'}</td>
+                                <td>1.4.5</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.jQueryCookie'}</td>
+                                <td>1.4.1</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.version.mobileDetect'}</td>
+                                <td>{#$mobileDetect}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                    {contentbox name='acp.acpinfo.box.writePremissions'}
+                    <table class="shc-view-contentTable">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;">{#$cache}</td>
+                                <td style="width: 50%;">
+                                    <span class="{if $writeCache == true}green{else}red{/if}">
+                                        {if $writeCache == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{#$rwfLog}</td>
+                                <td>
+                                    <span class="{if $writeRwfLog == true}green{else}red{/if}">
+                                        {if $writeRwfLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{#$rwfStorage}</td>
+                                <td>
+                                    <span class="{if $writeRwfStorage == true}green{else}red{/if}">
+                                        {if $writeRwfStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{#$shcLog}</td>
+                                <td>
+                                    <span class="{if $writeShcLog == true}green{else}red{/if}">
+                                        {if $writeShcLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{#$shcStorage}</td>
+                                <td>
+                                    <span class="{if $writeShcStorage == true}green{else}red{/if}">
+                                        {if $writeShcStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                    {contentbox name='acp.acpinfo.box.credits'}
+                    <table class="shc-view-contentTable">
+                        <tbody>
+                            <tr>
+                                <td width="50%">{lang var='acp.acpinfo.box.credits.engineer'}</td>
+                                <td width="50%">Oliver Kleditzsch</td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.credits.projectPage'}</td>
+                                <td><a href="http://agent4788.github.io/SHC_Framework/">{lang var='acp.acpinfo.box.credits.page'}</a></td>
+                            </tr>
+                            <tr>
+                                <td>{lang var='acp.acpinfo.box.credits.licence'}</td>
+                                <td><a href="http://opensource.org/licenses/gpl-license.php">GNU Public License</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                </div>
+                {/contentbox}
+            </div>
+            <div class="shc-view-buttons">
+                <div class="shc-view-buttonSet">
+                    <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function() {
 
-        $('#shc-view-acp-contentBox .shc-contentbox-header').first().text('{lang var="acp.acpinfo.title"}');
-        $('.shc-view-buttonSet').buttonset();
-        $('#jqueryVersion').text($.fn.jquery);
-        $('#jqueryUiVersion').text(jQuery.ui.version);
-    });
-</script>
+                    $('.shc-view-buttonSet').buttonset();
+                    $('#jqueryVersion').text($.fn.jquery);
+                    $('#jqueryUiVersion').text(jQuery.ui.version);
+                });
+            </script>
+        </div>
+    </body>
+</html>

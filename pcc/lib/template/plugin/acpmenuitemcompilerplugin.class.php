@@ -68,19 +68,17 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         //HTML
-        $html .= '<div class="pcc-view-acp-menuItem" id="'. $randomStr .'">';
+        $html .= '<div class="pcc-view-acp-menuItem" id="a'. $randomStr .'">';
         $html .= '<span class="pcc-view-acp-menuItem-icon" id='. $args['icon'] .'></span>';
         $html .= '<span class="pcc-view-acp-menuItem-text"><?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['text'] .'); ?></span>';
         $html .= '</div>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
-        $html .= '$(\'#'. $randomStr .'\').click(function() {';
-        $html .= '$.get('. $args['link'] .', function(data, textStatus, jqXHR) {';
-        $html .= '$(\'#pcc-view-acp-contentBox div.pcc-contentbox-body\').html(data);';
+        $html .= '$(\'#a'. $randomStr .'\').click(function() {';
+        $html .= 'window.location = '. $args['link'] .';';
         $html .= '});';
         $html .= '});';
-        $html .= '});';
-        $html .= '</script>';
+        $html .= '</script>';;
 
         //Bedingung abschliesen
         if($premission != '' || $setting != '') {

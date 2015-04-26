@@ -133,7 +133,12 @@ class ManageSwitchableContainersPage extends PageCommand {
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');
+            $this->response->setBody('');
+            $this->template = '';
         }
     }
 

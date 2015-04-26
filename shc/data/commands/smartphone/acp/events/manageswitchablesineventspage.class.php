@@ -260,12 +260,10 @@ class ManageSwitchablesInEventsPage extends PageCommand {
             $tpl->assign('switchCommand', $switchCommand);
             $tpl->assign('elementList', $event->listSwitchables());
             $tpl->assign('conditionList', $event->listConditions());
-            $this->data = $tpl->fetchString('manageswitchablesinevents.html');
         } else {
 
             //Ungueltige ID
             $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.eventsManagement.form.error.id')));
-            $this->data = $tpl->fetchString('manageswitchablesinevents.html');
             return;
         }
     }

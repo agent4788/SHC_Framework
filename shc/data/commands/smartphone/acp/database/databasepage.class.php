@@ -54,16 +54,7 @@ class DatabasePage extends PageCommand {
         //Datenbank Dump
         if($this->request->issetParam('dump', Request::GET)) {
 
-            $message = new Message();
-            if($db->bgsave()) {
 
-                $message->setType(Message::SUCCESSFULLY);
-                $message->setMessage(SHC::getLanguage()->get('acp.database.dump.success'));
-            } else {
-
-                $message->setType(Message::ERROR);
-                $message->setMessage(SHC::getLanguage()->get('acp.database.dump.error'));
-            }
             $tpl->assign('message', $message);
         }
 

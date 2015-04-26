@@ -1,66 +1,64 @@
-{* Element erstellen Formular *}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.eventsManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                {if $eventTypeChooser|isset}
+                    <div class="shc-view-content">
+                        <form>
+                            <div style="text-align: center;">
+                                {$eventTypeChooser->fetch()}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="shc-view-buttons">
+                        <div class="shc-view-buttonSet">
+                            <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                            <button id="shc-view-eventsManagement-button-next">{lang var="acp.eventsManagement.button.next"}</button>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
 
-{* Typauswahl *}
-{if $eventTypeChooser|isset}
-<div>
-    <div class="shc-view-content">
-        <form>
-            <div style="text-align: center;">
-                {$eventTypeChooser->fetch()}
-            </div>
-        </form>
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
-            <button id="shc-view-eventsManagement-button-next">{lang var="acp.eventsManagement.button.next"}</button>
+                            $('#shc-view-eventsManagement-button-next').click(function() {
+
+                                window.location = 'index.php?app=shc&page=addeventform&type=' + $('select[name=type]').val();
+                            });
+                        });
+                    </script>
+                {else}
+                    {$eventForm->fetchStartTag()}
+                    <div class="shc-view-content">
+                        {$eventForm->fetchDescription()}
+                        {$eventForm->fetchMessages()}
+                        {$eventForm->fetchAllElements()}
+                    </div>
+                    <div class="shc-view-buttons">
+                        <div class="shc-view-buttonSet">
+                            <a href="index.php?app=shc&page=listevents">{lang var='global.button.back'}</a>
+                            <input type="reset" value="{lang var='form.button.reset'}" />
+                            <input type="submit" value="{lang var='form.button.submit'}" />
+                        </div>
+                    </div>
+                    {$eventForm->fetchEndTag()}
+                {/if}
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
         </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $(function() {
-
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-        $('#shc-view-eventsManagement-button-next').click(function() {
-
-            $.get('index.php?app=shc&ajax=addeventform&type=' + $('select[name=type]').val(), function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
-            });
-        });
-    });
-</script>
-
-{* Formular Anzeigen *}
-{else}
-<div>
-    {if $eventForm|isset}
-    <div class="shc-view-content">
-        {$eventForm->showForm()}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
-            {resetbutton form="#shc-view-form-addEvent"}
-            {submitbutton form="#shc-view-form-addEvent" action="index.php?app=shc&ajax=addeventform"}
-        </div>
-    </div>
-    {elseif $message|isset}
-    <div class="shc-view-content">
-        {$message->fetchHtml()}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listevents"}
-        </div>
-    </div>
-    {/if}
-</div>
-<script type="text/javascript">
-    $(function() {
-
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.eventsManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-    });
-</script>
-{/if}
+    </body>
+</html>

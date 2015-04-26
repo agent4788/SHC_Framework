@@ -26,8 +26,8 @@
                             {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
                         </td>
                         <td>
-                            {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
-                            {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
+                            {editlink link='index.php?app=shc&page=editelementform&id=' id=$element->getId()}
+                            {deletelink link='index.php?app=shc&action=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSwitchable' title='acp.switchableManagement.prompt.deleteSwitchable.title'}
                         </td>
                     </tr>
                     {/instanceof}
@@ -41,8 +41,8 @@
                             {instanceof element=$element class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
                         </td>
                         <td>
-                            {editlink link='index.php?app=shc&ajax=editelementform&id=' id=$element->getId()}
-                            {deletelink link='index.php?app=shc&ajax=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
+                            {editlink link='index.php?app=shc&page=editelementform&id=' id=$element->getId()}
+                            {deletelink link='index.php?app=shc&action=deleteelement&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteReadable' title='acp.switchableManagement.prompt.deleteReadable.title'}
                         </td>
                     </tr>
                     {/instanceof}
@@ -60,8 +60,8 @@
                             {instanceof element=$element class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
                         </td>
                         <td>
-                            {editlink link='index.php?app=shc&ajax=editsensorform&id=' id=$element->getId()}
-                            {deletelink link='index.php?app=shc&ajax=deletesensor&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
+                            {editlink link='index.php?app=shc&page=editsensorform&id=' id=$element->getId()}
+                            {deletelink link='index.php?app=shc&action=deletesensor&id=' id=$element->getId() prompt='acp.switchableManagement.prompt.deleteSensor' title='acp.switchableManagement.prompt.deleteSensor.title'}
                         </td>
                     </tr>
                     {/instanceof}

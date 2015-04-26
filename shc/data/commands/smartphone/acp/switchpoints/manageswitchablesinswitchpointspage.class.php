@@ -251,13 +251,15 @@ class ManageSwitchablesInSwitchPointsPage extends PageCommand {
             $tpl->assign('elementChooser', $elementChooser);
             $tpl->assign('elementList', $switchablesInSwitchPoint);
             $tpl->assign('conditionList', $switchPoint->listConditions());
-            $this->data = $tpl->fetchString('manageswitchablesinswitchpoints.html');
         } else {
 
             //Ungueltige ID
-            $tpl->assign('message', new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id')));
-            $this->data = $tpl->fetchString('manageswitchablesinswitchpoints.html');
-            return;
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchpointsManagment.form.error.id')));
+
+            //Umleiten
+            $this->response->addLocationHeader('index.php?app=shc&page=listswitchpoints');
+            $this->response->setBody('');
+            $this->template = '';
         }
     }
 
