@@ -88,6 +88,7 @@ class AssignmentPage extends PageCommand {
                     'sysCodeBin' => RadioSocketsUtil::convertDecToBinary($sysCode),
                     'devCode' => $switchable->getDeviceCode(),
                     'name' => $switchable->getName(),
+                    'protocol' => $switchable->getProtocol(),
                     'rooms' => $rooms
                 );
             } elseif($switchable instanceof RpiGpioInput || $switchable instanceof RpiGpioOutput) {

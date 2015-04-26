@@ -30,6 +30,7 @@ $l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
 $l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
 $l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Gerätecode/ID';
 $l['acp.switchableManagement.elementTable.table.head.pin'] = 'Pin';
+$l['acp.switchableManagement.elementTable.table.head.protocol'] = 'Protokoll';
 
 //Buttons
 $l['acp.switchableManagement.button.listBoxes'] = 'Boxen verwalten';
