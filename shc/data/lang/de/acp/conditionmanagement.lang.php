@@ -37,6 +37,7 @@ $l['acp.conditionManagement.condition.TemperatureGreaterThanCondition'] = 'Tempe
 $l['acp.conditionManagement.condition.TemperatureLowerThanCondition'] = 'Temperatur kleiner als';
 $l['acp.conditionManagement.condition.NobodyAtHomeCondition'] = 'Niemand zu Hause';
 $l['acp.conditionManagement.condition.UserAtHomeCondition'] = 'Benutzer zu Hause';
+$l['acp.conditionManagement.condition.UserNotAtHomeCondition'] = 'Benutzer nicht zu Hause';
 $l['acp.conditionManagement.condition.DateCondition'] = 'Datumsbereich';
 $l['acp.conditionManagement.condition.DayOfWeekCondition'] = 'Wochentage';
 $l['acp.conditionManagement.condition.TimeOfDayCondition'] = 'Zeitbereich';
@@ -46,6 +47,7 @@ $l['acp.conditionManagement.condition.FileExistsCondition'] = 'Datei vorhanden/n
 $l['acp.conditionManagement.condition.HolidaysCondition'] = 'Feiertage';
 $l['acp.conditionManagement.condition.InputHighCondition'] = 'Eingang "1"';
 $l['acp.conditionManagement.condition.InputLowCondition'] = 'Eingang "0"';
+$l['acp.conditionManagement.condition.FirstLoopCondition'] = 'Sheduler start';
 
 //Formularfelder
 $l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'Neujahr';
@@ -85,6 +87,8 @@ $l['acp.conditionManagement.form.condition.temperature'] = 'Temperatur';
 $l['acp.conditionManagement.form.condition.temperature.description'] = 'wähle die Temperatur (-30 - 120°C) über/unter der die Bedingung zutreffen soll';
 $l['acp.conditionManagement.form.condition.userAtHome'] = 'Benutzer';
 $l['acp.conditionManagement.form.condition.userAtHome.description'] = 'wähle die Benutzer von denen mindestens einer anwesend sein muss damit die Bedingung zutrifft';
+$l['acp.conditionManagement.form.condition.userNotAtHome'] = 'Benutzer';
+$l['acp.conditionManagement.form.condition.userNotAtHome.description'] = 'wähle die Benutzer von denen mindestens einer nicht anwesend sein muss damit die Bedingung zutrifft';
 $l['acp.conditionManagement.form.condition.startDate'] = 'Start Datum';
 $l['acp.conditionManagement.form.condition.startDate.description'] = 'Anfangsdatum des Datumsbereiches';
 $l['acp.conditionManagement.form.condition.endDate'] = 'End Datum';

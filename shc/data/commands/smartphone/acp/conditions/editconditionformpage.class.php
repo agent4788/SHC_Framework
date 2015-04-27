@@ -12,6 +12,7 @@ use SHC\Condition\ConditionEditor;
 use SHC\Condition\Conditions\DateCondition;
 use SHC\Condition\Conditions\DayOfWeekCondition;
 use SHC\Condition\Conditions\FileExistsCondition;
+use SHC\Condition\Conditions\FirstLoopCondition;
 use SHC\Condition\Conditions\HolidaysCondition;
 use SHC\Condition\Conditions\HumidityGreaterThanCondition;
 use SHC\Condition\Conditions\HumidityLowerThanCondition;
@@ -28,10 +29,12 @@ use SHC\Condition\Conditions\TemperatureGreaterThanCondition;
 use SHC\Condition\Conditions\TemperatureLowerThanCondition;
 use SHC\Condition\Conditions\TimeOfDayCondition;
 use SHC\Condition\Conditions\UserAtHomeCondition;
+use SHC\Condition\Conditions\UserNotAtHomeCondition;
 use SHC\Core\SHC;
 use SHC\Form\Forms\DateConditionForm;
 use SHC\Form\Forms\DayOfWeekConditionForm;
 use SHC\Form\Forms\FileExistsConditionForm;
+use SHC\Form\Forms\FirstLoopConditionForm;
 use SHC\Form\Forms\HolidayConditionForm;
 use SHC\Form\Forms\HumidityConditionForm;
 use SHC\Form\Forms\InputHighConditionForm;
@@ -45,6 +48,7 @@ use SHC\Form\Forms\TemperatureConditionForm;
 use SHC\Form\Forms\TimeOfDayConditionForm;
 use SHC\Form\Forms\UserAtHomeConditionForm;
 use SHC\Form\Forms\UserForm;
+use SHC\Form\Forms\UserNotAtHomeConditionForm;
 
 /**
  * bearbeitet einen Schaltserver
@@ -1084,6 +1088,107 @@ class EditConditionFormPage extends PageCommand {
                 try {
 
                     ConditionEditor::getInstance()->editInputLowCondition($conditionId, $name, $inputs, $enabled);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('conditionForm', $conditionForm);
+            }
+        } elseif($condition instanceof FirstLoopCondition) {
+
+            //erster Sheduler lauf
+            $conditionForm = new FirstLoopConditionForm($condition);
+            $conditionForm->setView(Form::SMARTPHONE_VIEW);
+            $conditionForm->setAction('index.php?app=shc&m&page=editconditionform&id=' . $condition->getId());
+            $conditionForm->addId('shc-view-form-addCondition');
+
+            if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $conditionForm->getElementByName('name')->getValue();
+                $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                //Speichern
+                $message = new Message();
+                try {
+
+                    ConditionEditor::getInstance()->editFirstLoopCondition($conditionId, $name, $enabled);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('conditionForm', $conditionForm);
+            }
+        } elseif($condition instanceof UserNotAtHomeCondition) {
+
+            //Benutzer nicht zu Hause
+            $conditionForm = new UserNotAtHomeConditionForm($condition);
+            $conditionForm->setView(Form::SMARTPHONE_VIEW);
+            $conditionForm->setAction('index.php?app=shc&m&page=editconditionform&id=' . $condition->getId());
+            $conditionForm->addId('shc-view-form-addCondition');
+
+            if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $conditionForm->getElementByName('name')->getValue();
+                $enabled = $conditionForm->getElementByName('enabled')->getValue();
+                $users = $conditionForm->getElementByName('users')->getValues();
+
+                //Speichern
+                $message = new Message();
+                try {
+
+                    ConditionEditor::getInstance()->editUserNotAtHomeCondition($conditionId, $name, $users, $enabled);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
                 } catch(\Exception $e) {

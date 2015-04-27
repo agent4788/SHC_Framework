@@ -76,6 +76,8 @@
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FirstLoopCondition'}{lang var="acp.conditionManagement.condition.FirstLoopCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserNotAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserNotAtHomeCondition"}{/instanceof}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteconditionfromevent&id={$event->getId()}&condition={$condition->getId()}" title="{lang var='acp.eventsManagement.button.deleteFormContainer'}"></a>
@@ -115,13 +117,13 @@
                             <td>{if $element['object']->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element['object']->getName()}{if $element['object']->isEnabled() == false}</span>{/if}</td>
                             <td>{if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}</td>
                             <td>
-                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-edit" href="index.php?app=shc&action=toggleswitchablecommand&id={$event->getId()}&element={$element['object']->getId()}" title="{lang var='acp.eventsManagement.button.toggleCommand'}"></a>

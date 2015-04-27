@@ -61,6 +61,8 @@
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FirstLoopCondition'}{lang var="acp.conditionManagement.condition.FirstLoopCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserNotAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserNotAtHomeCondition"}{/instanceof}
                             </p>
                         </a>
                         <a href="index.php?app=shc&m&action=deleteconditionfromevent&id={$event->getId()}&condition={$condition->getId()}">{lang var="acpindex.options"}</a>
@@ -90,13 +92,13 @@
                                 {lang var="acp.switchableManagement.elementTable.table.head.command"}: {if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}
                                 <br/>
                                 {lang var="acp.switchableManagement.elementTable.table.head.type"}:
-                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
                             </p>
                         </a>
                         <a href="index.php?app=shc&m&action=deleteswitchablefromevent&id={$event->getId()}&element={$element['object']->getId()}">{lang var="acpindex.options"}</a>
