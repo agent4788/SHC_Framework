@@ -240,12 +240,12 @@ class SensorEditor {
             exec('sudo ' . PATH_SHC_CLASSES . 'external/python/bmp.py', $data);
 
             //Daten verarbeiten
-            $parts = explode(';', $data);
+            $parts = explode(';', $data[0]);
             if(isset($parts[0]) && isset($parts[1]) && isset($parts[2])) {
 
                 return array(
                     'temp' => $parts[0],
-                    'press' => $parts[1],
+                    'press' => $parts[1] / 100,
                     'alti' => $parts[2]
                 );
             }
