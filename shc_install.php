@@ -618,9 +618,11 @@ foreach($usersXml->groups->group as $group) {
 
     $group = $group->premissions;
     addPremission($group, 'shc.ucp.viewUserAtHome', '1');
+    addPremission($group, 'shc.ucp.warnings', '0');
     addPremission($group, 'shc.acp.menu', '0');
     addPremission($group, 'shc.acp.userManagement', '0');
     addPremission($group, 'shc.acp.settings', '0');
+    addPremission($group, 'shc.acp.databaseManagement', '0');
     addPremission($group, 'shc.acp.backupsManagement', '0');
     addPremission($group, 'shc.acp.roomManagement', '0');
     addPremission($group, 'shc.acp.switchableManagement', '0');
@@ -650,7 +652,6 @@ if($newXml === true) {
 
 //XML Speichern
 $usersXml->asXML('./rwf/data/storage/users.xml');
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
