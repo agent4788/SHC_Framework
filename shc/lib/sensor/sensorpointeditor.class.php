@@ -795,7 +795,7 @@ class SensorPointEditor {
 
         if(SHC::getDatabase()->lPush(self::$tableName .':sensorData:'. $sId, $data) !== false) {
 
-            SHC::getDatabase()->lTrim(self::$tableName .':sensorData:'. $sId, 0, 25);
+            SHC::getDatabase()->lTrim(self::$tableName .':sensorData:'. $sId, 0, 24);
             $this->setSensorPointLastConnect($spId, DateTime::now());
             return true;
         }
