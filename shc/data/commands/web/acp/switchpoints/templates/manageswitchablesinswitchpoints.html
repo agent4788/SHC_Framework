@@ -61,6 +61,8 @@
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
                                 {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FirstLoopCondition'}{lang var="acp.conditionManagement.condition.FirstLoopCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserNotAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserNotAtHomeCondition"}{/instanceof}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteconditionfromswitchpoint&id={$switchPoint->getId()}&condition={$condition->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
@@ -98,13 +100,13 @@
                         <tr>
                             <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                             <td>
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                 {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteswitchablefromswitchpoint&id={$switchPoint->getId()}&element={$element->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
@@ -154,54 +156,3 @@
         </div>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-<div>
-    <div class="shc-view-content">
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listswitchpoints"}
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $(function() {
-
-        $('#shc-view-acp-contentBox > .shc-contentbox-header').text('{lang var="acp.switchpointsManagment.title"}');
-        $('.shc-view-buttonSet').buttonset();
-
-        $('#shc-view-switchablesManagement-addConditionSwitchpoint').button().click(function() {
-
-            var condition = $('select[name=condition]').val();
-            $.get("index.php?app=shc&ajax=manageswitchablesinswitchpoints&id={$switchPoint->getId()}&command=addCondition&condition="+ condition, function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
-            });
-        });
-
-        $('#shc-view-switchablesManagement-addElement').button().click(function() {
-
-            var element = $('select[name=element]').val();
-            $.get("index.php?app=shc&ajax=manageswitchablesinswitchpoints&id={$switchPoint->getId()}&command=addElement&element="+ element, function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-inner').html(data);
-            });
-        });
-    });
-</script>

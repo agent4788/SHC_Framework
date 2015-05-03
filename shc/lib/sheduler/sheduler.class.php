@@ -23,9 +23,16 @@ class Sheduler {
     /**
      * Liste mit den Aufgaben
      * 
-     * @var type 
+     * @var Array
      */
     protected $tasks = array();
+
+    /**
+     * ID des Schleifendurchlaufes
+     *
+     * @var Integer
+     */
+    protected static $loop = 0;
 
     public function __construct() {
 
@@ -91,6 +98,7 @@ class Sheduler {
                 try {
 
                     $task->execute();
+                    self::$loop++;
                 } catch(XmlException $e) {
 
                     //Ausgabe auf Kommandozeile
@@ -117,6 +125,16 @@ class Sheduler {
             file_put_contents(PATH_RWF_CACHE . 'shedulerRun.flag', DateTime::now()->getDatabaseDateTime());
             $time->add(new \DateInterval('PT1M'));
         }
+    }
+
+    /**
+     * gibt die aktuelle Schleifen ID zurueck
+     *
+     * @return Integer
+     */
+    public static function getLoopId() {
+
+        return self::$loop;
     }
 
 }

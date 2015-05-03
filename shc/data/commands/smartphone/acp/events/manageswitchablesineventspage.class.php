@@ -5,9 +5,11 @@ namespace SHC\Command\Smartphone;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
+use SHC\Condition\Conditions\FirstLoopCondition;
 use SHC\Condition\Conditions\HolidaysCondition;
 use SHC\Condition\Conditions\InputHighCondition;
 use SHC\Condition\Conditions\InputLowCondition;
+use SHC\Condition\Conditions\UserNotAtHomeCondition;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use RWF\Form\FormElements\Select;
@@ -149,6 +151,9 @@ class ManageSwitchablesInEventsPage extends PageCommand {
                 } elseif($condition instanceof UserAtHomeCondition) {
 
                     $type = RWF::getLanguage()->get('acp.conditionManagement.condition.UserAtHomeCondition');
+                } elseif($condition instanceof UserNotAtHomeCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.UserNotAtHomeCondition');
                 } elseif($condition instanceof DateCondition) {
 
                     $type = RWF::getLanguage()->get('acp.conditionManagement.condition.DateCondition');
@@ -176,6 +181,9 @@ class ManageSwitchablesInEventsPage extends PageCommand {
                 } elseif($condition instanceof InputLowCondition) {
 
                     $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition');
+                } elseif($condition instanceof FirstLoopCondition) {
+
+                    $type = RWF::getLanguage()->get('acp.conditionManagement.condition.FirstLoopCondition');
                 }
                 RWF::getLanguage()->enableAutoHtmlEndocde();
                 $values[$condition->getId()] = $condition->getName() .' ('. $type .')';

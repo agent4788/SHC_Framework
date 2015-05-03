@@ -272,44 +272,81 @@ class CommandSheduler {
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
             if ($switchServer->isReadGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
 
-                //Request Initialisieren
-                $request = array($command->getCommandData());
-                
-                //Daten zum versenden aufbereiten
-                $data = json_encode($request);
-                $data = base64_encode($data);
+                $model = $switchServer->getModel();
 
-                try {
+                //Raspberry Pi Schaltserver
+                if($model == RaspberryPi::MODEL_A
+                    || $model == RaspberryPi::MODEL_B
+                    || $model == RaspberryPi::MODEL_A_PLUS
+                    || $model == RaspberryPi::MODEL_B_PLUS
+                    || $model == RaspberryPi::MODEL_2_B
+                    || $model == RaspberryPi::MODEL_COMPUTE_MODULE) {
 
-                    //mit Schalserver verbinden und Daten senden
-                    $socket = $switchServer->getSocket();
-                    $socket->open();
-                    $socket->write($data);
-                } catch(\Exception $e) {
+                    //Request Initialisieren
+                    $request = array($command->getCommandData());
 
-                    //Verbindungsfehler, abbruch
-                    return false;
-                }
-                
-                //Antwort Lesen
-                $rawData = base64_decode($socket->read(8192));
-                $response = json_decode($rawData, true);
-                if(isset($response['state'])) {
-                    
-                    if((int) $response['state'] == GpioInputCommand::HIGH) {
-                        
+                    //Daten zum versenden aufbereiten
+                    $data = json_encode($request);
+                    $data = base64_encode($data);
+
+                    try {
+
+                        //mit Schalserver verbinden und Daten senden
+                        $socket = $switchServer->getSocket();
+                        $socket->open();
+                        $socket->write($data);
+                    } catch (\Exception $e) {
+
+                        //Verbindungsfehler, abbruch
+                        return false;
+                    }
+
+                    //Antwort Lesen
+                    $rawData = base64_decode($socket->read(8192));
+                    $response = json_decode($rawData, true);
+                    if (isset($response['state'])) {
+
+                        if ((int)$response['state'] == GpioInputCommand::HIGH) {
+
+                            $command->setState(GpioInputCommand::HIGH);
+                        } else {
+
+                            $command->setState(GpioInputCommand::LOW);
+                        }
+                    }
+
+                    //Kommando als aufgefuehrt markieren
+                    $command->executed();
+
+                    //Verbindung trennen
+                    $socket->close();
+
+
+                //Arduino Schaltserver
+                } elseif($model == Arduino::PRO_MINI
+                    || $model == Arduino::NANO
+                    || $model == Arduino::UNO
+                    || $model == Arduino::MEGA
+                    || $model == Arduino::DUE) {
+
+                    //Befehl erstellen und ausfuehren
+                    $commandPath = PATH_SHC_CLASSES .'external/java/SHC_Arduino_Inputreader.jar';
+                    $commandStr = 'java -jar "'. $commandPath .'" "'. $switchServer->getIpAddress() .'" "'. $switchServer->getPort() .'" "'. $command->getPinNumber() .'"';
+                    $result = array();
+                    @exec($commandStr, $result);
+
+                    //Ausgabe auswerten
+                    $response = intval(trim($result[0]));
+                    if($response == 1) {
+
+                        //"1" signal
                         $command->setState(GpioInputCommand::HIGH);
                     } else {
-                        
+
+                        //"0" Signal oder Fehler
                         $command->setState(GpioInputCommand::LOW);
                     }
                 }
-                
-                //Kommando als aufgefuehrt markieren
-                $command->executed();
-                
-                //Verbindung trennen
-                $socket->close();
                 return true;
             }
         }

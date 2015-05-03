@@ -936,63 +936,6 @@ class SwitchableEditor {
     }
 
     /**
-     * erstellt einen neuen Arduino Ausgang
-     * 
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function addArduinoOutput($name, $enabled, $visibility, $icon, $rooms, array $order, $deviceId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
-        );
-
-        //Datensatz erstellen
-        return $this->addElement(self::TYPE_ARDUINO_OUTPUT, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-
-    /**
-     * bearbeitet einen Arduino Ausgang
-     * 
-     * @param  Integer $id                ID
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function editArduinoOutput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $deviceId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
-        );
-
-        //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-
-    /**
      * 
      * @param  Integer            $countdownId ID des Countdowns
      * @param  \RWF\Date\DateTime $time        Zeitobjekt
@@ -1013,61 +956,6 @@ class SwitchableEditor {
             }
         }
         return false;
-    }
-    
-    /**
-     * erstellt einen neuen Arduino Ausgang
-     * 
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $interval          Zeitintervall
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function addCountdown($name, $enabled, $visibility, $icon, $rooms, array $order, $interval, array $switchPoints = array(), array $allowedUserGroups = array()) {
-        
-        //Daten Vorbereiten
-        $data = array(
-            'interval' => $interval,
-            'switchOffTime' => '2000-01-01 00:00:00',
-            'switchable' => array()
-        );
-
-        //Datensatz erstellen
-        return $this->addElement(self::TYPE_COUNTDOWN, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-
-    /**
-     * bearbeitet einen Arduino Ausgang
-     * 
-     * @param  Integer $id                ID
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $interval          Zeitintervall
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function editCountdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $interval = null, array $switchPoints = null, array $allowedUserGroups = null) {
-        
-        //Daten Vorbereiten
-        $data = array(
-            'interval' => $interval
-        );
-
-        //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**

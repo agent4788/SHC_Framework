@@ -35,6 +35,7 @@ class ConditionTypeChooser extends Select {
              8 => RWF::getLanguage()->get('acp.conditionManagement.condition.TemperatureLowerThanCondition'),
              9 => RWF::getLanguage()->get('acp.conditionManagement.condition.NobodyAtHomeCondition'),
             10 => RWF::getLanguage()->get('acp.conditionManagement.condition.UserAtHomeCondition'),
+            21 => RWF::getLanguage()->get('acp.conditionManagement.condition.UserNotAtHomeCondition'),
             11 => RWF::getLanguage()->get('acp.conditionManagement.condition.DateCondition'),
             12 => RWF::getLanguage()->get('acp.conditionManagement.condition.DayOfWeekCondition'),
             13 => RWF::getLanguage()->get('acp.conditionManagement.condition.TimeOfDayCondition'),
@@ -43,7 +44,8 @@ class ConditionTypeChooser extends Select {
             16 => RWF::getLanguage()->get('acp.conditionManagement.condition.FileExistsCondition'),
             17 => RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition'),
             18 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition'),
-            19 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition')
+            19 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition'),
+            20 => RWF::getLanguage()->get('acp.conditionManagement.condition.FirstLoopCondition')
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);
