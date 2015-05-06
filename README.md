@@ -15,3 +15,12 @@ Das Raspberry Pi SmartHome Control ist eine Heimautomatisierungs Software für d
 * Web und Smartphone Oberflächen die sehr individuell Einstellbar sind
 * verschiedene Styles
 * verteilte Installation Möglich
+
+## Installation
+
+[Installation auf dem Raspberry Pi](https://github.com/agent4788/SHC_Framework/wiki/Raspberry-Pi)
+[Installation auf dem Banana Pi](https://github.com/agent4788/SHC_Framework/wiki/Banana-Pi)
+
+## Update
+
+[Update von Version 2.0.x auf 2.2.x](https://github.com/agent4788/SHC_Framework/wiki/Update-von-2.0.x-auf-2.2.x)
