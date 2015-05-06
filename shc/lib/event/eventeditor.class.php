@@ -190,7 +190,7 @@ class EventEditor {
 
                 if (!in_array($index, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                    $data[$index] = (string) $value;
+                    $data[$index] = $value;
                 }
             }
 
