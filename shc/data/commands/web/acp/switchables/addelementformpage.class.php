@@ -83,7 +83,8 @@ class AddElementFormPage extends PageCommand {
 
                         //Speichern
                         $name = $activityForm->getElementByName('name')->getValue();
-                        $icon = $activityForm->getElementByName('icon')->getValue();;
+                        $icon = $activityForm->getElementByName('icon')->getValue();
+                        $buttonText = $activityForm->getElementByName('buttonText')->getValue();
                         $rooms = $activityForm->getElementByName('rooms')->getValues();
                         $enabled = $activityForm->getElementByName('enabled')->getValue();
                         $visibility = $activityForm->getElementByName('visibility')->getValue();
@@ -92,7 +93,7 @@ class AddElementFormPage extends PageCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addActivity($name, $enabled, $visibility, $icon, $rooms, array(), array(), $allowedUsers);
+                            SwitchableEditor::getInstance()->addActivity($name, $enabled, $visibility, $icon, $rooms, array(), array(), $allowedUsers, $buttonText);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.success'));
                         } catch(\Exception $e) {
@@ -131,7 +132,8 @@ class AddElementFormPage extends PageCommand {
 
                         //Speichern
                         $name = $countdownForm->getElementByName('name')->getValue();
-                        $icon = $countdownForm->getElementByName('icon')->getValue();;
+                        $icon = $countdownForm->getElementByName('icon')->getValue();
+                        $buttonText = $countdownForm->getElementByName('buttonText')->getValue();
                         $rooms = $countdownForm->getElementByName('rooms')->getValues();
                         $interval = $countdownForm->getElementByName('interval')->getValue();
                         $enabled = $countdownForm->getElementByName('enabled')->getValue();
@@ -141,7 +143,7 @@ class AddElementFormPage extends PageCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addCountdown($name, $enabled, $visibility, $icon, $rooms, array(), $interval, array(), $allowedUsers);
+                            SwitchableEditor::getInstance()->addCountdown($name, $enabled, $visibility, $icon, $rooms, array(), $interval, array(), $allowedUsers, $buttonText);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.success'));
                         } catch(\Exception $e) {
@@ -181,6 +183,7 @@ class AddElementFormPage extends PageCommand {
                         //Speichern
                         $name = $radiosocketForm->getElementByName('name')->getValue();
                         $icon = $radiosocketForm->getElementByName('icon')->getValue();
+                        $buttonText = $radiosocketForm->getElementByName('buttonText')->getValue();
                         $rooms = $radiosocketForm->getElementByName('rooms')->getValues();
                         $protocol = $radiosocketForm->getElementByName('protocol')->getValue();
                         $systemCode = $radiosocketForm->getElementByName('systemCode')->getValue();
@@ -193,7 +196,7 @@ class AddElementFormPage extends PageCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $rooms, array(), $protocol, $systemCode, $deviceCode, $continuous, array(), $allowedUsers);
+                            SwitchableEditor::getInstance()->addRadioSocket($name, $enabled, $visibility, $icon, $rooms, array(), $protocol, $systemCode, $deviceCode, $continuous, array(), $allowedUsers, $buttonText);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.success'));
                         } catch(\Exception $e) {
@@ -233,6 +236,7 @@ class AddElementFormPage extends PageCommand {
                         //Speichern
                         $name = $gpioOutputForm->getElementByName('name')->getValue();
                         $icon = $gpioOutputForm->getElementByName('icon')->getValue();
+                        $buttonText = $gpioOutputForm->getElementByName('buttonText')->getValue();
                         $rooms = $gpioOutputForm->getElementByName('rooms')->getValues();
                         $switchServer = $gpioOutputForm->getElementByName('switchServer')->getValue();
                         $gpioPin = $gpioOutputForm->getElementByName('gpio')->getValue();
@@ -243,7 +247,7 @@ class AddElementFormPage extends PageCommand {
                         $message = new Message();
                         try {
 
-                            SwitchableEditor::getInstance()->addRriGpioOutput($name, $enabled, $visibility, $icon, $rooms, array(), $switchServer, $gpioPin, array(), $allowedUsers);
+                            SwitchableEditor::getInstance()->addRriGpioOutput($name, $enabled, $visibility, $icon, $rooms, array(), $switchServer, $gpioPin, array(), $allowedUsers, $buttonText);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.success'));
                         } catch(\Exception $e) {

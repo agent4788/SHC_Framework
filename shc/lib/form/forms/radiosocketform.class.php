@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\Select;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\ProtocolChooser;
@@ -50,6 +51,13 @@ class RadiosocketForm extends DefaultHtmlForm {
         $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.icon.description'));
         $icon->requiredField(true);
         $this->addFormElement($icon);
+
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($radioSocket instanceof RadioSocket ? $radioSocket->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addRadioSocket.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
 
         //Raeume
         $rooms = new RoomChooser('rooms', ($radioSocket instanceof RadioSocket && count($radioSocket->getRooms()) > 0 ? $radioSocket->getRooms(): array()));

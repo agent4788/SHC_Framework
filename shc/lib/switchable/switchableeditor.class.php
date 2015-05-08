@@ -199,6 +199,7 @@ class SwitchableEditor {
                 case self::TYPE_ACTIVITY:
 
                     $object = new Activity();
+                    $object->setButtonText((int) $switchable['buttonText']);
 
                     //Switchable IDs zwischenspeichern (erst nach dem Laden alle Objekte setzen)
                     $list = array();
@@ -229,12 +230,14 @@ class SwitchableEditor {
                     $object->setSystemCode((string) $switchable['systemCode']);
                     $object->setDeviceCode((string) $switchable['deviceCode']);
                     $object->setContinuous((string) $switchable['continuous']);
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 case self::TYPE_RPI_GPIO_OUTPUT:
 
                     $object = new RpiGpioOutput();
                     $object->setSwitchServer((int) $switchable['switchServer']);
                     $object->setPinNumber((int) $switchable['pinNumber']);
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 case self::TYPE_WAKEONLAN:
 
@@ -815,13 +818,15 @@ class SwitchableEditor {
      * @param  Array   $order             Sortierung
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addActivity($name, $enabled, $visibility, $icon, $rooms, array $order, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addActivity($name, $enabled, $visibility, $icon, $rooms, array $order, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
 
         $data = array(
-                'switchable' => array()
+                'switchable' => array(),
+                'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -840,13 +845,19 @@ class SwitchableEditor {
      * @param  Array   $order             Sortierung
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editAcrivity($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editActivity($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, array $switchPoints = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten
+        $data = array(
+                'buttonText' => $buttonText
+        );
 
         //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -933,6 +944,65 @@ class SwitchableEditor {
             }
         }
         return false;
+    }
+
+    /**
+     * erstellt einen neuen Arduino Ausgang
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  String  $interval          Zeitintervall
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addCountdown($name, $enabled, $visibility, $icon, $rooms, array $order, $interval, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'interval' => $interval,
+            'switchOffTime' => '2000-01-01 00:00:00',
+            'switchable' => array(),
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_COUNTDOWN, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet einen Arduino Ausgang
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  String  $interval          Zeitintervall
+     * @param  Array   $switchPoints      Liste der Schaltpunkte
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editCountdown($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $interval = null, array $switchPoints = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'interval' => $interval,
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
     }
 
     /**
@@ -1059,17 +1129,19 @@ class SwitchableEditor {
      * @param  Integer $continuous        Anzahl der Sendevorgaenge
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addRadioSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $protocol, $systemCode, $deviceCode, $continuous, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addRadioSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $protocol, $systemCode, $deviceCode, $continuous, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
         
         //Daten Vorbereiten
         $data = array(
             'protocol' => $protocol,
             'systemCode' => $systemCode,
             'deviceCode' => $deviceCode,
-            'continuous' => $continuous
+            'continuous' => $continuous,
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -1092,17 +1164,19 @@ class SwitchableEditor {
      * @param  Integer $continuous        Anzahl der Sendevorgaenge
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRadioSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $protocol = null, $systemCode = null, $deviceCode = null, $continuous = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editRadioSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $protocol = null, $systemCode = null, $deviceCode = null, $continuous = null, array $switchPoints = null, array $allowedUserGroups = null, $buttonText = null) {
         
         //Daten Vorbereiten
         $data = array(
             'protocol' => $protocol,
             'systemCode' => $systemCode,
             'deviceCode' => $deviceCode,
-            'continuous' => $continuous
+            'continuous' => $continuous,
+            'buttonText' => $buttonText
         );
 
         //Datensatz bearbeiten
@@ -1122,15 +1196,17 @@ class SwitchableEditor {
      * @param  Integer $pinNumber         Pin Nummer
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addRriGpioOutput($name, $enabled, $visibility, $icon, $rooms, array $order, $switchServerId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
+    public function addRriGpioOutput($name, $enabled, $visibility, $icon, $rooms, array $order, $switchServerId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
         
         //Daten Vorbereiten
         $data = array(
             'switchServer' => $switchServerId,
-            'pinNumber' => $pinNumber
+            'pinNumber' => $pinNumber,
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -1151,15 +1227,17 @@ class SwitchableEditor {
      * @param  Integer $pinNumber         Pin Nummer
      * @param  Array   $switchPoints      Liste der Schaltpunkte
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRpiGpioOutput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $switchServerId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
+    public function editRpiGpioOutput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $switchServerId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null, $buttonText = null) {
         
         //Daten Vorbereiten
         $data = array(
             'switchServer' => $switchServerId,
-            'pinNumber' => $pinNumber
+            'pinNumber' => $pinNumber,
+            'buttonText' => $buttonText
         );
 
         //Datensatz bearbeiten
