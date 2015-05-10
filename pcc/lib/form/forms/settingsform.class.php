@@ -12,6 +12,7 @@ use RWF\Form\FormElements\TextField;
 use RWF\Form\TabbedHtmlForm;
 use PCC\Form\FormElements\LanguageChooser;
 use PCC\Form\FormElements\WebStyleChooser;
+use SHC\Sensor\SensorPoint;
 
 /**
  * Einstellungen Formular

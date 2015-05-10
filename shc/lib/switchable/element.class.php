@@ -45,6 +45,27 @@ interface Element {
      * @var Integer
      */
     const HIDE = 0;
+
+    /**
+     * Button Text An/Aus
+     *
+     * @var Integer
+     */
+    const BUTTONS_ON_OFF = 1;
+
+    /**
+     * Button Text Auf/Ab
+     *
+     * @var Integer
+     */
+    const BUTTONS_UP_DOWN = 2;
+
+    /**
+     * Button Text Auf/Zu
+     *
+     * @var Integer
+     */
+    const BUTTONS_OPEN_CLOSED = 4;
     
     /**
      * setzt den Status des Objekts

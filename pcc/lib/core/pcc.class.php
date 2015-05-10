@@ -4,7 +4,6 @@ namespace PCC\Core;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
 
@@ -24,7 +23,7 @@ class PCC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0 Beta 3';
+    const VERSION = '2.2.0 RC 1';
 
     /**
      * Style
@@ -67,7 +66,6 @@ class PCC extends RWF {
         if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
             //Mobilen Style laden
-            $mobileStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getMobileStyle() != '') {
 
                 $mobileStyle = self::$visitor->getMobileStyle();
@@ -79,7 +77,6 @@ class PCC extends RWF {
         } elseif(defined('RWF_DEVICE') && RWF_DEVICE == 'web') {
 
             //Webstyle laden
-            $webStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
 
                 $webStyle = self::$visitor->getWebStyle();

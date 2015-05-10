@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
@@ -49,6 +50,13 @@ class CountdownForm extends DefaultHtmlForm {
         $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.icon.description'));
         $icon->requiredField(true);
         $this->addFormElement($icon);
+
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($countdown instanceof Countdown ? $countdown->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
 
         //Raeume
         $rooms = new RoomChooser('rooms', ($countdown instanceof Countdown && count($countdown->getRooms()) > 0 ? $countdown->getRooms(): array()));

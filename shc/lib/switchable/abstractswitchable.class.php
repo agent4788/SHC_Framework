@@ -100,6 +100,13 @@ abstract class AbstractSwitchable implements Switchable {
     protected $allowedUserGroups = array();
 
     /**
+     * Button Text
+     *
+     * @var Integer
+     */
+    protected $buttonText = 1;
+
+    /**
      * fuegt einen Schaltpunkt hinzu
      * 
      * @param  \SHC\Timer\SwitchPoint $switchPoint
@@ -459,6 +466,28 @@ abstract class AbstractSwitchable implements Switchable {
     public function isVisible() {
         
         return $this->visibility;
+    }
+
+    /**
+     * setzt den Text der in den Buttons angezeigt werden soll
+     *
+     * @param  Integer $buttonText Text Konstante
+     * @return \SHC\Switchable\Switchable
+     */
+    public function setButtonText($buttonText) {
+
+        $this->buttonText = $buttonText;
+        return $this;
+    }
+
+    /**
+     * gibt den Button Text als Konstante zurueck
+     *
+     * @return Integer
+     */
+    public function getButtonText() {
+
+        return $this->buttonText;
     }
 
     /**

@@ -84,7 +84,8 @@ class EditElementFormPage extends PageCommand {
 
                 //Speichern
                 $name = $activityForm->getElementByName('name')->getValue();
-                $icon = $activityForm->getElementByName('icon')->getValue();;
+                $icon = $activityForm->getElementByName('icon')->getValue();
+                $buttonText = $activityForm->getElementByName('buttonText')->getValue();
                 $rooms = $activityForm->getElementByName('rooms')->getValues();
                 $enabled = $activityForm->getElementByName('enabled')->getValue();
                 $visibility = $activityForm->getElementByName('visibility')->getValue();
@@ -93,7 +94,7 @@ class EditElementFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editAcrivity($elementId, $name, $enabled, $visibility, $icon, $rooms, null, null, $allowedUsers);
+                    SwitchableEditor::getInstance()->editActivity($elementId, $name, $enabled, $visibility, $icon, $rooms, null, null, $allowedUsers, $buttonText);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editActivity.success'));
                 } catch(\Exception $e) {
@@ -131,7 +132,8 @@ class EditElementFormPage extends PageCommand {
 
                 //Speichern
                 $name = $countdownForm->getElementByName('name')->getValue();
-                $icon = $countdownForm->getElementByName('icon')->getValue();;
+                $icon = $countdownForm->getElementByName('icon')->getValue();
+                $buttonText = $countdownForm->getElementByName('buttonText')->getValue();
                 $rooms = $countdownForm->getElementByName('rooms')->getValues();
                 $interval = $countdownForm->getElementByName('interval')->getValue();
                 $enabled = $countdownForm->getElementByName('enabled')->getValue();
@@ -141,7 +143,7 @@ class EditElementFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editCountdown($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $interval, null, $allowedUsers);
+                    SwitchableEditor::getInstance()->editCountdown($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $interval, null, $allowedUsers, $buttonText);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editCountdown.success'));
                 } catch(\Exception $e) {
@@ -180,6 +182,7 @@ class EditElementFormPage extends PageCommand {
                 //Speichern
                 $name = $radiosocketForm->getElementByName('name')->getValue();
                 $icon = $radiosocketForm->getElementByName('icon')->getValue();
+                $buttonText = $radiosocketForm->getElementByName('buttonText')->getValue();
                 $rooms = $radiosocketForm->getElementByName('rooms')->getValues();
                 $protocol = $radiosocketForm->getElementByName('protocol')->getValue();
                 $systemCode = $radiosocketForm->getElementByName('systemCode')->getValue();
@@ -192,7 +195,7 @@ class EditElementFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editRadioSocket($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $protocol, $systemCode, $deviceCode, $continuous, null, $allowedUsers);
+                    SwitchableEditor::getInstance()->editRadioSocket($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $protocol, $systemCode, $deviceCode, $continuous, null, $allowedUsers, $buttonText);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editRadioSocket.success'));
                 } catch(\Exception $e) {
@@ -280,6 +283,7 @@ class EditElementFormPage extends PageCommand {
                 //Speichern
                 $name = $gpioOutputForm->getElementByName('name')->getValue();
                 $icon = $gpioOutputForm->getElementByName('icon')->getValue();
+                $buttonText = $gpioOutputForm->getElementByName('buttonText')->getValue();
                 $rooms = $gpioOutputForm->getElementByName('rooms')->getValues();
                 $switchServer = $gpioOutputForm->getElementByName('switchServer')->getValue();
                 $gpioPin = $gpioOutputForm->getElementByName('gpio')->getValue();
@@ -290,7 +294,7 @@ class EditElementFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editRpiGpioOutput($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $switchServer, $gpioPin, null, $allowedUsers);
+                    SwitchableEditor::getInstance()->editRpiGpioOutput($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $switchServer, $gpioPin, null, $allowedUsers, $buttonText);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editGpioOutput.success'));
                 } catch(\Exception $e) {

@@ -27,7 +27,7 @@ class StatePage extends PageCommand {
     /**
      * benoetigte Berechtigung
      *
-     * @var type
+     * @var String
      */
     protected $requiredPremission = 'pcc.ucp.viewSysState';
 

@@ -20,6 +20,10 @@ $l['global.yes.short'] = 'j';
 $l['global.no.short'] = 'n';
 $l['global.on'] = 'an';
 $l['global.off'] = 'aus';
+$l['global.up'] = 'auf';
+$l['global.down'] = 'ab';
+$l['global.open'] = 'auf';
+$l['global.closed'] = 'zu';
 $l['global.toggle'] = 'umschalten';
 
 //Datum

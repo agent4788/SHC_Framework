@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
@@ -50,6 +51,13 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.icon.description'));
         $icon->requiredField(true);
         $this->addFormElement($icon);
+
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
 
         //Raeume
         $rooms = new RoomChooser('rooms', ($rpiGpioOutput instanceof RpiGpioOutput && count($rpiGpioOutput->getRooms()) > 0 ? $rpiGpioOutput->getRooms(): array()));

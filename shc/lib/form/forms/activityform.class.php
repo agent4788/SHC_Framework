@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
@@ -48,6 +49,13 @@ class ActivityForm extends DefaultHtmlForm {
         $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.icon.description'));
         $icon->requiredField(true);
         $this->addFormElement($icon);
+
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($activity instanceof Activity ? $activity->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
 
         //Raeume
         $rooms = new RoomChooser('rooms', ($activity instanceof Activity && count($activity->getRooms()) > 0 ? $activity->getRooms(): array()));

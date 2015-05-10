@@ -80,7 +80,7 @@ class ConditionEditor {
 
                 if (!in_array($index, array('id', 'name', 'class', 'enabled'))) {
 
-                    $data[$index] = (string) $value;
+                    $data[$index] = $value;
                 }
             }
 

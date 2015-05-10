@@ -752,7 +752,8 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
                         $list[] = array('id' => (int) $attributes->id, 'command' => (int) $attributes->command);
                     }
                     $data = array(
-                        'switchable' => $list
+                        'switchable' => $list,
+                        'buttonText' => 1
                     );
                     break;
                 case 4:
@@ -778,7 +779,8 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
                         'protocol' => (string) $switchable->protocol,
                         'systemCode' => (string) $switchable->systemCode,
                         'deviceCode' => (string) $switchable->deviceCode,
-                        'continuous' => (string) $switchable->continuous
+                        'continuous' => (string) $switchable->continuous,
+                        'buttonText' => 1
                     );
                     break;
                 case 16:
@@ -786,7 +788,8 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
                     //GPIO Output
                     $data = array(
                         'switchServer' => (int) $switchable->switchServer,
-                        'pinNumber' => (int) $switchable->pinNumber
+                        'pinNumber' => (int) $switchable->pinNumber,
+                        'buttonText' => 1
                     );
                     break;
 

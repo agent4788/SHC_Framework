@@ -26,7 +26,7 @@
                         {foreach from=$userList item='user'}
                         <tr>
                             <td>{#$user->getName()}</td>
-                            <td>{$user->getRegisterDate()|timeline}</td>
+                            <td>{$user->getRegisterDate()|date}</td>
                             <td>
                                 {editlink link='index.php?app=pcc&page=edituserform&id=' id=$user->getId()}
                                 {if $user->isOriginator() == false}
