@@ -4,11 +4,9 @@ namespace RWF\Template\Plugin;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Date\DateTime;
 use RWF\Date\LanguageDateTime;
 use RWF\Template\TemplateFunction;
 use RWF\Template\Template;
-
 
 /**
  * gibt ein Formatiertes Datum zurueck
@@ -31,9 +29,10 @@ class DateFunction implements TemplateFunction {
     public static function execute(array $value, Template $tpl) {
 
         //Zeitobjekt vorbereiten
-        if($value[0] instanceof DateTime) {
+        if($value[0] instanceof \DateTime) {
 
-            $time = LanguageDateTime::createFromDatabaseDateTime($value[0]);
+            $str = $value[0]->format('Y-m-d H:i:s');
+            $time = LanguageDateTime::createFromDatabaseDateTime($str);
         } else {
 
             $time = LanguageDateTime::now();
@@ -41,10 +40,10 @@ class DateFunction implements TemplateFunction {
 
         if (isset($value[1])) {
 
-            return $time->showDate($value[1], false);
+            return $time->showDate($value[1], true);
         }
 
-        return $time->showDate('', false);
+        return $time->showDate('', true);
     }
 
 }

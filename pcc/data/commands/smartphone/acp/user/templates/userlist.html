@@ -17,7 +17,7 @@
                     <li>
                         <a href="index.php?app=pcc&m&page=edituserform&id={$user->getId()}">
                             <h2>{#$user->getName()}</h2>
-                            <p>{lang var="acp.userManagement.userList.table.head.registrationDate"}: {$user->getRegisterDate()|timeline}</p>
+                            <p>{lang var="acp.userManagement.userList.table.head.registrationDate"}: {$user->getRegisterDate()|date}</p>
                         </a>
                         <a href="#delete-{$user->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
                     </li>
