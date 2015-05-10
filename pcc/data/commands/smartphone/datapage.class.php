@@ -28,7 +28,7 @@ class DataPage extends PageCommand {
     /**
      * benoetigte Berechtigung
      *
-     * @var type
+     * @var String
      */
     protected $requiredPremission = 'pcc.ucp.viewSysData';
 

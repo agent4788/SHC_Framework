@@ -22,9 +22,10 @@ class AcpButtonCompilerPlugin implements TemplateCompilerPlugin {
     /**
      * wird beim Compilieren eines unbekannten Tags ausgefuehrt
      *
-     * @param  Array                          $args     Argumente
+     * @param  Array $args Argumente
      * @param  \RWF\Template\TemplateCompiler $compiler Compiler Objekt
      * @return String
+     * @throws TemplateCompilationException
      */
     public function execute(array $args, TemplateCompiler $compiler) {
 
