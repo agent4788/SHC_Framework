@@ -5,6 +5,7 @@ namespace SHC\Sensor;
 //Imports
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
+use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
 use SHC\Core\SHC;
 
@@ -18,6 +19,45 @@ use SHC\Core\SHC;
  * @version    2.0.0-0
  */
 class SensorDataTransmitter {
+
+    /**
+     * gibt die Sensordaten zur Fehlersuche auf die Kommandozeile aus
+     *
+     * @param Array $data Daten
+     */
+    protected function printDebugData(array $data) {
+
+        switch($data['type']) {
+
+            case 1:
+
+                echo "Typ: DS18x20\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                break;
+            case 2:
+
+                echo "Typ: DHT11 oder DHT22\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                echo "Luftfeuchte: ". $data['v2'] ."%\n";
+                break;
+            case 3:
+
+                echo "Typ: BMP085 oder BMP180\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                echo "Luftdruck: ". $data['v2'] ."pa\n";
+                echo "Standorhöhe: ". $data['v3'] ."m\n";
+                break;
+            default:
+
+        }
+        echo "-----------------------------------------------------------------------------\n";
+    }
 
     /**
      * sendet eine HTTP Anfrage
@@ -43,6 +83,18 @@ class SensorDataTransmitter {
         ));
         $result = @file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
 
+        //Verbindung Fehlgeschlagen
+        if($result === false) {
+
+            $cli = new CliUtil();
+            $cli->writeLineColored('Verbindung zum Server "'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'" fehlgeschlagen', 'red');
+            $cli->writeLineColored('erneuter Versuch in 30 Sekunden', 'yellow');
+
+            //30 Sekunden Wartezeit
+            sleep(30);
+        }
+
+        //Auswertung der Rueckantwort
         if($result == 1) {
 
             return true;
@@ -93,15 +145,11 @@ class SensorDataTransmitter {
                         //Debug Ausgabe
                         if ($debug) {
 
-                            var_dump($data);
+                            $this->printDebugData($data);
                         }
 
                         //Daten senden
-                        if(!$this->sendHttpRequest($data)) {
-
-                            //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
-                            sleep(30);
-                        }
+                        $this->sendHttpRequest($data);
                     }
                 }
             }
@@ -126,15 +174,11 @@ class SensorDataTransmitter {
                     //Debug Ausgabe
                     if ($debug) {
 
-                        var_dump($data);
+                        $this->printDebugData($data);
                     }
 
                     //Daten senden
-                    if(!$this->sendHttpRequest($data)) {
-
-                        //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
-                        sleep(30);
-                    }
+                    $this->sendHttpRequest($data);
                 }
             }
 
@@ -156,15 +200,11 @@ class SensorDataTransmitter {
                 //Debug Ausgabe
                 if ($debug) {
 
-                    var_dump($data);
+                    $this->printDebugData($data);
                 }
 
                 //Daten senden
-                if(!$this->sendHttpRequest($data)) {
-
-                    //bei Fehlschlag 30 Sekunden vor dem naechsten Versuch warten
-                    sleep(30);
-                }
+                $this->sendHttpRequest($data);
             }
 
             //MCP3008 oder MCP3208 fuer die Analogsensoren
