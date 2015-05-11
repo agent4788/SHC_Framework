@@ -41,7 +41,7 @@ class SensorDataTransmitter {
                 'max_redirects' => 3
             )
         ));
-        $result = file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
+        $result = @file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
 
         if($result == 1) {
 
@@ -69,7 +69,15 @@ class SensorDataTransmitter {
                     if (preg_match('#^(10)|(22)|(28)-#', $file) && is_dir('/sys/bus/w1/devices/' . $file)) {
 
                         //Temperatur lesen
-                        $dataRaw = file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
+                        $dataRaw = @file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
+
+                        //naechster Durchlauf wenn Sensor nicht gelesen werden kann
+                        if($dataRaw == false) {
+
+                            continue;
+                        }
+
+                        //Daten zum senden vorbereiten
                         $match = array();
                         preg_match('#t=(\d{1,6})#', $dataRaw, $match);
                         $temp = $match[1] / 1000;
