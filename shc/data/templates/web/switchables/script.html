@@ -4,10 +4,26 @@
     <div class="shc-contentbox-body-row-content">
         <div id="shc-view-switchable-set-{$roomId}-{$switchable->getId()}">
             {if $switchable->getOnCommand() != ''}
-            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.on'}</button>
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">
+                {if $switchable->getButtonText() == 2}
+                    {lang var='global.up'}
+                {elseif $switchable->getButtonText() == 4}
+                    {lang var='global.open'}
+                {else}
+                    {lang var='index.room.button.on'}
+                {/if}
+            </button>
             {/if}
             {if $switchable->getOffCommand() != ''}
-            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.off'}</button>
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">
+                {if $switchable->getButtonText() == 2}
+                    {lang var='global.down'}
+                {elseif $switchable->getButtonText() == 4}
+                    {lang var='global.closed'}
+                {else}
+                    {lang var='index.room.button.off'}
+                {/if}
+            </button>
             {/if}
         </div>
     </div>

@@ -483,6 +483,7 @@ class EditElementFormPage extends PageCommand {
                 $name = $scriptForm->getElementByName('name')->getValue();
                 $icon = $scriptForm->getElementByName('icon')->getValue();
                 $rooms = $scriptForm->getElementByName('rooms')->getValues();
+                $buttonText = $scriptForm->getElementByName('buttonText')->getValue();
                 $onCommand = $scriptForm->getElementByName('onCommand')->getValue();
                 $offCommand = $scriptForm->getElementByName('offCommand')->getValue();
                 $enabled = $scriptForm->getElementByName('enabled')->getValue();
@@ -492,7 +493,7 @@ class EditElementFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SwitchableEditor::getInstance()->editScript($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $onCommand, $offCommand, $allowedUsers);
+                    SwitchableEditor::getInstance()->editScript($elementId, $name, $enabled, $visibility, $icon, $rooms, null, $onCommand, $offCommand, $allowedUsers, $buttonText);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.success'));
                 } catch(\Exception $e) {

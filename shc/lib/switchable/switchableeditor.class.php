@@ -1646,15 +1646,17 @@ class SwitchableEditor {
      * @param  String  $onCommand         Einschaltkommando
      * @param  String  $offCommand        Ausschaltkommando
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addScript($name, $enabled, $visibility, $icon, $rooms, array $order, $onCommand, $offCommand, array $allowedUserGroups = array()) {
+    public function addScript($name, $enabled, $visibility, $icon, $rooms, array $order, $onCommand, $offCommand, array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
 
         //Daten Vorbereiten
         $data = array(
             'onCommand' => $onCommand,
-            'offCommand' => $offCommand
+            'offCommand' => $offCommand,
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -1674,15 +1676,17 @@ class SwitchableEditor {
      * @param  String  $onCommand         Einschaltkommando
      * @param  String  $offCommand        Ausschaltkommando
      * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editScript($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $onCommand = null, $offCommand = null, array $allowedUserGroups = null) {
+    public function editScript($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $onCommand = null, $offCommand = null, array $allowedUserGroups = null, $buttonText = null) {
 
         //Daten Vorbereiten
         $data = array(
             'onCommand' => $onCommand,
-            'offCommand' => $offCommand
+            'offCommand' => $offCommand,
+            'buttonText' => $buttonText
         );
 
         //Datensatz bearbeiten

@@ -49,6 +49,13 @@ class ScriptForm extends DefaultHtmlForm {
         $icon->requiredField(true);
         $this->addFormElement($icon);
 
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($script instanceof Script ? $script->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
+
         //Raeume
         $rooms = new RoomChooser('rooms', ($script instanceof Script && count($script->getRooms()) > 0 ? $script->getRooms(): array()));
         $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.room'));
