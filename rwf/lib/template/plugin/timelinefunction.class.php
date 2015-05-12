@@ -3,6 +3,7 @@
 namespace RWF\Template\Plugin;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Date\LanguageDateTime;
 use RWF\Template\TemplateFunction;
 use RWF\Template\Template;
@@ -37,7 +38,11 @@ class TimeLineFunction implements TemplateFunction {
             $time = LanguageDateTime::now();
         }
 
-        return $time->showTimeline();
+        if(RWF::getSetting('rwf.date.useTimeline')) {
+
+            return $time->showTimeline();
+        }
+        return $time->showDateTime(RWF::getSetting('rwf.date.defaultDateFormat'), RWF::getSetting('rwf.date.defaultTimeFormat'));
     }
 
 }
