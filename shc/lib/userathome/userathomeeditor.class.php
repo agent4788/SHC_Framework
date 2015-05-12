@@ -226,10 +226,18 @@ class UserAtHomeEditor {
                 //Nach Objekt suchen
                 $id = $userAtHome->getId();
                 $userAtHomeData = $db->hGet(self::$tableName, $id);
-                $userAtHomeData['state'] = $userAtHome->getState();
 
-                if($db->hSet(self::$tableName, $id, $userAtHomeData) != 0) {
+                if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $id) {
 
+                    $userAtHomeData['state'] = $userAtHome->getState();
+
+                    if($db->hSet(self::$tableName, $id, $userAtHomeData) != 0) {
+
+                        return false;
+                    }
+                } else {
+
+                    //Datensatz existiert nicht mehr
                     return false;
                 }
             }

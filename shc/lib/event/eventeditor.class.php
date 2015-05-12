@@ -318,7 +318,6 @@ class EventEditor {
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolean
      * @throws \Exception
-     * @throws \RWF\XML\Exception\XmlException
      */
     protected function addEvent($class, $name, array $data = array(), $enabled = true, array $conditions) {
 
@@ -364,7 +363,6 @@ class EventEditor {
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolean
      * @throws \Exception
-     * @throws \RWF\XML\Exception\XmlException
      */
     protected function editEvent($id, $name = null, array $data = null, $enabled = null, array $conditions = null) {
 
@@ -425,7 +423,6 @@ class EventEditor {
      * @param  Integer            $id          Ereignis ID
      * @param  \RWF\Date\DateTime $lastExecute letzte Ausfuehrung
      * @return Boolean
-     * @throws \RWF\XML\Exception\XmlException
      */
     public function updateLastExecute($id, DateTime $lastExecute) {
 
@@ -434,11 +431,19 @@ class EventEditor {
         if($db->hExists(self::$tableName, $id)) {
 
             $event = $db->hGet(self::$tableName, $id);
-            $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
 
-            if($db->hSet(self::$tableName, $id, $event) == 0) {
+            if(isset($event['id']) && $event['id'] == $id) {
 
-                return true;
+                $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
+
+                if($db->hSet(self::$tableName, $id, $event) == 0) {
+
+                    return true;
+                }
+            } else {
+
+                //Datensatz nicht mehr vorhanden
+                return false;
             }
         }
         return false;
@@ -454,7 +459,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addHumidityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -480,7 +484,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editHumidityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -505,7 +508,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addHumidityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -531,7 +533,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editHumidityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -556,7 +557,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addLightIntensityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -582,7 +582,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editLightIntensityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -607,7 +606,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addLightIntensityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -633,7 +631,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editLightIntensityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -658,7 +655,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addMoistureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -684,7 +680,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editMoistureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -709,7 +704,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addMoistureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -735,7 +729,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editMoistureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -760,7 +753,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addTemperatureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -786,7 +778,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editTemperatureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -811,7 +802,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addTemperatureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -837,7 +827,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editTemperatureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -861,7 +850,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addInputHighEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -885,7 +873,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editInputHighEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -908,7 +895,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addInputLowEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -932,7 +918,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editInputLowEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -955,7 +940,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addUserComesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -979,7 +963,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editUserComesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -1002,7 +985,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addUserLeavesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -1026,7 +1008,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editUserLeavesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -1046,7 +1027,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function addSunriseEvent($name, $enabled, array $conditions = null) {
 
@@ -1061,7 +1041,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function editSunriseEvent($id, $name = null, $enabled = null, array $conditions = null) {
 
@@ -1075,7 +1054,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function addSunsetEvent($name, $enabled, array $conditions = null) {
 
@@ -1090,7 +1068,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function editSunsetEvent($id, $name = null, $enabled = null, array $conditions = null) {
 
@@ -1103,7 +1080,6 @@ class EventEditor {
      *
      * @param  Integer $id ID
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeEvent($id) {
 
@@ -1125,7 +1101,6 @@ class EventEditor {
      * @param  Integer $eventId      ID des Events
      * @param  Integer $conditionId  ID der Bedingung
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function addConditionToEvent($eventId, $conditionId) {
 
@@ -1150,7 +1125,6 @@ class EventEditor {
      * @param  Integer $eventId      ID des Events
      * @param  Integer $conditionId  ID der Bedingung
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeConditionFromEvent($eventId, $conditionId) {
 
@@ -1176,7 +1150,6 @@ class EventEditor {
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @param  Integer $command      Befehl
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function addSwitchableToEvent($eventId, $switchableId, $command) {
 
@@ -1233,7 +1206,6 @@ class EventEditor {
      * @param  Integer $eventId      ID des Events
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeSwitchableFromEvent($eventId, $switchableId) {
 
