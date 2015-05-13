@@ -198,11 +198,19 @@ class UserAtHomeEditor {
             if(isset($this->usersAtHome[$userAtHomeId])) {
 
                 $userAtHomeData = $db->hGet(self::$tableName, $userAtHomeId);
-                $userAtHomeData['orderId'] = $orderId;
 
-                if($db->hSet(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
+                if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $userAtHomeId) {
 
-                    return false;
+                    $userAtHomeData['orderId'] = $orderId;
+
+                    if($db->hSet(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
+
+                        return false;
+                    }
+                } else {
+
+                    //Datensatz nicht mehr vorhanden
+                    continue;
                 }
             }
         }
@@ -238,7 +246,7 @@ class UserAtHomeEditor {
                 } else {
 
                     //Datensatz existiert nicht mehr
-                    return false;
+                    continue;
                 }
             }
         }

@@ -241,11 +241,15 @@ class SwitchPointEditor {
         if($db->hExists(self::$tableName, $id)) {
 
             $switchPoint = $db->hGet(self::$tableName, $id);
-            $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
 
-            if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+            if(isset($switchPoint['id']) && $switchPoint['id'] == $id) {
 
-                return true;
+                $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
+
+                if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -280,7 +284,7 @@ class SwitchPointEditor {
                 } else {
 
                     //Datensatz existiert nicht mehr
-                    return false;
+                    continue;
                 }
             }
         }

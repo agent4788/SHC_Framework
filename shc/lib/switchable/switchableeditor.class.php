@@ -585,7 +585,7 @@ class SwitchableEditor {
                 } else {
 
                     //Datensatz existiert nicht mehr
-                    return false;
+                    continue;
                 }
             }
         }
