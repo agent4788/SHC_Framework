@@ -210,7 +210,7 @@ class BackupEditor {
                 $data['conditions'] = array();
                 foreach($db->hGetAll('conditions') as $id => $value) {
 
-                    $data['conditions:'. $id] = $value;
+                    $data['conditions'][$id] = $value;
                 }
             }
 
@@ -220,7 +220,7 @@ class BackupEditor {
                 $data['events'] = array();
                 foreach($db->hGetAll('events') as $id => $value) {
 
-                    $data['events:'. $id] = $value;
+                    $data['events'][$id] = $value;
                 }
             }
 
@@ -230,7 +230,7 @@ class BackupEditor {
                 $data['roomView'] = array();
                 foreach($db->hGetAll('roomView') as $id => $value) {
 
-                    $data['roomView:'. $id] = $value;
+                    $data['roomView'][$id] = $value;
                 }
             }
 
@@ -240,7 +240,7 @@ class BackupEditor {
                 $data['rooms'] = array();
                 foreach($db->hGetAll('rooms') as $id => $value) {
 
-                    $data['rooms:'. $id] = $value;
+                    $data['rooms']['rooms:'. $id] = $value;
                 }
             }
 
@@ -250,7 +250,7 @@ class BackupEditor {
                 $data['sensors:sensorPoints'] = array();
                 foreach($db->hGetAll('sensors:sensorPoints') as $id => $value) {
 
-                    $data['sensors:sensorPoints:'. $id] = $value;
+                    $data['sensors:sensorPoints'][$id] = $value;
                 }
             }
 
@@ -260,24 +260,18 @@ class BackupEditor {
                 $data['sensors:sensors'] = array();
                 foreach($db->hGetAll('sensors:sensors') as $id => $value) {
 
-                    $data['sensors:sensors.'. $id] = $value;
+                    $data['sensors:sensors'][$id] = $value;
                 }
             }
 
             //Sensordaten
-            if($db->exists('sensors:sensorData')) {
+            $keys = $db->getKeys('sensors:sensorData:*');
+            $data['sensors:sensorData'] = array();
+            foreach($keys as $key) {
 
-                $data['sensors:sensorData'] = array();
-                for($i = 0; $i <= 999; $i++) {
+                foreach($db->lRange(str_replace('shc:', '', $key), 0, -1) as $id => $value) {
 
-                    if($db->exists('sensors:sensorData:'. $i)) {
-
-                        foreach($db->hGetAll('sensors:sensorData:'. $i) as $id => $value) {
-
-
-                            $data['sensors:sensorData:'. $i .'.'. $id] = $value;
-                        }
-                    }
+                    $data['sensors:sensorData'][str_replace('shc:sensors:sensorData:', '', $key)][$id] = $value;
                 }
             }
 
@@ -287,7 +281,7 @@ class BackupEditor {
                 $data['switchServers'] = array();
                 foreach($db->hGetAll('switchServers') as $id => $value) {
 
-                    $data['switchServers:'. $id] = $value;
+                    $data['switchServers'][$id] = $value;
                 }
             }
 
@@ -297,7 +291,7 @@ class BackupEditor {
                 $data['switchables'] = array();
                 foreach($db->hGetAll('switchables') as $id => $value) {
 
-                    $data['switchables:'. $id] = $value;
+                    $data['switchables'][$id] = $value;
                 }
             }
 
@@ -307,7 +301,7 @@ class BackupEditor {
                 $data['switchpoints'] = array();
                 foreach($db->hGetAll('switchpoints') as $id => $value) {
 
-                    $data['switchpoints:'. $id] = $value;
+                    $data['switchpoints'][$id] = $value;
                 }
             }
 
@@ -317,7 +311,7 @@ class BackupEditor {
                 $data['usersrathome'] = array();
                 foreach($db->hGetAll('usersrathome') as $id => $value) {
 
-                    $data['usersrathome:'. $id] = $value;
+                    $data['usersrathome'][$id] = $value;
                 }
             }
 
@@ -336,63 +330,6 @@ class BackupEditor {
             return true;
         }
         return false;
-
-
-        /*
-        if(file_exists($this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '.zip')) {
-
-            for($i = 1; $i <= 20; $i++) {
-
-                if(file_exists($this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '_' . $i . '.zip')) {
-
-                    continue;
-                } else {
-
-                    $filename = $this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '_' . $i . '.zip';
-                    break;
-                }
-            }
-
-            if($filename == '') {
-
-                $filename = $this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '_21.zip';
-            }
-        } else {
-
-            $filename = $this->backupPath .'shc_' . DateTime::now()->format('Y_m_d') . '.zip';
-        }
-
-        $zip = new \ZipArchive();
-        if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
-
-            /* Dateibackup
-            if($this->addDir($zip, PATH_BASE, '', $ignoreHiddenFiles)) {
-
-                $zip->close();
-                return true;
-            }
-
-            $xmlFiles = XmlFileManager::getInstance()->listKnownXmlFiles();
-            foreach($xmlFiles as $xmlFile) {
-
-                $dir = dirname($xmlFile['file']);
-                $filename = str_replace($dir, '', $xmlFile['file']);
-
-                if(file_exists($xmlFile['file'])) {
-
-                    $archivePath = str_replace(PATH_BASE, '', $dir);
-                    $zip->addEmptyDir($archivePath);
-                    $zip->addFile($xmlFile['file'], $archivePath . $filename);
-                }
-            }
-            $zip->close();
-            return true;
-            //var_dump($xmlFiles);
-            //$zip->addEmptyDir('rwf/data/storage');
-            //$zip->addFile();
-        }
-        return false;
-*/
     }
 
     /**
