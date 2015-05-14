@@ -109,10 +109,51 @@ class ShedulerDeamonCli extends CliCommand {
             exit(1);
         }
 
+        $n = 0;
+        $valid = true;
+        $valid_pin = '';
+        $pin_not_change = false;
+        while ($n < 5) {
+
+            $pin = $cli->input(RWF::getLanguage()->get('shedulerDaemon.input.blinkPin', RWF::getSetting('shc.shedulerDaemon.blinkPin')));
+
+            //Pin nicht aendern
+            if (String::length($pin) == 0) {
+
+                $pin_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if ((int) $pin < -1 || (int) $pin > 40) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.blinkPin.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            } else {
+
+                $n++;
+                $valid = true;
+                $valid_pin = $pin;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.blinkPin.invalid.repeated'), 'red');
+            exit(1);
+        }
+
         //Speichern
         if($active_not_change === false) {
 
             RWF::getSettings()->editSetting('shc.shedulerDaemon.active', $valid_active);
+        }
+        if($pin_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.shedulerDaemon.blinkPin', $valid_pin);
         }
 
         try {
