@@ -43,7 +43,7 @@
                                     {instanceof element=$event class='\SHC\Event\Events\Sunrise'}{lang var="acp.eventsManagement.events.Sunrise"}{/instanceof}
                                     {instanceof element=$event class='\SHC\Event\Events\Sunset'}{lang var="acp.eventsManagement.events.Sunset"}{/instanceof}
                                 </td>
-                                <td>{if $event->getLastExecute()|datetime != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}</td>
+                                <td>{if $event->getLastExecute()->format('d.m.Y') != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}</td>
                                 <td>
                                     {editlist link='index.php?app=shc&page=manageswitchablesinevents&id=' id=$event->getId()}
                                     {editlink link='index.php?app=shc&page=editeventform&id=' id=$event->getId()}

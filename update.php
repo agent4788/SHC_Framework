@@ -581,6 +581,10 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
     addSetting('shc.redis.db', $valid_db, TYPE_INTEGER);
     addSetting('shc.redis.pass', $valid_password, TYPE_STRING);
 
+    //Sonstige Einstellungen
+    addSetting('rwf.date.useTimeline', 'true', TYPE_BOOLEAN);
+    addSetting('shc.shedulerDaemon.blinkPin', '-1', TYPE_INTEGER);
+
     //XML Speichern
     $settingsXml->asXML('./rwf/data/storage/settings.xml');
 

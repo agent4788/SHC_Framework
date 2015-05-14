@@ -184,7 +184,6 @@ class SwitchPointEditor {
      * @param  Integer $switchPointId  ID des Schaltpunktes
      * @param  Integer $conditionId    ID der Bedingung
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function addConditionToSwitchPoint($switchPointId, $conditionId) {
 
@@ -209,7 +208,6 @@ class SwitchPointEditor {
      * @param  Integer $switchPointId  ID des Schaltpunktes
      * @param  Integer $conditionId    ID der Bedingung
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeConditionFromSwitchPoint($switchPointId, $conditionId) {
 
@@ -235,7 +233,6 @@ class SwitchPointEditor {
      * @param  Integre $id ID
      * @param  \RWF\Date\DateTime $time
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function editExecutionTime($id, DateTime $time) {
 
@@ -244,11 +241,15 @@ class SwitchPointEditor {
         if($db->hExists(self::$tableName, $id)) {
 
             $switchPoint = $db->hGet(self::$tableName, $id);
-            $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
 
-            if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+            if(isset($switchPoint['id']) && $switchPoint['id'] == $id) {
 
-                return true;
+                $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
+
+                if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -258,7 +259,6 @@ class SwitchPointEditor {
      * speichert den Status der Schaltpunkte
      *
      * @return Boolean
-     * @throws \RWF\XML\Exception\XmlException
      */
     public function updateSwitchPoints() {
 
@@ -271,13 +271,20 @@ class SwitchPointEditor {
             if($switchPoint->isExecuted() === true) {
 
                 $switchPoint->setLastExecute(DateTime::now(), true);
-
                 $switchPointData = $db->hGet(self::$tableName, $switchPoint->getId());
-                $switchPointData['lastExecute'] = $switchPoint->getLastExecute()->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $switchPoint->getId(), $switchPointData) != 0) {
+                if(isset($switchPointData['id']) && $switchPointData == $switchPoint->getId()) {
 
-                    return false;
+                    $switchPointData['lastExecute'] = $switchPoint->getLastExecute()->getDatabaseDateTime();
+
+                    if($db->hSet(self::$tableName, $switchPoint->getId(), $switchPointData) != 0) {
+
+                        return false;
+                    }
+                } else {
+
+                    //Datensatz existiert nicht mehr
+                    continue;
                 }
             }
         }
@@ -298,7 +305,6 @@ class SwitchPointEditor {
      * @param  Array   $hour       Liste mit den Stunden
      * @param  Array   $minute     Liste mit den Minuten
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function addSwitchPoint($name, $enabled, $command, array $conditions, array $year, array $month, array $week, array $day, array $hour, array $minute) {
 
@@ -347,7 +353,6 @@ class SwitchPointEditor {
      * @param  Array   $hour       Liste mit den Stunden
      * @param  Array   $minute     Liste mit den Minuten
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function editSwitchPoint($id, $name = null, $enabled = null, $command = null, array $conditions = null, array $year = null, array $month = null, array $week = null, array $day = null, array $hour = null, array $minute = null) {
 
@@ -436,7 +441,6 @@ class SwitchPointEditor {
      * 
      * @param  Integer $id ID
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeSwitchPoint($id) {
 

@@ -569,15 +569,23 @@ class SwitchableEditor {
                 //Nach Objekt suchen
                 $id = $switchable->getId();
                 $switchableData = $db->hGet(self::$tableName, $id);
-                $switchableData['state'] = $switchable->getState();
-                if($switchable instanceof Countdown) {
 
-                    $switchableData['switchOffTime'] = $switchable->getSwitchOffTime()->getDatabaseDateTime();
-                }
+                if(isset($switchableData['id']) && $switchableData['id'] == $id) {
 
-                if($db->hSet(self::$tableName, $id, $switchableData) != 0) {
+                    $switchableData['state'] = $switchable->getState();
+                    if($switchable instanceof Countdown) {
 
-                    return false;
+                        $switchableData['switchOffTime'] = $switchable->getSwitchOffTime()->getDatabaseDateTime();
+                    }
+
+                    if($db->hSet(self::$tableName, $id, $switchableData) != 0) {
+
+                        return false;
+                    }
+                } else {
+
+                    //Datensatz existiert nicht mehr
+                    continue;
                 }
             }
         }
