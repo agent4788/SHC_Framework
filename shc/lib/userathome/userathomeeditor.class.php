@@ -77,6 +77,9 @@ class UserAtHomeEditor {
      */
     public function loadData() {
 
+        //alte daten loeschen
+        $this->usersAtHome = array();
+
         $usersAtHome = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach($usersAtHome as $usersAtHome) {
             

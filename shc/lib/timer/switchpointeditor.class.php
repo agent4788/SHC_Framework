@@ -70,6 +70,9 @@ class SwitchPointEditor {
 
     public function loadData() {
 
+        //alte daten loeschen
+        $this->switchPoints = array();
+
         $switchpoints = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach($switchpoints as $switchPoint) {
 
