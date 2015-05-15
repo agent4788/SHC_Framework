@@ -32,7 +32,7 @@ class RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0 RC 3';
+    const VERSION = '2.2.0 RC 4';
 
     /**
      * Einstellungen
