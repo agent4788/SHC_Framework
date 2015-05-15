@@ -273,7 +273,7 @@ class SwitchPointEditor {
                 $switchPoint->setLastExecute(DateTime::now(), true);
                 $switchPointData = $db->hGet(self::$tableName, $switchPoint->getId());
 
-                if(isset($switchPointData['id']) && $switchPointData == $switchPoint->getId()) {
+                if(isset($switchPointData['id']) && $switchPointData['id'] == $switchPoint->getId()) {
 
                     $switchPointData['lastExecute'] = $switchPoint->getLastExecute()->getDatabaseDateTime();
 
