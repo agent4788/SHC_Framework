@@ -20,7 +20,7 @@
                         <h3>{#$switchPoint->getName()}</h3>
                         <p>
                             <span style="font-weight: bold;">{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute"}: </span>
-                            {if $switchPoint->getLastExecute()|datetime != '01.01.2000'}{$switchPoint->getLastExecute()|timeline}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}
+                            {if $switchPoint->getLastExecute()->format('d.m.Y') != '01.01.2000'}{$switchPoint->getLastExecute()|timeline}{else}{lang var="acp.switchpointsManagment.switchPointList.table.head.lastExecute.never"}{/if}
                         </p>
                     </li>
                     {foreachelse}
@@ -51,7 +51,7 @@
                         </h3>
                         <p>
                             <span style="font-weight: bold;">{lang var="acp.eventsManagement.eventList.table.head.lastExecute"}: </span>
-                            {if $event->getLastExecute()|datetime != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}
+                            {if $event->getLastExecute()->format('d.m.Y') != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}
                         </p>
                     </li>
                     {foreachelse}
