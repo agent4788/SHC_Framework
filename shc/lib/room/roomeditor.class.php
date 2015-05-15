@@ -81,6 +81,9 @@ class RoomEditor {
      */
     public function loadData() {
 
+        //alte Daten loeschen
+        $this->rooms = array();
+
         $rooms = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach($rooms as $room) {
 

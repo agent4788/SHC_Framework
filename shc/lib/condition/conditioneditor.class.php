@@ -70,6 +70,9 @@ class ConditionEditor {
      */
     public function loadData() {
 
+        //alte Daten loeschen
+        $this->conditions = array();
+
         $conditions = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach($conditions as $condition) {
 

@@ -190,6 +190,9 @@ class SwitchableEditor {
      */
     public function loadData() {
 
+        //alte daten loeschen
+        $this->switchables = array();
+
         $switchables = SHC::getDatabase()->hGetAll(self::$tableName);
         foreach ($switchables as $switchable) {
 
