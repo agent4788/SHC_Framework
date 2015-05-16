@@ -43,7 +43,7 @@ class GermanHolidays {
     //Pfingstmontag
     const WHIT_MONDAY = 512;
     //Fronleichnam
-    const CORPUS_CHRISTII = 1024;
+    const CORPUS_CHRISTI = 1024;
     //Tag der Deutschen Einheit
     const GERMAN_UNIFICATION_DAY = 2048;
     //Reformationstag
@@ -60,6 +60,8 @@ class GermanHolidays {
     const BOXING_DAY = 131072;
     //Silvester
     const NEW_YEARS_EVE = 262144;
+    //Mariae Himmelfahrt
+    const ASSUMPTION = 524288;
 
     /**
      * Jahr
@@ -247,6 +249,18 @@ class GermanHolidays {
 
         $date = clone $this->easterDate;
         $date->add(new \DateInterval('P60D'));
+        return $date;
+    }
+
+    /**
+     * gibt das Datum von Mariae Himmelfahrt zurueck
+     *
+     * @return \RWF\Date\DateTime
+     */
+    public function getAssumption() {
+
+        $date = new DateTime(null, $this->timeZone);
+        $date->setDate($this->year, 8, 15);
         return $date;
     }
 
