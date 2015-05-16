@@ -28,13 +28,11 @@ class ButtonTextChooser extends Select {
         $this->setName($name);
 
         //Auswahl
-        RWF::getLanguage()->disableAutoHtmlEndocde();
         $values = array(
             Element::BUTTONS_ON_OFF => array(RWF::getLanguage()->get('global.on') .'/'. RWF::getLanguage()->get('global.off'), ($buttonText == Element::BUTTONS_ON_OFF ? 1 : ($buttonText === null ? 1 : 0))),
             Element::BUTTONS_UP_DOWN => array(RWF::getLanguage()->get('global.up') .'/'. RWF::getLanguage()->get('global.down'), ($buttonText == Element::BUTTONS_UP_DOWN ? 1 : 0)),
             Element::BUTTONS_OPEN_CLOSED => array(RWF::getLanguage()->get('global.open') .'/'. RWF::getLanguage()->get('global.closed'), ($buttonText == Element::BUTTONS_OPEN_CLOSED ? 1 : 0)),
         );
-        RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);
     }
 }
