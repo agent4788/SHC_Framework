@@ -822,13 +822,14 @@ class AddConditionFormPage extends PageCommand {
                         //Werte vorbereiten
                         $name = $conditionForm->getElementByName('name')->getValue();
                         $holidays = $conditionForm->getElementByName('holidays')->getHolidays();
+                        $invert = $conditionForm->getElementByName('invert')->getValue();
                         $enabled = $conditionForm->getElementByName('enabled')->getValue();
 
                         //Speichern
                         $message = new Message();
                         try {
 
-                            ConditionEditor::getInstance()->addHolidaysCondition($name, $holidays, $enabled);
+                            ConditionEditor::getInstance()->addHolidaysCondition($name, $holidays, $enabled, $invert);
                             $message->setType(Message::SUCCESSFULLY);
                             $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
                         } catch(\Exception $e) {

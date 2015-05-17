@@ -45,6 +45,14 @@ class HolidayConditionForm extends DefaultHtmlForm {
         $holidays->requiredField(true);
         $this->addFormElement($holidays);
 
+        //Invertiert
+        $invert = new OnOffOption('invert', ($condition  instanceof HolidaysCondition ? $condition->getData()['invert'] : false));
+        $invert->setYesNoLabel();
+        $invert->setTitle(RWF::getLanguage()->get('acp.conditionManagement.form.condition.holidaysInvert'));
+        $invert->setDescription(RWF::getLanguage()->get('acp.conditionManagement.form.condition.holidaysInvert.description'));
+        $invert->requiredField(true);
+        $this->addFormElement($invert);
+
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($condition  instanceof HolidaysCondition ? $condition->isEnabled() : true));
         $enabled->setActiveInactiveLabel();

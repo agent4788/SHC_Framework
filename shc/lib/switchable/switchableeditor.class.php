@@ -886,11 +886,16 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $activityId)) {
 
             $switchableData = $db->hGet(self::$tableName, $activityId);
-            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
-                return false;
+                $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
+
+                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -911,17 +916,22 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $activityId)) {
 
             $switchableData = $db->hGet(self::$tableName, $activityId);
-            foreach($switchableData['switchable'] as $index => $data) {
 
-                if($data['id'] == $switchableId) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
-                    $switchableData['switchable'][$index]['command'] = $command;
+                foreach($switchableData['switchable'] as $index => $data) {
+
+                    if($data['id'] == $switchableId) {
+
+                        $switchableData['switchable'][$index]['command'] = $command;
+                    }
                 }
-            }
 
-            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
 
-                return false;
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -941,17 +951,22 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $activityId)) {
 
             $switchableData = $db->hGet(self::$tableName, $activityId);
-            foreach($switchableData['switchable'] as $index => $data) {
 
-                if($data['id'] == $switchableId) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
-                    unset($switchableData['switchable'][$index]);
+                foreach($switchableData['switchable'] as $index => $data) {
+
+                    if($data['id'] == $switchableId) {
+
+                        unset($switchableData['switchable'][$index]);
+                    }
                 }
-            }
 
-            if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
 
-                return false;
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -1029,11 +1044,16 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $countdownId)) {
 
             $switchableData = $db->hGet(self::$tableName, $countdownId);
-            $switchableData['switchOffTime'] = $time->getDatabaseDateTime();
 
-            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
-                return false;
+                $switchableData['switchOffTime'] = $time->getDatabaseDateTime();
+
+                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -1054,11 +1074,16 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $countdownId)) {
 
             $switchableData = $db->hGet(self::$tableName, $countdownId);
-            $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
-                return false;
+                $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
+
+                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -1079,17 +1104,22 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $countdownId)) {
 
             $switchableData = $db->hGet(self::$tableName, $countdownId);
-            foreach($switchableData['switchable'] as $index => $data) {
 
-                if($data['id'] == $switchableId) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
-                    $switchableData['switchable'][$index]['command'] = $command;
+                foreach($switchableData['switchable'] as $index => $data) {
+
+                    if($data['id'] == $switchableId) {
+
+                        $switchableData['switchable'][$index]['command'] = $command;
+                    }
                 }
-            }
 
-            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
-                return false;
+                    return false;
+                }
+                return true;
             }
         }
         return false;
@@ -1109,17 +1139,22 @@ class SwitchableEditor {
         if($db->hExists(self::$tableName, $countdownId)) {
 
             $switchableData = $db->hGet(self::$tableName, $countdownId);
-            foreach($switchableData['switchable'] as $index => $data) {
 
-                if($data['id'] == $switchableId) {
+            if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
-                    unset($switchableData['switchable'][$index]);
+                foreach($switchableData['switchable'] as $index => $data) {
+
+                    if($data['id'] == $switchableId) {
+
+                        unset($switchableData['switchable'][$index]);
+                    }
                 }
-            }
 
-            if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
 
-                return false;
+                    return false;
+                }
+                return true;
             }
         }
         return false;

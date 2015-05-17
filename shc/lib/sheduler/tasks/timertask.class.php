@@ -4,6 +4,7 @@ namespace SHC\Sheduler\Tasks;
 
 //Imports
 use SHC\Command\CommandSheduler;
+use SHC\Condition\ConditionEditor;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchable;
@@ -43,6 +44,7 @@ class TimerTask extends AbstractTask {
     public function executeTask() {
 
         //Liste mit den Schaltbaren Elementen holen
+        ConditionEditor::getInstance()->loadData();
         SwitchPointEditor::getInstance()->loadData();
         SwitchableEditor::getInstance()->loadData();
         $switchables = SwitchableEditor::getInstance()->listElements();

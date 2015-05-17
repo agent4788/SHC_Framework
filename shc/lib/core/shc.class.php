@@ -28,7 +28,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0 RC 4';
+    const VERSION = '2.2.0 RC 5';
 
     /**
      * Sensor Transmitter

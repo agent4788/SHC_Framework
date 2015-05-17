@@ -226,7 +226,7 @@ class CommandSheduler {
                             $gpioActive = true;
                             $commandData = $command->getCommandData();
                             $data = '2:'. $commandData['pinNumber'] .':'. $commandData['command'] .' ';
-                            var_dump($data);
+
                             try {
 
                                 //Befehl senden

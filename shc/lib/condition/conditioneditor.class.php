@@ -1069,14 +1069,16 @@ class ConditionEditor {
      * @param  String  $name         Name
      * @param  Integer $holidays     Feiertage
      * @param  Boolean $enabled      Aktiv
+     * @param  Boolean $invert       Invertiert
      * @return Booelan
      * @throws \Exception
      */
-    public function addHolidaysCondition($name, $holidays, $enabled) {
+    public function addHolidaysCondition($name, $holidays, $enabled, $invert) {
 
         //Daten vorbereiten
         $data = array(
-            'holidays' => $holidays
+            'holidays' => $holidays,
+            'invert' => $invert
         );
 
         //Datensatz bearbeiten
@@ -1089,14 +1091,16 @@ class ConditionEditor {
      * @param  Integer $id           ID
      * @param  Integer $holidays     Feiertage
      * @param  Boolean $enabled      Aktiv
+     * @param  Boolean $invert       Invertiert
      * @return Booelan
      * @throws \Exception
      */
-    public function editHolidaysCondition($id, $name = null, $holidays = null, $enabled = null) {
+    public function editHolidaysCondition($id, $name = null, $holidays = null, $enabled = null, $invert = null) {
 
         //Daten vorbereiten
         $data = array(
-            'holidays' => $holidays
+            'holidays' => $holidays,
+            'invert' => $invert
         );
 
         //Datensatz bearbeiten
