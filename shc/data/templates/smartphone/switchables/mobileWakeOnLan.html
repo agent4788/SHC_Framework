@@ -26,8 +26,7 @@
                             $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
                         } else {
 
-                            $('#errorMessage').text(data.message);
-                            $.mobile.changePage("#errorDialog", { role: "dialog" });
+                                alert(data.message);
                         }
                     }
             );
