@@ -1,0 +1,6 @@
+{
+  "app": "mb",
+  "name": "Movie Base",
+  "icon": "./mb/inc/img/mb-icon.png",
+  "installed": true
+}
