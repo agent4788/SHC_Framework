@@ -93,7 +93,7 @@ class ToggleSwitchableCommandinContainerAction extends ActionCommand {
                     SwitchableEditor::getInstance()->setActivitySwitchableCommand($element->getId(), $switchableElementId, $newCommand);
                 } elseif ($element instanceof Countdown) {
 
-                    SwitchableEditor::getInstance()->addSwitchableToCountdown($element->getId(), $switchableElementId, $newCommand);
+                    SwitchableEditor::getInstance()->setCountdownSwitchableCommand($element->getId(), $switchableElementId, $newCommand);
                 }
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addElementToActivity.success'));
