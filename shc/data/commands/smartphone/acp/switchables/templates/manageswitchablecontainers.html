@@ -26,6 +26,9 @@
                                 <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.command"}:</span>
                                 {if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}
                                 <br/>
+                                <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.rooms"}:</span>
+                                {$element['object']->getNamedRoomList(true)}
+                                <br/>
                                 <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.type"}:</span>
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}

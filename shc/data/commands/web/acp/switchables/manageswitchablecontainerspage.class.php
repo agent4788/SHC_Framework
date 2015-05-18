@@ -10,6 +10,8 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use SHC\Core\SHC;
 use SHC\Form\FormElements\SwitchCommandChooser;
+use SHC\Room\Room;
+use SHC\Room\RoomEditor;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\Countdown;
@@ -117,7 +119,8 @@ class ManageSwitchableContainersPage extends PageCommand {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
                     }
-                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';
+
+                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }
             }
             $elementChooser->setValues($values);
