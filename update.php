@@ -584,6 +584,7 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
     //Sonstige Einstellungen
     addSetting('rwf.date.useTimeline', 'true', TYPE_BOOLEAN);
     addSetting('shc.shedulerDaemon.blinkPin', '-1', TYPE_INTEGER);
+    addSetting('shc.sensorTransmitter.blinkPin', '-1', TYPE_INTEGER);
 
     //XML Speichern
     $settingsXml->asXML('./rwf/data/storage/settings.xml');

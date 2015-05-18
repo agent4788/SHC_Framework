@@ -109,6 +109,7 @@ class ShedulerDeamonCli extends CliCommand {
             exit(1);
         }
 
+        //Status LED
         $n = 0;
         $valid = true;
         $valid_pin = '';

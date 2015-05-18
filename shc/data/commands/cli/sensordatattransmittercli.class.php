@@ -427,6 +427,44 @@ class SensorDatatTransmitterCli extends CliCommand {
             exit(1);
         }
 
+        //Status LED
+        $n = 0;
+        $valid = true;
+        $valid_pin = '';
+        $pin_not_change = false;
+        while ($n < 5) {
+
+            $pin = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin', RWF::getSetting('shc.sensorTransmitter.blinkPin')));
+
+            //Pin nicht aendern
+            if (String::length($pin) == 0) {
+
+                $pin_not_change = true;
+                $valid = true;
+                break;
+            }
+
+            if ((int) $pin < -1 || (int) $pin > 40) {
+
+                $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin.invalid'), 'red');
+                $n++;
+                $valid = false;
+                continue;
+            } else {
+
+                $n++;
+                $valid = true;
+                $valid_pin = $pin;
+                break;
+            }
+        }
+
+        if ($valid === false) {
+
+            $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin.invalid.repeated'), 'red');
+            exit(1);
+        }
+
         //Speichern
         if($active_not_change === false) {
 
@@ -443,6 +481,10 @@ class SensorDatatTransmitterCli extends CliCommand {
         if($sp_not_change === false) {
 
             RWF::getSettings()->editSetting('shc.sensorTransmitter.pointId', $valid_sp);
+        }
+        if($pin_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.sensorTransmitter.blinkPin', $valid_pin);
         }
 
         try {

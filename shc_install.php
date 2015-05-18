@@ -597,6 +597,7 @@ addSetting('shc.sensorTransmitter.active', 'false', TYPE_BOOLEAN);
 addSetting('shc.sensorTransmitter.ip', '127.0.0.1', TYPE_STRING);
 addSetting('shc.sensorTransmitter.port', '80', TYPE_STRING);
 addSetting('shc.sensorTransmitter.pointId', '-1', TYPE_INTEGER);
+addSetting('shc.sensorTransmitter.blinkPin', '-1', TYPE_INTEGER);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');
