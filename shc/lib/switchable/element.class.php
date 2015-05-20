@@ -168,6 +168,13 @@ interface Element {
     public function getRooms();
 
     /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false);
+
+    /**
      * setzt die Sortierung
      *
      * @param  Array $order Sortierung

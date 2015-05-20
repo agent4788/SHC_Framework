@@ -26,6 +26,10 @@ $l['sensorTransmitter.input.sensorPointId.invalid'] = 'ungültige ID';
 $l['sensorTransmitter.input.sensorPointId.invalid.repeated'] = 'du hast zu oft eine ungültige ID eingegeben';
 $l['sensorTransmitter.input.sensorPointId.info'] = 'Die Sensor Punkt ID muss im gesamten Netzwerk eindeutig sein, über diese ID können die Sensoren einem Standort besser zugeordnet werden';
 
+$l['sensorTransmitter.input.blinkPin'] = 'Status LED Pin [-1 wenn deaktiviert] ({1:s}): ';
+$l['sensorTransmitter.input.blinkPin.invalid'] = 'Ungültige Eingabe';
+$l['sensorTransmitter.input.blinkPin.invalid.repeated'] = 'du hast zu oft eine ungültige Angaben eingegeben';
+
 //Meldungen
 $l['sensorTransmitter.input.save.success'] = 'Die Einstellungen wurden erfolgreich gespeichert und werden nach dem nächsten neustart des Servers aktiv';
 $l['sensorTransmitter.input.save.error'] = 'Die Einstellungen konnten nicht gespeichert werden';

@@ -132,6 +132,10 @@ class CommandSheduler {
                             //Kommando als aufgefuehrt markieren
                             $gpioSend = true;
                             $command->executed();
+                        } elseif($switchServer->isWriteGpiosEnabled() == false && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            //Schaltserver unterstuetzt kein GPIO schalten
+                            throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
                         }
                     }
                 }
@@ -155,15 +159,8 @@ class CommandSheduler {
                     }
                 } catch(\Exception $e) {
 
-                    if($gpioActive === true && $gpioSend === true) {
-
-                        //GPIO Schaltserver nicht errreicht
-                        throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
-                    } elseif($gpioActive === true && $gpioSend === true) {
-
-                        //Schaltserver unterstuetzt kein GPIO schalten
-                        throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
-                    }
+                    //GPIO Schaltserver nicht errreicht
+                    throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
                 }
 
             //Arduino Schaltserver
@@ -238,7 +235,15 @@ class CommandSheduler {
                                 //Kommando als aufgefuehrt markieren
                                 $gpioSend = true;
                                 $command->executed();
-                            } catch(\Exception $e) {}
+                            } catch(\Exception $e) {
+
+                                //GPIO Schaltserver nicht errreicht
+                                throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
+                            }
+                        } elseif($switchServer->isWriteGpiosEnabled() == false && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            //Schaltserver unterstuetzt kein GPIO schalten
+                            throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
                         }
                     }
                 }

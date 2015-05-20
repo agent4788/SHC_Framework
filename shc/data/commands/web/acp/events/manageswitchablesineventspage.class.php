@@ -242,18 +242,9 @@ class ManageSwitchablesInEventsPage extends PageCommand {
                     } elseif($switchableElement instanceof Script) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
-                    } elseif($condition instanceof HolidaysCondition) {
-
-                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition');
-                    } elseif($condition instanceof InputHighCondition) {
-
-                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition');
-                    } elseif($condition instanceof InputLowCondition) {
-
-                        $type = RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition');
                     }
                     RWF::getLanguage()->enableAutoHtmlEndocde();
-                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';
+                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }
             }
             $elementChooser->setValues($values);
