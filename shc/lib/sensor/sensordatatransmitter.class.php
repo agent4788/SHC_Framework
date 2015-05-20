@@ -109,37 +109,83 @@ class SensorDataTransmitter {
      */
     public function transmitSensorData($debug = false) {
 
+        //Wartezeit vorbereiten
+        $nextRuntime = DateTime::now();
+        $LEDnextRuntime = DateTime::now();
+
+        //GPIO Vorbereiten
+        $pin = RWF::getSetting('shc.sensorTransmitter.blinkPin');
+        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        $state = 0;
+
+        //Status LED initalisieren
+        if($pin >= 0) {
+
+            @shell_exec($gpioPath . ' mode ' . escapeshellarg($pin) . ' out');
+        }
+
         while (true) {
 
-            //DS18x20 einlesen und an den Server senden
-            if (file_exists('/sys/bus/w1/devices/')) {
+            if($nextRuntime  <= DateTime::now()) {
 
-                $dir = opendir('/sys/bus/w1/devices/');
-                while ($file = readdir($dir)) {
+                //DS18x20 einlesen und an den Server senden
+                if (file_exists('/sys/bus/w1/devices/')) {
 
-                    //Sensor suchen
-                    if (preg_match('#^(10)|(22)|(28)-#', $file) && is_dir('/sys/bus/w1/devices/' . $file)) {
+                    $dir = opendir('/sys/bus/w1/devices/');
+                    while ($file = readdir($dir)) {
 
-                        //Temperatur lesen
-                        $dataRaw = @file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
+                        //Sensor suchen
+                        if (preg_match('#^(10)|(22)|(28)-#', $file) && is_dir('/sys/bus/w1/devices/' . $file)) {
 
-                        //naechster Durchlauf wenn Sensor nicht gelesen werden kann
-                        if($dataRaw == false) {
+                            //Temperatur lesen
+                            $dataRaw = @file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
 
-                            continue;
+                            //naechster Durchlauf wenn Sensor nicht gelesen werden kann
+                            if($dataRaw == false) {
+
+                                continue;
+                            }
+
+                            //Daten zum senden vorbereiten
+                            $match = array();
+                            preg_match('#t=(\d{1,6})#', $dataRaw, $match);
+                            $temp = $match[1] / 1000;
+
+                            //Datenpaket vorbereiten
+                            $data = array(
+                                'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                                'type' => 1,
+                                'sid' => $file,
+                                'v1' => $temp
+                            );
+
+                            //Debug Ausgabe
+                            if ($debug) {
+
+                                $this->printDebugData($data);
+                            }
+
+                            //Daten senden
+                            $this->sendHttpRequest($data);
                         }
+                    }
+                }
 
-                        //Daten zum senden vorbereiten
-                        $match = array();
-                        preg_match('#t=(\d{1,6})#', $dataRaw, $match);
-                        $temp = $match[1] / 1000;
+                //DHT
+                $dhts = SensorEditor::getInstance()->listDHT();
+                foreach($dhts as $dht) {
+
+                    $values = SensorEditor::getInstance()->readDHT($dht['id']);
+
+                    if(!isset($values[0])) {
 
                         //Datenpaket vorbereiten
                         $data = array(
                             'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                            'type' => 1,
-                            'sid' => $file,
-                            'v1' => $temp
+                            'type' => 2,
+                            'sid' => $dht['id'],
+                            'v1' => $values['temp'],
+                            'v2' => $values['hum']
                         );
 
                         //Debug Ausgabe
@@ -152,23 +198,20 @@ class SensorDataTransmitter {
                         $this->sendHttpRequest($data);
                     }
                 }
-            }
 
-            //DHT
-            $dhts = SensorEditor::getInstance()->listDHT();
-            foreach($dhts as $dht) {
+                //BMP
+                if(SensorEditor::getInstance()->isBMPenabled()) {
 
-                $values = SensorEditor::getInstance()->readDHT($dht['id']);
-
-                if(!isset($values[0])) {
+                    $values = SensorEditor::getInstance()->readBMP();
 
                     //Datenpaket vorbereiten
                     $data = array(
                         'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                        'type' => 2,
-                        'sid' => $dht['id'],
+                        'type' => 3,
+                        'sid' => SensorEditor::getInstance()->getBMPsensorId(),
                         'v1' => $values['temp'],
-                        'v2' => $values['hum']
+                        'v2' => $values['press'],
+                        'v3' => $values['alti']
                     );
 
                     //Debug Ausgabe
@@ -180,52 +223,44 @@ class SensorDataTransmitter {
                     //Daten senden
                     $this->sendHttpRequest($data);
                 }
-            }
 
-            //BMP
-            if(SensorEditor::getInstance()->isBMPenabled()) {
+                //MCP3008 oder MCP3208 fuer die Analogsensoren
 
-                $values = SensorEditor::getInstance()->readBMP();
+                //Run Flag alle 60 Sekunden setzen
+                if(!isset($time)) {
 
-                //Datenpaket vorbereiten
-                $data = array(
-                    'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                    'type' => 3,
-                    'sid' => SensorEditor::getInstance()->getBMPsensorId(),
-                    'v1' => $values['temp'],
-                    'v2' => $values['press'],
-                    'v3' => $values['alti']
-                );
+                    $time = DateTime::now();
+                }
+                if($time <= DateTime::now()) {
 
-                //Debug Ausgabe
-                if ($debug) {
+                    if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
 
-                    $this->printDebugData($data);
+                        FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
+                    }
+                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
+                    $time->add(new \DateInterval('PT1M'));
                 }
 
-                //Daten senden
-                $this->sendHttpRequest($data);
+                //Wartezeit setzen
+                $nextRuntime = DateTime::now()->add(new \DateInterval('PT30S'));
             }
 
-            //MCP3008 oder MCP3208 fuer die Analogsensoren
+            //Status LED
+            if($pin >= 0 && $LEDnextRuntime <= DateTime::now()) {
 
-            //Run Flag alle 60 Sekunden setzen
-            if(!isset($time)) {
+                if($state === 0) {
 
-                $time = DateTime::now();
-            }
-            if($time <= DateTime::now()) {
+                    @shell_exec($gpioPath . ' write ' . escapeshellarg($pin) . ' 1');
+                    $state = 1;
+                } else {
 
-                if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
-
-                    FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
+                    @shell_exec($gpioPath . ' write ' . escapeshellarg($pin) . ' 0');
+                    $state = 0;
                 }
-                file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
-                $time->add(new \DateInterval('PT1M'));
-            }
 
-            //wartezeit bis zum neachsten Sendevorgang
-            sleep(30);
+                //Wartezeit setzen
+                $LEDnextRuntime = DateTime::now()->add(new \DateInterval('PT1S'));
+            }
         }
     }
 

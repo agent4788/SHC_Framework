@@ -52,24 +52,31 @@ class BlinkTask extends AbstractTask {
      */
     protected $state = 0;
 
-    public function __connstruct() {
-
-        parent::__construct();
-
-        //GPIO Vorbereiten
-        $this->pin = RWF::getSetting('shc.shedulerDaemon.blinkPin');
-        $this->gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
-        if($this->pin >= 0) {
-
-            @shell_exec($this->gpioPath . ' mode ' . escapeshellarg($this->pin) . ' out');
-        }
-    }
+    /**
+     * gibt an ob die Anwendung initialisiert ist
+     *
+     * @var Boolean
+     */
+    protected $init = false;
 
     /**
      * fuehrt die Aufgabe aus
      * falls ein Intervall angegeben ist wird automatisch die Ausfuerung in den vogegebenen Zeitabstaenden verzoegert
      */
     public function executeTask() {
+
+        if($this->init === false) {
+
+            //GPIO Vorbereiten
+            $this->pin = RWF::getSetting('shc.shedulerDaemon.blinkPin');
+            $this->gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+
+            if($this->pin >= 0) {
+
+                @shell_exec($this->gpioPath . ' mode ' . escapeshellarg($this->pin) . ' out');
+            }
+            $this->init = true;
+        }
 
         //wenn Pin >= 0 Blinken mit 0,5Hz
         if($this->pin >= 0) {

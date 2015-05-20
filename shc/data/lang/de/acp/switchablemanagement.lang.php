@@ -26,6 +26,7 @@ $l['acp.switchableManagement.button.switchFunctions'] = 'Schaltfunktionen';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
+$l['acp.switchableManagement.elementTable.table.head.rooms'] = 'Räume';
 $l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
 $l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
 $l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Gerätecode/ID';

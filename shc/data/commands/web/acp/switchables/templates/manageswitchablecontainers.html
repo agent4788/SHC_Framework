@@ -18,9 +18,10 @@
                     <table class="shc-view-contentTable">
                         <thead>
                         <tr>
-                            <th style="width: 60%;">{lang var="acp.switchableManagement.elementTable.table.head.name"}</th>
-                            <th style="width: 10%;">{lang var="acp.switchableManagement.elementTable.table.head.command"}</th>
+                            <th style="width: 40%;">{lang var="acp.switchableManagement.elementTable.table.head.name"}</th>
+                            <th style="width: 20%;">{lang var="acp.switchableManagement.elementTable.table.head.rooms"}</th>
                             <th style="width: 20%;">{lang var="acp.switchableManagement.elementTable.table.head.type"}</th>
+                            <th style="width: 10%;">{lang var="acp.switchableManagement.elementTable.table.head.command"}</th>
                             <th style="width: 10%;">{lang var="acpindex.options"}</th>
                         </tr>
                         </thead>
@@ -31,7 +32,7 @@
                         {instanceof element=$element['object'] class='\SHC\Switchable\Switchable'}
                         <tr>
                             <td>{if $element['object']->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element['object']->getName()}{if $element['object']->isEnabled() == false}</span>{/if}</td>
-                            <td>{if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}</td>
+                            <td>{$element['object']->getNamedRoomList(true)}</td>
                             <td>
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
@@ -41,15 +42,20 @@
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
                             </td>
+                            <td>{if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}</td>
                             <td>
                                 <a class="shc-view-buttons-edit" href="index.php?app=shc&action=toggleswitchablecommandincontainer&id={$SwitchableContainer->getId()}&command=toggle&element={$element['object']->getId()}" title="{lang var='acp.switchableManagement.button.toggleCommand'}"></a>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteswitchableformcontainer&id={$SwitchableContainer->getId()}&command=delete&element={$element['object']->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
                             </td>
                         </tr>
                         {/instanceof}
+                        {foreachelse}
+                        <tr>
+                            <td colspan="5">{lang var='acpindex.emptyList'}</td>
+                        </tr>
                         {/foreach}
                         <tr>
-                            <td>{$elementChooser->fetch()}</td>
+                            <td colspan="2">{$elementChooser->fetch()}</td>
                             <td>{$switchCommand->fetch()}</td>
                             <td></td>
                             <td>

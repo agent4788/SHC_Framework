@@ -104,7 +104,6 @@ class SwitchServerSocket {
         $readGPIO = RWF::getSetting('shc.switchServer.readGpio');
 
         //Server initialisieren
-
         $this->server = new SocketServer(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'));
         $this->server->startServer();
 

@@ -240,6 +240,31 @@ abstract class AbstractReadable implements Readable {
     }
 
     /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false) {
+
+        $rooms = $this->getRooms();
+        $roomList = array();
+        foreach($rooms as $roomId) {
+
+            $roomObject = RoomEditor::getInstance()->getRoomById($roomId);
+            if($roomObject instanceof Room) {
+
+                $roomList[] = $roomObject->getName();
+            }
+        }
+
+        if($commaSepareted == true) {
+
+            return implode(', ', $roomList);
+        }
+        return $roomList;
+    }
+
+    /**
      * setzt die Sortierung
      *
      * @param  Array $order Sortierung

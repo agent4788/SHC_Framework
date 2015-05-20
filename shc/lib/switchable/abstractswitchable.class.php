@@ -6,6 +6,7 @@ namespace SHC\Switchable;
 use RWF\Core\RWF;
 use RWF\User\Visitor;
 use SHC\Command\CommandSheduler;
+use SHC\Room\RoomEditor;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
 use RWF\User\User;
@@ -376,6 +377,31 @@ abstract class AbstractSwitchable implements Switchable {
     public function getRooms() {
 
         return $this->rooms;
+    }
+
+    /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false) {
+
+        $rooms = $this->getRooms();
+        $roomList = array();
+        foreach($rooms as $roomId) {
+
+            $roomObject = RoomEditor::getInstance()->getRoomById($roomId);
+            if($roomObject instanceof Room) {
+
+                $roomList[] = $roomObject->getName();
+            }
+        }
+
+        if($commaSepareted == true) {
+
+            return implode(', ', $roomList);
+        }
+        return $roomList;
     }
 
     /**

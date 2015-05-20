@@ -117,7 +117,7 @@ class ManageSwitchableContainersPage extends PageCommand {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
                     }
-                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';
+                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }
             }
             $elementChooser->setValues($values);
