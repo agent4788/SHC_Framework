@@ -3,10 +3,13 @@
 namespace SHC\Sheduler;
 
 //Imports
+use RWF\Benchmark\Benchmark;
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Error\Error;
+use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
+use RWF\Util\TimeUtil;
 use RWF\XML\Exception\XmlException;
 
 /**
@@ -28,15 +31,58 @@ class Sheduler {
     protected $tasks = array();
 
     /**
+     * gibt an ob das Benchmarking aktiviert ist
+     *
+     * @var Boolean
+     */
+    protected $benchmarkActive = false;
+
+    /**
+     * Benchmark Objekt
+     *
+     * @var \RWF\Benchmark\Benchmark
+     */
+    protected $benchmark = null;
+
+    /**
+     * CLI Util
+     *
+     * @var \RWF\Util\CliUtil
+     */
+    protected $cli = null;
+
+    /**
+     * Zeit
+     *
+     * @var Float
+     */
+    protected $time = 0.0;
+
+    /**
      * ID des Schleifendurchlaufes
      *
      * @var Integer
      */
     protected static $loop = 0;
 
-    public function __construct() {
+    public function __construct($benchmarkActive = false) {
 
+        $this->benchmarkActive = $benchmarkActive;
+        if($this->benchmarkActive == true) {
+
+            $this->benchmark = new Benchmark();
+            $this->cli = new CliUtil();
+        }
         $this->loadTasks();
+
+        //Benchmark Startzeit
+        if($this->benchmarkActive == true) {
+
+            $time = TimeUtil::formatMilisecForDisplay($this->benchmark->getGlobalExceutionTime());
+            $this->cli->writeLine('Startzeit: '. $time);
+            $this->cli->writeLine('');
+            $this->cli->writeLine('');
+        }
     }
 
     /**
@@ -87,26 +133,52 @@ class Sheduler {
      * @throws \Exception
      */
     public function executeTasks() {
-        
+
+        //Benchmark start Task
+        if($this->benchmarkActive == true) {
+
+            $this->benchmark->startBlockBenchmark('loop.'. self::$loop);
+        }
+
         //Prioritaeten durchlaufen
         foreach($this->tasks as $prio => $objects) {
             
             //Aufgaben nacheinander ausfuehren
             foreach($objects as $task) {
+
+                //Benchmark start Task
+                if($this->benchmarkActive == true) {
+
+                    $this->benchmark->startBlockBenchmark('task.'. get_class($task));
+                }
                 
                 /* @var $task \SHC\Sheduler\Task */
                 try {
 
                     $task->execute();
-                    self::$loop++;
                 } catch(XmlException $e) {
 
                     //Ausgabe auf Kommandozeile
                     RWF::getResponse()->writeLnColored($e->getCode() .': '. $e->getMessage(), 'red');
+
                     //Log Eintrag erzeugen
                     $error = new Error(false);
                     $error->handleXMLException($e, true, 'shedulerXmlError.log');
                     continue;
+                }
+
+                //Benchmark end Task
+                if($this->benchmarkActive == true) {
+
+                    $this->benchmark->stopBlockBenchmark('task.'. get_class($task));
+
+                    //Benchmark Daten ausgeben
+                    $benchmarkData = $this->benchmark->getLastBlock();
+                    $this->cli->writeLine(str_pad('// '. get_class($task) .' ', 100, '/'));
+                    $this->cli->writeLine('Laufzeit: '. TimeUtil::formatMilisecForDisplay($benchmarkData[0]));
+                    $this->cli->writeLine('Speicherbedarf: '. FileUtil::formatBytesBinary($benchmarkData[1]));
+                    $this->cli->writeLine('');
+                    $this->cli->writeLine('');
                 }
             }
         }
@@ -125,6 +197,23 @@ class Sheduler {
             file_put_contents(PATH_RWF_CACHE . 'shedulerRun.flag', DateTime::now()->getDatabaseDateTime());
             $time->add(new \DateInterval('PT1M'));
         }
+
+        //Benchmark end Task
+        if($this->benchmarkActive == true) {
+
+            $this->benchmark->stopBlockBenchmark('loop.'. self::$loop);
+
+            //Benchmark Daten ausgeben
+            $benchmarkData = $this->benchmark->getLastBlock();
+            $this->cli->writeLineColored(str_pad('// Sheduler durchlauf: '. self::$loop .' ', 100, '/'), 'yellow');
+            $this->cli->writeLineColored('Laufzeit: '. TimeUtil::formatMilisecForDisplay($benchmarkData[0]), 'yellow');
+            $this->cli->writeLineColored('Speicherbedarf: '. FileUtil::formatBytesBinary($benchmarkData[1]), 'yellow');
+            $this->cli->writeLine('');
+            $this->cli->writeLine('');
+        }
+
+        //Schleifendurchlauf erhoehen
+        self::$loop++;
     }
 
     /**
@@ -135,6 +224,11 @@ class Sheduler {
     public static function getLoopId() {
 
         return self::$loop;
+    }
+
+    protected function benchmark($class = '') {
+
+
     }
 
 }
