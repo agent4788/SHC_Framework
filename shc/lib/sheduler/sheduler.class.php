@@ -79,7 +79,7 @@ class Sheduler {
         if($this->benchmarkActive == true) {
 
             $time = TimeUtil::formatMilisecForDisplay($this->benchmark->getGlobalExceutionTime());
-            $this->cli->writeLine('Startzeit: '. $time);
+            $this->cli->writeLineColored('Startzeit: '. $time, 'yellow');
             $this->cli->writeLine('');
             $this->cli->writeLine('');
         }
