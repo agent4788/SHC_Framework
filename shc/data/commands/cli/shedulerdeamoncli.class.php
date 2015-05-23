@@ -172,6 +172,15 @@ class ShedulerDeamonCli extends CliCommand {
      */
     protected function executeCliCommand() {
 
+        global $argv;
+
+        //Benchmarking aktivieren
+        $benchmarkActive = false;
+        if (in_array('-b', $argv) || in_array('--benchmark', $argv)) {
+
+            $benchmarkActive = true;
+        }
+
         //pruefen on Server aktiviert
         if (!RWF::getSetting('shc.shedulerDaemon.active')) {
 
@@ -179,7 +188,7 @@ class ShedulerDeamonCli extends CliCommand {
         }
 
         //Sheduler Initialisieren
-        $sheduler = new Sheduler();
+        $sheduler = new Sheduler($benchmarkActive);
 
         //Aufgaben zyklisch ausfuehren
         while (true) {
