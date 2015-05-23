@@ -23,7 +23,7 @@ class PCC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0 RC 6';
+    const VERSION = '2.2.0 RC 7';
 
     /**
      * Style
