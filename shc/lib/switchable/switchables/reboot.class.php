@@ -3,6 +3,7 @@
 namespace SHC\Switchable\Switchables;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Switchable\AbstractSwitchable;
 
 /**
