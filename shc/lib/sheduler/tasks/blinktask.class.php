@@ -29,7 +29,7 @@ class BlinkTask extends AbstractTask {
      *
      * @var String
      */
-    protected $interval = 'PT10S';
+    protected $interval = 'PT1S';
 
     /**
      * GPIO Pin
