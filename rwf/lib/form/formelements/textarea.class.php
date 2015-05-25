@@ -234,7 +234,7 @@ class TextArea extends AbstractFormElement {
         //Maximale Laenge
         if (isset($this->options['maxlength']) && !String::checkLength($value, 0, $this->options['maxlength'])) {
 
-            $this->messages[] = $lang->get('form.message.maxLength', $this->getTitle(), $this->options['minlength']);
+            $this->messages[] = $lang->get('form.message.maxLength', $this->getTitle(), $this->options['maxlength']);
             $valid = false;
         }
 
