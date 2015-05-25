@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="manageswitchablecontainers">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.switchableManagement.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-inset="true" data-split-theme="a" data-split-icon="delete">
+                    <li data-role="list-divider" role="heading" data-theme="b" class="shc-view-sort-disabled">{#$SwitchableContainer->getName()}</li>
+                    {foreach from=$elementList item='element'}
+
+                    {* schaltbare Elemente *}
+                    {instanceof element=$element['object'] class='\SHC\Switchable\Switchable'}
+                    <li>
+                        <a href="index.php?app=shc&m&action=toggleswitchablecommandincontainer&id={$SwitchableContainer->getId()}&command=toggle&element={$element['object']->getId()}">
+                            <h2>
+                                {if $element['object']->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element['object']->getName()}{if $element['object']->isEnabled() == false}</span>{/if}
+                            </h2>
+                            <p>
+                                <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.command"}:</span>
+                                {if $element['command'] == 1}{lang var="global.on"}{else}{lang var="global.off"}{/if}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.rooms"}:</span>
+                                {$element['object']->getNamedRoomList(true)}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var="acp.switchableManagement.elementTable.table.head.type"}:</span>
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
+                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                            </p>
+                        </a>
+                        <a href="index.php?app=shc&m&action=deleteswitchableformcontainer&id={$SwitchableContainer->getId()}&command=delete&element={$element['object']->getId()}">{lang var="acpindex.options"}</a>
+                    </li>
+                    {/instanceof}
+                    {foreachelse}
+                    <li>{lang var='acpindex.emptyList'}</li>
+                    {/foreach}
+                    <li>
+                        <a href="#addElement" data-rel="dialog">
+                            <h2>{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</h2>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="page" id="addElement">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.switchableManagement.title.addSwitchable"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                {$elementChooser->fetch(4)}
+                {$switchCommand->fetch(4)}
+                <a href="#" id="shc-view-switchableManagement-addSwitchableToContainer" class="ui-btn">{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</a>
+                <script type="text/javascript">
+                    $(document).on('pageinit', '#manageswitchablecontainers', function() {
+
+                        $('#shc-view-switchableManagement-addSwitchableToContainer').click(function() {
+
+                            var element = $('select[name=element]').val();
+                            var switchCommand = $('select[name=switchCommand]').val();
+                            window.location = "index.php?app=shc&m&action=addswitchabletocontainer&id={$SwitchableContainer->getId()}&command=addElement&element="+ element +"&switchCommand="+ switchCommand;
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </body>
+</html>

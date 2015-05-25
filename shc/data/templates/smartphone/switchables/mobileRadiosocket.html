@@ -1,22 +1,41 @@
 <li>
-    {#$switchable->getName()}:
+    {if $device != 'smartphone'}
+    <span class="shc-icon {$switchable->getIcon()}"></span>
+    {/if}
+    <span>{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
-        <a id="shc-view-switchable-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-b ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-check" style="width: 6em;">{lang var='index.room.button.on'}</a>
-        <a id="shc-view-switchable-{$switchable->getId()}-off" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all" style="width: 6em;">{lang var='index.room.button.off'}</a>
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-b ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-check" style="width: 6em;">
+            {if $switchable->getButtonText() == 2}
+                {lang var='global.up'}
+            {elseif $switchable->getButtonText() == 4}
+                {lang var='global.open'}
+            {else}
+                {lang var='index.room.button.on'}
+            {/if}
+        </a>
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all" style="width: 6em;">
+            {if $switchable->getButtonText() == 2}
+                {lang var='global.down'}
+            {elseif $switchable->getButtonText() == 4}
+                {lang var='global.closed'}
+            {else}
+                {lang var='index.room.button.off'}
+            {/if}
+        </a>
     </div>
 </li>
 <script type="text/javascript">
     $(function () {
 
         {if $switchable->getState() == 1}
-            $("#shc-view-switchable-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-            $("#shc-view-switchable-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
         {else}
-            $("#shc-view-switchable-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-            $("#shc-view-switchable-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
         {/if}
 
-            $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
 
                 //An Button gedrueckt
                 $.getJSON(
@@ -25,18 +44,17 @@
 
                             if (data.success == true) {
 
-                                $("#shc-view-switchable-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                $("#shc-view-switchable-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
                             } else {
 
-                                $('#errorMessage').text(data.message);
-                                $.mobile.changePage("#errorDialog", { role: "dialog" });
+                                alert(data.message);
                             }
                         }
                 );
                 return false;
             });
-            $('#shc-view-switchable-{$switchable->getId()}-off').click(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').click(function() {
 
                 //Aus Button gedrueckt
                 $.getJSON(
@@ -45,12 +63,11 @@
 
                             if (data.success == true) {
 
-                                $("#shc-view-switchable-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
-                                $("#shc-view-switchable-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
                             } else {
 
-                                $('#errorMessage').text(data.message);
-                                $.mobile.changePage("#errorDialog", { role: "dialog" });
+                                alert(data.message);
                             }
                         }
                 );

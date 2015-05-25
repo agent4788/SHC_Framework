@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.switchpointsManagment.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="shc-view-content">
+                    {contentbox name='acp.switchpointsManagment.title.info'}
+                    <table class="shc-view-contentTable">
+                        <tr>
+                            <td style="width: 50%;">{lang var="acp.switchpointsManagment.switchPointList.table.head.name"}</td>
+                            <td>{#$switchPoint->getName()}</td>
+                        </tr>
+                        <tr>
+                            <td>{lang var="acp.switchpointsManagment.switchPointList.table.head.command"}</td>
+                            <td>{if $switchPoint->getCommand() == 1}{lang var="global.on"}{elseif $switchPoint->getCommand() == 4}{lang var="global.toggle"}{else}{lang var="global.off"}{/if}</td>
+                        </tr>
+                    </table>
+                    {/contentbox}
+                    {* Bedingungen *}
+                    {contentbox name='acp.switchpointsManagment.title.conditions'}
+                    <table class="shc-view-contentTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 70%;">{lang var="acp.switchpointsManagment.switchPointList.table.head.name"}</th>
+                            <th style="width: 20%;">{lang var="acp.switchpointsManagment.switchPointList.table.head.type"}</th>
+                            <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$conditionList item='condition'}
+                        {instanceof element=$condition class='\SHC\Condition\Condition'}
+                        <tr>
+                            <td>{if $condition->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$condition->getName()}{if $condition->isEnabled() == false}</span>{/if}</td>
+                            <td>
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.HumidityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityLowerThanCondition'}{lang var="acp.conditionManagement.condition.HumidityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityLowerThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.MoistureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureLowerThanCondition'}{lang var="acp.conditionManagement.condition.MoistureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureGreaterThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureLowerThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureLowerThanCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\NobodyAtHomeCondition'}{lang var="acp.conditionManagement.condition.NobodyAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserAtHomeCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DateCondition'}{lang var="acp.conditionManagement.condition.DateCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\DayOfWeekCondition'}{lang var="acp.conditionManagement.condition.DayOfWeekCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\TimeOfDayCondition'}{lang var="acp.conditionManagement.condition.TimeOfDayCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunriseSunsetCondition'}{lang var="acp.conditionManagement.condition.SunriseSunsetCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunsetSunriseCondition'}{lang var="acp.conditionManagement.condition.SunsetSunriseCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FileExistsCondition'}{lang var="acp.conditionManagement.condition.FileExistsCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\FirstLoopCondition'}{lang var="acp.conditionManagement.condition.FirstLoopCondition"}{/instanceof}
+                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserNotAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserNotAtHomeCondition"}{/instanceof}
+                            </td>
+                            <td>
+                                <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteconditionfromswitchpoint&id={$switchPoint->getId()}&condition={$condition->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
+                            </td>
+                        </tr>
+                        {/instanceof}
+                        {foreachelse}
+                        <tr>
+                            <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                        </tr>
+                        {/foreach}
+                        <tr>
+                            <td>{$conditionChooser->fetch()}</td>
+                            <td></td>
+                            <td>
+                                <button id="shc-view-switchablesManagement-addConditionSwitchpoint">{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                    {* schaltbare Elemente *}
+                    {contentbox name='acp.switchpointsManagment.title.switchables'}
+                    <table class="shc-view-contentTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 70%;">{lang var="acp.switchableManagement.elementTable.table.head.name"}</th>
+                            <th style="width: 20%;">{lang var="acp.switchableManagement.elementTable.table.head.type"}</th>
+                            <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$elementList item='element'}
+                        {instanceof element=$element class='\SHC\Switchable\Switchable'}
+                        <tr>
+                            <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
+                            <td>
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
+                            </td>
+                            <td>
+                                <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteswitchablefromswitchpoint&id={$switchPoint->getId()}&element={$element->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
+                            </td>
+                        </tr>
+                        {/instanceof}
+                        {foreachelse}
+                        <tr>
+                            <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                        </tr>
+                        {/foreach}
+                        <tr>
+                            <td>{$elementChooser->fetch()}</td>
+                            <td></td>
+                            <td>
+                                <button id="shc-view-switchablesManagement-addElement">{lang var="acp.switchableManagement.button.addToSwitchableContainer"}</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {/contentbox}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=listswitchpoints">{lang var='global.button.back'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.shc-view-buttonSet').buttonset();
+
+                    $('#shc-view-switchablesManagement-addConditionSwitchpoint').button().click(function() {
+
+                        var condition = $('select[name=condition]').val();
+                        window.location = "index.php?app=shc&action=addconditiontoswitchpoint&id={$switchPoint->getId()}&condition="+ condition;
+                    });
+
+                    $('#shc-view-switchablesManagement-addElement').button().click(function() {
+
+                        var element = $('select[name=element]').val();
+                        window.location = "index.php?app=shc&action=addswitchabletoswitchpoint&id={$switchPoint->getId()}&element="+ element;
+                    });
+                });
+            </script>
+        </div>
+    </body>
+</html>

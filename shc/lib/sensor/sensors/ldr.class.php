@@ -30,13 +30,20 @@ class LDR extends AbstractSensor {
      * @var Integer
      */
     protected $valueVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Integer
+     */
+    protected $valueOffset = 0;
     
     /**
      * @param Array  $values   Sensorwerte
      */
     public function __construct(array $values = array()) {
         
-        if(count($values) == 5) {
+        if(count($values) <= 25) {
             
             $this->oldValues = $values;
             $this->value = $values[0]['value'];
@@ -51,9 +58,31 @@ class LDR extends AbstractSensor {
      */
     public function getValue() {
         
-        return $this->value;
+        return $this->value + $this->valueOffset;
     }
-    
+
+    /**
+     * setzt das Offset
+     *
+     * @param  Float $offset
+     * @return \SHC\Sensor\Sensors\Hygrometer
+     */
+    public function setOffset($offset) {
+
+        $this->valueOffset = $offset;
+        return $this;
+    }
+
+    /**
+     * gbit das Offset zurueck
+     *
+     * @return Float
+     */
+    public function getOffset() {
+
+        return $this->valueOffset;
+    }
+
     /**
      * setzt die Sichtbarkeit des Wertes
      * 
@@ -88,10 +117,10 @@ class LDR extends AbstractSensor {
         //alte Werte Schieben
         array_unshift($this->oldValues, array('value' => $value, 'time' => $date));
         //mehr als 5 Werte im Array?
-        if(isset($this->oldValues[5])) {
+        if(isset($this->oldValues[25])) {
             
             //aeltesten Wert loeschen
-            unset($this->oldValues[5]);
+            unset($this->oldValues[25]);
         }
         
         //Werte setzten

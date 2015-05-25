@@ -23,7 +23,7 @@ use RWF\Template\Template;
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
- * @version    2.0.3-0
+ * @version    2.2.0-0
  */
 class RWF {
 
@@ -32,7 +32,7 @@ class RWF {
      *
      * @var String
      */
-    const VERSION = '2.0.3';
+    const VERSION = '2.2.0';
 
     /**
      * Einstellungen
@@ -83,6 +83,13 @@ class RWF {
      */
     protected static $template = null;
 
+    /**
+     * liste mit den installierten Apps
+     *
+     * @var Array
+     */
+    protected static $appList = array();
+
     public function __construct() {
 
         //Multibyte Engine Konfigurieren
@@ -94,6 +101,43 @@ class RWF {
 
             define('MULTIBYTE_STRING', false);
         }
+
+        //APPs einlesen
+        $dir = opendir(PATH_BASE);
+        while($element = readdir($dir)) {
+
+            //ueberspringen
+            if($element == '.' || $element == '..') {
+
+                continue;
+            }
+
+            //APP Ordner suchen und app.json einlesen
+            if(is_dir($element) && $element != 'rwf' && file_exists(PATH_BASE . $element .'/app.json')) {
+
+                $app = json_decode(file_get_contents(PATH_BASE . $element .'/app.json'));
+                if(isset($app->installed) && $app->installed == true) {
+
+                    self::$appList[] = $app;
+                }
+            }
+        }
+
+        //APP Liste sortieren
+        $orderFunction = function($a, $b) {
+
+            if($a->order == $b->order) {
+
+                return 0;
+            }
+
+            if($a->order < $b->order) {
+
+                return -1;
+            }
+            return 1;
+        };
+        usort(self::$appList, $orderFunction);
 
         //Anfrage/Antwort initialisieren
         if (ACCESS_METHOD_HTTP) {
@@ -210,16 +254,16 @@ class RWF {
      */
     protected function initTemplate() {
 
-        $prefix = 'web_';
+        $prefix = APP_NAME . '_web_';
         if(RWF_DEVICE == 'smartphone') {
 
-            $prefix = 'smartphone_';
+            $prefix = APP_NAME . '_smartphone_';
         } elseif(RWF_DEVICE == 'tablet') {
 
-            $prefix = 'tablet_';
+            $prefix = APP_NAME . '_tablet_';
         } elseif(RWF_DEVICE == 'all') {
 
-            $prefix = 'all_';
+            $prefix = APP_NAME . '_all_';
         }
 
         self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, $prefix, DEVELOPMENT_MODE);
@@ -304,6 +348,16 @@ class RWF {
     public static function getSetting($name) {
 
         return self::$settings->getValue($name);
+    }
+
+    /**
+     * gibt eine liste mit den installierten Apps zurueck
+     *
+     * @return Array
+     */
+    public static function listApps() {
+
+        return self::$appList;
     }
 
     /**

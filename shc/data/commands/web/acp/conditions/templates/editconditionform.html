@@ -1,95 +1,104 @@
-<div>
-    {if $conditionForm|isset}
-    <div class="shc-view-content">
-        {$conditionForm->showForm()}
-        {instanceof element=$conditionForm class='\SHC\Form\Forms\DateConditionForm'}
-        <script type="text/javascript">
-            $(function() {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.conditionManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                {$conditionForm->fetchStartTag()}
+                <div class="shc-view-content">
+                    {$conditionForm->fetchDescription()}
+                    {$conditionForm->fetchMessages()}
+                    {$conditionForm->fetchAllElements()}
+                    {instanceof element=$conditionForm class='\SHC\Form\Forms\DateConditionForm'}
+                        <script type="text/javascript">
+                            $(function() {
 
-                $('input[name=startDate]').datepicker({
-                    firstDay: 1,
-                    changeMonth: true,
-                    numberOfMonths: 2,
-                    dateFormat: "mm-dd",
-                    dayNamesMin: [
-                        "{lang var='global.date.weekDay.sun.short'}",
-                        "{lang var='global.date.weekDay.mon.short'}",
-                        "{lang var='global.date.weekDay.tue.short'}",
-                        "{lang var='global.date.weekDay.wed.short'}",
-                        "{lang var='global.date.weekDay.thu.short'}",
-                        "{lang var='global.date.weekDay.fri.short'}",
-                        "{lang var='global.date.weekDay.sat.short'}"
-                    ],
-                    monthNamesShort: [
-                        "{lang var='global.date.month.1.short'}",
-                        "{lang var='global.date.month.2.short'}",
-                        "{lang var='global.date.month.3.short'}",
-                        "{lang var='global.date.month.4.short'}",
-                        "{lang var='global.date.month.5.short'}",
-                        "{lang var='global.date.month.6.short'}",
-                        "{lang var='global.date.month.7.short'}",
-                        "{lang var='global.date.month.8.short'}",
-                        "{lang var='global.date.month.9.short'}",
-                        "{lang var='global.date.month.10.short'}",
-                        "{lang var='global.date.month.11.short'}",
-                        "{lang var='global.date.month.12.short'}"
-                    ]
-                });
-                $('input[name=endDate]').datepicker({
-                    firstDay: 1,
-                    changeMonth: true,
-                    numberOfMonths: 2,
-                    dateFormat: "mm-dd",
-                    dayNamesMin: [
-                        "{lang var='global.date.weekDay.sun.short'}",
-                        "{lang var='global.date.weekDay.mon.short'}",
-                        "{lang var='global.date.weekDay.tue.short'}",
-                        "{lang var='global.date.weekDay.wed.short'}",
-                        "{lang var='global.date.weekDay.thu.short'}",
-                        "{lang var='global.date.weekDay.fri.short'}",
-                        "{lang var='global.date.weekDay.sat.short'}"
-                    ],
-                    monthNamesShort: [
-                        "{lang var='global.date.month.1.short'}",
-                        "{lang var='global.date.month.2.short'}",
-                        "{lang var='global.date.month.3.short'}",
-                        "{lang var='global.date.month.4.short'}",
-                        "{lang var='global.date.month.5.short'}",
-                        "{lang var='global.date.month.6.short'}",
-                        "{lang var='global.date.month.7.short'}",
-                        "{lang var='global.date.month.8.short'}",
-                        "{lang var='global.date.month.9.short'}",
-                        "{lang var='global.date.month.10.short'}",
-                        "{lang var='global.date.month.11.short'}",
-                        "{lang var='global.date.month.12.short'}"
-                    ]
-                });
-            });
-        </script>
-        {/instanceof}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listconditions"}
-            {resetbutton form="#shc-view-form-editCondition"}
-            {submitbutton form="#shc-view-form-editCondition" action="index.php?app=shc&ajax=editconditionform" id=$condition->getId()}
-        </div>
-    </div>
-    {elseif $message|isset}
-    <div class="shc-view-content">
-        {$message->fetchHtml()}
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton link="index.php?app=shc&ajax=listconditions"}
-        </div>
-    </div>
-    {/if}
-</div>
-<script type="text/javascript">
-    $(function() {
+                                $('input[name=startDate]').datepicker({
+                                    firstDay: 1,
+                                    changeMonth: true,
+                                    numberOfMonths: 2,
+                                    dateFormat: "mm-dd",
+                                    dayNamesMin: [
+                                        "{lang var='global.date.weekDay.sun.short'}",
+                                        "{lang var='global.date.weekDay.mon.short'}",
+                                        "{lang var='global.date.weekDay.tue.short'}",
+                                        "{lang var='global.date.weekDay.wed.short'}",
+                                        "{lang var='global.date.weekDay.thu.short'}",
+                                        "{lang var='global.date.weekDay.fri.short'}",
+                                        "{lang var='global.date.weekDay.sat.short'}"
+                                    ],
+                                    monthNamesShort: [
+                                        "{lang var='global.date.month.1.short'}",
+                                        "{lang var='global.date.month.2.short'}",
+                                        "{lang var='global.date.month.3.short'}",
+                                        "{lang var='global.date.month.4.short'}",
+                                        "{lang var='global.date.month.5.short'}",
+                                        "{lang var='global.date.month.6.short'}",
+                                        "{lang var='global.date.month.7.short'}",
+                                        "{lang var='global.date.month.8.short'}",
+                                        "{lang var='global.date.month.9.short'}",
+                                        "{lang var='global.date.month.10.short'}",
+                                        "{lang var='global.date.month.11.short'}",
+                                        "{lang var='global.date.month.12.short'}"
+                                    ]
+                                });
+                                $('input[name=endDate]').datepicker({
+                                    firstDay: 1,
+                                    changeMonth: true,
+                                    numberOfMonths: 2,
+                                    dateFormat: "mm-dd",
+                                    dayNamesMin: [
+                                        "{lang var='global.date.weekDay.sun.short'}",
+                                        "{lang var='global.date.weekDay.mon.short'}",
+                                        "{lang var='global.date.weekDay.tue.short'}",
+                                        "{lang var='global.date.weekDay.wed.short'}",
+                                        "{lang var='global.date.weekDay.thu.short'}",
+                                        "{lang var='global.date.weekDay.fri.short'}",
+                                        "{lang var='global.date.weekDay.sat.short'}"
+                                    ],
+                                    monthNamesShort: [
+                                        "{lang var='global.date.month.1.short'}",
+                                        "{lang var='global.date.month.2.short'}",
+                                        "{lang var='global.date.month.3.short'}",
+                                        "{lang var='global.date.month.4.short'}",
+                                        "{lang var='global.date.month.5.short'}",
+                                        "{lang var='global.date.month.6.short'}",
+                                        "{lang var='global.date.month.7.short'}",
+                                        "{lang var='global.date.month.8.short'}",
+                                        "{lang var='global.date.month.9.short'}",
+                                        "{lang var='global.date.month.10.short'}",
+                                        "{lang var='global.date.month.11.short'}",
+                                        "{lang var='global.date.month.12.short'}"
+                                    ]
+                                });
+                            });
+                        </script>
+                    {/instanceof}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=listconditions">{lang var='global.button.back'}</a>
+                        <input type="reset" value="{lang var='form.button.reset'}" />
+                        <input type="submit" value="{lang var='form.button.submit'}" />
+                    </div>
+                </div>
+                {$conditionForm->fetchEndTag()}
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
 
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.conditionManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-    });
-</script>
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

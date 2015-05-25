@@ -53,6 +53,13 @@ class ConditionEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'conditions';
+
     protected function __construct() {
 
         $this->loadData();
@@ -63,25 +70,25 @@ class ConditionEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS);
+        //alte Daten loeschen
+        $this->conditions = array();
 
-        //Daten einlesen
-        foreach ($xml->condition as $condition) {
+        $conditions = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach($conditions as $condition) {
 
-            //Variablen Vorbereiten
-            $class = (string) $condition->class;
+            $class = (string) $condition['class'];
 
             $data = array();
             foreach ($condition as $index => $value) {
 
                 if (!in_array($index, array('id', 'name', 'class', 'enabled'))) {
 
-                    $data[$index] = (string) $value;
+                    $data[$index] = $value;
                 }
             }
 
-            $this->conditions[(int) $condition->id] = new $class(
-                    (int) $condition->id, (string) $condition->name, $data, ((int) $condition->enabled == 1 ? true : false)
+            $this->conditions[(int) $condition['id']] = new $class(
+                (int) $condition['id'], (string) $condition['name'], $data, ((int) $condition['enabled'] == 1 ? true : false)
             );
         }
     }
@@ -171,7 +178,7 @@ class ConditionEditor {
      * @param  Boolean $enabled Aktiv
      * @param  Array   $data    Zusatzdaten
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     protected function addCondition($class, $name, $enabled, array $data = array()) {
 
@@ -181,31 +188,27 @@ class ConditionEditor {
             throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newCondition = array(
+            'id' => $index,
+            'class' => $class,
+            'name' => $name,
+            'enabled' => ($enabled == true ? true : false)
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-
-        //Datensatz erstellen
-        $condition = $xml->addChild('condition');
-        $condition->addChild('id', $nextId);
-        $condition->addChild('class', $class);
-        $condition->addChild('name', $name);
-        $condition->addChild('enabled', ($enabled == true ? 1 : 0));
-
-        //Daten hinzufuegen
         foreach ($data as $tag => $value) {
 
             if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
 
-                $condition->addChild($tag, $value);
+                $newCondition[$tag] = $value;
             }
         }
 
-        //Daten Speichern
-        $xml->save();
+        if($db->hSetNx(self::$tableName, $index, $newCondition) == 0) {
+
+            return false;
+        }
         return true;
     }
 
@@ -217,52 +220,52 @@ class ConditionEditor {
      * @param  Boolean $enabled Aktiv
      * @param  Array   $data    Zusatzdaten
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editCondition($id, $name, $enabled, array $data = array()) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->condition as $condition) {
+            $condition = $db->hGet(self::$tableName, $id);
 
-            if ((int) $condition->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ((string) $condition['name'] != $name && !$this->isConditionNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ((string) $condition->name != $name && !$this->isConditionNameAvailable($name)) {
-
-                        throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
-                    }
-
-                    $condition->name = $name;
+                    throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $condition['name'] = $name;
+            }
 
-                    $condition->enabled = ($enabled == true ? 1 : 0);
-                }
+            //Aktiv
+            if ($enabled !== null) {
 
-                //Zusatzdaten
-                foreach($data as $tag => $value) {
-                    
-                    if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
-                        
-                        if($value !== null) {
-                            
-                            $condition->$tag = $value;
-                        }
+                $condition['enabled'] = ($enabled == true ? 1 : 0);
+            }
+
+            //Zusatzdaten
+            foreach($data as $tag => $value) {
+
+                if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+
+                    if($value !== null) {
+
+                        $condition[$tag] = $value;
                     }
                 }
+            }
 
-                //Daten Speichern
-                $xml->save();
+            //Daten Speichern
+            if($db->hSet(self::$tableName, $id, $condition) == 0) {
+
                 return true;
             }
+
         }
         return false;
     }
@@ -275,7 +278,7 @@ class ConditionEditor {
      * @param  String  $end     Enddatum
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addDateCondition($name, $start, $end, $enabled) {
 
@@ -298,7 +301,7 @@ class ConditionEditor {
      * @param  String  $end     Enddatum
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editDateCondition($id, $name = null, $start = null, $end = null, $enabled = null) {
         
@@ -320,7 +323,7 @@ class ConditionEditor {
      * @param  String  $end     Endtag
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addDayOfWeekCondition($name, $start, $end, $enabled) {
 
@@ -343,7 +346,7 @@ class ConditionEditor {
      * @param  String  $end     Endtag
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editDayOfWeekCondition($id, $name = null, $start = null, $end = null, $enabled = null) {
         
@@ -365,7 +368,7 @@ class ConditionEditor {
      * @param  String  $end     Endzeit
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addTimeOfDayCondition($name, $start, $end, $enabled) {
 
@@ -388,7 +391,7 @@ class ConditionEditor {
      * @param  String  $end     Endzeit
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editTimeOfDayCondition($id, $name = null, $start = null, $end = null, $enabled = null) {
         
@@ -408,7 +411,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addSunriseSunsetCondition($name, $enabled) {
 
@@ -423,7 +426,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editSunriseSunsetCondition($id, $name = null, $enabled = null) {
 
@@ -437,7 +440,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addSunsetSunriseCondition($name, $enabled) {
 
@@ -452,7 +455,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editSunsetSunriseCondition($id, $name = null, $enabled = null) {
         
@@ -466,7 +469,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addNobodyAtHomeCondition($name, $enabled) {
 
@@ -481,7 +484,7 @@ class ConditionEditor {
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editNobodyAtHomeCondition($id, $name = null, $enabled = null) {
 
@@ -490,12 +493,12 @@ class ConditionEditor {
     }
 
     /**
-     * erstellt eine neue Bedingung fuer den Zeitraum zwischen Sonnenunter- und Sonnenaufgang
+     * erstellt eine neue Bedingung fuer die Ueberwachung ob ein Benutzer zu Hause ist
      *
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addUserAtHomeCondition($name, array $users, $enabled) {
 
@@ -509,15 +512,54 @@ class ConditionEditor {
     }
 
     /**
-     * bearbeitet eine Bedingung fuer den Zeitraum zwischen Sonnenunter- und Sonnenaufgang
+     * bearbeitet eine Bedingung fuer die Ueberwachung ob ein Benutzer zu Hause ist
      *
      * @param  Integer $id      ID
      * @param  String  $name    Name
      * @param  Boolean $enabled Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editUserAtHomeCondition($id, $name = null, array $users = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'users' => ($users !== null ? implode(',', $users) : null)
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Bedingung fuer die Ueberwachung ob ein Benutzer nicht zu Hause ist
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function addUserNotAtHomeCondition($name, array $users, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'users' => implode(',', $users)
+        );
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\UserNotAtHomeCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Bedingung fuer die Ueberwachung ob ein Benutzer nicht zu Hause ist
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function editUserNotAtHomeCondition($id, $name = null, array $users = null, $enabled = null) {
 
         //Daten vorbereiten
         $data = array(
@@ -536,7 +578,7 @@ class ConditionEditor {
      * @param  Integer $humidity  Luftfeuchte als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addHumidityGreaterThanCondition($name, array $sensorIds, $humidity, $enabled) {
 
@@ -559,7 +601,7 @@ class ConditionEditor {
      * @param  Integer $humidity  Luftfeuchte als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editHumidityGreaterThanCondition($id, $name = null, array $sensorIds = null, $humidity = null, $enabled = null) {
 
@@ -581,7 +623,7 @@ class ConditionEditor {
      * @param  Integer $humidity  Luftfeuchte als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addHumidityLowerThanCondition($name, array $sensorIds, $humidity, $enabled) {
 
@@ -604,7 +646,7 @@ class ConditionEditor {
      * @param  Integer $humidity  Luftfeuchte als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editHumidityLowerThanCondition($id, $name = null, array $sensorIds = null, $humidity = null, $enabled = null) {
 
@@ -626,7 +668,7 @@ class ConditionEditor {
      * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
      * @param  Boolean $enabled         Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addLightIntensityGreaterThanCondition($name, array $sensorIds, $lightIntensity, $enabled) {
 
@@ -649,7 +691,7 @@ class ConditionEditor {
      * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
      * @param  Boolean $enabled         Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editLightIntensityGreaterThanCondition($id, $name = null, array $sensorIds = null, $lightIntensity = null, $enabled = null) {
 
@@ -671,7 +713,7 @@ class ConditionEditor {
      * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
      * @param  Boolean $enabled         Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addLightIntensityLowerThanCondition($name, array $sensorIds, $lightIntensity, $enabled) {
 
@@ -694,7 +736,7 @@ class ConditionEditor {
      * @param  Integer $lightIntensity  Lichtstaerke als Grenzwert
      * @param  Boolean $enabled         Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editLightIntensityLowerThanCondition($id, $name = null, array $sensorIds = null, $lightIntensity = null, $enabled = null) {
 
@@ -716,7 +758,7 @@ class ConditionEditor {
      * @param  Integer $moisture  Feuchtigkeit als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addMoistureGreaterThanCondition($name, array $sensorIds, $moisture, $enabled) {
 
@@ -739,7 +781,7 @@ class ConditionEditor {
      * @param  Integer $moisture  Feuchtigkeit als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editMoistureGreaterThanCondition($id, $name = null, array $sensorIds = null, $moisture = null, $enabled = null) {
 
@@ -761,7 +803,7 @@ class ConditionEditor {
      * @param  Integer $moisture  Feuchtigkeit als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addLMoistureLowerThanCondition($name, array $sensorIds, $moisture, $enabled) {
 
@@ -784,7 +826,7 @@ class ConditionEditor {
      * @param  Integer $moisture  Feuchtigkeit als Grenzwert
      * @param  Boolean $enabled   Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editMoistureLowerThanCondition($id, $name = null, array $sensorIds = null, $moisture = null, $enabled = null) {
 
@@ -806,7 +848,7 @@ class ConditionEditor {
      * @param  Float   $temperature  Temperatur als Grenzwert
      * @param  Boolean $enabled      Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addTemperatureGreaterThanCondition($name, array $sensorIds, $temperature, $enabled) {
 
@@ -829,7 +871,7 @@ class ConditionEditor {
      * @param  Float   $temperature  Temperatur als Grenzwert
      * @param  Boolean $enabled      Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editTemperatureGreaterThanCondition($id, $name = null, array $sensorIds = null, $temperature = null, $enabled = null) {
 
@@ -851,7 +893,7 @@ class ConditionEditor {
      * @param  Float   $temperature  Temperatur als Grenzwert
      * @param  Boolean $enabled      Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function addTemperatureLowerThanCondition($name, array $sensorIds, $temperature, $enabled) {
 
@@ -874,7 +916,7 @@ class ConditionEditor {
      * @param  Float   $temperature  Temperatur als Grenzwert
      * @param  Boolean $enabled      Aktiv
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @throws \Exception
      */
     public function editTemperatureLowerThanCondition($id, $name = null, array $sensorIds = null, $temperature = null, $enabled = null) {
 
@@ -927,7 +969,7 @@ class ConditionEditor {
      * @return Booelan
      * @throws \Exception
      */
-    public function editFileExistsCondition($id, $name, $path, $invert, $wait, $delete, $enabled = null) {
+    public function editFileExistsCondition($id, $name = null, $path = null, $invert = null, $wait = null, $delete = null, $enabled = null) {
 
         //Daten vorbereiten
         $data = array(
@@ -942,6 +984,159 @@ class ConditionEditor {
     }
 
     /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addInputHighCondition($name,array $inputs, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\InputHighCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editInputHighCondition($id, $name = null, $inputs = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addInputLowCondition($name,array $inputs, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\InputLowCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Array   $inputs       Eingaenge
+     * @param  Boolean $enabled      Aktiv
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editInputLowCondition($id, $name = null, $inputs = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'inputs' => $inputs
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Eingangsbedingung
+     *
+     * @param  String  $name         Name
+     * @param  Integer $holidays     Feiertage
+     * @param  Boolean $enabled      Aktiv
+     * @param  Boolean $invert       Invertiert
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function addHolidaysCondition($name, $holidays, $enabled, $invert) {
+
+        //Daten vorbereiten
+        $data = array(
+            'holidays' => $holidays,
+            'invert' => $invert
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\HolidaysCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet eine Eingangsbedingung
+     *
+     * @param  Integer $id           ID
+     * @param  Integer $holidays     Feiertage
+     * @param  Boolean $enabled      Aktiv
+     * @param  Boolean $invert       Invertiert
+     * @return Booelan
+     * @throws \Exception
+     */
+    public function editHolidaysCondition($id, $name = null, $holidays = null, $enabled = null, $invert = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'holidays' => $holidays,
+            'invert' => $invert
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine neue Bedingung die nur im ersten Lauf des Shedulers zutrifft
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function addFirstLoopCondition($name, $enabled) {
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\FirstLoopCondition', $name, $enabled);
+    }
+
+    /**
+     * bearbeitet eine Bedingung die nur im ersten Lauf des Shedulers zutrifft
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function editFirstLoopCondition($id, $name = null, $enabled = null) {
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled);
+    }
+
+    /**
      * loascht eine Bedingung
      * 
      * @param  Integer $id ID
@@ -950,19 +1145,12 @@ class ConditionEditor {
      */
     public function removeCondition($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_CONDITIONS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Bedingung suchen
-        for ($i = 0; $i < count($xml->condition); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            if ((int) $xml->condition[$i]->id == $id) {
-
-                //Bedingung loeschen
-                unset($xml->condition[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }

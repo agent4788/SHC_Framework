@@ -114,6 +114,10 @@ div.shc-contentbox-body-row-content {
     display: inline-block;
 }
 
+.shc-view-content {
+    margin-top: 10px;
+}
+
 /* Allgemeine Links */
 
 a.shc-view-buttons-edit {
@@ -408,7 +412,7 @@ table.shc-view-contentTable tfoot td {
 
 div.shc-view-buttons {
     text-align: right;
-    margin: 10px -8px -8px -8px;
+    margin: 10px -4px -4px -4px;
     padding: 10px;
     border-top: solid #555555 1px;
     background: #86b5d9 url(./images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) repeat-x center;
@@ -428,6 +432,8 @@ span.tooltip_strong {
     font-weight: bold;
     display: inline-block;
 }
+
+
 
 /* Wer ist zu Hause */
 div#shc-view-usersAtHomeBox {

@@ -1,13 +1,16 @@
 <li>
-    {#$switchable->getName()}:
+    {if $device != 'smartphone'}
+    <span class="shc-icon {if $switchable->getState() == 1}shc-icon-online{else}shc-icon-offline{/if}"></span>
+    {/if}
+    <span>{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
-        <a id="shc-view-switchable-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-power" style="width: 6em;">{lang var='index.room.button.start'}</a>
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-power" style="width: 6em;">{lang var='index.room.button.start'}</a>
     </div>
 </li>
 <script type="text/javascript">
     $(function () {
 
-        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
 
             //An Button gedrueckt
             $.getJSON(
@@ -16,19 +19,22 @@
 
                         if (data.success == true) {
 
-                            $("#shc-view-switchable-{$switchable->getId()}-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
+                            {if $device != 'smartphone'}
+                            $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').removeClass('shc-icon-offline');
+                            $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').addClass('shc-icon-online');
+                            {/if}
+                            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
                         } else {
 
-                            $('#errorMessage').text(data.message);
-                            $.mobile.changePage("#errorDialog", { role: "dialog" });
+                                alert(data.message);
                         }
                     }
             );
             return false;
         });
         
-        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
-            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
         });
     });
 </script>

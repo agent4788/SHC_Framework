@@ -235,4 +235,20 @@ class Room {
         }
         return true;
     }
+
+    /**
+     * exportiert das Objekt als Array
+     *
+     * @return Array
+     */
+    public function toArray() {
+
+        return array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'orderId' => $this->orderId,
+            'enabled' => $this->enabled,
+            'allowedUserGroups' => $this->allowedUserGroups
+        );
+    }
 }

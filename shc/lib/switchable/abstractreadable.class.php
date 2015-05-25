@@ -55,18 +55,18 @@ abstract class AbstractReadable implements Readable {
     protected $name = '';
 
     /**
-     * Raum
+     * Raeume
      * 
-     * @var \SHC\Room\Room 
+     * @var Array
      */
-    protected $room = null;
+    protected $rooms = array();
     
     /**
      * Sortierungs ID
      * 
-     * @var Integer 
+     * @var Array
      */
-    protected $orderId = 0;
+    protected $order = array();
 
     /**
      * aktiviert/deaktiviert
@@ -183,47 +183,121 @@ abstract class AbstractReadable implements Readable {
     }
 
     /**
-     * setzt den Raum dem das Element zugeordnet ist
-     * 
-     * @param  \SHC\Room\Room $room
-     * @return \SHC\Switchable\Readable
+     * fuegt einen Raum hinzu
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Switchable\Element
      */
-    public function setRoom(Room $room) {
+    public function addRoom($roomId) {
 
-        $this->room = $room;
+        $this->rooms[] = $roomId;
         return $this;
     }
 
     /**
-     * gibt den Raum zurueck in dem das Element zugeordnet ist
-     * 
-     * @return \SHC\Room\Room
+     * setzt eine Liste mit Raeumen
+     *
+     * @param  Array $roomId Raum IDs
+     * @return \SHC\Switchable\Element
      */
-    public function getRoom() {
+    public function setRooms(array $rooms) {
 
-        return $this->room;
+        $this->rooms = $rooms;
+        return $this;
+    }
+
+    /**
+     * entfernt einen Raum
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Switchable\Element
+     */
+    public function removeRoom($roomId) {
+
+        $this->rooms = array_diff($this->rooms, array($roomId));
+        return $this;
+    }
+
+    /**
+     * prueft on das Element dem Raum mit der uebergebenen ID zugeordnet ist
+     *
+     * @param  Integer $roomId Raum ID
+     * @return Boolean
+     */
+    public function isInRoom($roomId) {
+
+        return in_array($roomId, $this->rooms);
+    }
+
+    /**
+     * gibt eine Liste mit allen Raeumen zurueck
+     *
+     * @return Array
+     */
+    public function getRooms() {
+
+        return $this->rooms;
+    }
+
+    /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false) {
+
+        $rooms = $this->getRooms();
+        $roomList = array();
+        foreach($rooms as $roomId) {
+
+            $roomObject = RoomEditor::getInstance()->getRoomById($roomId);
+            if($roomObject instanceof Room) {
+
+                $roomList[] = $roomObject->getName();
+            }
+        }
+
+        if($commaSepareted == true) {
+
+            return implode(', ', $roomList);
+        }
+        return $roomList;
+    }
+
+    /**
+     * setzt die Sortierung
+     *
+     * @param  Array $order Sortierung
+     * @return \SHC\Switchable\Readable
+     */
+    public function setOrder(array $order) {
+
+        $this->order = $order;
+        return $this;
     }
     
     /**
      * setzt die Sortierungs ID
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @param  Integer $orderId Sortierungs ID
      * @return \SHC\Switchable\Readable
      */
-    public function setOrderId($orderId) {
+    public function setOrderId($roomId, $orderId) {
         
-        $this->orderId = $orderId;
+        $this->order[$roomId] = $orderId;
         return $this;
     }
     
     /**
      * gibt die Sortierungs ID zurueck
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @return Integer
      */
-    public function getOrderId() {
+    public function getOrderId($roomId) {
         
-        return $this->orderId;
+        return $this->order[$roomId];
     }
 
     /**

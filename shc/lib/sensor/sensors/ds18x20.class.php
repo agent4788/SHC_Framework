@@ -30,13 +30,20 @@ class DS18x20 extends AbstractSensor {
      * @var Integer
      */
     protected $temperatureVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Float
+     */
+    protected $temperatureOffset = 0.0;
     
     /**
      * @param Array  $values   Sensorwerte
      */
     public function __construct(array $values = array()) {
         
-        if(count($values) == 5) {
+        if(count($values) <= 25) {
             
             $this->oldValues = $values;
             $this->temperature = $values[0]['temp'];
@@ -51,7 +58,29 @@ class DS18x20 extends AbstractSensor {
      */
     public function getTemperature() {
         
-        return $this->temperature;
+        return $this->temperature + $this->temperatureOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $temperatureOffset
+     * @return \SHC\Sensor\Sensors\DS18x20
+     */
+    public function setTemperatureOffset($temperatureOffset) {
+
+        $this->temperatureOffset = $temperatureOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getTemperatureOffset() {
+
+        return $this->temperatureOffset;
     }
     
     /**
@@ -88,10 +117,10 @@ class DS18x20 extends AbstractSensor {
         //alte Werte Schieben
         array_unshift($this->oldValues, array('temp' => $temperature, 'time' => $date));
         //mehr als 5 Werte im Array?
-        if(isset($this->oldValues[5])) {
+        if(isset($this->oldValues[25])) {
             
             //aeltesten Wert loeschen
-            unset($this->oldValues[5]);
+            unset($this->oldValues[25]);
         }
         
         //Werte setzten

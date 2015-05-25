@@ -13,6 +13,7 @@ $l = array();
 
 //Allgemein
 $l['acp.sensorpointsManagement.title'] = 'Sensorpunkte verwalten';
+$l['acp.sensorpointsManagement.title.sensors'] = 'Sensoren';
 
 //Raumuebersicht
 $l['acp.sensorpointsManagement.roomList.table.head.name'] = 'Name';

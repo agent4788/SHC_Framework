@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
@@ -49,19 +50,19 @@ class ActivityForm extends DefaultHtmlForm {
         $icon->requiredField(true);
         $this->addFormElement($icon);
 
-        //Raum
-        $room = new RoomChooser('room', ($activity instanceof Activity && $activity->getRoom() instanceof Room ? $activity->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($activity instanceof Activity ? $activity->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
 
-        //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($activity instanceof Activity ? $activity->listSwitchPoints() : array()));
-        $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.switchPoints'));
-        $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.switchPoints.description'));
-        $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($activity instanceof Activity && count($activity->getRooms()) > 0 ? $activity->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($activity instanceof Activity ? $activity->isEnabled() : true));

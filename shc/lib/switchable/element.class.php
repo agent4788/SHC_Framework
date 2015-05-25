@@ -45,6 +45,27 @@ interface Element {
      * @var Integer
      */
     const HIDE = 0;
+
+    /**
+     * Button Text An/Aus
+     *
+     * @var Integer
+     */
+    const BUTTONS_ON_OFF = 1;
+
+    /**
+     * Button Text Auf/Ab
+     *
+     * @var Integer
+     */
+    const BUTTONS_UP_DOWN = 2;
+
+    /**
+     * Button Text Auf/Zu
+     *
+     * @var Integer
+     */
+    const BUTTONS_OPEN_CLOSED = 4;
     
     /**
      * setzt den Status des Objekts
@@ -106,36 +127,77 @@ interface Element {
      * @return String
      */
     public function getName();
-    
+
     /**
-     * setzt den Raum dem das Element zugeordnet ist
-     * 
-     * @param  \SHC\Room\Room $room
+     * fuegt einen Raum hinzu
+     *
+     * @param  Integer $roomId Raum ID
      * @return \SHC\Switchable\Element
      */
-    public function setRoom(Room $room);
-    
+    public function addRoom($roomId);
+
     /**
-     * gibt den Raum zurueck in dem das Element zugeordnet ist
-     * 
-     * @return \SHC\Room\Room
+     * setzt eine Liste mit Raeumen
+     *
+     * @param  Array $roomId Raum IDs
+     * @return \SHC\Switchable\Element
      */
-    public function getRoom();
-    
+    public function setRooms(array $rooms);
+
+    /**
+     * entfernt einen Raum
+     *
+     * @param  Integer $roomId Raum ID
+     * @return \SHC\Switchable\Element
+     */
+    public function removeRoom($roomId);
+
+    /**
+     * prueft on das Element dem Raum mit der uebergebenen ID zugeordnet ist
+     *
+     * @param  Integer $roomId Raum ID
+     * @return Boolean
+     */
+    public function isInRoom($roomId);
+
+    /**
+     * gibt eine Liste mit allen Raeumen zurueck
+     *
+     * @return Array
+     */
+    public function getRooms();
+
+    /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false);
+
+    /**
+     * setzt die Sortierung
+     *
+     * @param  Array $order Sortierung
+     * @return \SHC\Switchable\Element
+     */
+    public function setOrder(array $order);
+
     /**
      * setzt die Sortierungs ID
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @param  Integer $orderId Sortierungs ID
      * @return \SHC\Switchable\Element
      */
-    public function setOrderId($orderId);
-    
+    public function setOrderId($roomId, $orderId);
+
     /**
      * gibt die Sortierungs ID zurueck
-     * 
+     *
+     * @param  Integer $roomId  Raum ID
      * @return Integer
      */
-    public function getOrderId();
+    public function getOrderId($roomId);
     
     /**
      * Aktiviert/Deaktiviert das Element

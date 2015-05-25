@@ -1,0 +1,85 @@
+<li>
+    {if $device != 'smartphone'}
+    <span class="shc-icon {$switchable->getIcon()}"></span>
+    {/if}
+    <span>{#$switchable->getName()}:</span>
+    <div data-role="controlgroup" data-type="horizontal">
+        {if $switchable->getOnCommand() != ''}
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all" style="width: 6em;">
+            {if $switchable->getButtonText() == 2}
+                {lang var='global.up'}
+            {elseif $switchable->getButtonText() == 4}
+                {lang var='global.open'}
+            {else}
+                {lang var='index.room.button.on'}
+            {/if}
+        </a>
+        {/if}
+        {if $switchable->getOffCommand() != ''}
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all" style="width: 6em;">
+            {if $switchable->getButtonText() == 2}
+                {lang var='global.down'}
+            {elseif $switchable->getButtonText() == 4}
+                {lang var='global.closed'}
+            {else}
+                {lang var='index.room.button.off'}
+            {/if}
+        </a>
+        {/if}
+    </div>
+</li>
+<script type="text/javascript">
+    $(function () {
+
+            {if $switchable->getOnCommand() != '' && $switchable->getOffCommand() != '' && $switchable->getState() == 1}
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+            {elseif $switchable->getOnCommand() != '' && $switchable->getOffCommand() != ''}
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+            {/if}
+
+                $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
+
+                    //An Button gedrueckt
+                    $.getJSON(
+                            "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                            function(data) {
+
+                                if (data.success == true) {
+
+                                    {if $switchable->getOnCommand() != '' && $switchable->getOffCommand() != ''}
+                                    $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                    $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                    {/if}
+                                } else {
+
+                                        alert(data.message);
+                                }
+                            }
+                    );
+                    return false;
+                });
+                $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').click(function() {
+
+                    //Aus Button gedrueckt
+                    $.getJSON(
+                            "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=0&hash=" + Math.floor(Math.random() * 11),
+                            function(data) {
+
+                                if (data.success == true) {
+
+                                    {if $switchable->getOnCommand() != '' && $switchable->getOffCommand() != ''}
+                                    $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
+                                    $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
+                                    {/if}
+                                } else {
+
+                                        alert(data.message);
+                                }
+                            }
+                    );
+                    return false;
+                });
+            });
+</script>

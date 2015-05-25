@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="pcc-content">
+            {contentbox name="acp.acpinfo.title" id='pcc-view-acp-contentBox'}
+            <div class="pcc-view-content">
+                {contentbox name='acp.acpinfo.box.pccVersion'}
+                <table class="pcc-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{lang var='acp.acpinfo.box.pccVersion.rwf'}</td>
+                        <td style="width: 50%;">{#$rwfVersion}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.pccVersion.pcc'}</td>
+                        <td>{#$pccVersion}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.pccVersion.size'}</td>
+                        <td>{$size}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.version'}
+                <table class="pcc-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{lang var='acp.acpinfo.box.version.php'}</td>
+                        <td style="width: 50%;">{#$php}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQuery'}</td>
+                        <td><span id="jqueryVersion"></span></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQueryUi'}</td>
+                        <td><span id="jqueryUiVersion"></span></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQueryMobile'}</td>
+                        <td>1.4.5</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQueryCookie'}</td>
+                        <td>1.4.1</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.mobileDetect'}</td>
+                        <td>{#$mobileDetect}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.writePremissions'}
+                <table class="pcc-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{#$cache}</td>
+                        <td style="width: 50%;">
+                        <span class="{if $writeCache == true}green{else}red{/if}">
+                            {if $writeCache == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$rwfLog}</td>
+                        <td>
+                        <span class="{if $writeRwfLog == true}green{else}red{/if}">
+                            {if $writeRwfLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$rwfStorage}</td>
+                        <td>
+                        <span class="{if $writeRwfStorage == true}green{else}red{/if}">
+                            {if $writeRwfStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$pccLog}</td>
+                        <td>
+                        <span class="{if $writePccLog == true}green{else}red{/if}">
+                            {if $writePccLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$pccStorage}</td>
+                        <td>
+                        <span class="{if $writePccStorage == true}green{else}red{/if}">
+                            {if $writePccStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.credits'}
+                <table class="pcc-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td width="50%">{lang var='acp.acpinfo.box.credits.engineer'}</td>
+                        <td width="50%">Oliver Kleditzsch</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.credits.projectPage'}</td>
+                        <td><a href="http://agent4788.github.io/SHC_Framework/">{lang var='acp.acpinfo.box.credits.page'}</a></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.credits.licence'}</td>
+                        <td><a href="http://opensource.org/licenses/gpl-license.php">GNU Public License</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+            </div>
+            <div class="pcc-view-buttons">
+                <div class="pcc-view-buttonSet">
+                    <a href="index.php?app=pcc&page=acp">{lang var='global.button.back'}</a>
+                </div>
+            </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.pcc-view-buttonSet').buttonset();
+                    $('#jqueryVersion').text($.fn.jquery);
+                    $('#jqueryUiVersion').text(jQuery.ui.version);
+                });
+            </script>
+        </div>
+    </body>
+</html>

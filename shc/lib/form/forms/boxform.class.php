@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\ElementsForBoxChooser;
 use SHC\Form\FormElements\RoomChooser;
+use SHC\Form\FormElements\SingleRoomChooser;
 use SHC\View\Room\ViewHelperBox;
 
 /**
@@ -42,7 +43,7 @@ class BoxForm extends DefaultHtmlForm {
         if(!$box instanceof ViewHelperBox) {
 
             //Raum
-            $room = new RoomChooser('room', ($box instanceof ViewHelperBox ? $box->getRoomId() : null));
+            $room = new SingleRoomChooser('room', ($box instanceof ViewHelperBox ? $box->getRoomId() : null));
             $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.box.room'));
             $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.box.room.description'));
             $room->requiredField(true);

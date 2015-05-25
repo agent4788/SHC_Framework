@@ -7,6 +7,7 @@ use RWF\Util\FileUtil;
 use RWF\Util\String;
 use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
+use SHC\Core\SHC;
 use SHC\Room\Room;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
@@ -112,6 +113,13 @@ class SensorPointEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'sensors';
+
     protected function __construct() {
 
         $this->loadData();
@@ -127,477 +135,167 @@ class SensorPointEditor {
         //alte daten loeschen
         $this->sensorPoints = array();
 
-        //Dateien durchlaufen
-        foreach (FileUtil::listDirectoryFiles(PATH_SHC_STORAGE . 'sensorpoints/', false, false, true) as $file) {
+        //Sensorpunkte Lesen
+        $db = SHC::getDatabase();
+        $sensorPoints = $db->hGetAll(self::$tableName . ':sensorPoints');
+        foreach($sensorPoints as $sensorPointData) {
 
-            //Dateinamen pruefen
-            if (preg_match('#sp-(\d{1,3})\.xml#', $file['name'], $match)) {
-
-                //XML Datei am Manager anmelden und XML Objekt laden
-                XmlFileManager::getInstance()->registerXmlFile($file['name'], PATH_SHC_STORAGE . 'sensorpoints/' . $file['name']);
-                $xml = XmlFileManager::getInstance()->getXmlObject($file['name'], true);
-
-                //Sensorpunkt initalisieren
-                $sensorPoint = new SensorPoint();
-                $sensorPoint->setId((int) $xml->id);
-                $sensorPoint->setName((string) $xml->name);
-                $sensorPoint->setOrderId((int) $xml->orderId);
-                $sensorPoint->visibility(((int) $xml->visibility == 1 ? true : false));
-                $sensorPoint->setVoltage((float) $xml->voltage, false);
-                $sensorPoint->setWarnLevel((float) $xml->warningLevel);
-                $sensorPoint->setTime(DateTime::createFromDatabaseDateTime((string) $xml->lastConnection));
-
-                //Sensoren Laden
-                foreach ($xml->sensors->sensor as $xmlSensor) {
-
-                    //Objekte erstellen und spezifische Daten laden
-                    switch ((int) $xmlSensor->type) {
-
-                        case self::SENSOR_DS18X20:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'temp' => (float) $value->temparature,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new DS18x20($values);
-                            $sensor->temperatureVisibility(((int) $xmlSensor->temperatureVisibility == 1 ? true : false));
-                            break;
-                        case self::SENSOR_DHT:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'temp' => (float) $value->temparature,
-                                    'hum' => (float) $value->humidity,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new DHT($values);
-                            $sensor->temperatureVisibility(((int) $xmlSensor->temperatureVisibility == 1 ? true : false));
-                            $sensor->humidityVisibility(((int) $xmlSensor->humidityVisibility == 1 ? true : false));
-                            break;
-                        case self::SENSOR_BMP:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'temp' => (float) $value->temparature,
-                                    'press' => (float) $value->pressure,
-                                    'alti' => (float) $value->altitude,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new BMP($values);
-                            $sensor->temperatureVisibility(((int) $xmlSensor->temperatureVisibility == 1 ? true : false));
-                            $sensor->pressureVisibility(((int) $xmlSensor->pressureVisibility == 1 ? true : false));
-                            $sensor->altitudeVisibility(((int) $xmlSensor->altitudeVisibility == 1 ? true : false));
-                            break;
-                        case self::SENSOR_RAIN:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'value' => (float) $value->sensorValue,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new RainSensor($values);
-                            $sensor->valueVisibility(((int) $xmlSensor->valueVisibility == 1 ? true : false));
-                            break;
-                        case self::SENSOR_HYGROMETER:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'value' => (float) $value->sensorValue,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new Hygrometer($values);
-                            $sensor->valueVisibility(((int) $xmlSensor->valueVisibility == 1 ? true : false));
-                            break;
-                        case self::SENSOR_LDR:
-
-                            //Werte einlesen
-                            $values = array();
-                            foreach ($xmlSensor->values->value as $value) {
-
-                                $values[] = array(
-                                    'value' => (float) $value->sensorValue,
-                                    'time' => DateTime::createFromDatabaseDateTime((string) $value->time)
-                                );
-                            }
-
-                            $sensor = new LDR($values);
-                            $sensor->valueVisibility(((int) $xmlSensor->valueVisibility == 1 ? true : false));
-                            break;
-                        default:
-
-                            throw new Exception('Unbekannter Sensortyp', 1509);
-                    }
-
-                    //Allgemeine Daten setzen
-                    $sensor->setId((string) $xmlSensor->id);
-                    $sensor->setName((string) $xmlSensor->name);
-
-                    $room = RoomEditor::getInstance()->getRoomById((int) $xmlSensor->roomId);
-                    if ($room !== null) {
-
-                        $sensor->setRoom($room);
-                    }
-                    $sensor->setOrderId((int) $xmlSensor->orderId);
-                    $sensor->visibility(((int) $xmlSensor->visibility == 1 ? true : false));
-                    $sensor->enableDataRecording(((int) $xmlSensor->dataRecording == 1 ? true : false));
-                    $sensor->setTime(DateTime::createFromDatabaseDateTime((string) $xmlSensor->lastConnection));
-
-                    //Sensor am Sensorpunkt registrieren
-                    $sensorPoint->addSensor($sensor, false);
-                }
-
-                //Sensorpunkt im Editor registrieren
-                $this->addSensorPoint($sensorPoint);
-            }
+            $sensorPoint = new SensorPoint();
+            $sensorPoint->setId((int) $sensorPointData['id']);
+            $sensorPoint->setName((string) $sensorPointData['name']);
+            $sensorPoint->setOrderId((int) $sensorPointData['orderId']);
+            $sensorPoint->visibility(((int) $sensorPointData['visibility'] == true ? true : false));
+            $sensorPoint->setVoltage((float) $sensorPointData['voltage'], false);
+            $sensorPoint->setWarnLevel((float) $sensorPointData['warningLevel']);
+            $sensorPoint->setTime(DateTime::createFromDatabaseDateTime((string) $sensorPointData['lastConnection']));
+            $this->addSensorPoint($sensorPoint);
         }
-    }
 
-    /**
-     * Speichert die Sensorpunkte als XML Dateien ab
-     * 
-     * @throws \RWF\Xml\Exception\XmlException
-     */
-    public function writeData() {
+        //Sensoren lesen
+        $sensors = $db->hGetAll(self::$tableName .':sensors');
+        foreach($sensors as $sensorData) {
 
-        foreach ($this->sensorPoints as $sensorPoint) {
+            switch ((int) $sensorData['type']) {
 
-            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+                case self::SENSOR_DS18X20:
 
-            //pruefen ob der Sensorpunkt verandert wurde
-            if (!$sensorPoint->isModified()) {
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
 
-                //ueberspringen wenn nicht veranedert
-                continue;
-            }
+                        $values[] = array(
+                            'temp' => (float) $dataSet['temp'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
 
-            //XML Objekt erstrellen
-            XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPoint->getId(), PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml', PATH_SHC_STORAGE . 'default/defaultSensorpoint.xml');
-            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPoint->getId(), true);
+                    $sensor = new DS18x20($values);
+                    $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    break;
+                case self::SENSOR_DHT:
 
-            //ID behandeln
-            if ((int) $xml->id != $sensorPoint->getId()) {
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
 
-                $xml->id = $sensorPoint->getId();
-                $xml->name = $sensorPoint->getName();
+                        $values[] = array(
+                            'temp' => (float) $dataSet['temp'],
+                            'hum' => (float) $dataSet['hum'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new DHT($values);
+                    $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->humidityVisibility(((int) $sensorData['humidityVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    $sensor->setHumidityOffset((float) $sensorData['humidityOffset']);
+                    break;
+                case self::SENSOR_BMP:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'temp' => (float) $dataSet['temp'],
+                            'press' => (float) $dataSet['press'],
+                            'alti' => (float) $dataSet['alti'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new BMP($values);
+                    $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->pressureVisibility(((int) $sensorData['pressureVisibility'] == true ? 1 : 0));
+                    $sensor->altitudeVisibility(((int) $sensorData['altitudeVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    $sensor->setPressureOffset((float) $sensorData['pressureOffset']);
+                    $sensor->setAltitudeOffset((float) $sensorData['altitudeOffset']);
+                    break;
+                case self::SENSOR_RAIN:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'value' => (float) $dataSet['value'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new RainSensor($values);
+                    $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
+                    break;
+                case self::SENSOR_HYGROMETER:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'value' => (float) $dataSet['value'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new Hygrometer($values);
+                    $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
+                    break;
+                case self::SENSOR_LDR:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'value' => (float) $dataSet['value'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new LDR($values);
+                    $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
+                    $sensor->setOffset((int) $sensorData['valueOffset']);
+                    break;
             }
 
             //Allgemeine Daten setzen
-            $xml->voltage = $sensorPoint->getVoltage();
-            $xml->lastConnection = $sensorPoint->getTime()->getDatabaseDateTime();
 
-            //Sensoren speichern
-            foreach ($sensorPoint->listSensors() as $sensor) {
+            $sensor->setId((string) $sensorData['id']);
+            $sensor->setSensorPointId((int) $sensorData['sensorPointId']);
+            $sensor->setName((string) $sensorData['name']);
+            $sensor->setRooms($sensorData['rooms']);
+            $sensor->setOrder( $sensorData['order']);
+            $sensor->visibility(((int) $sensorData['visibility'] == true ? true : false));
+            $sensor->enableDataRecording(((int) $sensorData['dataRecording'] == 1 ? true : false));
 
-                /* @var $sensor \SHC\Sensor\Sensor */
+            //Sensor zum Sensorpunkt hinzufuegen
+            if(isset($this->sensorPoints[$sensor->getSensorPointId()])) {
 
-                //Sensor in XML Daten suchen
-                $found = false;
-                foreach ($xml->sensors->sensor as $xmlSensor) {
-
-                    //ID vergleichen
-                    if ((string) $xmlSensor->id == $sensor->getId()) {
-
-                        //Sensor gefunden
-                        $found = true;
-
-                        //Sensordaten speichern
-                        if ($sensor instanceof DS18x20) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['temp'])) {
-
-                                    $xmlSensor->values->value[$i]->temparature = $sensorValues[$i]['temp'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->temparature = 0.0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        } elseif ($sensor instanceof DHT) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['temp'])) {
-
-                                    $xmlSensor->values->value[$i]->temparature = $sensorValues[$i]['temp'];
-                                    $xmlSensor->values->value[$i]->humidity = $sensorValues[$i]['hum'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->temparature = 0.0;
-                                    $xmlSensor->values->value[$i]->humidity = 0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        } elseif ($sensor instanceof BMP) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['temp'])) {
-
-                                    $xmlSensor->values->value[$i]->temparature = $sensorValues[$i]['temp'];
-                                    $xmlSensor->values->value[$i]->pressure = $sensorValues[$i]['press'];
-                                    $xmlSensor->values->value[$i]->altitude = $sensorValues[$i]['alti'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->temparature = 0.0;
-                                    $xmlSensor->values->value[$i]->pressure = 0.0;
-                                    $xmlSensor->values->value[$i]->altitude = 0.0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        } elseif ($sensor instanceof RainSensor) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['value'])) {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = 0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        } elseif ($sensor instanceof Hygrometer) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['value'])) {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = 0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        } elseif ($sensor instanceof LDR) {
-
-                            $sensorValues = $sensor->getOldValues();
-                            for ($i = 0; $i < count($sensorValues); $i++) {
-
-                                if (isset($sensorValues[$i]['value'])) {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = $sensorValues[$i]['value'];
-                                    $xmlSensor->values->value[$i]->time = $sensorValues[$i]['time']->getDatabaseDateTime();
-                                } else {
-
-                                    $xmlSensor->values->value[$i]->sensorValue = 0;
-                                    $xmlSensor->values->value[$i]->time = "2000-01-01 00:00:00";
-                                }
-                            }
-                        }
-                    }
-                }
-
-                //Sensor nicht gefunden
-                if ($found === false) {
-
-                    //neuen Sensor in XML Daten speichern
-                    //Allgemeine Daten
-                    $newXmlSensor = $xml->sensors->addChild('sensor');
-                    $newXmlSensor->addChild('id', $sensor->getId());
-                    $newXmlSensor->addChild('name', '');
-                    $newXmlSensor->addChild('roomId', '');
-                    $newXmlSensor->addChild('orderId', $sensor->getId());
-                    $newXmlSensor->addChild('visibility', 1);
-                    $newXmlSensor->addChild('dataRecording', 0);
-                    $newXmlSensor->addChild('lastConnection', $sensor->getTime()->getDatabaseDateTime());
-
-                    //Sensor Spezifische Daten
-                    if ($sensor instanceof DS18x20) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_DS18X20);
-                        $newXmlSensor->addChild('temperatureVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['temp'])) {
-
-                                $value->addChild('temparature', $sensorValues[$i]['temp']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('temparature', 0.0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    } elseif ($sensor instanceof DHT) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_DHT);
-                        $newXmlSensor->addChild('temperatureVisibility', 1);
-                        $newXmlSensor->addChild('humidityVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['temp'])) {
-
-                                $value->addChild('temparature', $sensorValues[$i]['temp']);
-                                $value->addChild('humidity', $sensorValues[$i]['hum']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('temparature', 0.0);
-                                $value->addChild('humidity', 0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    } elseif ($sensor instanceof BMP) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_BMP);
-                        $newXmlSensor->addChild('temperatureVisibility', 1);
-                        $newXmlSensor->addChild('pressureVisibility', 1);
-                        $newXmlSensor->addChild('altitudeVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['temp'])) {
-
-                                $value->addChild('temparature', $sensorValues[$i]['temp']);
-                                $value->addChild('pressure', $sensorValues[$i]['press']);
-                                $value->addChild('altitude', $sensorValues[$i]['alti']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('temparature', 0.0);
-                                $value->addChild('pressure', 0.0);
-                                $value->addChild('altitude', 0.0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    } elseif ($sensor instanceof RainSensor) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_RAIN);
-                        $newXmlSensor->addChild('valueVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['value'])) {
-
-                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('sensorValue', 0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    } elseif ($sensor instanceof Hygrometer) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_HYGROMETER);
-                        $newXmlSensor->addChild('valueVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['value'])) {
-
-                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('sensorValue', 0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    } elseif ($sensor instanceof LDR) {
-
-                        $newXmlSensor->addChild('type', self::SENSOR_LDR);
-                        $newXmlSensor->addChild('valueVisibility', 1);
-
-                        //Werte
-                        $values = $newXmlSensor->addChild('values');
-                        $sensorValues = $sensor->getOldValues();
-                        for ($i = 0; $i < 5; $i++) {
-
-                            //Werte Schreiben
-                            $value = $values->addChild('value');
-                            if (isset($sensorValues[$i]['value'])) {
-
-                                $value->addChild('sensorValue', $sensorValues[$i]['value']);
-                                $value->addChild('time', $sensorValues[$i]['time']->getDatabaseDateTime());
-                            } else {
-
-                                $value->addChild('sensorValue', 0);
-                                $value->addChild('time', "2000-01-01 00:00:00");
-                            }
-                        }
-                    }
-                }
+                /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+                $sensorPoint = $this->sensorPoints[$sensor->getSensorPointId()];
+                $sensorPoint->addSensor($sensor);
             }
-
-            //XML Daten speichern
-            $xml->save();
         }
     }
 
     /**
      * fuegt einen neuen Sensor Punkt hinzu
-     * 
+     *
      * @param  \SHC\Sensor\SensorPoint $sensorPoint Sensor Punkt Objekt
-     * @param  Boolean                 $overwrite   Ueberschreiben falls vorhanden?     
-     * @return Boolean   
+     * @param  Boolean                 $overwrite   Ueberschreiben falls vorhanden?
+     * @return Boolean
      */
     public function addSensorPoint(SensorPoint $sensorPoint, $overwrite = false) {
 
@@ -606,6 +304,80 @@ class SensorPointEditor {
 
             $this->sensorPoints[$id] = $sensorPoint;
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * erstellt einen neuen Sensorpunkt
+     *
+     * @param  Integer $spId Sensor Punkt ID
+     * @return Boolean
+     */
+    public Function createSensorPoint($spId) {
+
+        $newSensorPoint = array(
+            'id' => $spId,
+            'name' => '',
+            'orderId' => '',
+            'visibility' => '',
+            'voltage' => '',
+            'warningLevel' => '',
+            'lastConnection' => DateTime::now()->getDatabaseDateTime()
+        );
+
+        if(SHC::getDatabase()->hSetNx(self::$tableName . ':sensorPoints', $spId, $newSensorPoint) == 0) {
+
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * setzt die Spannung eunes Sensorpunktes
+     *
+     * @param  Integer $spId    Sensor Punkt ID
+     * @param  Float   $voltage Spannung
+     * @return Boolean
+     */
+    public function setSensorPointVoltage($spId, $voltage) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
+
+            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+            $sensorPoint['voltage'] = $voltage;
+            $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
+
+            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * setzt die Spannung eunes Sensorpunktes
+     *
+     * @param  Integer            $spId        Sensor Punkt ID
+     * @param  \RWF\Date\DateTime $lastConnect Zeit Objekt
+     * @return Boolean
+     */
+    public function setSensorPointLastConnect($spId, DateTime $lastConnect) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
+
+            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+            $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
+
+            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                return true;
+            }
         }
         return false;
     }
@@ -710,8 +482,7 @@ class SensorPointEditor {
      * 
      * @param  String $orderBy Art der Sortierung (
      *      id => nach ID sorieren, 
-     *      name => nach Namen sortieren, 
-     *      orderId => nach Sortierungs ID,
+     *      name => nach Namen sortieren,
      *      unsorted => unsortiert
      *  )
      * @return Array
@@ -729,9 +500,6 @@ class SensorPointEditor {
                 if ($orderBy == 'id') {
 
                     $sensors[$sensor->getId()] = $sensor;
-                } elseif ($orderBy == 'orderId') {
-
-                    $sensors[$sensor->getOrderId()] = $sensor;
                 } else {
 
                     $sensors[] = $sensor;
@@ -742,11 +510,6 @@ class SensorPointEditor {
         if ($orderBy == 'id') {
 
             //nach ID sortieren
-            ksort($sensors, SORT_NUMERIC);
-            return $sensors;
-        } elseif ($orderBy == 'orderId') {
-
-            //nach Sortierungs ID sortieren
             ksort($sensors, SORT_NUMERIC);
             return $sensors;
         } elseif ($orderBy == 'name') {
@@ -794,15 +557,14 @@ class SensorPointEditor {
             foreach ($sensorPoint->listSensors() as $sensor) {
 
                 /* @var $sensor \SHC\Sensor\Sensor */
-                $room = $sensor->getRoom();
-                if($room != null && $room->getId() == $roomId) {
+                if($sensor->isInRoom($roomId)) {
 
                     if ($orderBy == 'id') {
 
                         $sensors[$sensor->getId()] = $sensor;
                     } elseif ($orderBy == 'orderId') {
 
-                        $sensors[$sensor->getOrderId()] = $sensor;
+                        $sensors[$sensor->getOrderId($roomId)] = $sensor;
                     } else {
 
                         $sensors[] = $sensor;
@@ -859,7 +621,8 @@ class SensorPointEditor {
         $sensors = array();
         foreach($this->listSensors(self::SORT_NOTHING) as $sensor) {
 
-            if(!$sensor->getRoom() instanceof Room) {
+            $rooms = $sensor->getRooms();
+            if(count($rooms) == 0 || (array_key_exists(0, $rooms) && $rooms[0] === null)) {
 
                 if($orderBy == 'name') {
 
@@ -900,42 +663,156 @@ class SensorPointEditor {
     }
 
     /**
-     * bearbeitet die Sortierung der Sensorpunkte
-     * 
-     * @param  Array   $order Array mit Element ID als Index und Sortierungs ID als Wert
+     * erstellt einen neuen Sensor
+     *
+     * @param  Integer $spId Sensor Punkt ID
+     * @param  String  $sId  Sensor ID
+     * @param  Integer $type Typ ID
      * @return Boolean
      */
-    public function editSensorPointOrder(array $order) {
+    public function createSensor($spId, $sId, $type) {
 
-        foreach ($order as $spId => $orderId) {
+        $newSensor = array(
+            'id' => $sId,
+            'sensorPointId' => $spId,
+            'type' => $type,
+            'name' => '',
+            'rooms' => array(),
+            'order' => array(),
+            'visibility' => true,
+            'dataRecording' => true
+        );
 
-            if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $spId . '.xml')) {
+        switch($type) {
 
-                //XML Objekt erstellen
-                XmlFileManager::getInstance()->registerXmlFile('sp-' . $spId, PATH_SHC_STORAGE . 'sensorpoints/sp-' . $spId . '.xml');
-                $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $spId);
+            case self::SENSOR_DS18X20:
 
-                //Sortierungs ID setzen
-                $xml->orderId = $orderId;
+                $newSensor['temperatureVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                break;
+            case self::SENSOR_DHT:
 
-                //XML Speichern
-                $xml->save();
-            }
+                $newSensor['temperatureVisibility'] = true;
+                $newSensor['humidityVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                $newSensor['humidityOffset'] = 0.0;
+                break;
+            case self::SENSOR_BMP:
+
+                $newSensor['temperatureVisibility'] = true;
+                $newSensor['pressureVisibility'] = true;
+                $newSensor['altitudeVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                $newSensor['pressureOffset'] = 0.0;
+                $newSensor['altitudeOffset'] = 0.0;
+                break;
+            case self::SENSOR_RAIN:
+            case self::SENSOR_HYGROMETER:
+            case self::SENSOR_LDR:
+
+                $newSensor['valueVisibility'] = true;
+                $newSensor['valueOffset'] = 0;
+                break;
+        }
+
+        if(SHC::getDatabase()->hSetNx(self::$tableName . ':sensors', $sId, $newSensor) == 0) {
+
+            return false;
         }
         return true;
     }
 
     /**
-     * prueft ob der Name des Sensorpunktes schon verwendet wird
-     * 
-     * @param  String  $name Name
+     * erstellt einen neuen Datensatz mit Sensorwerten
+     *
+     * @param  Integer $spId   Sensor Punkt ID
+     * @param  String  $sId    Sensor ID
+     * @param  Integer $type   Typ ID
+     * @param  Mixed   $value1 Wert 1
+     * @param  Mixed   $value2 Wert 2
+     * @param  Mixed   $value3 Wert 3
+     * @return Boolean
+     */
+    public function pushSensorValues($spId, $sId, $type, $value1, $value2 = null, $value3 = null) {
+
+        //Sensorpunkt erstellen falls nicht vorhanden
+        if($this->getSensorPointById($spId) === null) {
+
+            if($this->createSensorPoint($spId) === false) {
+
+                //Sensorpunkt konnte nicht erstellt werden
+                return false;
+            }
+        }
+
+        //Sensor erstellen falls nicht vorhanden
+        if($this->getSensorById($sId) === null) {
+
+            if($this->createSensor($spId, $sId, $type) === false) {
+
+                //Sensor konnte nicht erstellt werden
+                return false;
+            }
+        }
+
+        //Daten vorbereiten
+        switch($type) {
+
+            case self::SENSOR_DS18X20:
+
+                $data = array(
+                    'temp' => (float) $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_DHT:
+
+                $data = array(
+                    'temp' => (float) $value1,
+                    'hum' => (float) $value2,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_BMP:
+
+                $data = array(
+                    'temp' => (float) $value1,
+                    'press' => (float) $value2,
+                    'alti' => (float) $value3,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_RAIN:
+            case self::SENSOR_HYGROMETER:
+            case self::SENSOR_LDR:
+
+                $data = array(
+                    'value' => (int) $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+        }
+
+        if(SHC::getDatabase()->lPush(self::$tableName .':sensorData:'. $sId, $data) !== false) {
+
+            SHC::getDatabase()->lTrim(self::$tableName .':sensorData:'. $sId, 0, 24);
+            $this->setSensorPointLastConnect($spId, DateTime::now());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * prueft ob der Name des Sensorpunktes schon vergeben ist
+     *
+     * @param  String  $name
      * @return Boolean
      */
     public function isSensorPointNameAvailable($name) {
 
-        foreach ($this->sensorPoints as $sensorPoint) {
+        foreach($this->sensorPoints as $sensorPoint) {
 
-            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+            /* @var $sensorPoint \SHC\Sensor\Sensorpoint */
             if (String::toLower($sensorPoint->getName()) == String::toLower($name)) {
 
                 return false;
@@ -945,48 +822,73 @@ class SensorPointEditor {
     }
 
     /**
+     * bearbeitet die Sortierung der Sensorpunkte
+     * 
+     * @param  Array   $order Array mit Element ID als Index und Sortierungs ID als Wert
+     * @return Boolean
+     */
+    public function editSensorPointOrder(array $order) {
+
+        $db = SHC::getDatabase();
+        foreach($order as $spId => $orderId) {
+
+            if(isset($this->sensorPoints[$spId])) {
+
+                $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+                $sensorPoint['orderId'] = $orderId;
+
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * bearbeitet einen Sensorpunkt
      * 
-     * @param  Integer $id           ID
+     * @param  Integer $spId         ID
      * @param  String  $name         Name
      * @param  Boolean $visibility   Sichtbarkeit
      * @param  Float   $warningLevel Warnungs Level
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editSensorPoint($id, $name = null, $visibility = null, $warningLevel = null) {
+    public function editSensorPoint($spId, $name = null, $visibility = null, $warningLevel = null) {
 
-        if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $id . '.xml')) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
-            //XML Objekt erstellen
-            XmlFileManager::getInstance()->registerXmlFile('sp-' . $id, PATH_SHC_STORAGE . 'sensorpoints/sp-' . $id . '.xml');
-            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $id);
+            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
 
             //Name
             if ($name !== null) {
 
                 //Ausnahme wenn Elementname schon belegt
-                if ((string) $xml->name != $name && !$this->isSensorPointNameAvailable($name)) {
+                if ((string) $sensorPoint['name'] != $name && !$this->isSensorPointNameAvailable($name)) {
 
                     throw new \Exception('Der Name ist schon vergeben', 1507);
                 }
-                $xml->name = $name;
+                $sensorPoint['name'] = $name;
+
+                //Sichtbarkeit
+                if ($visibility !== null) {
+
+                    $sensorPoint['visibility'] = ($visibility == true ? true : false);
+                }
+
+                //Warnungslevel
+                if ($warningLevel !== null) {
+
+                    $sensorPoint['warningLevel'] = $warningLevel;
+                }
+
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                    return true;
+                }
             }
-
-            //Sichtbarkeit
-            if ($visibility !== null) {
-
-                $xml->visibility = ($visibility == true ? 1 : 0);
-            }
-
-            //Warnungslevel
-            if ($warningLevel !== null) {
-
-                $xml->warningLevel = $warningLevel;
-            }
-
-            //Daten Speichern
-            $xml->save();
-            return true;
         }
         return false;
     }
@@ -994,27 +896,21 @@ class SensorPointEditor {
     /**
      * loescht einen Sensorpunkt inkl. aller zugehoerigen Sensoren
      * 
-     * @param  Integer $sensorPointId ID
+     * @param  Integer $spId ID
      * @return Boolean
      */
-    public function removeSensorPoint($sensorPointId) {
+    public function removeSensorPoint($spId) {
 
-        if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPointId . '.xml')) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
-            //XML Objekt erstellen
-            XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPointId, PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPointId . '.xml');
-            $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPointId);
+            if($db->hDel(self::$tableName . ':sensorPoints', $spId)) {
 
-            //Sortierungs ID setzen
-            if ((string) $xml->id == $sensorPointId) {
-
-                if (@unlink($xml->getFileName())) {
-
-                    return true;
-                }
+                return true;
             }
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1025,26 +921,24 @@ class SensorPointEditor {
      */
     public function editSensorOrder(array $order) {
 
-        //Dateien durchlaufen
-        foreach (FileUtil::listDirectoryFiles(PATH_SHC_STORAGE . 'sensorpoints/', false, false, true) as $file) {
+        $db = SHC::getDatabase();
+        foreach($order as $sId => $order) {
 
-            //Dateinamen pruefen
-            if (preg_match('#sp-(\d{1,3})\.xml#', $file['name'], $match)) {
+            if($this->getSensorById($sId) !== null) {
 
-                //XML Datei am Manager anmelden und XML Objekt laden
-                XmlFileManager::getInstance()->registerXmlFile($file['name'], PATH_SHC_STORAGE . 'sensorpoints/' . $file['name']);
-                $xml = XmlFileManager::getInstance()->getXmlObject($file['name']);
+                $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
+                foreach($order as $roomId => $order) {
 
-                foreach ($xml->sensors->sensor as $sensor) {
+                    if($sensorData['order'][$roomId]) {
 
-                    if (isset($order[(string) $sensor->id])) {
-
-                        $sensor->orderId = $order[(string) $sensor->id];
+                        $sensorData['order'][$roomId] = $order;
                     }
                 }
 
-                //Daten Speichern
-                $xml->save();
+                if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+
+                    return false;
+                }
             }
         }
         return true;
@@ -1076,96 +970,91 @@ class SensorPointEditor {
     /**
      * bearbeitet einen Sensor
      * 
-     * @param  String  $id            ID
+     * @param  String  $sId           ID
      * @param  String  $name          Name
-     * @param  Integer $roomId        Raum ID
-     * @param  Integer $orderId       Sortierungs ID
+     * @param  Array   $rooms         Raeume
+     * @param  Array   $order         Sortierung
      * @param  Boolean $visibility    Sichtbarkeit
      * @param  Boolean $dataRecording Datenaufzeichnung aktiv
      * @param  Array   $data          Zusatzdaten
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    protected function editSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $dataRecording = null, array $data = array()) {
+    protected function editSensor($sId, $name = null, $rooms = null, $order = null, $visibility = null, $dataRecording = null, array $data = array()) {
 
-        //Sensor Suchen
-        foreach ($this->sensorPoints as $sensorPoint) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensors', $sId)) {
 
-            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
-            foreach ($sensorPoint->listSensors()as $sensor) {
+            $sensor = $db->hGet(self::$tableName . ':sensors', $sId);
 
-                /* @var $sensor \SHC\Sensor\Sensor */
-                if ($sensor->getId() == $id) {
+            //Name
+            if ($name !== null) {
 
-                    if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml')) {
+                $sensor['name'] = $name;
+            }
 
-                        //XML Datei am Manager anmelden und XML Objekt laden
-                        XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPoint->getId(), PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml');
-                        $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPoint->getId());
+            if ($visibility !== null) {
 
-                        //Sensor in XML Datei suchen
-                        foreach ($xml->sensors->sensor as $xmlSensor) {
+                $sensor['visibility'] = ($visibility == true ? true : false);
+            }
 
-                            /* @var $xmlSensor \SimpleXmlElement */
-                            if ((string) $xmlSensor->id == $id) {
+            //Raum
+            if ($rooms !== null) {
 
-                                //Name
-                                if ($name !== null) {
+                //Sortierung der Raeume behabdeln
+                //Vergleichen
+                $oldRooms = $sensor['rooms'];
+                $removedRooms = array_diff($oldRooms, $rooms);
+                $addedRooms = array_diff($rooms, $oldRooms);
 
-                                    //Ausnahme wenn Name der Bedingung schon belegt
-                                    if ($name != (string) $xmlSensor->name && !$this->isSensorNameAvailable($name)) {
+                //sortierung vorbereiten
+                if($order === null) {
 
-                                        throw new \Exception('Der Name ist schon vergeben', 1507);
-                                    }
-
-                                    $xmlSensor->name = $name;
-                                }
-
-                                if ($visibility !== null) {
-
-                                    $xmlSensor->visibility = ($visibility == true ? 1 : 0);
-                                }
-
-                                //Raum
-                                if ($roomId !== null) {
-
-                                    if((int )$xmlSensor->roomId != $roomId && $orderId === null) {
-
-                                        //Bei Raumwechsel neue Sortieruzngs ID setzen
-                                        $xmlSensor->orderId = ViewHelperEditor::getInstance()->getNextOrderId();
-                                    }
-                                    $xmlSensor->roomId = $roomId;
-                                }
-
-                                //Sortierungs ID
-                                if ($orderId !== null) {
-
-                                    $xmlSensor->orderId = $orderId;
-                                }
-
-                                //$atenaufzeichnung
-                                if ($dataRecording !== null) {
-
-                                    $xmlSensor->dataRecording = ($dataRecording == true ? 1 : 0);
-                                }
-
-                                //Zusatzdaten
-                                foreach ($data as $tag => $value) {
-
-                                    if (!in_array($tag, array('id', 'name', 'visibility', 'roomId', 'orderId', 'dataRecording', 'lastConnection')) && $value !== null) {
-
-                                        $xmlSensor->$tag = $value;
-                                    }
-                                }
-                                
-                                //Daten Speichern
-                                $xml->save();
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
+                    $order = $sensor['order'];
                 }
+
+                //entfernte Raeume
+                foreach($removedRooms as $roomId) {
+
+                    if(isset($order[$roomId])) {
+
+                        unset($order[$roomId]);
+                    }
+                }
+
+                //hinzugefuegte Raeume
+                foreach($addedRooms as $roomId) {
+
+                    $order[$roomId] = ViewHelperEditor::getInstance()->getNextOrderId();
+                }
+
+                $sensor['rooms'] = $rooms;
+            }
+
+            //Sortierungs ID
+            if ($order !== null) {
+
+                $sensor['order'] = $order;
+            }
+
+            //$atenaufzeichnung
+            if ($dataRecording !== null) {
+
+                $sensor['dataRecording'] = ($dataRecording == true ? true : false);
+            }
+
+            //Zusatzdaten
+            foreach ($data as $index => $value) {
+
+                if (!in_array($index, array('id', 'name', 'visibility', 'roomId', 'orderId', 'dataRecording')) && $value !== null) {
+
+                    $sensor[$index] = $value;
+                }
+            }
+
+            if($db->hSet(self::$tableName . ':sensors', $sId, $sensor) == 0) {
+
+                return true;
             }
         }
         return false;
@@ -1176,23 +1065,24 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
-     * @param  Integer $orderId                  Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDS18x20($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null) {
+    public function editDS18x20($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null, $temperatureOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'temperatureVisibility' => $temperatureVisibility
+            'temperatureVisibility' => $temperatureVisibility,
+            'temperatureOffset' => $temperatureOffset
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1200,25 +1090,28 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
-     * @param  Integer $orderId                  Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $humidityVisibility       Sichtbarkeit Luftfeuchte
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @param  Float   $humidityOffset           Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editDHT($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null) {
+    public function editDHT($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $humidityVisibility = null, $dataRecording = null, $temperatureOffset = null, $humidityOffset = null) {
         
         //Zusatzdaten
         $data = array(
             'temperatureVisibility' => $temperatureVisibility,
-            'humidityVisibility' => $humidityVisibility    
+            'humidityVisibility' => $humidityVisibility,
+            'temperatureOffset' => $temperatureOffset,
+            'humidityOffset' => $humidityOffset
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1226,26 +1119,32 @@ class SensorPointEditor {
      * 
      * @param  String  $id                       ID
      * @param  String  $name                     Name
-     * @param  Integer $roomId                   Raum ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility               Sichtbarkeit
      * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
      * @param  Boolean $pressureVisibility       Sichtbarkeit Luftdruck
      * @param  Boolean $altitudeVisibility       Sichtbarkeit Hoehe
      * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @param  Float   $pressureOffset           Offset
+     * @param  Float   $altitudeOffset           Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editBMP($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null) {
+    public function editBMP($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $pressureVisibility = null, $altitudeVisibility = null, $dataRecording = null, $temperatureOffset = null, $pressureOffset = null, $altitudeOffset = null) {
         
         //Zusatzdaten
         $data = array(
             'temperatureVisibility' => $temperatureVisibility,
             'pressureVisibility' => $pressureVisibility,
-            'altitudeVisibility' => $altitudeVisibility
+            'altitudeVisibility' => $altitudeVisibility,
+            'temperatureOffset' => $temperatureOffset,
+            'pressureOffset' => $pressureOffset,
+            'altitudeOffset' => $altitudeOffset
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1253,23 +1152,24 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editRainSensor($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editRainSensor($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1277,23 +1177,24 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms              Raeume
+     * @param  Array   $order              Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editHygrometer($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editHygrometer($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
         
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
@@ -1301,65 +1202,42 @@ class SensorPointEditor {
      * 
      * @param  String  $id                 ID
      * @param  String  $name               Name
-     * @param  Integer $roomId             Raum ID
-     * @param  Integer $orderId            Sortierungs ID
+     * @param  Array   $rooms              Raeume
+     * @param  Array   $order              Sortierung
      * @param  Boolean $visibility         Sichtbarkeit
      * @param  Boolean $valueVisibility    Sichtbarkeit Wert
      * @param  Boolean $dataRecording      Datenaufzeichnung aktiv
+     * @param  Integer $valueOffset        Offset
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editLDR($id, $name = null, $roomId = null, $orderId = null, $visibility = null, $valueVisibility = null, $dataRecording = null) {
+    public function editLDR($id, $name = null, $rooms = null, $order = null, $visibility = null, $valueVisibility = null, $dataRecording = null, $valueOffset = null) {
         
         //Zusatzdaten
         $data = array(
-            'valueVisibility' => $valueVisibility
+            'valueVisibility' => $valueVisibility,
+            'valueOffset' => $valueOffset
         );
 
         //Sensor bearbeiten
-        return $this->editSensor($id, $name, $roomId, $orderId, $visibility, $dataRecording, $data);
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
     }
 
     /**
      * entfernt einen Sensor
      * 
-     * @param  String $id ID
+     * @param  String  $sId ID
      * @return Boolean
      */
-    public function removeSensor($id) {
-        
-        //Sensor Suchen
-        foreach ($this->sensorPoints as $sensorPoint) {
+    public function removeSensor($sId) {
 
-            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
-            foreach ($sensorPoint->listSensors()as $sensor) {
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName . ':sensors', $sId)) {
 
-                /* @var $sensor \SHC\Sensor\Sensor */
-                if ($sensor->getId() == $id) {
+            if($db->hDel(self::$tableName . ':sensors', $sId)) {
 
-                    if (file_exists(PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml')) {
-
-                        //XML Datei am Manager anmelden und XML Objekt laden
-                        XmlFileManager::getInstance()->registerXmlFile('sp-' . $sensorPoint->getId(), PATH_SHC_STORAGE . 'sensorpoints/sp-' . $sensorPoint->getId() . '.xml');
-                        $xml = XmlFileManager::getInstance()->getXmlObject('sp-' . $sensorPoint->getId());
-
-                        //Sensor in XML Datei suchen
-                        for ($i = 0; $i < count($xml->sensors->sensor); $i++) {
-
-                            /* @var $xmlSensor \SimpleXmlElement */
-                            if ((string) $xml->sensors->sensor[$i]->id == $id) {
-
-                                //Sensor entfernen
-                                unset($xml->sensors->sensor[$i]);
-                                
-                                //Daten Speichern
-                                $xml->save();
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
+                $db->del(self::$tableName .':sensorData:'. $sId);
+                return true;
             }
         }
         return false;

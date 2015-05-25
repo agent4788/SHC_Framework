@@ -44,13 +44,27 @@ class DHT extends AbstractSensor{
      * @var Integer
      */
     protected $humidityVisibility = 1;
+
+    /**
+     * Temperatur Offset
+     *
+     * @var Float
+     */
+    protected $temperatureOffset = 0.0;
+
+    /**
+     * Luftfeuchte Offset
+     *
+     * @var Float
+     */
+    protected $humidityOffset = 0.0;
     
     /**
      * @param Array   $values   Sensorwerte
      */
     public function __construct(array $values = array()) {
         
-        if(count($values) == 5) {
+        if(count($values) <= 25) {
             
             $this->oldValues = $values;
             $this->temperature = $values[0]['temp'];
@@ -66,7 +80,7 @@ class DHT extends AbstractSensor{
      */
     public function getTemperature() {
         
-        return $this->temperature;
+        return $this->temperature + $this->temperatureOffset;
     }
     
     /**
@@ -76,7 +90,51 @@ class DHT extends AbstractSensor{
      */
     public function getHumidity() {
         
-        return $this->humidity;
+        return $this->humidity + $this->humidityOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $temperatureOffset
+     * @return \SHC\Sensor\Sensors\DHT
+     */
+    public function setTemperatureOffset($temperatureOffset) {
+
+        $this->temperatureOffset = $temperatureOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getTemperatureOffset() {
+
+        return $this->temperatureOffset;
+    }
+
+    /**
+     * setzt das Temperatur Offset
+     *
+     * @param  Float $humidityOffset
+     * @return \SHC\Sensor\Sensors\DHT
+     */
+    public function setHumidityOffset($humidityOffset) {
+
+        $this->humidityOffset = $humidityOffset;
+        return $this;
+    }
+
+    /**
+     * gbit das Temperatur Offset zurueck
+     *
+     * @return Float
+     */
+    public function getHumidityOffset() {
+
+        return $this->humidityOffset;
     }
     
     /**
@@ -136,10 +194,10 @@ class DHT extends AbstractSensor{
         //alte Werte Schieben
         array_unshift($this->oldValues, array('temp' => $temperature, 'hum' => $humidity, 'time' => $date));
         //mehr als 5 Werte im Array?
-        if(isset($this->oldValues[5])) {
+        if(isset($this->oldValues[25])) {
             
             //aeltesten Wert loeschen
-            unset($this->oldValues[5]);
+            unset($this->oldValues[25]);
         }
         
         //Werte setzten

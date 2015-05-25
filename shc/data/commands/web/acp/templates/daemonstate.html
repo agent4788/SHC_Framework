@@ -1,120 +1,97 @@
-{* Info Menue *}
-<div>
-    <div class="shc-view-content">
-        {contentbox name='acp.daemonState.box.switchServer'}
-            {if $message|isset}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.daemonState.title" id='shc-view-acp-contentBox'}
             <div>
-                {$message->fetchHtml()}
+                <div class="shc-view-content">
+                    {contentbox name='acp.daemonState.box.switchServer'}
+                        {if $message|isset}
+                        <div>
+                            {$message->fetchHtml()}
+                        </div>
+                        {/if}
+                        <table class="shc-view-contentTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80%;">{lang var='acp.daemonState.box.name'}</th>
+                                    <th style="width: 20%;">{lang var='acp.daemonState.box.state'}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$switchServers item='switchServer'}
+                                <tr>
+                                    <td>{#$switchServer.object->getName()}</td>
+                                    <td>
+                                        {if $switchServer.state == 1}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
+                                        {else}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    {/contentbox}
+                    {contentbox name='acp.daemonState.box.daemons'}
+                        <table class="shc-view-contentTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80%;">{lang var='acp.daemonState.box.deamon'}</th>
+                                    <th style="width: 20%;">{lang var='acp.daemonState.box.state'}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{lang var='acp.daemonState.box.deamon.task'}</td>
+                                    <td>
+                                        {if $shedulerState == 1}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
+                                        {elseif $shedulerState == 2}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
+                                        {else}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
+                                        {/if}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{lang var='acp.daemonState.box.deamon.sensorDataTransmitter'}</td>
+                                    <td>
+                                        {if $sensorDataTransmitterState == 1}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
+                                        {elseif $sensorDataTransmitterState == 2}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
+                                        {else}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
+                                        {/if}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {/contentbox}
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var="global.button.back"}</a>
+                        <a href="index.php?app=shc&page=daemonstate">{lang var="acpindex.reload"}</a>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+
+                        $('.shc-view-buttonSet').buttonset();
+                    });
+                </script>
+                {/contentbox}
             </div>
-            {/if}
-            <table class="shc-view-contentTable">
-                <thead>
-                    <tr>
-                        <th style="width: 80%;">{lang var='acp.daemonState.box.name'}</th>
-                        <th style="width: 20%;">{lang var='acp.daemonState.box.state'}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {foreach from=$switchServers item='switchServer'}
-                    <tr>
-                        <td>{#$switchServer.object->getName()}</td>
-                        <td>
-                            {if $switchServer.state == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    {/foreach}
-                </tbody>
-            </table>
-        {/contentbox}
-        {contentbox name='acp.daemonState.box.daemons'}
-            <table class="shc-view-contentTable">
-                <thead>
-                    <tr>
-                        <th style="width: 80%;">{lang var='acp.daemonState.box.deamon'}</th>
-                        <th style="width: 20%;">{lang var='acp.daemonState.box.state'}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.task'}</td>
-                        <td>
-                            {if $shedulerState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $shedulerState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.arduinoSensorReciver'}</td>
-                        <td>
-                            {if $arduinoSensorReciverState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $arduinoSensorReciverState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.sensorDataReciver'}</td>
-                        <td>
-                            {if $sensorDataReciverState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $sensorDataReciverState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{lang var='acp.daemonState.box.deamon.sensorDataTransmitter'}</td>
-                        <td>
-                            {if $sensorDataTransmitterState == 1}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
-                            {elseif $sensorDataTransmitterState == 2}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
-                            {else}
-                            <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}
-                            {/if}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        {/contentbox}
-    </div>
-</div>
-<div class="shc-view-buttons">
-    <div class="shc-view-buttonSet">
-        <button id="shc-view-button-back">{lang var="global.button.back"}</button>
-        <button id="shc-view-button-reload">{lang var="acpindex.reload"}</button>
-    </div>
-</div>
-<script type="text/javascript">
-    function onLoad() {
-
-        $('#shc-view-acp-contentBox .shc-contentbox-header').first().text('{lang var="acp.daemonState.title"}');
-        $('.shc-view-buttonSet').buttonset();
-
-        $('#shc-view-button-back').click(function() {
-            window.location = 'index.php?app=shc&page=acp';
-        });
-
-        $('#shc-view-button-reload').unbind( "click" );
-        $('#shc-view-button-reload').click(function() {
-            $.get("index.php?app=shc&ajax=daemonstate&hash=" + Math.floor(Math.random() * 11), function(data, textStatus, jqXHR) {
-                $('#shc-view-acp-contentBox div.shc-contentbox-body').html(data);
-                onLoad();
-            });
-        });
-    }
-    $(onLoad);
-</script>
+        </div>
+    </body>
+</html>

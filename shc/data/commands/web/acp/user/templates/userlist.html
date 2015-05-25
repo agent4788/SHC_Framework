@@ -1,42 +1,57 @@
-{* Benutzerliste *}
-<div>
-    <div class="shc-view-content">
-        <table class="shc-view-contentTable">
-            <thead>
-                <tr>
-                    <th style="width: 70%;">{lang var="acp.userManagement.userList.table.head.user"}</th>
-                    <th style="width: 20%;">{lang var="acp.userManagement.userList.table.head.registrationDate"}</th>
-                    <th style="width: 10%;">{lang var="acpindex.options"}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$userList item='user'}
-                <tr>
-                    <td>{#$user->getName()}</td>
-                    <td>{$user->getRegisterDate()|timeline}</td>
-                    <td>
-                        {editlink link='index.php?app=shc&ajax=edituserform&id=' id=$user->getId()}
-                        {if $user->isOriginator() == false}
-                        {deletelink link='index.php?app=shc&ajax=deleteuser&id=' id=$user->getId() prompt='acp.userManagement.prompt.deleteUser' title='acp.userManagement.prompt.deleteUser.title'}
-                        {/if}
-                    </td>
-                </tr>
-                {/foreach}
-            </tbody>
-        </table>
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
-            {acpbutton link="index.php?app=shc&ajax=listgroups" text="acp.userManagement.button.viewGroupList"}
-            {acpbutton link="index.php?app=shc&ajax=adduserform" text="acp.userManagement.button.addUser"}
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $(function() {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.userManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="shc-view-content">
+                    <table class="shc-view-contentTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 70%;">{lang var="acp.userManagement.userList.table.head.user"}</th>
+                            <th style="width: 20%;">{lang var="acp.userManagement.userList.table.head.registrationDate"}</th>
+                            <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$userList item='user'}
+                        <tr>
+                            <td>{#$user->getName()}</td>
+                            <td>{$user->getRegisterDate()|date}</td>
+                            <td>
+                                {editlink link='index.php?app=shc&page=edituserform&id=' id=$user->getId()}
+                                {if $user->isOriginator() == false}
+                                {deletelink link='index.php?app=shc&action=deleteuser&id=' id=$user->getId() prompt='acp.userManagement.prompt.deleteUser' title='acp.userManagement.prompt.deleteUser.title'}
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                        <a href="index.php?app=shc&page=listgroups">{lang var='acp.userManagement.button.viewGroupList'}</a>
+                        <a href="index.php?app=shc&page=adduserform">{lang var='acp.userManagement.button.addUser'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
 
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.userManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-    });
-</script>
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

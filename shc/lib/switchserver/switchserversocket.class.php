@@ -76,7 +76,12 @@ class SwitchServerSocket {
         'rev2_switch',
         'rev3_switch',
         'techlico_switch',
-        'X10'
+        'X10',
+        'eHome',
+        'beamish_switch',
+        'rc101',
+        'rc102',
+        'techlico_switch'
     );
 
     /**

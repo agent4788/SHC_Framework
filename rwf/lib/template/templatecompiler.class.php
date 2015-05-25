@@ -850,9 +850,15 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {elseif} Tag', $this->templateName, $this->line);
                 } else {
 
+                    if($last == 'if') {
+
+                        $this->closeTag('if');
+                    } else {
+
+                        $this->closeTag('elseif');
+                    }
                     $this->openTag('elseif');
                 }
-
                 return $this->compileIfTag($argString, true);
 
                 break;
@@ -864,6 +870,13 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {else} Tag', $this->templateName, $this->line);
                 } else {
 
+                    if($last == 'if') {
+
+                        $this->closeTag('if');
+                    } else {
+
+                        $this->closeTag('elseif');
+                    }
                     $this->openTag('else');
                 }
 
@@ -878,7 +891,16 @@ class TemplateCompiler {
                     throw new TemplateCompilationException('nicht erwartetes {/if} Tag', $this->templateName, $this->line);
                 } else {
 
-                    $this->closeTag('if');
+                    if($last == 'if') {
+
+                        $this->closeTag('if');
+                    } elseif($last == 'else') {
+
+                        $this->closeTag('else');
+                    } else {
+
+                        $this->closeTag('elseif');
+                    }
                 }
 
                 return '<?php } ?>';
@@ -896,15 +918,32 @@ class TemplateCompiler {
                 if ($last != 'foreach') {
 
                     throw new TemplateCompilationException('nicht erwartetes {foreachelse} Tag', $this->templateName, $this->line);
+                } else {
+
+                    $this->closeTag('foreach');
+                    $this->openTag('foreachelse');
                 }
 
-                $this->closeTag('foreachelse');
                 return '<?php } } else { { ?>';
 
                 break;
             case '/foreach':
 
-                $this->closeTag('foreach');
+                $last = $this->getLastOpendTag();
+                if ($last != 'foreach' && $last != 'foreachelse') {
+
+                    throw new TemplateCompilationException('nicht erwartetes {/foreach} Tag', $this->templateName, $this->line);
+                } else {
+
+                    if($last == 'foreach') {
+
+                        $this->closeTag('foreach');
+                    } else {
+
+                        $this->closeTag('foreachelse');
+                    }
+                }
+                ;
                 return '<?php } } ?>';
 
                 break;

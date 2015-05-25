@@ -3,10 +3,13 @@
 namespace SHC\Command;
 
 //Imports
+use RWF\Runtime\RaspberryPi;
+use SHC\Arduino\Arduino;
 use SHC\SwitchServer\SwitchServerEditor;
 use SHC\Command\Commands\RadioSocketCommand;
 use SHC\Command\Commands\GpioOutputCommand;
 use SHC\Command\Commands\GpioInputCommand;
+use SHC\Util\RadioSocketsUtil;
 
 /**
  * Verwaltet und sendet die Kommandos an die Steckdosen/GPIOs
@@ -80,79 +83,175 @@ class CommandSheduler {
 
         //alle Server durchlaufen und die Daten senden
         $radioSocketsCount = 0;
+        $radioSocketsActive = false;
         foreach ($switchServers as $switchServer) {
 
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
 
             //Hilfsvariablen vorbereiten
-            $radioSocketsActive = false;
             $radioSocketsSend = false;
             $gpioActive = false;
             $gpioSend = false;
+            $model = $switchServer->getModel();
 
-            //Request Initialisieren
-            $request = array();
+            //Raspberry Pi Schaltserver
+            if($model == RaspberryPi::MODEL_A
+                || $model == RaspberryPi::MODEL_B
+                || $model == RaspberryPi::MODEL_A_PLUS
+                || $model == RaspberryPi::MODEL_B_PLUS
+                || $model == RaspberryPi::MODEL_2_B
+                || $model == RaspberryPi::MODEL_COMPUTE_MODULE) {
 
-            //alle Kommandos durchlaufen und Daten Aufbereiten
-            foreach ($this->commands as $command) {
+                //Request Initialisieren
+                $request = array();
 
-                /* @var $command \SHC\Command\Command */
-                if ($command instanceof RadioSocketCommand) {
+                //alle Kommandos durchlaufen und Daten Aufbereiten
+                foreach ($this->commands as $command) {
 
-                    //Funksteckdose
-                    $radioSocketsActive = true;
-                    if ($switchServer->isRadioSocketsEnabled()) {
+                    /* @var $command \SHC\Command\Command */
+                    if ($command instanceof RadioSocketCommand) {
 
-                        $request[] = $command->getCommandData();
-                        $radioSocketsSend = true;
-                    }
-                } elseif ($command instanceof GpioOutputCommand) {
+                        //Funksteckdose
+                        $radioSocketsActive = true;
+                        if ($switchServer->isRadioSocketsEnabled()) {
 
-                    //GPIO schalten
-                    $gpioActive = true;
-                    if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
+                            $request[] = $command->getCommandData();
 
-                        $request[] = $command->getCommandData();
-                        $gpioSend = true;
+                            //Kommando als aufgefuehrt markieren
+                            $radioSocketsSend = true;
+                            $command->executed();
+                        }
+                    } elseif ($command instanceof GpioOutputCommand) {
+
+                        //GPIO schalten
+                        if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            $gpioActive = true;
+                            $request[] = $command->getCommandData();
+
+                            //Kommando als aufgefuehrt markieren
+                            $gpioSend = true;
+                            $command->executed();
+                        } elseif($switchServer->isWriteGpiosEnabled() == false && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            //Schaltserver unterstuetzt kein GPIO schalten
+                            throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
+                        }
                     }
                 }
-                
-                //Kommando als aufgefuehrt markieren
-                $command->executed();
-            }
 
-            //Kommandos loeschen
-            $this->commands = array();
+                //Daten zum versenden aufbereiten
+                $data = json_encode($request);
+                $data = base64_encode($data);
 
-            //Daten zum versenden aufbereiten
-            $data = json_encode($request);
-            $data = base64_encode($data);
+                try {
 
-            try {
+                    //mit Schalserver verbinden und Daten senden
+                    $socket = $switchServer->getSocket();
+                    $socket->open();
+                    $socket->write($data);
+                    $socket->close();
 
-                //mit Schalserver verbinden und Daten senden
-                $socket = $switchServer->getSocket();
-                $socket->open();
-                $socket->write($data);
-                $socket->close();
-                //hochzaehlen wenn Funksteckdosen geschalten werden konnten
-                if($radioSocketsActive === true && $radioSocketsSend === true) {
+                    //hochzaehlen wenn Funksteckdosen geschalten werden konnten
+                    if($radioSocketsActive === true && $radioSocketsSend === true) {
 
-                    $radioSocketsCount++;
-                }
-            } catch(\Exception $e) {
-
-                if($gpioActive === true && $gpioSend === true) {
+                        $radioSocketsCount++;
+                    }
+                } catch(\Exception $e) {
 
                     //GPIO Schaltserver nicht errreicht
                     throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
-                } elseif($gpioActive === true && $gpioSend === true) {
+                }
 
-                    //Schaltserver unterstuetzt kein GPIO schalten
-                    throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
+            //Arduino Schaltserver
+            } elseif($model == Arduino::PRO_MINI
+                    || $model == Arduino::NANO
+                    || $model == Arduino::UNO
+                    || $model == Arduino::MEGA
+                    || $model == Arduino::DUE) {
+
+                //alle Kommandos durchlaufen und Daten Aufbereiten
+                foreach ($this->commands as $command) {
+
+                    /* @var $command \SHC\Command\Command */
+                    if ($command instanceof RadioSocketCommand) {
+
+                        //Funksteckdose
+                        $radioSocketsActive = true;
+                        if ($switchServer->isRadioSocketsEnabled()) {
+
+                            $commandData = $command->getCommandData();
+                            //Der Arduino Schaltserver kann nur mit dem 'elro_rc' Protokoll umgehen
+                            if($commandData['protocol'] == 'elro_rc') {
+
+                                //Befehl vorbereiten
+                                if(RadioSocketsUtil::isBinary($commandData['deviceCode'])) {
+
+                                    $devieceCode = RadioSocketsUtil::convertBinaryToDec($commandData['deviceCode']);
+                                } else {
+
+                                    $devieceCode = $commandData['deviceCode'];
+                                }
+                                $data = '1:'. $commandData['systemCode'] .':'. $devieceCode .':'. $commandData['command'] .':'. $commandData['continuous'] .' ';
+
+                                //Befehl an den Schaltserver senden
+                                try {
+
+                                    //Befehl senden
+                                    $socket = $switchServer->getSocket();
+                                    $socket->open();
+                                    $socket->write($data);
+                                    $socket->close();
+
+                                    //Kommando als aufgefuehrt markieren
+                                    $radioSocketsSend = true;
+                                    $command->executed();
+
+                                    //hochzaehlen wenn Funksteckdosen geschalten werden konnten
+                                    if($radioSocketsActive === true && $radioSocketsSend === true) {
+
+                                        $radioSocketsCount++;
+                                    }
+                                } catch(\Exception $e) {}
+                            }
+                        }
+                    } elseif ($command instanceof GpioOutputCommand) {
+
+                        //GPIO schalten
+                        if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            $gpioActive = true;
+                            $commandData = $command->getCommandData();
+                            $data = '2:'. $commandData['pinNumber'] .':'. $commandData['command'] .' ';
+
+                            try {
+
+                                //Befehl senden
+                                $socket = $switchServer->getSocket();
+                                $socket->open();
+                                $socket->write($data);
+                                $socket->close();
+
+                                //Kommando als aufgefuehrt markieren
+                                $gpioSend = true;
+                                $command->executed();
+                            } catch(\Exception $e) {
+
+                                //GPIO Schaltserver nicht errreicht
+                                throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
+                            }
+                        } elseif($switchServer->isWriteGpiosEnabled() == false && $switchServer->getId() == $command->getSwitchServer()) {
+
+                            //Schaltserver unterstuetzt kein GPIO schalten
+                            throw new \Exception('der Schaltserver untersützt das GPIO schalten nicht', 1511);
+                        }
+                    }
                 }
             }
+
         }
+        //Kommandos loeschen
+        $this->commands = array();
 
         //kein Schaltserver erreichbar
         if($radioSocketsActive === true && $radioSocketsCount == 0) {
@@ -178,44 +277,81 @@ class CommandSheduler {
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
             if ($switchServer->isReadGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
 
-                //Request Initialisieren
-                $request = array($command->getCommandData());
-                
-                //Daten zum versenden aufbereiten
-                $data = json_encode($request);
-                $data = base64_encode($data);
+                $model = $switchServer->getModel();
 
-                try {
+                //Raspberry Pi Schaltserver
+                if($model == RaspberryPi::MODEL_A
+                    || $model == RaspberryPi::MODEL_B
+                    || $model == RaspberryPi::MODEL_A_PLUS
+                    || $model == RaspberryPi::MODEL_B_PLUS
+                    || $model == RaspberryPi::MODEL_2_B
+                    || $model == RaspberryPi::MODEL_COMPUTE_MODULE) {
 
-                    //mit Schalserver verbinden und Daten senden
-                    $socket = $switchServer->getSocket();
-                    $socket->open();
-                    $socket->write($data);
-                } catch(\Exception $e) {
+                    //Request Initialisieren
+                    $request = array($command->getCommandData());
 
-                    //Verbindungsfehler, abbruch
-                    return false;
-                }
-                
-                //Antwort Lesen
-                $rawData = base64_decode($socket->read(8192));
-                $response = json_decode($rawData, true);
-                if(isset($response['state'])) {
-                    
-                    if((int) $response['state'] == GpioInputCommand::HIGH) {
-                        
+                    //Daten zum versenden aufbereiten
+                    $data = json_encode($request);
+                    $data = base64_encode($data);
+
+                    try {
+
+                        //mit Schalserver verbinden und Daten senden
+                        $socket = $switchServer->getSocket();
+                        $socket->open();
+                        $socket->write($data);
+                    } catch (\Exception $e) {
+
+                        //Verbindungsfehler, abbruch
+                        return false;
+                    }
+
+                    //Antwort Lesen
+                    $rawData = base64_decode($socket->read(8192));
+                    $response = json_decode($rawData, true);
+                    if (isset($response['state'])) {
+
+                        if ((int)$response['state'] == GpioInputCommand::HIGH) {
+
+                            $command->setState(GpioInputCommand::HIGH);
+                        } else {
+
+                            $command->setState(GpioInputCommand::LOW);
+                        }
+                    }
+
+                    //Kommando als aufgefuehrt markieren
+                    $command->executed();
+
+                    //Verbindung trennen
+                    $socket->close();
+
+
+                //Arduino Schaltserver
+                } elseif($model == Arduino::PRO_MINI
+                    || $model == Arduino::NANO
+                    || $model == Arduino::UNO
+                    || $model == Arduino::MEGA
+                    || $model == Arduino::DUE) {
+
+                    //Befehl erstellen und ausfuehren
+                    $commandPath = PATH_SHC_CLASSES .'external/java/SHC_Arduino_Inputreader.jar';
+                    $commandStr = 'java -jar "'. $commandPath .'" "'. $switchServer->getIpAddress() .'" "'. $switchServer->getPort() .'" "'. $command->getPinNumber() .'"';
+                    $result = array();
+                    @exec($commandStr, $result);
+
+                    //Ausgabe auswerten
+                    $response = intval(trim($result[0]));
+                    if($response == 1) {
+
+                        //"1" signal
                         $command->setState(GpioInputCommand::HIGH);
                     } else {
-                        
+
+                        //"0" Signal oder Fehler
                         $command->setState(GpioInputCommand::LOW);
                     }
                 }
-                
-                //Kommando als aufgefuehrt markieren
-                $command->executed();
-                
-                //Verbindung trennen
-                $socket->close();
                 return true;
             }
         }

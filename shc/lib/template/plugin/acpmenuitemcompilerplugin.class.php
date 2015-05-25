@@ -41,7 +41,7 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
 
         if(!isset($args['link'])) {
 
-            throw new TemplateCompilationException('missing "icon" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
+            throw new TemplateCompilationException('missing "link" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
         }
 
         $premission = '';
@@ -68,16 +68,14 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         //HTML
-        $html .= '<div class="shc-view-acp-menuItem" id="'. $randomStr .'">';
+        $html .= '<div class="shc-view-acp-menuItem" id="a'. $randomStr .'">';
         $html .= '<span class="shc-view-acp-menuItem-icon" id='. $args['icon'] .'></span>';
         $html .= '<span class="shc-view-acp-menuItem-text"><?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['text'] .'); ?></span>';
         $html .= '</div>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
-        $html .= '$(\'#'. $randomStr .'\').click(function() {';
-        $html .= '$.get('. $args['link'] .', function(data, textStatus, jqXHR) {';
-        $html .= '$(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
-        $html .= '});';
+        $html .= '$(\'#a'. $randomStr .'\').click(function() {';
+        $html .= 'window.location = '. $args['link'] .';';
         $html .= '});';
         $html .= '});';
         $html .= '</script>';

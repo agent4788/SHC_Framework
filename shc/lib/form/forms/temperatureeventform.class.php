@@ -50,11 +50,11 @@ class TemperatureEventForm extends DefaultHtmlForm {
         $this->addFormElement($name);
 
         //Bedingungen
-        $conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
+        /*$conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
         $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
         $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
         $conditions->requiredField(true);
-        $this->addFormElement($conditions);
+        $this->addFormElement($conditions);*/
 
         //Sensoren
         $sensors = new SensorChooser('sensors', ($event !== null ? explode(',', $event->getData()['sensors']) : array()), SensorChooser::TEMPERATURE);

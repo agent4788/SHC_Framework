@@ -157,6 +157,13 @@ class EventEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'events';
+
     protected function __construct() {
 
         $this->loadData();
@@ -167,34 +174,33 @@ class EventEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
-
         //Daten Vorbereiten
         $oldEvents = $this->events;
         $this->events = array();
 
+        $events = SHC::getDatabase()->hGetAll(self::$tableName);
         //Daten einlesen
-        foreach ($xml->event as $event) {
+        foreach ($events as $event) {
 
             //Variablen Vorbereiten
-            $class = (string) $event->class;
+            $class = (string) $event['class'];
 
             $data = array();
             foreach ($event as $index => $value) {
 
-                if (!in_array($index, array('id', 'name', 'class', 'enabled'))) {
+                if (!in_array($index, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                    $data[$index] = (string) $value;
+                    $data[$index] = $value;
                 }
             }
 
             /* @var $eventObj \SHC\Event\Event */
             $eventObj = new $class(
-                (int) $event->id, (string) $event->name, $data, ((int) $event->enabled == 1 ? true : false), DateTime::createFromDatabaseDateTime((string) $event->lastExecute)
+                (int) $event['id'], (string) $event['name'], $data, ((int) $event['enabled'] == true ? true : false), DateTime::createFromDatabaseDateTime((string) $event['lastExecute'])
             );
 
             //Bedingungen anhaengen
-            foreach (explode(',', (string) $event->conditions) as $conditionId) {
+            foreach ($event['conditions'] as $conditionId) {
 
                 $condition = ConditionEditor::getInstance()->getConditionByID($conditionId);
                 if ($condition instanceof Condition) {
@@ -204,25 +210,24 @@ class EventEditor {
             }
 
             //schaltbare Elemente Hinzufuegen
-            if(isset($event->switchable)) {
+            if(isset($event['switchable'])) {
 
-                foreach ($event->switchable as $switchable) {
+                foreach ($event['switchable'] as $switchable) {
 
-                    $attr = $switchable->attributes();
-                    $switchableObject = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
+                    $switchableObject = SwitchableEditor::getInstance()->getElementById((int) $switchable['id']);
                     if ($switchableObject instanceof Switchable) {
 
-                        $eventObj->addSwitchable($switchableObject, (int) $attr->command);
+                        $eventObj->addSwitchable($switchableObject, (int) $switchable['command']);
                     }
                 }
             }
 
             //Objekt status vom alten Objekt ins neue übertragen
-            if(isset($oldEvents[(int) $event->id])) {
+            if(isset($oldEvents[(int) $event['id']])) {
 
-                $eventObj->setState($oldEvents[(int) $event->id]->getState());
+                $eventObj->setState($oldEvents[(int) $event['id']]->getState());
             }
-            $this->events[(int) $event->id] = $eventObj;
+            $this->events[(int) $event['id']] = $eventObj;
         }
     }
 
@@ -259,8 +264,6 @@ class EventEditor {
         }
         return true;
     }
-
-
 
     /**
      * gibt eine Liste mit allen Bedingungen zurueck
@@ -315,7 +318,6 @@ class EventEditor {
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolean
      * @throws \Exception
-     * @throws \RWF\XML\Exception\XmlException
      */
     protected function addEvent($class, $name, array $data = array(), $enabled = true, array $conditions) {
 
@@ -325,33 +327,29 @@ class EventEditor {
             throw new \Exception('Der Name des Events ist schon vergeben', 1502);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
+        $newEvent = array(
+            'id' => $index,
+            'class' => $class,
+            'name' => $name,
+            'enabled' => ($enabled == true ? true : false),
+            'conditions' => $conditions,
+            'lastExecute' => '2000-01-01 00:00:00'
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
-
-        //Datensatz erstellen
-        $condition = $xml->addChild('event');
-        $condition->addChild('id', $nextId);
-        $condition->addChild('class', $class);
-        $condition->addChild('name', $name);
-        $condition->addChild('enabled', ($enabled == true ? 1 : 0));
-        $condition->addChild('conditions', implode(',', $conditions));
-        $condition->addChild('lastExecute', '2000-01-01 00:00:00');
-
-        //Daten hinzufuegen
         foreach ($data as $tag => $value) {
 
-            if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+            if (!in_array($tag, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                $condition->addChild($tag, $value);
+                $newEvent[$tag] = $value;
             }
         }
 
-        //Daten Speichern
-        $xml->save();
+        if($db->hSetNx(self::$tableName, $index, $newEvent) == 0) {
+
+            return false;
+        }
         return true;
     }
 
@@ -365,58 +363,56 @@ class EventEditor {
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolean
      * @throws \Exception
-     * @throws \RWF\XML\Exception\XmlException
      */
     protected function editEvent($id, $name = null, array $data = null, $enabled = null, array $conditions = null) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $id);
 
-            if ((int) $event->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Bedingung schon belegt
+                if ((string) $event['name'] != $name && !$this->isEventNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Bedingung schon belegt
-                    if ((string) $event->name != $name && !$this->isEventNameAvailable($name)) {
-
-                        throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
-                    }
-
-                    $event->name = $name;
+                    throw new \Exception('Der Name der Bedingung ist schon vergeben', 1502);
                 }
 
-                //Aktiv
-                if ($enabled !== null) {
+                $event['name'] = $name;
+            }
 
-                    $event->enabled = ($enabled == true ? 1 : 0);
-                }
+            //Aktiv
+            if ($enabled !== null) {
 
-                //Bedingungen
-                if($conditions !== null) {
+                $event['enabled'] = ($enabled == true ? 1 : 0);
+            }
 
-                    $event->conditions = implode(',', $conditions);
-                }
+            //Bedingungen
+            if($conditions !== null) {
 
-                //Zusatzdaten
-                foreach($data as $tag => $value) {
+                $event['conditions'] = implode(',', $conditions);
+            }
 
-                    if (!in_array($tag, array('id', 'name', 'class', 'enabled'))) {
+            //Zusatzdaten
+            foreach($data as $tag => $value) {
 
-                        if($value !== null) {
+                if (!in_array($tag, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
 
-                            $event->$tag = $value;
-                        }
+                    if($value !== null) {
+
+                        $event[$tag] = $value;
                     }
                 }
+            }
 
-                //Daten Speichern
-                $xml->save();
+            if($db->hSet(self::$tableName, $id, $event) == 0) {
+
                 return true;
             }
+
         }
         return false;
     }
@@ -427,23 +423,27 @@ class EventEditor {
      * @param  Integer            $id          Ereignis ID
      * @param  \RWF\Date\DateTime $lastExecute letzte Ausfuehrung
      * @return Boolean
-     * @throws \RWF\XML\Exception\XmlException
      */
     public function updateLastExecute($id, DateTime $lastExecute) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $id);
 
-            if ((int) $event->id == $id) {
+            if(isset($event['id']) && $event['id'] == $id) {
 
-                $event->lastExecute = $lastExecute->getDatabaseDateTime();
+                $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
 
-                //Daten Speichern
-                $xml->save();
-                return true;
+                if($db->hSet(self::$tableName, $id, $event) == 0) {
+
+                    return true;
+                }
+            } else {
+
+                //Datensatz nicht mehr vorhanden
+                return false;
             }
         }
         return false;
@@ -459,7 +459,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addHumidityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -485,7 +484,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editHumidityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -510,7 +508,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addHumidityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -536,7 +533,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editHumidityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -561,7 +557,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addLightIntensityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -587,7 +582,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editLightIntensityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -612,7 +606,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addLightIntensityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -638,7 +631,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editLightIntensityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -663,7 +655,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addMoistureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -689,7 +680,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editMoistureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -714,7 +704,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addMoistureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -740,7 +729,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editMoistureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -765,7 +753,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addTemperatureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -791,7 +778,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editTemperatureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -816,7 +802,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addTemperatureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -842,7 +827,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editTemperatureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -866,7 +850,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addInputHighEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -890,7 +873,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editInputHighEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -913,7 +895,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addInputLowEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -937,7 +918,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editInputLowEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -960,7 +940,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addUserComesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -984,7 +963,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editUserComesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -1007,7 +985,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function addUserLeavesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -1031,7 +1008,6 @@ class EventEditor {
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
      * @return Boolaen
-     * @throws \Exception
      */
     public function editUserLeavesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -1051,7 +1027,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function addSunriseEvent($name, $enabled, array $conditions = null) {
 
@@ -1066,7 +1041,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function editSunriseEvent($id, $name = null, $enabled = null, array $conditions = null) {
 
@@ -1080,7 +1054,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function addSunsetEvent($name, $enabled, array $conditions = null) {
 
@@ -1095,7 +1068,6 @@ class EventEditor {
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiviert
      * @param  Array   $conditions Liste der Bedingunen
-     * @throws \Exception
      */
     public function editSunsetEvent($id, $name = null, $enabled = null, array $conditions = null) {
 
@@ -1108,23 +1080,63 @@ class EventEditor {
      *
      * @param  Integer $id ID
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeEvent($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Element suchen
-        for ($i = 0; $i < count($xml->event); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            if ((int) $xml->event[$i]->id == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-                //Element loeschen
-                unset($xml->event[$i]);
+    /**
+     * fuegt einem Event eine Bedingung hinzu
+     *
+     * @param  Integer $eventId      ID des Events
+     * @param  Integer $conditionId  ID der Bedingung
+     * @return Boolean
+     */
+    public function addConditionToEvent($eventId, $conditionId) {
 
-                //Daten Speichern
-                $xml->save();
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
+
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['conditions'][] = $conditionId;
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * entfernt eine Bedingung aus einem Event
+     *
+     * @param  Integer $eventId      ID des Events
+     * @param  Integer $conditionId  ID der Bedingung
+     * @return Boolean
+     */
+    public function removeConditionFromEvent($eventId, $conditionId) {
+
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
+
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['conditions'] = array_diff($event['conditions'], array($conditionId));
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
                 return true;
             }
         }
@@ -1138,26 +1150,18 @@ class EventEditor {
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @param  Integer $command      Befehl
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function addSwitchableToEvent($eventId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            $event['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
 
-                //Neues ELement erstellen
-                $tag = $event->addChild('switchable');
-                $tag->addAttribute('id', $switchableId);
-                $tag->addAttribute('command', $command);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -1171,32 +1175,26 @@ class EventEditor {
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @param  Integer $command      Befehl
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function setEventSwitchableCommand($eventId, $switchableId, $command) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Aktivitaet Suchen
-        foreach ($xml->event as $event) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            foreach($event['switchable'] as $index => $switchable) {
 
-            /* @var $switchable \SimpleXmlElement */
-            if ((int) $event->id == $eventId) {
+                if($switchable['id'] == $switchableId) {
 
-                //Nach Element suchen
-                foreach ($event->switchable as $eventSwitchable) {
-
-                    $attr = $eventSwitchable->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        $attr->command = $command;
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    $event['switchable'][$index]['command'] = $command;
+                    break;
                 }
+            }
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
+                return true;
             }
         }
         return false;
@@ -1208,32 +1206,26 @@ class EventEditor {
      * @param  Integer $eventId      ID des Events
      * @param  Integer $switchableId ID des Schaltbaren Elements
      * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
      */
     public function removeSwitchableFromEvent($eventId, $switchableId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_EVENTS, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $eventId)) {
 
-        //Event suchen
-        for ($i = 0; $i < count($xml->event); $i++) {
+            $event = $db->hGet(self::$tableName, $eventId);
+            foreach($event['switchable'] as $index => $switchable) {
 
-            if ((int) $xml->event[$i]->id == $eventId) {
+                if($switchable['id'] == $switchableId) {
 
-                //Element suchen
-                for ($j = 0; $j < count($xml->event[$i]->switchable); $j++) {
-
-                    $attr = $xml->event[$i]->switchable[$j]->attributes();
-                    if ((int) $attr->id == $switchableId) {
-
-                        //Element loeschen
-                        unset($xml->event[$i]->switchable[$j]);
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    unset($event['switchable'][$index]);
+                    break;
                 }
+            }
+
+            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+
+                return true;
             }
         }
         return false;

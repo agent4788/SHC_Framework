@@ -177,11 +177,13 @@ class TextArea extends AbstractFormElement {
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Titel
-        $html = '<div class="ui-field-contain' . $class . '">' . "\n";
+        $html .= '<div class="ui-field-contain' . $class . '">' . "\n";
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
         //Formularfeld
         $html .= '<textarea type="text" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-textarea" ' . $id . $options . $disabled . ' >' . String::encodeHTML($this->getValue()) . '</textarea>';
+
+        $html .= "</div>";
 
         //Pflichtfeld
         if($this->isRequiredField() && $this->getValue() == '') {
@@ -232,7 +234,7 @@ class TextArea extends AbstractFormElement {
         //Maximale Laenge
         if (isset($this->options['maxlength']) && !String::checkLength($value, 0, $this->options['maxlength'])) {
 
-            $this->messages[] = $lang->get('form.message.maxLength', $this->getTitle(), $this->options['minlength']);
+            $this->messages[] = $lang->get('form.message.maxLength', $this->getTitle(), $this->options['maxlength']);
             $valid = false;
         }
 

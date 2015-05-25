@@ -37,12 +37,39 @@ $l['acp.conditionManagement.condition.TemperatureGreaterThanCondition'] = 'Tempe
 $l['acp.conditionManagement.condition.TemperatureLowerThanCondition'] = 'Temperatur kleiner als';
 $l['acp.conditionManagement.condition.NobodyAtHomeCondition'] = 'Niemand zu Hause';
 $l['acp.conditionManagement.condition.UserAtHomeCondition'] = 'Benutzer zu Hause';
+$l['acp.conditionManagement.condition.UserNotAtHomeCondition'] = 'Benutzer nicht zu Hause';
 $l['acp.conditionManagement.condition.DateCondition'] = 'Datumsbereich';
 $l['acp.conditionManagement.condition.DayOfWeekCondition'] = 'Wochentage';
 $l['acp.conditionManagement.condition.TimeOfDayCondition'] = 'Zeitbereich';
 $l['acp.conditionManagement.condition.SunriseSunsetCondition'] = 'Tag';
 $l['acp.conditionManagement.condition.SunsetSunriseCondition'] = 'Nacht';
 $l['acp.conditionManagement.condition.FileExistsCondition'] = 'Datei vorhanden/nicht vorhanden';
+$l['acp.conditionManagement.condition.HolidaysCondition'] = 'Feiertage';
+$l['acp.conditionManagement.condition.InputHighCondition'] = 'Eingang "1"';
+$l['acp.conditionManagement.condition.InputLowCondition'] = 'Eingang "0"';
+$l['acp.conditionManagement.condition.FirstLoopCondition'] = 'Sheduler start';
+
+//Formularfelder
+$l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'Neujahr';
+$l['acp.conditionManagement.form.holiday.EPIPHANY'] = 'Heilige Drei Könige';
+$l['acp.conditionManagement.form.holiday.MAUNDY_THURSDAY'] = 'Gründonnerstag';
+$l['acp.conditionManagement.form.holiday.GOOD_FRIDAY'] = 'Karfreitag';
+$l['acp.conditionManagement.form.holiday.EASTER_DAY'] = 'Ostersonntag';
+$l['acp.conditionManagement.form.holiday.EASTER_MONDAY'] = 'Ostermontag';
+$l['acp.conditionManagement.form.holiday.DAY_OF_WORK'] = 'Tag der Arbeit';
+$l['acp.conditionManagement.form.holiday.ASCENSION_DAY'] = 'Christi Himmelfahrt';
+$l['acp.conditionManagement.form.holiday.WHIT_SUN'] = 'Pfingstsonntag';
+$l['acp.conditionManagement.form.holiday.WHIT_MONDAY'] = 'Pfingstmontag';
+$l['acp.conditionManagement.form.holiday.CORPUS_CHRISTI'] = 'Fronleichnam';
+$l['acp.conditionManagement.form.holiday.ASSUMPTION'] = 'Mariä Himmelfahrt';
+$l['acp.conditionManagement.form.holiday.GERMAN_UNIFICATION_DAY'] = 'Tag der Deutschen Einheit';
+$l['acp.conditionManagement.form.holiday.REFOMATION_DAY'] = 'Reformationstag';
+$l['acp.conditionManagement.form.holiday.ALL_SAINTS_DAY'] = 'Allerheiligen';
+$l['acp.conditionManagement.form.holiday.DAY_OF_REPENTANCE'] = 'Buss- und Bettag';
+$l['acp.conditionManagement.form.holiday.CHRISTMAS_DAY'] = 'Heiligabend';
+$l['acp.conditionManagement.form.holiday.XMAS_DAY'] = '1. Weihnachtstag';
+$l['acp.conditionManagement.form.holiday.BOXING_DAY'] = '2. Weihnachtstag';
+$l['acp.conditionManagement.form.holiday.NEW_YEARS_EVE'] = 'Silvester';
 
 //Formulare
 $l['acp.conditionManagement.form.condition.name'] = 'Name';
@@ -61,6 +88,8 @@ $l['acp.conditionManagement.form.condition.temperature'] = 'Temperatur';
 $l['acp.conditionManagement.form.condition.temperature.description'] = 'wähle die Temperatur (-30 - 120°C) über/unter der die Bedingung zutreffen soll';
 $l['acp.conditionManagement.form.condition.userAtHome'] = 'Benutzer';
 $l['acp.conditionManagement.form.condition.userAtHome.description'] = 'wähle die Benutzer von denen mindestens einer anwesend sein muss damit die Bedingung zutrifft';
+$l['acp.conditionManagement.form.condition.userNotAtHome'] = 'Benutzer';
+$l['acp.conditionManagement.form.condition.userNotAtHome.description'] = 'wähle die Benutzer von denen mindestens einer nicht anwesend sein muss damit die Bedingung zutrifft';
 $l['acp.conditionManagement.form.condition.startDate'] = 'Start Datum';
 $l['acp.conditionManagement.form.condition.startDate.description'] = 'Anfangsdatum des Datumsbereiches';
 $l['acp.conditionManagement.form.condition.endDate'] = 'End Datum';
@@ -85,6 +114,12 @@ $l['acp.conditionManagement.form.condition.delete'] = 'Datei löschen';
 $l['acp.conditionManagement.form.condition.delete.description'] = 'soll die Datei nach dem ausführen gelöscht werden?';
 $l['acp.conditionManagement.form.condition.invert'] = 'Invertieren';
 $l['acp.conditionManagement.form.condition.invert.description'] = 'soll geprüft werden ob die detei nicht Vorhanden ist?';
+$l['acp.conditionManagement.form.condition.holidays'] = 'Feiertage';
+$l['acp.conditionManagement.form.condition.holidays.description'] = 'wähle die Feiertage an denen die Bedingung wahr sein soll';
+$l['acp.conditionManagement.form.condition.holidaysInvert'] = 'Invertieren';
+$l['acp.conditionManagement.form.condition.holidaysInvert.description'] = 'wenn aktiviert is die Bedingung wahr wenn die ausgewählten Feiertage nicht zutreffen';
+$l['acp.conditionManagement.form.condition.inputs'] = 'Eingänge';
+$l['acp.conditionManagement.form.condition.inputs.description'] = 'wähle die Eingänge die überwacht werden sollen';
 
 //Meldungen
 $l['acp.conditionManagement.form.condition.success'] = 'Die Bedingung wurde erfolgreich gespeichert';

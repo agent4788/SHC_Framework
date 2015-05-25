@@ -28,8 +28,10 @@ $l['acp.settings.tabs.ui'] = 'Benutzeroberfläche';
 $l['acp.settings.tabs.ui.description'] = 'Einstellungen zur Benutzeroberfläche';
 
 $l['acp.settings.tabs.redirect.pc'] = 'Weboberfläche';
-$l['acp.settings.tabs.redirect.tablet'] = 'Tabletoberfläche';
-$l['acp.settings.tabs.redirect.smartphone'] = 'Smartphoneoberfläche';
+$l['acp.settings.tabs.redirect.smartphone'] = 'Mobiloberfläche';
+
+$l['acp.settings.tabs.timeline.true'] = 'Intervall (vor 5 Minuten)';
+$l['acp.settings.tabs.timeline.false'] = 'Absulout (11.05.2014 11:15:36)';
 
 $l['acp.settings.form.title'] = 'Titel';
 $l['acp.settings.form.title.decription'] = 'Titel der in der Kopfzeile angezeit wird';
@@ -45,6 +47,8 @@ $l['acp.settings.form.defaultDateFormat'] = 'Datumsformat';
 $l['acp.settings.form.defaultDateFormat.decription'] = 'Standard Datumsformat, die Bedutung der Formatierung ist in der PHP Funktionsbeschreibung der "date" Funktion zu finden';
 $l['acp.settings.form.defaultTimeFormat'] = 'Zeitformat';
 $l['acp.settings.form.defaultTimeFormat.decription'] = 'Standard Zeitformat, die Bedutung der Formatierung ist in der PHP Funktionsbeschreibung der "date" Funktion zu finden';
+$l['acp.settings.form.useTimeline'] = 'Zeitanzeige';
+$l['acp.settings.form.useTimeline.decription'] = 'legt fest wie Datum un Urzeit angezeigt werden sollen';
 $l['acp.settings.form.sunriseOffset'] = 'Offset Sonnenaufgang';
 $l['acp.settings.form.sunriseOffset.decription'] = 'mit dieser Einstellung kann der errechnete Sonnenaufgang verschoben werden (heutiger Sonnenaufgang mit Offset: {1:s} Uhr)';
 $l['acp.settings.form.sunsetOffset'] = 'Offset Sonnenuntergang';

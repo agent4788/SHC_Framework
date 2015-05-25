@@ -1,49 +1,64 @@
-{* Liste aller Schaltserver *}
-<div>
-    <div class="shc-view-content">
-        <table class="shc-view-contentTable">
-            <thead>
-            <tr>
-                <th style="width: 50%;">{lang var="acp.switchserverManagement.serverList.table.head.name"}</th>
-                <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.ip"}</th>
-                <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.radioSockets"}</th>
-                <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.readGPIOs"}</th>
-                <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.writeGPIOs"}</th>
-                <th style="width: 10%;">{lang var="acpindex.options"}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {foreach from=$switchServerList item='switchServer'}
-            <tr>
-                <td>{if $switchServer->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$switchServer->getName()}{if $switchServer->isEnabled() == false}</span>{/if}</td>
-                <td>{#$switchServer->getIpAddress()}</td>
-                <td>{if $switchServer->isRadioSocketsEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
-                <td>{if $switchServer->isReadGpiosEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
-                <td>{if $switchServer->isWriteGpiosEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
-                <td>
-                    {editlink link='index.php?app=shc&ajax=editswitchserverform&id=' id=$switchServer->getId()}
-                    {deletelink link='index.php?app=shc&ajax=deleteswitchserver&id=' id=$switchServer->getId() prompt='acp.switchserverManagement.prompt.deletSwitchServer' title='acp.switchserverManagement.prompt.deletSwitchServer.title'}
-                </td>
-            </tr>
-            {foreachelse}
-            <tr>
-                <td colspan="6">{lang var='acpindex.emptyList'}</td>
-            </tr>
-            {/foreach}
-            </tbody>
-        </table>
-    </div>
-    <div class="shc-view-buttons">
-        <div class="shc-view-buttonSet">
-            {acpbackbutton location="index.php?app=shc&page=acp"}
-            {acpbutton link="index.php?app=shc&ajax=addswitchserverform" text="acp.switchserverManagement.button.addSwitchServer"}
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $(function() {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="shc-content">
+            {contentbox name="acp.switchserverManagement.title" id='shc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="shc-view-content">
+                    <table class="shc-view-contentTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 50%;">{lang var="acp.switchserverManagement.serverList.table.head.name"}</th>
+                            <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.ip"}</th>
+                            <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.radioSockets"}</th>
+                            <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.readGPIOs"}</th>
+                            <th style="width: 10%;">{lang var="acp.switchserverManagement.serverList.table.head.writeGPIOs"}</th>
+                            <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$switchServerList item='switchServer'}
+                        <tr>
+                            <td>{if $switchServer->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$switchServer->getName()}{if $switchServer->isEnabled() == false}</span>{/if}</td>
+                            <td>{#$switchServer->getIpAddress()}</td>
+                            <td>{if $switchServer->isRadioSocketsEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
+                            <td>{if $switchServer->isReadGpiosEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
+                            <td>{if $switchServer->isWriteGpiosEnabled() == true}<span class="green">{lang var='global.yes'}</span>{else}<span class="red">{lang var='global.no'}</span>{/if}</td>
+                            <td>
+                                {editlink link='index.php?app=shc&page=editswitchserverform&id=' id=$switchServer->getId()}
+                                {deletelink link='index.php?app=shc&action=deleteswitchserver&id=' id=$switchServer->getId() prompt='acp.switchserverManagement.prompt.deletSwitchServer' title='acp.switchserverManagement.prompt.deletSwitchServer.title'}
+                            </td>
+                        </tr>
+                        {foreachelse}
+                        <tr>
+                            <td colspan="6">{lang var='acpindex.emptyList'}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="shc-view-buttons">
+                    <div class="shc-view-buttonSet">
+                        <a href="index.php?app=shc&page=acp">{lang var='global.button.back'}</a>
+                        <a href="index.php?app=shc&page=addswitchserverform">{lang var='acp.switchserverManagement.button.addSwitchServer'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
 
-        $('#shc-view-acp-contentBox .shc-contentbox-header').text('{lang var="acp.switchserverManagement.title"}');
-        $('.shc-view-buttonSet').buttonset();
-    });
-</script>
+                    $('.shc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

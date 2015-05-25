@@ -18,6 +18,52 @@ use RWF\Date\Calendar\Calendar;
 class GermanHolidays {
 
     /**
+     * Feiertage
+     *
+     * @var Integer
+     */
+    //Neujahr
+    const NEW_YEARS_DAY = 1;
+    //Heilige Drei Koenige
+    const EPIPHANY = 2;
+    //Gruendonnerstag
+    const MAUNDY_THURSDAY = 4;
+    //Karfreitag
+    const GOOD_FRIDAY = 8;
+    //Ostersonntag
+    const EASTER_DAY = 16;
+    //Ostermontag
+    const EASTER_MONDAY = 32;
+    //Tag der Arbeit
+    const DAY_OF_WORK = 64;
+    //Christi Himmelfahrt
+    const ASCENSION_DAY = 128;
+    //Pfingstsonntag
+    const WHIT_SUN = 256;
+    //Pfingstmontag
+    const WHIT_MONDAY = 512;
+    //Fronleichnam
+    const CORPUS_CHRISTI = 1024;
+    //Tag der Deutschen Einheit
+    const GERMAN_UNIFICATION_DAY = 2048;
+    //Reformationstag
+    const REFOMATION_DAY = 4096;
+    //Allerheiligen
+    const ALL_SAINTS_DAY = 8192;
+    //Buss- und Bettag
+    const DAY_OF_REPENTANCE = 16384;
+    //Heiligabend
+    const CHRISTMAS_DAY = 32768;
+    //1. Weihnachtstag
+    const XMAS_DAY = 65536;
+    //2. Weihnachtstag
+    const BOXING_DAY = 131072;
+    //Silvester
+    const NEW_YEARS_EVE = 262144;
+    //Mariae Himmelfahrt
+    const ASSUMPTION = 524288;
+
+    /**
      * Jahr
      * 
      * @var Integer
@@ -34,7 +80,7 @@ class GermanHolidays {
     /**
      * Datum des Ostersonntag
      * 
-     * @var hf\date\DateTime
+     * @var \RWF\Date\DateTime
      */
     protected $easterDate = null;
 
@@ -79,7 +125,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Neujahr zurueck
      * 
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getNewYearsDay() {
 
@@ -89,9 +135,9 @@ class GermanHolidays {
     }
 
     /**
-     * gibt das Datum von Heilige Drei Könige zurueck
+     * gibt das Datum von Heilige Drei Koenige zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getEpiphany() {
 
@@ -103,7 +149,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Gruendonnerstag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getMaundyThursday() {
 
@@ -115,7 +161,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Karfreitag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getGoodFriday() {
 
@@ -127,7 +173,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Ostersonntag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getEasterDay() {
 
@@ -137,7 +183,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Ostermontag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getEasterMonday() {
 
@@ -149,7 +195,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Tag der Arbeit zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getDayOfWork() {
 
@@ -161,7 +207,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Christi Himmelfahrt zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getAscensionDay() {
 
@@ -173,7 +219,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Pfingstsonntag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getWhitsun() {
 
@@ -185,7 +231,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Pfingstmontag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getWhitMonday() {
 
@@ -197,7 +243,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Fronleichnam zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getCorpusChristi() {
 
@@ -207,9 +253,21 @@ class GermanHolidays {
     }
 
     /**
+     * gibt das Datum von Mariae Himmelfahrt zurueck
+     *
+     * @return \RWF\Date\DateTime
+     */
+    public function getAssumption() {
+
+        $date = new DateTime(null, $this->timeZone);
+        $date->setDate($this->year, 8, 15);
+        return $date;
+    }
+
+    /**
      * gibt das Datum von Tag der Deutschen Einheit zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getGermanUnificationDay() {
 
@@ -221,7 +279,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Reformationstag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getReformationDay() {
 
@@ -233,7 +291,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Allerheiligen zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getAllSaintsDay() {
 
@@ -245,7 +303,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Buss- und Bettag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getDayOfRepentance() {
 
@@ -264,7 +322,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Heiligabend zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getChristmasDay() {
 
@@ -276,7 +334,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von 1. Weihnachtstag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getXmasDay() {
 
@@ -288,7 +346,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von 2. Weihnachtstag zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getBoxingDay() {
 
@@ -300,7 +358,7 @@ class GermanHolidays {
     /**
      * gibt das Datum von Silvester zurueck
      *
-     * @return \hf\date\DateTime
+     * @return \RWF\Date\DateTime
      */
     public function getNewYearsEve() {
 

@@ -10,7 +10,10 @@ use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -23,22 +26,28 @@ use SHC\Switchable\Switchables\WakeOnLan;
  * @version    2.0.0-0
  */
 class SwitchableViewHelper {
-    
+
+    /**
+     * Raum ID
+     *
+     * @var Integer
+     */
+    protected static $roomId = 0;
+
     /**
      * erstellt das HTML Fragment zur Anzeige eines schaltbaren Elements
-     * 
+     *
+     * @param  Integer                     $roomId     Raum ID
      * @param  \SHC\Switchable\Switchable  $switchable schaltbares Element
      * @param  Booelan                     $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
-    public static function showSwitchable(Switchable $switchable, $ignoreShow = false) {
+    public static function showSwitchable($roomId, Switchable $switchable, $ignoreShow = false) {
 
+        self::$roomId = $roomId;
         if ($switchable instanceof Activity) {
 
             return self::showActivity($switchable, $ignoreShow);
-        } elseif ($switchable instanceof ArduinoOutput) {
-
-            return self::showArduinoOutput($switchable, $ignoreShow);
         } elseif ($switchable instanceof Countdown) {
 
             return self::showCountdown($switchable, $ignoreShow);
@@ -51,6 +60,15 @@ class SwitchableViewHelper {
         } elseif ($switchable instanceof WakeOnLan) {
 
             return self::showWakeOnLan($switchable, $ignoreShow);
+        } elseif ($switchable instanceof Reboot) {
+
+            return self::showReboot($switchable, $ignoreShow);
+        } elseif ($switchable instanceof Shutdown) {
+
+            return self::showShutdown($switchable, $ignoreShow);
+        } elseif ($switchable instanceof Script) {
+
+            return self::showScript($switchable, $ignoreShow);
         }
         return '<span>Unbekanntes schaltbares Element</span>';
     }
@@ -69,6 +87,8 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -76,32 +96,6 @@ class SwitchableViewHelper {
             } else {
                     //Web Ansicht
                 $html = $tpl->fetchString('activity.html');
-            }
-        }
-        return $html;
-    }
-    
-    /**
-     * bereitet die Daten eines Arduino Ausgangs zur Anzeige vor
-     *  
-     * @param  \SHC\Switchable\Switchables\ArduinoOutput $switchable ArduinoOutput
-     * @param  Boolean                                   $ignoreShow Anzeigeeinstellungen ignorieren
-     * @return String
-     */
-    protected static function showArduinoOutput(ArduinoOutput $switchable, $ignoreShow = false) {
-        
-        $html = '';
-        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
-
-            $tpl = SHC::getTemplate();
-            $tpl->assign('switchable', $switchable);
-            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
-
-                //Mobil Ansicht
-                $html = $tpl->fetchString('mobileArduinoOutput.html');
-            } else {
-                //Web Ansicht
-                $html = $tpl->fetchString('arduinoOutput.html');
             }
         }
         return $html;
@@ -121,6 +115,8 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -147,6 +143,8 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -173,6 +171,8 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -199,6 +199,8 @@ class SwitchableViewHelper {
 
             $tpl = SHC::getTemplate();
             $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobil Ansicht
@@ -206,6 +208,90 @@ class SwitchableViewHelper {
             } else {
                 //Web Ansicht
                 $html = $tpl->fetchString('wakeOnLan.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer Neustar zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\Reboot $switchable Neustart
+     * @param  Boolean                            $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showReboot(Reboot $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileReboot.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('reboot.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer Shutdown zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\Shutdown $switchable Herunterfahren
+     * @param  Boolean                              $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showShutdown(Shutdown $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileShutdown.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('shutdown.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer Script zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\Script $switchable Script
+     * @param  Boolean                            $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showScript(Script $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileScript.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('script.html');
             }
         }
         return $html;

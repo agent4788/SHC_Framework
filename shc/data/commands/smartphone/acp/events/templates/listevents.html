@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.eventsManagement.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    {foreach from=$eventList item='event'}
+                    <li>
+                        <a href="#tooltip-{$event->getId()}" data-rel="dialog">
+                            <h2>
+                                {if $event->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$event->getName()}{if $event->isEnabled() == false}</span>{/if}
+                            </h2>
+                            <p>
+                                {lang var="acp.eventsManagement.eventList.table.head.type"}:
+                                {instanceof element=$event class='\SHC\Event\Events\HumidityClimbOver'}{lang var="acp.eventsManagement.events.HumidityClimbOver"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\HumidityFallsBelow'}{lang var="acp.eventsManagement.events.HumidityFallsBelow"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\InputHigh'}{lang var="acp.eventsManagement.events.InputHigh"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\InputLow'}{lang var="acp.eventsManagement.events.InputLow"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\LightIntensityClimbOver'}{lang var="acp.eventsManagement.events.LightIntensityClimbOver"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\LightIntensityFallBelow'}{lang var="acp.eventsManagement.events.LightIntensityFallBelow"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\MoistureClimbOver'}{lang var="acp.eventsManagement.events.MoistureClimbOver"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\MoistureFallsBelow'}{lang var="acp.eventsManagement.events.MoistureFallsBelow"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\TemperatureClimbOver'}{lang var="acp.eventsManagement.events.TemperatureClimbOver"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\TemperatureFallsBelow'}{lang var="acp.eventsManagement.events.TemperatureFallsBelow"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\UserComesHome'}{lang var="acp.eventsManagement.events.UserComesHome"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\UserLeavesHome'}{lang var="acp.eventsManagement.events.UserLeavesHome"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\Sunrise'}{lang var="acp.eventsManagement.events.Sunrise"}{/instanceof}
+                                {instanceof element=$event class='\SHC\Event\Events\Sunset'}{lang var="acp.eventsManagement.events.Sunset"}{/instanceof}
+                                <br/>
+                                {lang var="acp.eventsManagement.eventList.table.head.lastExecute"}:
+                                {if $event->getLastExecute()->format('d.m.Y') != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}
+                            </p>
+                        </a>
+                        <a href="#delete-{$event->getId()}" data-rel="dialog">{lang var="acpindex.options"}</a>
+                    </li>
+                    {foreachelse}
+                    <li>
+                        <h2>{lang var='acpindex.emptyList'}</h2>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="index.php?app=shc&m&page=listevents" data-icon="refresh">{lang var="acpindex.reload"}</a></li>
+                        <li><a href="index.php?app=shc&m&page=addeventform" data-icon="plus">{lang var='acp.eventsManagement.button.addEvent'}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {foreach from=$eventList item='event'}
+        <div data-role="page" id="tooltip-{$event->getId()}" data-dialog="true">
+            <div data-role="header" data-theme="a">
+                <h1>{#$event->getName()}</h1>
+            </div>
+            <div role="main" class="ui-content">
+                <a href="index.php?app=shc&m&page=manageswitchablesinevents&id={$event->getId()}" class="ui-btn">{lang var='global.button.editlist'}</a>
+                <a href="index.php?app=shc&m&page=editeventform&id={$event->getId()}" class="ui-btn">{lang var='global.button.edit'}</a>
+            </div>
+        </div>
+        <div data-role="page" id="delete-{$event->getId()}">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.eventsManagement.prompt.deleteEvent.title"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p>{lang var="acp.eventsManagement.prompt.deleteEvent"}</p>
+                <a href="index.php?app=shc&m&action=deleteevent&id={$event->getId()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" data-rel="back">{lang var="global.no"}</a>
+            </div>
+        </div>
+        {/foreach}
+    </body>
+</html>

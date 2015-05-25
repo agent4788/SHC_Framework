@@ -20,37 +20,38 @@
                 <h2>{lang var='acpindex.menu.group.main'}</h2>
                 <hr/>
                 <div class="shc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.users' icon='shc-view-acp-menu-usermanagement' link='index.php?app=shc&ajax=listusers' premission='shc.acp.userManagement'}
-                    {acpmenuitem text='acpindex.menu.settings' icon='shc-view-acp-menu-settings' link='index.php?app=shc&ajax=settingsform' premission='shc.acp.settings'}
-                    {acpmenuitem text='acpindex.menu.backup' icon='shc-view-acp-menu-backup' link='index.php?app=shc&ajax=listbackups' premission='shc.acp.backupsManagement'}
+                    {acpmenuitem text='acpindex.menu.users' icon='shc-view-acp-menu-usermanagement' link='index.php?app=shc&page=listusers' premission='shc.acp.userManagement'}
+                    {acpmenuitem text='acpindex.menu.settings' icon='shc-view-acp-menu-settings' link='index.php?app=shc&page=settingsform' premission='shc.acp.settings'}
+                    {acpmenuitem text='acpindex.menu.database' icon='shc-view-acp-menu-database' link='index.php?app=shc&page=database' premission='shc.acp.databaseManagement'}
+                    {acpmenuitem text='acpindex.menu.backup' icon='shc-view-acp-menu-backup' link='index.php?app=shc&page=listbackups' premission='shc.acp.backupsManagement'}
                 </div>
             </div>
             <div class="shc-view-acp-menuGroup">
                 <h2>{lang var='acpindex.menu.group.smartHome'}</h2>
                 <hr/>
                 <div class="shc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.rooms' icon='shc-view-acp-menu-rooms' link='index.php?app=shc&ajax=listrooms' premission='shc.acp.roomManagement'}
-                    {acpmenuitem text='acpindex.menu.switchFunctions' icon='shc-view-acp-menu-switchfunctions' link='index.php?app=shc&ajax=listswitchables' premission='shc.acp.switchableManagement'}
-                    {acpmenuitem text='acpindex.menu.sensorPoints' icon='shc-view-acp-menu-sensorpoints' link='index.php?app=shc&ajax=listsensorpoints' premission='shc.acp.sensorpointsManagement'}
-                    {acpmenuitem text='acpindex.menu.userAtHome' icon='shc-view-acp-menu-usersathome' link='index.php?app=shc&ajax=listusersathome' premission='shc.acp.usersathomeManagement'}
+                    {acpmenuitem text='acpindex.menu.rooms' icon='shc-view-acp-menu-rooms' link='index.php?app=shc&page=listrooms' premission='shc.acp.roomManagement'}
+                    {acpmenuitem text='acpindex.menu.switchFunctions' icon='shc-view-acp-menu-switchfunctions' link='index.php?app=shc&page=listswitchables' premission='shc.acp.switchableManagement'}
+                    {acpmenuitem text='acpindex.menu.sensorPoints' icon='shc-view-acp-menu-sensorpoints' link='index.php?app=shc&page=listsensorpoints' premission='shc.acp.sensorpointsManagement'}
+                    {acpmenuitem text='acpindex.menu.userAtHome' icon='shc-view-acp-menu-usersathome' link='index.php?app=shc&page=listusersathome' premission='shc.acp.usersathomeManagement'}
                 </div>
             </div>
             <div class="shc-view-acp-menuGroup">
                 <h2>{lang var='acpindex.menu.group.homeAutomation'}</h2>
                 <hr/>
                 <div class="shc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.conditions' icon='shc-view-acp-menu-conditions' link='index.php?app=shc&ajax=listconditions' premission='shc.acp.conditionsManagement'}
-                    {acpmenuitem text='acpindex.menu.switchPoints' icon='shc-view-acp-menu-switchpoints' link='index.php?app=shc&ajax=listswitchpoints' premission='shc.acp.switchpointsManagement'}
-                    {acpmenuitem text='acpindex.menu.events' icon='shc-view-acp-menu-events' link='index.php?app=shc&ajax=listevents' premission='shc.acp.eventsManagement'}
+                    {acpmenuitem text='acpindex.menu.conditions' icon='shc-view-acp-menu-conditions' link='index.php?app=shc&page=listconditions' premission='shc.acp.conditionsManagement'}
+                    {acpmenuitem text='acpindex.menu.switchPoints' icon='shc-view-acp-menu-switchpoints' link='index.php?app=shc&page=listswitchpoints' premission='shc.acp.switchpointsManagement'}
+                    {acpmenuitem text='acpindex.menu.events' icon='shc-view-acp-menu-events' link='index.php?app=shc&page=listevents' premission='shc.acp.eventsManagement'}
                 </div>
             </div>
             <div class="shc-view-acp-menuGroup">
                 <h2>{lang var='acpindex.menu.group.other'}</h2>
                 <hr/>
                 <div class="shc-view-acp-menuGroup-body">
-                    {acpmenuitem text='acpindex.menu.serverStatus' icon='shc-view-acp-menu-serverstate' link='index.php?app=shc&ajax=daemonstate' premission='shc.acp.menu'}
-                    {acpmenuitem text='acpindex.menu.switchServer' icon='shc-view-acp-menu-switchservers' link='index.php?app=shc&ajax=listswitchservers' premission='shc.acp.switchserverManagement'}
-                    {acpmenuitem text='acpindex.menu.info' icon='shc-view-acp-menu-info' link='index.php?app=shc&ajax=info' premission='shc.acp.menu'}
+                    {acpmenuitem text='acpindex.menu.serverStatus' icon='shc-view-acp-menu-serverstate' link='index.php?app=shc&page=daemonstate' premission='shc.acp.menu'}
+                    {acpmenuitem text='acpindex.menu.switchServer' icon='shc-view-acp-menu-switchservers' link='index.php?app=shc&page=listswitchservers' premission='shc.acp.switchserverManagement'}
+                    {acpmenuitem text='acpindex.menu.info' icon='shc-view-acp-menu-info' link='index.php?app=shc&page=info' premission='shc.acp.menu'}
                 </div>
             </div>
             {/contentbox}

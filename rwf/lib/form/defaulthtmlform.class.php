@@ -36,7 +36,11 @@ class DefaultHtmlForm extends AbstractForm {
      */
     public function fetchDescription() {
 
-        return '<div class="rwf-ui-form-description-container"><div class="rwf-ui-form-description-text">' . String::encodeHTML($this->getDescription()) . '</div></div>' . "\n";
+        if($this->getDescription() != '') {
+
+            return '<div class="rwf-ui-form-description-container"><div class="rwf-ui-form-description-text">' . String::encodeHTML($this->getDescription()) . '</div></div>' . "\n";
+        }
+        return '';
     }
 
     /**

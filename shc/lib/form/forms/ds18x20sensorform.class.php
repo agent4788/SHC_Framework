@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\RoomChooser;
@@ -39,12 +40,12 @@ class DS18x20SensorForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Raum
-        $room = new RoomChooser('room', ($sensor instanceof DS18x20 && $sensor->getRoom() instanceof Room ? $sensor->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($sensor instanceof DS18x20 && count($sensor->getRooms()) > 0 ? $sensor->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Sichtbarkeit
         $visibility = new OnOffOption('visibility', ($sensor instanceof DS18x20 ? $sensor->isVisible() : true));
@@ -61,6 +62,13 @@ class DS18x20SensorForm extends DefaultHtmlForm {
         $temperatureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureVisibility.description'));
         $temperatureVisibility->requiredField(true);
         $this->addFormElement($temperatureVisibility);
+
+        //Temperatur Offset
+        $temperatureOffset = new FloatInputField('tempOffset', ($sensor instanceof DS18x20 ? $sensor->getTemperatureOffset() : 0.0), array('min' => -10.0, 'max' => 10.0, 'step' => 0.1));
+        $temperatureOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureOffset'));
+        $temperatureOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
+        $temperatureOffset->requiredField(true);
+        $this->addFormElement($temperatureOffset);
 
         //Daten Aufzeichnung
         $dataRecording = new OnOffOption('dataRecording', ($sensor instanceof DS18x20 ? $sensor->isDataRecordingEnabled() : false));

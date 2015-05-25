@@ -5,9 +5,9 @@ namespace SHC\Sensor;
 //Imports
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
-use RWF\IO\UDPSocket;
 use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
+use SHC\Core\SHC;
 
 /**
  * Liest Sensordaten vom Arduino aus
@@ -21,27 +21,85 @@ use RWF\Util\FileUtil;
 class SensorDataTransmitter {
 
     /**
-     * verbindet sich mit dem Sensor Reciver
-     * 
-     * @return \RWF\IO\Socket
+     * gibt die Sensordaten zur Fehlersuche auf die Kommandozeile aus
+     *
+     * @param Array $data Daten
      */
-    protected function connect() {
+    protected function printDebugData(array $data) {
 
-        //Vebindung zum RPi Reader Server aufbauen
-        $sensorReciver = new UDPSocket(RWF::getSetting('shc.sensorTransmitter.ip'), RWF::getSetting('shc.sensorTransmitter.port'), 2);
-        try {
+        switch($data['type']) {
 
-            $sensorReciver->open();
-        } catch (\Exception $e) {
+            case 1:
+
+                echo "Typ: DS18x20\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                break;
+            case 2:
+
+                echo "Typ: DHT11 oder DHT22\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                echo "Luftfeuchte: ". $data['v2'] ."%\n";
+                break;
+            case 3:
+
+                echo "Typ: BMP085 oder BMP180\n";
+                echo "Sensor Punkt Id: ". $data['spid'] ."\n";
+                echo "Sensor ID: ". $data['sid'] ."\n";
+                echo "Temeratur: ". $data['v1'] ."°C\n";
+                echo "Luftdruck: ". $data['v2'] ."pa\n";
+                echo "Standorhöhe: ". $data['v3'] ."m\n";
+                break;
+            default:
+
+        }
+        echo "-----------------------------------------------------------------------------\n";
+    }
+
+    /**
+     * sendet eine HTTP Anfrage
+     * @param  Array   $getParameter HTTP GET Parameter
+     * @return Boolean
+     */
+    protected function sendHttpRequest(array $getParameter) {
+
+        //Get Parameter vorbereiten
+        $get = '';
+        foreach($getParameter as $name => $value) {
+
+            $get .= '&' . rawurlencode($name) .'='. rawurlencode($value);
+        }
+
+        //HTTP Anfrage
+        $http_options = stream_context_create(array(
+            'http' => array(
+                'method'  => 'GET',
+                'user_agent' => "SHC Framework Sensor Transmitter Version ". SHC::VERSION,
+                'max_redirects' => 3
+            )
+        ));
+        $result = @file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
+
+        //Verbindung Fehlgeschlagen
+        if($result === false) {
 
             $cli = new CliUtil();
-            $cli->writeLineColored('Die Verbindung zum Server (' . RWF::getSetting('shc.sensorTransmitter.ip') . ':' . RWF::getSetting('shc.sensorTransmitter.port') . ') konnte nicht hergestellt werden', 'red');
+            $cli->writeLineColored('Verbindung zum Server "'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'" fehlgeschlagen', 'red');
+            $cli->writeLineColored('erneuter Versuch in 30 Sekunden', 'yellow');
 
-            //30 Sekunden warten dann wieder versuchen
+            //30 Sekunden Wartezeit
             sleep(30);
         }
 
-        return $sensorReciver;
+        //Auswertung der Rueckantwort
+        if($result == 1) {
+
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -51,133 +109,158 @@ class SensorDataTransmitter {
      */
     public function transmitSensorData($debug = false) {
 
+        //Wartezeit vorbereiten
+        $nextRuntime = DateTime::now();
+        $LEDnextRuntime = DateTime::now();
+
+        //GPIO Vorbereiten
+        $pin = RWF::getSetting('shc.sensorTransmitter.blinkPin');
+        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        $state = 0;
+
+        //Status LED initalisieren
+        if($pin >= 0) {
+
+            @shell_exec($gpioPath . ' mode ' . escapeshellarg($pin) . ' out');
+        }
+
         while (true) {
 
-            //DS18x20 einlesen und an den Server senden
-            if (file_exists('/sys/bus/w1/devices/')) {
+            if($nextRuntime  <= DateTime::now()) {
 
-                $dir = opendir('/sys/bus/w1/devices/');
-                while ($file = readdir($dir)) {
+                //DS18x20 einlesen und an den Server senden
+                if (file_exists('/sys/bus/w1/devices/')) {
 
-                    //Sensor suchen
-                    if (preg_match('#^(10)|(22)|(28)-#', $file) && is_dir('/sys/bus/w1/devices/' . $file)) {
+                    $dir = opendir('/sys/bus/w1/devices/');
+                    while ($file = readdir($dir)) {
 
-                        //Temperatur lesen
-                        $dataRaw = file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
-                        $match = array();
-                        preg_match('#t=(\d{1,6})#', $dataRaw, $match);
-                        $temp = $match[1] / 1000;
+                        //Sensor suchen
+                        if (preg_match('#^(10)|(22)|(28)-#', $file) && is_dir('/sys/bus/w1/devices/' . $file)) {
+
+                            //Temperatur lesen
+                            $dataRaw = @file_get_contents('/sys/bus/w1/devices/' . $file . '/w1_slave');
+
+                            //naechster Durchlauf wenn Sensor nicht gelesen werden kann
+                            if($dataRaw == false) {
+
+                                continue;
+                            }
+
+                            //Daten zum senden vorbereiten
+                            $match = array();
+                            preg_match('#t=(\d{1,6})#', $dataRaw, $match);
+                            $temp = $match[1] / 1000;
+
+                            //Datenpaket vorbereiten
+                            $data = array(
+                                'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                                'type' => 1,
+                                'sid' => $file,
+                                'v1' => $temp
+                            );
+
+                            //Debug Ausgabe
+                            if ($debug) {
+
+                                $this->printDebugData($data);
+                            }
+
+                            //Daten senden
+                            $this->sendHttpRequest($data);
+                        }
+                    }
+                }
+
+                //DHT
+                $dhts = SensorEditor::getInstance()->listDHT();
+                foreach($dhts as $dht) {
+
+                    $values = SensorEditor::getInstance()->readDHT($dht['id']);
+
+                    if(!isset($values[0])) {
 
                         //Datenpaket vorbereiten
                         $data = array(
-                            'succsess' => true,
-                            'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                            'sensorTypeId' => 1,
-                            'sensorId' => $file,
-                            'sensorValues' => array(
-                                'temp' => $temp
-                            )
+                            'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                            'type' => 2,
+                            'sid' => $dht['id'],
+                            'v1' => $values['temp'],
+                            'v2' => $values['hum']
                         );
 
                         //Debug Ausgabe
                         if ($debug) {
 
-                            var_dump($data);
+                            $this->printDebugData($data);
                         }
 
-                        //Daten an den Sensor Reciver senden
-                        $sensorReciver = $this->connect();
-                        $sensorReciver->write(base64_encode(json_encode($data)));
-                        $sensorReciver->close();
-                        $sensorReciver = null;
+                        //Daten senden
+                        $this->sendHttpRequest($data);
                     }
                 }
-            }
 
-            //DHT
-            $dhts = SensorEditor::getInstance()->listDHT();
-            foreach($dhts as $dht) {
+                //BMP
+                if(SensorEditor::getInstance()->isBMPenabled()) {
 
-                $values = SensorEditor::getInstance()->readDHT($dht['id']);
-
-                if(!isset($values[0])) {
+                    $values = SensorEditor::getInstance()->readBMP();
 
                     //Datenpaket vorbereiten
                     $data = array(
-                        'succsess' => true,
-                        'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                        'sensorTypeId' => 2,
-                        'sensorId' => $dht['id'],
-                        'sensorValues' => array(
-                            'temp' => $values['temp'],
-                            'hum' => $values['hum']
-                        )
+                        'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                        'type' => 3,
+                        'sid' => SensorEditor::getInstance()->getBMPsensorId(),
+                        'v1' => $values['temp'],
+                        'v2' => $values['press'],
+                        'v3' => $values['alti']
                     );
 
                     //Debug Ausgabe
                     if ($debug) {
 
-                        var_dump($data);
+                        $this->printDebugData($data);
                     }
 
-                    //Daten an den Sensor Reciver senden
-                    $sensorReciver = $this->connect();
-                    $sensorReciver->write(base64_encode(json_encode($data)));
-                    $sensorReciver->close();
-                    $sensorReciver = null;
-                }
-            }
-
-            //BMP
-            if(SensorEditor::getInstance()->isBMPenabled()) {
-
-                $values = SensorEditor::getInstance()->readBMP();
-
-                //Datenpaket vorbereiten
-                $data = array(
-                    'succsess' => true,
-                    'sensorPointId' => RWF::getSetting('shc.sensorTransmitter.pointId'),
-                    'sensorTypeId' => 3,
-                    'sensorId' => SensorEditor::getInstance()->getBMPsensorId(),
-                    'sensorValues' => array(
-                        'temp' => $values['temp'],
-                        'press' => $values['press'],
-                        'alti' => $values['alti']
-                    )
-                );
-
-                //Debug Ausgabe
-                if ($debug) {
-
-                    var_dump($data);
+                    //Daten senden
+                    $this->sendHttpRequest($data);
                 }
 
-                //Daten an den Sensor Reciver senden
-                $sensorReciver = $this->connect();
-                $sensorReciver->write(base64_encode(json_encode($data)));
-                $sensorReciver->close();
-                $sensorReciver = null;
-            }
+                //MCP3008 oder MCP3208 fuer die Analogsensoren
 
-            //MCP3008 oder MCP3208 fuer die Analogsensoren
+                //Run Flag alle 60 Sekunden setzen
+                if(!isset($time)) {
 
-            //Run Flag alle 60 Sekunden setzen
-            if(!isset($time)) {
-
-                $time = DateTime::now();
-            }
-            if($time <= DateTime::now()) {
-
-                if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
-
-                    FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
+                    $time = DateTime::now();
                 }
-                file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
-                $time->add(new \DateInterval('PT1M'));
+                if($time <= DateTime::now()) {
+
+                    if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
+
+                        FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
+                    }
+                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
+                    $time->add(new \DateInterval('PT1M'));
+                }
+
+                //Wartezeit setzen
+                $nextRuntime = DateTime::now()->add(new \DateInterval('PT30S'));
             }
 
-            //wartezeit bis zum neachsten Sendevorgang
-            sleep(10);
+            //Status LED
+            if($pin >= 0 && $LEDnextRuntime <= DateTime::now()) {
+
+                if($state === 0) {
+
+                    @shell_exec($gpioPath . ' write ' . escapeshellarg($pin) . ' 1');
+                    $state = 1;
+                } else {
+
+                    @shell_exec($gpioPath . ' write ' . escapeshellarg($pin) . ' 0');
+                    $state = 0;
+                }
+
+                //Wartezeit setzen
+                $LEDnextRuntime = DateTime::now()->add(new \DateInterval('PT1S'));
+            }
         }
     }
 

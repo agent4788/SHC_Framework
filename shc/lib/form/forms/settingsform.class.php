@@ -92,6 +92,17 @@ class SettingsForm extends TabbedHtmlForm {
         $timeFormat->requiredField(true);
         $this->addFormElementToTab('dateTime', $timeFormat);
 
+        //Timeline
+        $useTimeline = new Select('rwf_date_useTimeline');
+        $useTimeline->setValues(array(
+            1 => array(RWF::getLanguage()->get('acp.settings.tabs.timeline.true'), (RWF::getSetting('rwf.date.useTimeline') == 1 ? 1 : 0)),
+            0 => array(RWF::getLanguage()->get('acp.settings.tabs.timeline.false'), (RWF::getSetting('rwf.date.useTimeline') == 0 ? 1 : 0))
+        ));
+        $useTimeline->setTitle(RWF::getLanguage()->get('acp.settings.form.useTimeline'));
+        $useTimeline->setDescription(RWF::getLanguage()->get('acp.settings.form.useTimeline.decription'));
+        $useTimeline->requiredField(true);
+        $this->addFormElementToTab('dateTime', $useTimeline);
+
         //Offset Sunenaufgang
         $sunriseOffset = new IntegerInputField('rwf_date_sunriseOffset',RWF::getSetting('rwf.date.sunriseOffset'), array('min' => -90, 'max' => 90));
         $sunriseOffset->setTitle(RWF::getLanguage()->get('acp.settings.form.sunriseOffset'));
@@ -141,7 +152,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectPc = new Select('shc_ui_redirectPcTo');
         $redirectPc->setValues(array(
                 1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('shc.ui.redirectPcTo') == 1 ? 1 : 0)),
-                2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('shc.ui.redirectPcTo') == 2 ? 1 : 0)),
                 3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('shc.ui.redirectPcTo') == 3 ? 1 : 0))
         ));
         $redirectPc->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectPcTo'));
@@ -153,7 +163,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectTablet = new Select('shc_ui_redirectTabletTo');
         $redirectTablet->setValues(array(
             1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('shc.ui.redirectTabletTo') == 1 ? 1 : 0)),
-            2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('shc.ui.redirectTabletTo') == 2 ? 1 : 0)),
             3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('shc.ui.redirectTabletTo') == 3 ? 1 : 0))
         ));
         $redirectTablet->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectTabletTo'));
@@ -165,7 +174,6 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectSmartphone = new Select('shc_ui_redirectSmartphoneTo');
         $redirectSmartphone->setValues(array(
             1 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.pc'), (RWF::getSetting('shc.ui.redirectSmartphoneTo') == 1 ? 1 : 0)),
-            2 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.tablet'), (RWF::getSetting('shc.ui.redirectSmartphoneTo') == 2 ? 1 : 0)),
             3 => array(RWF::getLanguage()->get('acp.settings.tabs.redirect.smartphone'), (RWF::getSetting('shc.ui.redirectSmartphoneTo') == 3 ? 1 : 0))
         ));
         $redirectSmartphone->setTitle(RWF::getLanguage()->get('acp.settings.form.redirectSmartphoneTo'));

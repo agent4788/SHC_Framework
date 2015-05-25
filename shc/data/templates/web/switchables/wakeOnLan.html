@@ -1,9 +1,9 @@
 <div class="shc-contentbox-body-row shc-view-switchable">
     <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
-    <span id="shc-view-wolDevice-{$switchable->getId()}" class="shc-icon {if $switchable->getState() == 1}shc-icon-online{else}shc-icon-offline{/if}"></span>
+    <span id="shc-view-wolDevice-{$roomId}-{$switchable->getId()}" class="shc-icon {if $switchable->getState() == 1}shc-icon-online{else}shc-icon-offline{/if}"></span>
     <div class="shc-contentbox-body-row-content">
-        <div id="shc-view-switchable-set-{$switchable->getId()}">
-            <button id="shc-view-switchable-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.start'}</button>
+        <div id="shc-view-switchable-set-{$roomId}-{$switchable->getId()}">
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">{lang var='index.room.button.start'}</button>
         </div>
     </div>
 </div>
@@ -11,9 +11,9 @@
     $(function () {
 
         //Buttons Initialisieren
-        $('#shc-view-switchable-set-{$switchable->getId()}').buttonset();
+        $('#shc-view-switchable-set-{$roomId}-{$switchable->getId()}').buttonset();
 
-        $('#shc-view-switchable-{$switchable->getId()}-on').click(function() {
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
 
             //An Button gedrueckt
             $.getJSON(
@@ -22,8 +22,8 @@
 
                         if (data.success == true) {
 
-                            $('#shc-view-wolDevice-{$switchable->getId()}').removeClass('shc-icon-offline');
-                            $('#shc-view-wolDevice-{$switchable->getId()}').addClass('shc-icon-online');
+                            $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').removeClass('shc-icon-offline');
+                            $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').addClass('shc-icon-online');
                         } else {
 
                             $('#shc-view-errorFrame').text(data.message);
@@ -42,8 +42,8 @@
             return false;
         });
         
-        $('#shc-view-switchable-{$switchable->getId()}-on').mouseleave(function() {
-            $('#shc-view-switchable-{$switchable->getId()}-on').button("icons");
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
         });
     });
 </script>

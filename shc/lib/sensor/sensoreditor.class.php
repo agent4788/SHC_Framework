@@ -139,7 +139,7 @@ class SensorEditor {
             exec('sudo ' . PATH_SHC_CLASSES . 'external/python/dht.py ' . escapeshellcmd($this->sensors['dht'][$id]['type']) . ' ' . escapeshellcmd($this->sensors['dht'][$id]['pin']), $data);
 
             //Daten verarbeiten
-            if($data != 'error') {
+            if(trim($data[0]) != 'error') {
 
                 $parts = explode(';', $data[0]);
                 if(isset($parts[0]) && isset($parts[1])) {
@@ -240,14 +240,17 @@ class SensorEditor {
             exec('sudo ' . PATH_SHC_CLASSES . 'external/python/bmp.py', $data);
 
             //Daten verarbeiten
-            $parts = explode(';', $data);
-            if(isset($parts[0]) && isset($parts[1]) && isset($parts[2])) {
+            if(isset($data[0])) {
 
-                return array(
-                    'temp' => $parts[0],
-                    'press' => $parts[1],
-                    'alti' => $parts[2]
-                );
+                $parts = explode(';', $data[0]);
+                if(isset($parts[0]) && isset($parts[1]) && isset($parts[2])) {
+
+                    return array(
+                        'temp' => $parts[0],
+                        'press' => $parts[1] / 100,
+                        'alti' => $parts[2]
+                    );
+                }
             }
         }
         return array('error');

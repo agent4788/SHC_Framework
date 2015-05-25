@@ -16,9 +16,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 SHC_SHEDULER_PIDFILE=/var/run/shcd_sheduler.pid
 SHC_SWITCH_SERVER_PIDFILE=/var/run/shcd_switchserver.pid
-SHC_SENSOR_RECIVER_PIDFILE=/var/run/shcd_sensor_reciver.pid
 SHC_SENSOR_TRANSMITTER_PIDFILE=/var/run/shcd_sensor_transmitter.pid
-SHC_ARDUINO_SENSOR_RECIVER_PIDFILE=/var/run/shcd_arduino_sensor_transmitter.pid
 
 do_start() {
     if [ -x /etc/rc.local ]; then
@@ -36,12 +34,8 @@ case "$1" in
         echo $! > $SHC_SHEDULER_PIDFILE
         /usr/bin/php /var/www/shc/index.php app=shc -ss >> /var/log/messages 2>&1  &
         echo $! > $SHC_SWITCH_SERVER_PIDFILE
-        /usr/bin/php /var/www/shc/index.php app=shc -sr >> /var/log/messages 2>&1  &
-        echo $! > $SHC_SENSOR_RECIVER_PIDFILE
         /usr/bin/php /var/www/shc/index.php app=shc -st >> /var/log/messages 2>&1  &
         echo $! > $SHC_SENSOR_TRANSMITTER_PIDFILE
-        /usr/bin/php /var/www/shc/index.php app=shc -ar >> /var/log/messages 2>&1  &
-        echo $! > $SHC_ARDUINO_SENSOR_RECIVER_PIDFILE
         ;;
     restart|reload|force-reload)
         echo "Error: argument '$1' not supported" >&2
@@ -54,16 +48,10 @@ case "$1" in
         if [ -f $SHC_SWITCH_SERVER_PIDFILE ]; then
            PID="$PID `cat $SHC_SWITCH_SERVER_PIDFILE`"
         fi
-        if [ -f $SHC_SENSOR_RECIVER_PIDFILE ]; then
-           PID="$PID `cat $SHC_SENSOR_RECIVER_PIDFILE`"
-        fi
         if [ -f $SHC_SENSOR_TRANSMITTER_PIDFILE ]; then
            PID="$PID `cat $SHC_SENSOR_TRANSMITTER_PIDFILE`"
         fi
-        if [ -f $SHC_ARDUINO_SENSOR_RECIVER_PIDFILE ]; then
-           PID="$PID `cat $SHC_ARDUINO_SENSOR_RECIVER_PIDFILE`"
-        fi
-        kill -9 $PID && rm -f $SHC_SHEDULER_PIDFILE $SHC_SWITCH_SERVER_PIDFILE $SHC_SENSOR_RECIVER_PIDFILE $SHC_SENSOR_TRANSMITTER_PIDFILE $SHC_ARDUINO_SENSOR_RECIVER_PIDFILE
+        kill -9 $PID && rm -f $SHC_SHEDULER_PIDFILE $SHC_SWITCH_SERVER_PIDFILE $SHC_SENSOR_TRANSMITTER_PIDFILE
         ;;
     *)
         echo "Usage: $0 start|stop" >&2

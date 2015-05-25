@@ -56,5 +56,8 @@ class EventTask extends AbstractTask {
             /* @var $event \SHC\Event\Event */
             $event->run();
         }
+
+        //neuen Status der Elemente Speichern
+        SwitchableEditor::getInstance()->updateState();
     }
 }

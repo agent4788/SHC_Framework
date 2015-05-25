@@ -46,7 +46,7 @@ class AcpButtonCompilerPlugin implements TemplateCompilerPlugin {
         //Inhalt per Ajax holen
         $html .= '  $(\'#'. $randomStr .'\').click(function() {';
         $html .= '      $.get('. $args['link'] .', function(data, textStatus, jqXHR) {';
-        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-body\').html(data);';
+        $html .= '          $(\'#shc-view-acp-contentBox div.shc-contentbox-inner\').html(data);';
         $html .= '      });';
         $html .= '  });';
         $html .= '});';

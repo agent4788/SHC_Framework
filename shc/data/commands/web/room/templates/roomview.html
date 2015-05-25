@@ -15,12 +15,12 @@
 
                     if(value == 1) {
 
-                        $("#shc-view-switchable-"+ index +"-off").button({ icons: { primary: "" } });
-                        $("#shc-view-switchable-"+ index +"-on").button({ icons: { primary: "ui-icon-check" } });
+                        $("#shc-view-switchable-{$roomId}-"+ index +"-off").button({ icons: { primary: "" } });
+                        $("#shc-view-switchable-{$roomId}-"+ index +"-on").button({ icons: { primary: "ui-icon-check" } });
                     } else {
 
-                        $("#shc-view-switchable-"+ index +"-on").button({ icons: { primary: "" } });
-                        $("#shc-view-switchable-"+ index +"-off").button({ icons: { primary: "ui-icon-check" } });
+                        $("#shc-view-switchable-{$roomId}-"+ index +"-on").button({ icons: { primary: "" } });
+                        $("#shc-view-switchable-{$roomId}-"+ index +"-off").button({ icons: { primary: "ui-icon-check" } });
                     }
                 });
             });
@@ -34,12 +34,12 @@
 
                      if(value == 1) {
 
-                         $('#shc-view-wolDevice-'+ index).removeClass('shc-icon-offline');
-                         $('#shc-view-wolDevice-'+ index).addClass('shc-icon-online');
+                         $('#shc-view-wolDevice-{$roomId}-'+ index).removeClass('shc-icon-offline');
+                         $('#shc-view-wolDevice-{$roomId}-'+ index).addClass('shc-icon-online');
                      } else {
 
-                         $('#shc-view-wolDevice-'+ index).removeClass('shc-icon-online');
-                         $('#shc-view-wolDevice-'+ index).addClass('shc-icon-offline');
+                         $('#shc-view-wolDevice-{$roomId}-'+ index).removeClass('shc-icon-online');
+                         $('#shc-view-wolDevice-{$roomId}-'+ index).addClass('shc-icon-offline');
                      }
                  });
             });
@@ -53,12 +53,12 @@
 
                     if(value == 1) {
 
-                        $('#shc-view-readable-'+ index).removeClass('shc-icon-low');
-                        $('#shc-view-readable-'+ index).addClass('shc-icon-high');
+                        $('#shc-view-readable-{$roomId}-'+ index).removeClass('shc-icon-low');
+                        $('#shc-view-readable-{$roomId}-'+ index).addClass('shc-icon-high');
                     } else {
 
-                        $('#shc-view-readable-'+ index).removeClass('shc-icon-high');
-                        $('#shc-view-readable-'+ index).addClass('shc-icon-low');
+                        $('#shc-view-readable-{$roomId}-'+ index).removeClass('shc-icon-high');
+                        $('#shc-view-readable-{$roomId}-'+ index).addClass('shc-icon-low');
                     }
                 });
             });
@@ -70,7 +70,7 @@
                 //DS18x20 Sensoren
                 $.each(data, function(index, value) {
 
-                    $('#shc-view-sensor-ds18x20-'+ index +'-temp').text(value.temp);
+                    $('#shc-view-sensor-ds18x20-{$roomId}-'+ index +'-temp').text(value.temp);
                 });
             });
             eventSource.addEventListener('syncDHT', function(e) {
@@ -81,8 +81,8 @@
                 //DHT Sensoren
                 $.each(data, function(index, value) {
 
-                    $('#shc-view-sensor-dht-'+ index +'-temp').text(value.temp);
-                    $('#shc-view-sensor-dht-'+ index +'-hum').text(value.hum);
+                    $('#shc-view-sensor-dht-{$roomId}-'+ index +'-temp').text(value.temp);
+                    $('#shc-view-sensor-dht-{$roomId}-'+ index +'-hum').text(value.hum);
                 });
             });
             eventSource.addEventListener('syncBMP', function(e) {
@@ -93,9 +93,9 @@
                 //BMP Sensoren
                 $.each(data, function(index, value) {
 
-                    $('#shc-view-sensor-bmp-'+ index +'-temp').text(value.temp);
-                    $('#shc-view-sensor-bmp-'+ index +'-press').text(value.press);
-                    $('#shc-view-sensor-bmp-'+ index +'-alti').text(value.alti);
+                    $('#shc-view-sensor-bmp-{$roomId}-'+ index +'-temp').text(value.temp);
+                    $('#shc-view-sensor-bmp-{$roomId}-'+ index +'-press').text(value.press);
+                    $('#shc-view-sensor-bmp-{$roomId}-'+ index +'-alti').text(value.alti);
                 });
             });
             eventSource.addEventListener('syncAnalog', function(e) {
@@ -106,7 +106,7 @@
                 //Analog Sensoren
                 $.each(data, function(index, value) {
 
-                    $('#shc-view-sensor-analog-'+ index +'-value').text(value.value);
+                    $('#shc-view-sensor-analog-{$roomId}-'+ index +'-value').text(value.value);
                 });
             });
 
@@ -132,12 +132,12 @@
 
                                     if (value == 1) {
 
-                                        $("#shc-view-switchable-" + index + "-off").button({ icons:  {primary: "" } });
-                                        $("#shc-view-switchable-" + index + "-on").button({ icons: { primary: "ui-icon-check" } });
+                                        $("#shc-view-switchable-{$roomId}-" + index + "-off").button({ icons:  {primary: "" } });
+                                        $("#shc-view-switchable-{$roomId}-" + index + "-on").button({ icons: { primary: "ui-icon-check" } });
                                     } else {
 
-                                        $("#shc-view-switchable-" + index + "-on").button({ icons: { primary: "" } });
-                                        $("#shc-view-switchable-" + index + "-off").button({ icons: { primary: "ui-icon-check" } });
+                                        $("#shc-view-switchable-{$roomId}-" + index + "-on").button({ icons: { primary: "" } });
+                                        $("#shc-view-switchable-{$roomId}-" + index + "-off").button({ icons: { primary: "ui-icon-check" } });
                                     }
                                 });
 
@@ -146,12 +146,12 @@
 
                                     if (value == 1) {
 
-                                        $('#shc-view-wolDevice-' + index).removeClass('shc-icon-offline');
-                                        $('#shc-view-wolDevice-' + index).addClass('shc-icon-online');
+                                        $('#shc-view-wolDevice-{$roomId}-' + index).removeClass('shc-icon-offline');
+                                        $('#shc-view-wolDevice-{$roomId}-' + index).addClass('shc-icon-online');
                                     } else {
 
-                                        $('#shc-view-wolDevice-' + index).removeClass('shc-icon-online');
-                                        $('#shc-view-wolDevice-' + index).addClass('shc-icon-offline');
+                                        $('#shc-view-wolDevice-{$roomId}-' + index).removeClass('shc-icon-online');
+                                        $('#shc-view-wolDevice-{$roomId}-' + index).addClass('shc-icon-offline');
                                     }
                                 });
 
@@ -160,40 +160,40 @@
 
                                     if (value == 1) {
 
-                                        $('#shc-view-readable-' + index).removeClass('shc-icon-low');
-                                        $('#shc-view-readable-' + index).addClass('shc-icon-high');
+                                        $('#shc-view-readable-{$roomId}-' + index).removeClass('shc-icon-low');
+                                        $('#shc-view-readable-{$roomId}-' + index).addClass('shc-icon-high');
                                     } else {
 
-                                        $('#shc-view-readable-' + index).removeClass('shc-icon-high');
-                                        $('#shc-view-readable-' + index).addClass('shc-icon-low');
+                                        $('#shc-view-readable-{$roomId}-' + index).removeClass('shc-icon-high');
+                                        $('#shc-view-readable-{$roomId}-' + index).addClass('shc-icon-low');
                                     }
                                 });
 
                                 //DS18x20 Sensoren
                                 $.each(data.ds18x20, function (index, value) {
 
-                                    $('#shc-view-sensor-ds18x20-' + index + '-temp').text(value.temp);
+                                    $('#shc-view-sensor-ds18x20-{$roomId}-' + index + '-temp').text(value.temp);
                                 });
 
                                 //DHT Sensoren
                                 $.each(data.dht, function (index, value) {
 
-                                    $('#shc-view-sensor-dht-' + index + '-temp').text(value.temp);
-                                    $('#shc-view-sensor-dht-' + index + '-hum').text(value.hum);
+                                    $('#shc-view-sensor-dht-{$roomId}-' + index + '-temp').text(value.temp);
+                                    $('#shc-view-sensor-dht-{$roomId}-' + index + '-hum').text(value.hum);
                                 });
 
                                 //BMP Sensoren
                                 $.each(data.bmp, function (index, value) {
 
-                                    $('#shc-view-sensor-bmp-' + index + '-temp').text(value.temp);
-                                    $('#shc-view-sensor-bmp-' + index + '-press').text(value.press);
-                                    $('#shc-view-sensor-bmp-' + index + '-alti').text(value.alti);
+                                    $('#shc-view-sensor-bmp-{$roomId}-' + index + '-temp').text(value.temp);
+                                    $('#shc-view-sensor-bmp-{$roomId}-' + index + '-press').text(value.press);
+                                    $('#shc-view-sensor-bmp-{$roomId}-' + index + '-alti').text(value.alti);
                                 });
 
                                 //Analog Sensoren
                                 $.each(data.analog, function (index, value) {
 
-                                    $('#shc-view-sensor-analog-' + index + '-value').text(value.value);
+                                    $('#shc-view-sensor-analog-{$roomId}-' + index + '-value').text(value.value);
                                 });
                             }
                         }

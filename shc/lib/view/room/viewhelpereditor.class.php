@@ -87,6 +87,13 @@ class ViewHelperEditor {
      */
     protected static $instance = null;
 
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'roomView';
+
     protected function __construct() {
 
         $this->loadData();
@@ -97,44 +104,41 @@ class ViewHelperEditor {
      */
     public function loadData() {
 
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $bexes = SHC::getDatabase()->hGetAll(self::$tableName);
+        foreach ($bexes as $box) {
 
-        //Daten Einlesen
-        foreach ($xml->box as $box) {
-
+            $boxRoomId = (int) $box['roomId'];
             $boxObject = new ViewHelperBox();
-            $boxObject->setBoxId((int) $box->id);
-            $boxObject->setName((string) $box->name);
-            $boxObject->setBoxOrderId((int) $box->orderId);
-            $boxObject->setRoomId((int) $box->roomId);
-            //Elemente hinzufuegen
-            foreach ($box->elements->element as $element) {
+            $boxObject->setBoxId((int) $box['id']);
+            $boxObject->setName((string) $box['name']);
+            $boxObject->setBoxOrderId((int) $box['orderId']);
+            $boxObject->setRoomId($boxRoomId);
+            foreach ($box['elements'] as $element) {
 
-                $attr = $element->attributes();
-                if ((int) $attr->type == self::TYPE_READABLE) {
+                if ((int) $element['type'] == self::TYPE_READABLE) {
 
-                    $element = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
-                    if($element instanceof Readable) {
+                    $element = SwitchableEditor::getInstance()->getElementById((int) $element['id']);
+                    if($element instanceof Readable && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addReadable($element);
                     }
-                } elseif ((int) $attr->type == self::TYPE_SWITCHABLE) {
+                } elseif ((int) $element['type'] == self::TYPE_SWITCHABLE) {
 
-                    $element = SwitchableEditor::getInstance()->getElementById((int) $attr->id);
-                    if($element instanceof Switchable) {
+                    $element = SwitchableEditor::getInstance()->getElementById((int) $element['id']);
+                    if($element instanceof Switchable && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addSwitchable($element);
                     }
-                } elseif ((int) $attr->type == self::TYPE_SENSOR) {
+                } elseif ((int) $element['type'] == self::TYPE_SENSOR) {
 
-                    $element = SensorPointEditor::getInstance()->getSensorById((string) $attr->id);
-                    if($element instanceof Sensor) {
+                    $element = SensorPointEditor::getInstance()->getSensorById((string) $element['id']);
+                    if($element instanceof Sensor && $element->isInRoom($boxRoomId)) {
 
                         $boxObject->addSensor($element);
                     }
                 }
             }
-            $this->boxes[(int) $box->id] = $boxObject;
+            $this->boxes[(int) $box['id']] = $boxObject;
         }
     }
 
@@ -169,7 +173,7 @@ class ViewHelperEditor {
         foreach ($elements as $element) {
 
             /* @var $element \SHC\Switchable\Element */
-            if ($element->getRoom() instanceof Room && $element->getRoom()->getId() == $roomId) {
+            if ($element->isInRoom($roomId)) {
 
                 if ($element instanceof Readable) {
 
@@ -186,7 +190,7 @@ class ViewHelperEditor {
         foreach ($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensor */
-            if ($sensor->getRoom() instanceof Room && $sensor->getRoom()->getId() == $roomId) {
+            if ($sensor->isInRoom($roomId)) {
 
                 $viewHelper->addSensor($sensor);
             }
@@ -302,20 +306,20 @@ class ViewHelperEditor {
      */
     public function editBoxOrder(array $order) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        foreach($order as $boxId => $orderId) {
 
-        //Raeume durchlaufen und deren Sortierungs ID anpassen
-        foreach ($xml->box as $box) {
+            if(isset($this->boxes[$boxId])) {
 
-            if (isset($order[(int) $box->id])) {
+                $boxData = $db->hGet(self::$tableName, $boxId);
+                $boxData['orderId'] = $orderId;
 
-                $box->orderId = $order[(int) $box->id];
+                if($db->hSet(self::$tableName, $boxId, $boxData) != 0) {
+
+                    return false;
+                }
             }
         }
-
-        //Daten Speichern
-        $xml->save();
         return true;
     }
 
@@ -326,15 +330,7 @@ class ViewHelperEditor {
      */
     public function getNextOrderId() {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
-
-        $nextOrderId = (int) $xml->nextAutoIncrementOrderId;
-        $xml->nextAutoIncrementOrderId = $nextOrderId + 1;
-
-        //Daten Speichern
-        $xml->save();
-        return $nextOrderId;
+        return SHC::getDatabase()->autoIncrement(self::$tableName .'_order');
     }
 
     /**
@@ -354,24 +350,20 @@ class ViewHelperEditor {
             throw new \Exception('Der Name ist schon vergeben', 1507);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        $index = $db->autoIncrement(self::$tableName);
 
-        //Autoincrement
-        $nextId = (int) $xml->nextAutoIncrementId;
-        $xml->nextAutoIncrementId = $nextId + 1;
+        $newBox = array(
+            'id' => $index,
+            'name' => $name,
+            'roomId' => $roomId,
+            'orderId' => $orderId,
+            'elements' => array()
+        );
+        if($db->hSetNx(self::$tableName, $index, $newBox) == 0) {
 
-        //Datensatz erstellen
-        /* @var $box \SimpleXmlElement */
-        $box = $xml->addChild('box');
-        $box->addChild('id', $nextId);
-        $box->addChild('name', $name);
-        $box->addChild('roomId', $roomId);
-        $box->addChild('orderId', $orderId);
-        $box->addChild('elements');
-
-        //Daten Speichern
-        $xml->save();
+            return false;
+        }
         return true;
     }
 
@@ -387,45 +379,42 @@ class ViewHelperEditor {
      */
     public function editBox($id, $name = null, $roomId = null, $orderId = null) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        foreach ($xml->box as $box) {
+            $box = $db->hGet(self::$tableName, $id);
 
-            /* @var $box \SimpleXmlElement */
-            if ((int) $box->id == $id) {
+            //Name
+            if ($name !== null) {
 
-                //Name
-                if ($name !== null) {
+                //Ausnahme wenn Name der Box schon belegt
+                if ($name != (string) $box['name'] && !$this->isBoxNameAvailable($name)) {
 
-                    //Ausnahme wenn Name der Box schon belegt
-                    if ($name != (string) $box->name && !$this->isBoxNameAvailable($name)) {
-
-                        throw new \Exception('Der Name ist schon vergeben', 1507);
-                    }
-
-                    $box->name = $name;
+                    throw new \Exception('Der Name ist schon vergeben', 1507);
                 }
 
-                //Raum
-                if ($roomId !== null) {
+                $box['name'] = $name;
+            }
 
-                    if($roomId != (int) $box->roomId && $orderId === null) {
+            //Sortierung
+            if ($orderId !== null) {
 
-                        $box->orderId = ViewHelperEditor::getInstance()->getNextOrderId();
-                    }
-                    $box->roomId = $roomId;
+                $box['orderId'] = $orderId;
+            }
+
+            //Raum
+            if ($roomId !== null) {
+
+                if($roomId != (int) $box['roomId'] && $orderId === null) {
+
+                    $box['roomId'] = ViewHelperEditor::getInstance()->getNextOrderId();
                 }
+                $box['roomId'] = $roomId;
+            }
 
-                //Raum
-                if ($orderId !== null) {
+            if($db->hSet(self::$tableName, $id, $box) == 0) {
 
-                    $box->orderId = $orderId;
-                }
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -442,31 +431,26 @@ class ViewHelperEditor {
      */
     public function addToBox($boxId, $type, $elementId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $boxId)) {
 
-        //Server Suchen
-        foreach ($xml->box as $box) {
+            $box = $db->hGet(self::$tableName, $boxId);
+            foreach($box['elements'] as $index => $element) {
 
-            /* @var $box \SimpleXmlElement */
-            if ((int) $box->id == $boxId) {
+                if($element['id'] == $elementId && $element['type'] == $type) {
 
-                //pruefen ob das Element schon registriert ist
-                foreach($box->elements->element as $element) {
-
-                    $attr = $element->attributes();
-                    if((string) $attr->type == $type && (string) $attr->id == $elementId) {
-
-                        return true;
-                    }
+                    return true;
                 }
+            }
 
-                $element = $box->elements->addChild('element');
-                $element->addAttribute('type', $type);
-                $element->addAttribute('id', $elementId);
+            $box['elements'][] = array(
+                'type' => $type,
+                'id' => $elementId
+            );
 
-                //Daten Speichern
-                $xml->save();
+            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+
                 return true;
             }
         }
@@ -483,27 +467,22 @@ class ViewHelperEditor {
      */
     public function removeElementFromBox($boxId, $type, $elementId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $boxId)) {
 
-        //Server Suchen
-        for ($i = 0; $i < count($xml->box); $i++) {
+            $box = $db->hGet(self::$tableName, $boxId);
+            foreach($box['elements'] as $index => $element) {
 
-            /* @var $box \SimpleXmlElement */
-            if ((int) $xml->box[$i]->id == $boxId) {
+                if($element['id'] == $elementId && $element['type'] == $type) {
 
-                for ($j = 0; $j < count($xml->box[$i]->elements->element); $j++) {
-
-                    $attr = $xml->box[$i]->elements->element[$j]->attributes();
-                    if ($elementId == (int) $attr->id && $type == (int) $attr->type) {
-
-                        unset($xml->box[$i]->elements->element[$j]);
-
-                        //Daten Speichern
-                        $xml->save();
-                        return true;
-                    }
+                    unset($element[$index]);
                 }
+            }
+
+            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+
+                return true;
             }
         }
         return false;
@@ -518,19 +497,15 @@ class ViewHelperEditor {
      */
     public function removeAllElementsFromBox($boxId) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $boxId)) {
 
-        //Server Suchen
-        for ($i = 0; $i < count($xml->box); $i++) {
+            $box = $db->hGet(self::$tableName, $boxId);
+            $box['elements'] = array();
 
-            /* @var $box \SimpleXmlElement */
-            if ((int) $xml->box[$i]->id == $boxId) {
+            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
 
-                $xml->box[$i]->elements = null;
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -545,23 +520,16 @@ class ViewHelperEditor {
      */
     public function removeBox($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_ROOM_VIEW, true);
+        $db = SHC::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$tableName, $id)) {
 
-        //Server Suchen
-        for ($i = 0; $i < count($xml->box); $i++) {
+            if($db->hDel(self::$tableName, $id)) {
 
-            /* @var $box \SimpleXmlElement */
-            if ((int) $xml->box[$i]->id == $id) {
-
-                unset($xml->box[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
-        return false;
+        return false;;
     }
 
     /**

@@ -1,24 +1,18 @@
 <div id="shc-headline">
     <div>
-        {premission premission='shc.acp.menue'}
+        {premission premission='shc.acp.menu'}
         {if $acp|isset == true}
         <a href="index.php?app=shc&page=index" id="shc-display-acp-menu">{lang var='index.button.ucp'}</a>
         {else}
         <a href="index.php?app=shc&page=acp" id="shc-display-acp-menu">{lang var='index.button.acpMenu'}</a>
         {/if}
         {/premission}
-        {premission premission='shc.ucp.reboot'}
-        <img src="./shc/inc/img/buttons/reboot.png" style="width: 32px; height: 32px;" id="shc-view-buttons-reboot" title="{lang var='global.button.reboot'}" />
-        {/premission}
-        {premission premission='shc.ucp.shutdown'}
-        <img src="./shc/inc/img/buttons/shutdown.png" style="width: 32px; height: 32px;" id="shc-view-buttons-shutdown" title="{lang var='global.button.shutdown'}" />
-        {/premission}
     </div>
     <div id="shc-headline-left">
         {if $acp|isset == true}
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=acp">{setting name='shc.title'} - {lang var='acpindex.text.acp'}</a></div>
+        <div id="shc-headline-logo"><a href="{if $apps|count == 1}index.php?app=shc&page=acp{else}#{/if}">{setting name='shc.title'} - {lang var='acpindex.text.acp'}</a></div>
         {else}
-        <div id="shc-headline-logo"><a href="index.php?app=shc&page=index">{setting name='shc.title'}</a></div>
+        <div id="shc-headline-logo"><a href="{if $apps|count == 1}index.php?app=shc{else}#{/if}">{setting name='shc.title'}</a></div>
         {/if}
     </div>
     <div id="shc-headline-right">
@@ -58,6 +52,13 @@
 </div>
 {/if}
 <div id="shc-view-safetyPrompt" style="display: none;"></div>
+{if $apps|count > 1}
+<ul id="rwf-ui-appMenue" style="display: none;">
+    {foreach from=$apps item='app'}
+        <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    {/foreach}
+</ul>
+{/if}
 <script type="text/javascript">
 {if $user->isUser() == false}
     $(function () {
@@ -145,73 +146,32 @@
         {/ifsetting}
     });
 {/if}
+{if $apps|count > 1}
+    $('#rwf-ui-appMenue').menu().css({ 'z-index': '100' });
+    $('#shc-headline-logo').css('cursor', 'pointer').click(function(e) {
+        pos = $(this).offset();
+        $('#rwf-ui-appMenue').css({
+            position: 'absolute',
+            top: pos.top + 63 + 'px',
+            left: pos.left + 'px'
+        });
+        $('#rwf-ui-appMenue').css({
+            display: 'block'
+        });
+    });
+    $('#rwf-ui-appMenue').mouseleave(function() {
+        $('#rwf-ui-appMenue').css({
+            display: 'none'
+        });
+    });
+{/if}
 </script>
-{premission premission='shc.acp.menue'}
+{premission premission='shc.acp.menu'}
 <script type="text/javascript">
     $('#shc-display-acp-menu').button().css({
         position: 'absolute',
         top: '32px',
         right: '24px'
-    });
-</script>
-{/premission}
-{premission premission='shc.ucp.reboot'}
-<script type="text/javascript">
-    $('#shc-view-buttons-reboot').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '332px'
-    }).tooltip();
-    $('#shc-view-buttons-reboot').click(function() {
-
-        //Prompt
-        $('#shc-view-safetyPrompt').text("{lang var='global.prompt.reboot.text'}");
-        $('#shc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.reboot.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#shc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=shc&action=reboot';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#shc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
-    });
-</script>
-{/premission}
-{premission premission='shc.ucp.shutdown'}
-<script type="text/javascript">
-    $('#shc-view-buttons-shutdown').button().css({
-        position: 'absolute',
-        top: '12px',
-        right: '300px'
-    }).tooltip();
-    $('#shc-view-buttons-shutdown').click(function() {
-
-        //Prompt
-        $('#shc-view-safetyPrompt').text("{lang var='global.prompt.shutdown.text'}");
-        $('#shc-view-safetyPrompt').dialog({
-            modal: true,
-            resizable: false,
-            title: '{lang var="global.prompt.shutdown.title"}',
-            position: { my: "center top", at: "center bottom", of: $('#shc-headline') },
-            buttons: {
-                '{lang var="global.yes"}': function() {
-
-                    window.location = 'index.php?app=shc&action=shutdown';
-                },
-                '{lang var="global.no"}': function() {
-
-                    $('#shc-view-safetyPrompt').dialog('close');
-                }
-            }
-        });
     });
 </script>
 {/premission}

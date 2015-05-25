@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
@@ -51,12 +52,19 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $icon->requiredField(true);
         $this->addFormElement($icon);
 
-        //Raum
-        $room = new RoomChooser('room', ($rpiGpioOutput instanceof RpiGpioOutput && $rpiGpioOutput->getRoom() instanceof Room ? $rpiGpioOutput->getRoom()->getId() : null));
-        $room->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room'));
-        $room->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room.description'));
-        $room->requiredField(true);
-        $this->addFormElement($room);
+        //Button Text
+        $buttonText = new ButtonTextChooser('buttonText', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getButtonText() : ''));
+        $buttonText->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.buttonText'));
+        $buttonText->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.buttonText.description'));
+        $buttonText->requiredField(true);
+        $this->addFormElement($buttonText);
+
+        //Raeume
+        $rooms = new RoomChooser('rooms', ($rpiGpioOutput instanceof RpiGpioOutput && count($rpiGpioOutput->getRooms()) > 0 ? $rpiGpioOutput->getRooms(): array()));
+        $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room'));
+        $rooms->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.room.description'));
+        $rooms->requiredField(true);
+        $this->addFormElement($rooms);
 
         //Schaltserver Auswahl
         $switchServer = new SwitchServerChooser('switchServer', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getSwitchServer() : 0), SwitchServerChooser::FILTER_WRITEGPIO);
@@ -73,11 +81,11 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         $this->addFormElement($gpio);
 
         //Schaltpunkte Auswahl
-        $switchPoints = new SwitchPointsChooser('switchPoints', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->listSwitchPoints() : array()));
+        /*$switchPoints = new SwitchPointsChooser('switchPoints', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->listSwitchPoints() : array()));
         $switchPoints->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchPoints'));
         $switchPoints->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.switchPoints.description'));
         $switchPoints->requiredField(true);
-        $this->addFormElement($switchPoints);
+        $this->addFormElement($switchPoints);*/
 
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->isEnabled() : true));

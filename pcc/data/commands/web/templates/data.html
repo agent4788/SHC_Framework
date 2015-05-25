@@ -1,0 +1,208 @@
+<div>
+    <div id="pcc-view-firstLoadData">
+        <div id="pcc-view-loadPrgogressData"></div>
+    </div>
+    <div id="pcc-view-finishedLoadData" style="display: none;">
+        {contentbox name='index.box.os.title'}
+            <div class="pcc-contentbox-body-row">
+                <span class="pcc-contentbox-body-row-title">{lang var='index.box.os.os'}</span>
+                <span class="pcc-icon pcc-icon-os"></span>
+                <div class="pcc-contentbox-body-row-content">
+                    <span id="data_osname"></span>
+                </div>
+            </div>
+            <div class="pcc-contentbox-body-row">
+                <span class="pcc-contentbox-body-row-title">{lang var='index.box.os.kernel'}</span>
+                <span class="pcc-icon pcc-icon-kernel"></span>
+                <div class="pcc-contentbox-body-row-content">
+                    <span id="data_kernel"></span>
+                </div>
+            </div>
+            <div class="pcc-contentbox-body-row">
+                <span class="pcc-contentbox-body-row-title">{lang var='index.box.os.firmware'}</span>
+                <span class="pcc-icon pcc-icon-firmware"></span>
+                <div class="pcc-contentbox-body-row-content">
+                    <span id="data_firmware" title=""></span>
+                </div>
+            </div>
+            <div class="pcc-contentbox-body-row">
+                <span class="pcc-contentbox-body-row-title">{lang var='index.box.os.hostname'}</span>
+                <span class="pcc-icon pcc-icon-hostname"></span>
+                <div class="pcc-contentbox-body-row-content">
+                    <span id="data_hostname"></span>
+                </div>
+            </div>
+        {/contentbox}
+        <div id="pcc-view-rpi-data">
+            {contentbox name='index.box.data.title'}
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.core'}</span>
+                    <span class="pcc-icon pcc-icon-core"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_cputype"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.os.ramSplit'}</span>
+                    <span class="pcc-icon pcc-icon-ramSplit"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        {lang var='index.box.os.ramSplit.ram'} : <span id="data_splitsystem"></span>
+                        <br/>
+                        {lang var='index.box.os.ramSplit.video'} : <span id="data_splitvideo"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.overclock'}</span>
+                    <span class="pcc-icon pcc-icon-overclock"></span>
+                    <div class="pcc-contentbox-body-row-content" id="overclock" title="">
+                        <span class="tooltip_strong">{lang var='index.box.data.overclock.cpu'}:</span> <span id="data_oc_cpu"></span> MHz
+                    </div>
+                    <div style="display: none;" id="overclock_tooltip">
+                        <div class="tootlip_row">
+                            <span class="tooltip_strong">{lang var='index.box.data.overclock.gpu'}:</span> <span id="data_oc_gpu"></span> MHz
+                        </div>
+                        <div class="tootlip_row">
+                            <span class="tooltip_strong">{lang var='index.box.data.overclock.ram'}:</span> <span id="data_oc_ram"></span> MHz
+                        </div>
+                        <div class="tootlip_row">
+                            <span class="tooltip_strong">{lang var='index.box.data.overclock.voltage'}:</span> <span id="data_oc_voltage"></span> V
+                        </div>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.coreFeatures'}</span>
+                    <span class="pcc-icon pcc-icon-coreFeatures"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_cpufeatures"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.serial'}</span>
+                    <span class="pcc-icon pcc-icon-serial"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_serial"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.revision'}</span>
+                    <span class="pcc-icon pcc-icon-revision"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_revision"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.data.usbCurrent'}</span>
+                    <span class="pcc-icon pcc-icon-usbCurrent"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_usbCurrent"></span> mA
+                    </div>
+                </div>
+            {/contentbox}
+            {contentbox name='index.box.video.title'}
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.video.h264'}</span>
+                    <span class="pcc-icon pcc-icon-video"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        {lang var='index.box.video.active'}
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.video.mpeg2'}</span>
+                    <span class="pcc-icon pcc-icon-video"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_mpeg2"></span>
+                    </div>
+                </div>
+                <div class="pcc-contentbox-body-row">
+                    <span class="pcc-contentbox-body-row-title">{lang var='index.box.video.vc1'}</span>
+                    <span class="pcc-icon pcc-icon-video"></span>
+                    <div class="pcc-contentbox-body-row-content">
+                        <span id="data_vc1"></span>
+                    </div>
+                </div>
+            {/contentbox}
+        </div>
+        {contentbox name='index.box.usb.title'}
+            <table class="pcc-view-contentTable pcc-view-contentTable-sys">
+                <tbody id="data_usb"></tbody>
+            </table>
+        {/contentbox}
+    </div>
+    <script type="text/javascript">
+        $(function () {
+
+            //Ladebalken Anzeigen
+            $('#pcc-view-loadPrgogressData').progressbar({
+                value: false
+            });
+
+            //Status laden
+            function loadData(firstLoad) {
+
+                //Daten per Ajax holen
+                $.getJSON(
+                        "index.php?app=pcc&ajax=datasync&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            if (typeof data.error != 'undefined') {
+
+                                return;
+                            }
+
+                            $('#data_osname').text(data.osName);
+                            $('#data_kernel').text(data.kernel);
+                            $('#data_firmware').text(data.firmwareShort);
+                            $('#data_firmware').attr('title', data.firmware);
+                            $('#data_hostname').text(data.hostname);
+
+                            if(data.boardType == 'rpi') {
+
+                                $('#data_cputype').text(data.cpuType);
+                                $('#data_splitsystem').text(data.splitSystem);
+                                $('#data_splitvideo').text(data.splitVideo);
+                                $('#data_oc_cpu').text(data.ocCpu);
+                                $('#data_oc_gpu').text(data.ocGpu);
+                                $('#data_oc_ram').text(data.ocRam);
+                                $('#data_oc_voltage').text(data.ocVoltage);
+                                $('#data_cpufeatures').text(data.cpuFeatures);
+                                $('#data_serial').text(data.serial);
+                                $('#data_revision').text(data.revision);
+                                $('#data_usbCurrent').text(data.usbCurrent);
+
+                                $('#data_mpeg2').text(data.mpeg2);
+                                $('#data_vc1').text(data.vc1);
+                            } else {
+
+                                $('#pcc-view-rpi-data').css('display', 'none');
+                            }
+
+                            $('#firstLoadData').css('display', 'none');
+                            $('#finishedLoadData').css('display', 'block');
+
+                            $(document).tooltip({
+                                track: true
+                            });
+
+                        });
+
+                $.get(
+                        "index.php?app=pcc&ajax=datasync&usb=1&hash=" + Math.floor(Math.random() * 11),
+                        function(data) {
+
+                            $('#data_usb').html(data);
+                            $('#pcc-view-firstLoadData').css('display', 'none');
+                            $('#pcc-view-finishedLoadData').css('display', 'block');
+                        });
+
+                $('#overclock').tooltip({
+                    content: function() {
+                        return $('#overclock_tooltip').html();
+                    },
+                    track: true
+                });
+            }
+
+            loadData(true);
+        });
+    </script>
+</div>
