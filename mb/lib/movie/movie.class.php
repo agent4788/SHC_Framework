@@ -45,7 +45,7 @@ class Movie {
     protected $length = 0;
 
     /**
-     * Altersfreigabe
+     * Altersfreigabe (Konstante aus dem MovieFsk Interface)
      *
      * @var int
      */
@@ -72,22 +72,52 @@ class Movie {
      */
     protected $case = null;
 
-
+    /**
+     * Bewertungen
+     *
+     * @var array
+     */
     protected $rating = array();
 
+    /**
+     * Haendler
+     *
+     * @var \MB\Movie\MovieDealer
+     */
     protected $dealer = null;
 
+    /**
+     * Preis
+     *
+     * @var float
+     */
     protected $price = 0.0;
 
+    /**
+     * Kaufdatum
+     *
+     * @var \RWF\Date\DateTime
+     */
     protected $purchaseDate = null;
 
+    /**
+     * EAN Code
+     *
+     * @var string
+     */
     protected $ean = '';
 
+    /**
+     * gibt an ob es sich um eine Limited Edition handelt
+     *
+     * @var bool
+     */
     protected $isLimitedEdition = false;
 
+    /**
+     * Datum an dem der Film zuletzt angesehen wurde
+     *
+     * @var \RWF\Date\DateTime
+     */
     protected $lastViewDate = null;
-
-    protected $isLend = false;
-
-    protected $lendTo = '';
 }

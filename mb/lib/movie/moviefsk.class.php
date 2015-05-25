@@ -14,7 +14,7 @@ namespace MB\Movie;
  * @version    2.2.0-0
  */
 
-class MovieFsk {
+interface MovieFsk {
 
     const FSK_0 = 1;
 
@@ -29,6 +29,4 @@ class MovieFsk {
     const FSK_SPIO_JK = 6;
 
     const FSK_INDEX = 7;
-
-    protected $type = 0;
 }
