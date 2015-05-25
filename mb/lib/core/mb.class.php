@@ -23,7 +23,7 @@ class MB extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0 RC 5';
+    const VERSION = '2.3.0 alpha 1';
 
     /**
      * Style
