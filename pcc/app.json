@@ -1,7 +1,0 @@
-{
-    "app": "pcc",
-    "name": "Raspberry Pi Control Center",
-    "icon": "./pcc/inc/img/pcc-icon.png",
-    "order": 20,
-    "installed": true
-}
