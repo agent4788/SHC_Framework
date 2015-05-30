@@ -3,6 +3,7 @@
 namespace SHC\Event;
 
 //Imports
+use RWF\Core\RWF;
 use SHC\Command\CommandSheduler;
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
