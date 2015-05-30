@@ -310,7 +310,7 @@ class CommandSheduler {
                     }
 
                     //Antwort Lesen
-                    $rawData = base64_decode($socket->read(8192));
+                    $rawData = base64_decode(@$socket->read(8192));
                     $response = json_decode($rawData, true);
                     if (isset($response['state'])) {
 
