@@ -65,6 +65,27 @@ class XmlEditor extends \SimpleXMLElement {
     }
 
     /**
+     * erzeugt einen XML Editor aus einer Zeichenkette
+     *
+     * @param  String $url Link zur XML Datei
+     * @return \RWF\XML\XmlEditor
+     */
+    public static function createFromUrl($url) {
+
+        //initialisieren
+        self::initLibXml();
+
+        //Objekt erzeugen
+        try {
+
+            return new XmlEditor($url, LIBXML_NOCDATA, true);
+        } catch (\Exception $e) {
+
+            throw new XmlException('Die XML Datei konnte nicht geladen werden', 1100, \libxml_get_errors());
+        }
+    }
+
+    /**
      * erzeugt einen XML Editor aus einer Datei
      * 
      * @param  String $file     Dateiname der XML Datei
