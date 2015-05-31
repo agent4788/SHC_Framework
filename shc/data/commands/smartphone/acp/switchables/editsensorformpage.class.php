@@ -10,6 +10,7 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Core\SHC;
+use SHC\Form\Forms\AvmMeasuringSocketForm;
 use SHC\Form\Forms\BMPSensorForm;
 use SHC\Form\Forms\DHTSensorForm;
 use SHC\Form\Forms\DS18x20SensorForm;
@@ -17,6 +18,7 @@ use SHC\Form\Forms\HygrometerSensorForm;
 use SHC\Form\Forms\LDRSensorForm;
 use SHC\Form\Forms\RainSensorForm;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -359,6 +361,56 @@ class EditSensorFormPage extends PageCommand {
             } else {
 
                 $tpl->assign('sensorForm', $ldrSensorForm);
+            }
+        } elseif($sensor instanceof AvmMeasuringSocket) {
+
+            //AVM Power Steckdose
+            $avmMeasuringSocketForm = new AvmMeasuringSocketForm($sensor);
+            $avmMeasuringSocketForm->setAction('index.php?app=shc&m&page=editsensorform&id='. $sensor->getId());
+            $avmMeasuringSocketForm->setView(Form::SMARTPHONE_VIEW);
+            $avmMeasuringSocketForm->addId('shc-view-form-editSensor');
+
+            if($avmMeasuringSocketForm->isSubmitted() && $avmMeasuringSocketForm->validate()) {
+
+                //Speichern
+                $name = $avmMeasuringSocketForm->getElementByName('name')->getValue();
+                $rooms = $avmMeasuringSocketForm->getElementByName('rooms')->getValues();
+                $visibility = $avmMeasuringSocketForm->getElementByName('visibility')->getValue();
+                $temperatureVisibility = $avmMeasuringSocketForm->getElementByName('temperatureVisibility')->getValue();
+                $powerVisibility = $avmMeasuringSocketForm->getElementByName('powerVisibility')->getValue();
+                $energyVisibility = $avmMeasuringSocketForm->getElementByName('energyVisibility')->getValue();
+                $temperatureOffset = $avmMeasuringSocketForm->getElementByName('tempOffset')->getValue();
+                $dataRecording = $avmMeasuringSocketForm->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editAvmMeasuringSensor($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $powerVisibility, $energyVisibility, $dataRecording, $temperatureOffset);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $avmMeasuringSocketForm);
             }
         } else {
 

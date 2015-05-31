@@ -65,6 +65,8 @@
                                             {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                             {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                             {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                            {instanceof element=$element class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
+                                            {instanceof element=$element class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
                                         </td>
                                         <td>
                                             {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}
@@ -106,6 +108,7 @@
                                             {instanceof element=$element class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
                                             {instanceof element=$element class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
                                             {instanceof element=$element class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                                            {instanceof element=$element class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
                                         </td>
                                         <td>
                                             {editlink link='index.php?app=shc&page=editsensorform&id=' id=$element->getId()}
@@ -167,6 +170,8 @@
                                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
+                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
                                                         </td>
                                                         <td>
                                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}
@@ -208,6 +213,7 @@
                                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
                                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
                                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
                                                         </td>
                                                         <td>
                                                             {editlink link='index.php?app=shc&page=editsensorform&id=' id=$boxElement->getId()}

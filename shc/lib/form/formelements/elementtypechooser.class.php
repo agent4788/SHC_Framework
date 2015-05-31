@@ -29,6 +29,7 @@ class ElementTypeChooser extends Select {
             SwitchableEditor::TYPE_ACTIVITY => RWF::getLanguage()->get('acp.switchableManagement.element.activity'),
             SwitchableEditor::TYPE_COUNTDOWN => RWF::getLanguage()->get('acp.switchableManagement.element.countdown'),
             SwitchableEditor::TYPE_RADIOSOCKET => RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket'),
+            SwitchableEditor::TYPE_AVM_SOCKET => RWF::getLanguage()->get('acp.switchableManagement.element.avmSocket'),
             SwitchableEditor::TYPE_RPI_GPIO_INPUT => RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioInput'),
             SwitchableEditor::TYPE_RPI_GPIO_OUTPUT => RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioOutput'),
             SwitchableEditor::TYPE_WAKEONLAN => RWF::getLanguage()->get('acp.switchableManagement.element.wakeOnLan'),
@@ -37,7 +38,8 @@ class ElementTypeChooser extends Select {
             SwitchableEditor::TYPE_SHUTDOWN => RWF::getLanguage()->get('acp.switchableManagement.element.shutdown'),
             //SwitchableEditor::TYPE_REMOTE_REBOOT=> RWF::getLanguage()->get('acp.switchableManagement.element.remoteReboot'),
             //SwitchableEditor::TYPE_REMOTE_SHUTDOWN => RWF::getLanguage()->get('acp.switchableManagement.element.remoteShutdown'),
-            SwitchableEditor::TYPE_SCRIPT => RWF::getLanguage()->get('acp.switchableManagement.element.script')
+            SwitchableEditor::TYPE_SCRIPT => RWF::getLanguage()->get('acp.switchableManagement.element.script'),
+            SwitchableEditor::TYPE_FRITZBOX => RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox')
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);

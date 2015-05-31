@@ -109,6 +109,19 @@
                     $('#shc-view-sensor-analog-{$roomId}-'+ index +'-value').text(value.value);
                 });
             });
+            eventSource.addEventListener('syncAvmPowerSockect', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-temp').text(value.temp);
+                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
+                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
+                });
+            });
 
             eventSource.addEventListener('error', function(e) {
                 if (!e.readyState == EventSource.CLOSED) {
@@ -194,6 +207,14 @@
                                 $.each(data.analog, function (index, value) {
 
                                     $('#shc-view-sensor-analog-{$roomId}-' + index + '-value').text(value.value);
+                                });
+
+                                //AVM Power Sensoren
+                                $.each(data.syncAvmPowerSockect, function (index, value) {
+
+                                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-temp').text(value.temp);
+                                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
+                                    $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
                                 });
                             }
                         }

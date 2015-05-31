@@ -10,7 +10,9 @@ use RWF\Date\DateTime;
 use SHC\Room\Room;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
+use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\RadioSocketDimmer;
 use SHC\Switchable\Switchables\Reboot;
@@ -153,6 +155,20 @@ class SwitchableEditor {
     const TYPE_SCRIPT = 8192;
 
     /**
+     * Script
+     *
+     * @var Integer
+     */
+    const TYPE_AVM_SOCKET = 16384;
+
+    /**
+     * Script
+     *
+     * @var Integer
+     */
+    const TYPE_FRITZBOX = 32768;
+
+    /**
      * Liste mit allen Schaltbaren Objekten
      * 
      * @var Array 
@@ -285,6 +301,17 @@ class SwitchableEditor {
                     $object = new Script();
                     $object->setOnCommand((string) $switchable['onCommand']);
                     $object->setOffCommand((string) $switchable['offCommand']);
+                    break;
+                case self::TYPE_AVM_SOCKET:
+
+                    $object = new AvmSocket();
+                    $object->setAin((string) $switchable['ain']);
+                    $object->setButtonText((int) $switchable['buttonText']);
+                    break;
+                case self::TYPE_FRITZBOX:
+
+                    $object = new FritzBox();
+                    $object->setFunction((int) $switchable['function']);
                     break;
                 default:
 
@@ -1739,6 +1766,110 @@ class SwitchableEditor {
         return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
     }
 
+    /**
+     * erstellt ein neue AVM Steckdose
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  String  $ain               Identifizierung
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addAvmSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $ain, array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'ain' => $ain,
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_AVM_SOCKET, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet eine AVM Steckdose
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  String  $ain               Identifizierung
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editAvmSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $ain = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'ain' => $ain,
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * erstellt ein neue AVM Steckdose
+     *
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  int     $function          Funktion
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function addFritzBox($name, $enabled, $visibility, $icon, $rooms, array $order, $function, array $allowedUserGroups = array()) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'function' => $function
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_FRITZBOX, '', $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet eine AVM Steckdose
+     *
+     * @param  Integer $id                ID
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  Array   $rooms             Raeume
+     * @param  Array   $order             Sortierung
+     * @param  int     $function          Funktion
+     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     */
+    public function editFritzBox($id, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $function = null, array $allowedUserGroups = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'function' => $function
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, null, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
 
     /**
      * loascht ein Schaltbares Element

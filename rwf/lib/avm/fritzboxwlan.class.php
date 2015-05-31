@@ -381,7 +381,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function is5GHzWlanEnabled() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return ((int) $info['NewEnable'] == 1 ? true : false);
     }
 
@@ -392,7 +392,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function get5GHzWlanMacAddress() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return (isset($info['NewBSSID']) ? $info['NewBSSID'] : null);
     }
 
@@ -403,7 +403,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function get5GHzWlanSSID() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return (isset($info['NewSSID']) ? $info['NewSSID'] : null);
     }
 
@@ -414,7 +414,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function is5GHzWlanMacAddressControlEnabled() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return ((int) $info['NewMACAddressControlEnabled'] == 1 ? true : false);
     }
 
@@ -425,7 +425,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function get5GHzWlanStandard() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return (isset($info['NewStandard']) ? $info['NewStandard'] : null);
     }
 
@@ -436,7 +436,7 @@ class FritzBoxWlan extends FritzBox {
      */
     public function get5GHzWlanMaxBitRate() {
 
-        $info = $this->getWlan3State();
+        $info = $this->getWlan2State();
         return (isset($info['NewMaxBitRate']) ? $info['NewMaxBitRate'] : null);
     }
 

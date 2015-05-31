@@ -106,21 +106,30 @@ class FritzBoxSmartHome extends FritzBox {
             ),
 
             'present' => ((int) $xml->device->present == 1 ? true : false),
-            'name' => (string) $xml->device->name,
-            'switch' => array(
+            'name' => (string) $xml->device->name
+        );
+        if(isset($xml->device->switch)) {
+
+            $data['switch'] = array(
                 'state' => (string) $xml->device->switch->state,
                 'mode' => (string) $xml->device->switch->mode,
                 'lock' => ((int) $xml->device->switch->lock == 1 ? true : false),
-            ),
-            'powermeter' => array(
+            );
+        }
+        if(isset($xml->device->powermeter)) {
+
+            $data['powermeter'] = array(
                 'power' => (int) $xml->device->powermeter->power,
                 'energy' => (int) $xml->device->powermeter->energy,
-            ),
-            'temperature' => array(
+            );
+        }
+        if(isset($xml->device->temperature)) {
+
+            $data['temperature'] = array(
                 'temperature' => ((float) $xml->device->temperature->celsius != 0.0 ? (float) $xml->device->temperature->celsius / 10 : 0.0),
                 'offset' => ((float) $xml->device->temperature->offset != 0.0 ? (float) $xml->device->temperature->offset / 10 : 0.0)
-            )
-        );
+            );
+        }
         return $data;
     }
 

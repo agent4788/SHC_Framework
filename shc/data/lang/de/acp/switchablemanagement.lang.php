@@ -58,12 +58,15 @@ $l['acp.switchableManagement.element.shutdown'] = 'Herunterfahren';
 $l['acp.switchableManagement.element.remoteReboot'] = 'externes Gerät Neustarten';
 $l['acp.switchableManagement.element.remoteShutdown'] = 'externes Gerät Herunterfahren';
 $l['acp.switchableManagement.element.script'] = 'Script';
+$l['acp.switchableManagement.element.avmSocket'] = 'AVM Steckdose';
+$l['acp.switchableManagement.element.fritzBox'] = 'Fritz!Box';
 $l['acp.switchableManagement.element.BMP'] = 'BMP 085/150';
 $l['acp.switchableManagement.element.DHT'] = 'DHT 11/22';
 $l['acp.switchableManagement.element.DS18x20'] = 'DS18x20';
 $l['acp.switchableManagement.element.Hygrometer'] = 'Feuchtigkeits Sensor';
 $l['acp.switchableManagement.element.LDR'] = 'Lichtstärke Sensor';
 $l['acp.switchableManagement.element.RainSensor'] = 'Regen Sensor';
+$l['acp.switchableManagement.element.avmMeasuringSocket'] = 'AVM Steckdosen Sensor';
 $l['acp.switchableManagement.element.box'] = 'Box';
 
 //Prompts
@@ -199,6 +202,10 @@ $l['acp.switchableManagement.form.sensorForm.altitudeVisibility'] = 'Standorthö
 $l['acp.switchableManagement.form.sensorForm.altitudeVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Standorthöhe des Sensors';
 $l['acp.switchableManagement.form.sensorForm.valueVisibility'] = 'Wert Anzeigen';
 $l['acp.switchableManagement.form.sensorForm.valueVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des Wertes des Sensors';
+$l['acp.switchableManagement.form.sensorForm.powerVisibility'] = 'Leistung Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.powerVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der aktuell entnommene Leistung des Sensors';
+$l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Arbeit Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des der elektrischen Arbeit seit Inbetriebnahme des Sensors';
 $l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
 $l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
 
@@ -250,6 +257,39 @@ $l['acp.switchableManagement.form.addScript.visibility.description'] = 'Sichtbar
 $l['acp.switchableManagement.form.addScript.allowedUsers'] = 'erlaubte Benutzer';
 $l['acp.switchableManagement.form.addScript.allowedUsers.description'] = 'legt fest welche Benutzer das Script verwenden dürfen';
 
+$l['acp.switchableManagement.form.addAvmSocket.name'] = 'Name';
+$l['acp.switchableManagement.form.addAvmSocket.name.description'] = 'Name der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.icon'] = 'Icon';
+$l['acp.switchableManagement.form.addAvmSocket.icon.description'] = 'Icon der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.buttonText'] = 'Button Label';
+$l['acp.switchableManagement.form.addAvmSocket.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addAvmSocket.room'] = 'Raum';
+$l['acp.switchableManagement.form.addAvmSocket.room.description'] = 'Raum dem die Steckdose zugeordnet ist';
+$l['acp.switchableManagement.form.addAvmSocket.ain'] = 'Indentifizierer';
+$l['acp.switchableManagement.form.addAvmSocket.ain.description'] = 'entweder die AIN Nummer (steht auf dem Gerät) oder die IP';
+$l['acp.switchableManagement.form.addAvmSocket.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addAvmSocket.active.description'] = 'Aktiviert/Deaktiviert die Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addAvmSocket.visibility.description'] = 'Sichtbarkeit der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addAvmSocket.allowedUsers.description'] = 'legt fest welche Benutzer die Steckdose verwenden dürfen';
+
+$l['acp.switchableManagement.form.addFritzBox.function'] = 'Funktion';
+$l['acp.switchableManagement.form.addFritzBox.function.description'] = 'währle die Funktion des Elements aus';
+$l['acp.switchableManagement.form.addFritzBox.function.wlan1'] = '2,4GHz WLan';
+$l['acp.switchableManagement.form.addFritzBox.function.wlan2'] = '5GHz WLan';
+$l['acp.switchableManagement.form.addFritzBox.function.wlan3'] = 'Gäste WLan';
+$l['acp.switchableManagement.form.addFritzBox.function.reconnect'] = 'Internet neu Verbinden';
+$l['acp.switchableManagement.form.addFritzBox.function.reboot'] = 'Fritz!Box Neustart';
+$l['acp.switchableManagement.form.addFritzBox.room'] = 'Raum';
+$l['acp.switchableManagement.form.addFritzBox.room.description'] = 'Raum dem die Fritz!Box zugeordnet ist';
+$l['acp.switchableManagement.form.addFritzBox.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addFritzBox.active.description'] = 'Aktiviert/Deaktiviert die Fritz!Box';
+$l['acp.switchableManagement.form.addFritzBox.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Sichtbarkeit der Fritz!Box';
+$l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'legt fest welche Benutzer die Fritz!Box verwenden dürfen';
+
 //Meldungen
 $l['acp.switchableManagement.form.addActivity.success'] =  'Die Aktivität wurde erfolgreich erstellt';
 $l['acp.switchableManagement.form.addElementToActivity.success'] =  'Das Element wurde erfolgreich gespeichert';
@@ -276,6 +316,8 @@ $l['acp.switchableManagement.form.editSensor.success'] =  'Der Sensor wurde erfo
 $l['acp.switchableManagement.form.editSensor.delete.success'] =  'Der Sensor wurde erfolgreich gelöscht';
 $l['acp.switchableManagement.form.deleteSensor.success'] =  'Der Sensor wurde erfolgreich gelöscht';
 $l['acp.switchableManagement.form.deleteBox.success'] =  'Die Box wurde erfolgreich gelöscht';
+$l['acp.switchableManagement.form.addAvmSocket.success'] =  'Die AVM Steckdose wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addFritzBox.success'] =  'Die Fritz!Box wurde erfolgreich erstellt';
 
 $l['acp.switchableManagement.form.error.id'] =  'Ungültige ID';
 $l['acp.switchableManagement.form.error.command'] =  'Ungültiger Befehl';
@@ -309,6 +351,10 @@ $l['acp.switchableManagement.form.deleteBox.error.1102'] =  'Die Box konnte wege
 $l['acp.switchableManagement.form.deleteBox.error'] =  'Die Box konnte nicht gelöscht werden';
 $l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht entfernt werden';
 $l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'Das Element konnte nicht entfernt werden';
+$l['acp.switchableManagement.form.addAvmSocket.error.1102'] =  'Die AVM Steckdose konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addAvmSocket.error'] =  'Die AVM Steckdose konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addFritzBox.error.1102'] =  'Die Fritz!Box konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addFritzBox.error'] =  'Die Fritz!Box konnte nicht gespeichert werden';
 
 $l['acp.switchableManagement.form.success.order'] =  'Die Sortierung wurde erfolgreich gespeichert';
 $l['acp.switchableManagement.form.error.order'] =  'Die Sortierung konnte nicht gespeichert werden';
