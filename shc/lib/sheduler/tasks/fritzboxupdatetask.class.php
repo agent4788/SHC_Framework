@@ -4,6 +4,8 @@ namespace SHC\Sheduler\Tasks;
 
 //Imports
 use RWF\AVM\FritzBoxFactory;
+use RWF\Core\RWF;
+use RWF\Util\CliUtil;
 use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
@@ -39,79 +41,90 @@ class FritzBoxUpdateTask extends AbstractTask {
      */
     public function executeTask() {
 
-        //Fritz Box initialisieren
-        $fritzBox = FritzBoxFactory::getFritzBox();
-        $smartHome = $fritzBox->getSmartHome();
-        $deviceList = $smartHome->listDevices();
-        $wlan = $fritzBox->getWlan();
+        //pruefen ob die FritzBox Konfiguriert ist
+        if(RWF::getSetting('rwf.fritzBox.user') != '') {
 
-        //schaltbare Elemente laden
-        SwitchableEditor::getInstance()->loadData();
-        $switchableList = SwitchableEditor::getInstance()->listElements();
+            try {
 
-        //Geraete durchlaufen
-        foreach($deviceList as $smartHomeDevice) {
+                //Fritz Box initialisieren
+                $fritzBox = FritzBoxFactory::getFritzBox();
+                $smartHome = $fritzBox->getSmartHome();
+                $deviceList = $smartHome->listDevices();
+                $wlan = $fritzBox->getWlan();
 
-            //schaltbare Elemente aktualisieren
-            foreach($switchableList as $switchable) {
+                //schaltbare Elemente laden
+                SwitchableEditor::getInstance()->loadData();
+                $switchableList = SwitchableEditor::getInstance()->listElements();
 
-                if($switchable instanceof \SHC\Switchable\Switchables\AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
+                //Geraete durchlaufen
+                foreach($deviceList as $smartHomeDevice) {
 
-                    //status der Steckdose akualisieren
-                    $switchable->setState(((int) $smartHomeDevice['switch']['state'] == 1 ? 1 : 0));
-                } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 1) {
+                    //schaltbare Elemente aktualisieren
+                    foreach($switchableList as $switchable) {
 
-                    //WLan 1 Status aktualisieren
-                    $switchable->setState($wlan->is2GHzWlanEnabled());
-                } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 2) {
+                        if($switchable instanceof \SHC\Switchable\Switchables\AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
 
-                    //WLan 2 Status aktualisieren
-                    $switchable->setState($wlan->is5GHzWlanEnabled());
-                } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 3) {
+                            //status der Steckdose akualisieren
+                            $switchable->setState(((int) $smartHomeDevice['switch']['state'] == 1 ? 1 : 0));
+                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 1) {
 
-                    //WLan 3 Status aktualisieren
-                    $switchable->setState($wlan->isGuestWlanEnabled());
+                            //WLan 1 Status aktualisieren
+                            $switchable->setState($wlan->is2GHzWlanEnabled());
+                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 2) {
+
+                            //WLan 2 Status aktualisieren
+                            $switchable->setState($wlan->is5GHzWlanEnabled());
+                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 3) {
+
+                            //WLan 3 Status aktualisieren
+                            $switchable->setState($wlan->isGuestWlanEnabled());
+                        }
+                    }
+
+                    SwitchableEditor::getInstance()->updateState();
+
+                    //Sensordaten an den Sensorempfaenger senden
+                    if(isset($smartHomeDevice['powermeter']) || isset($smartHomeDevice['temperature'])) {
+
+                        $get = '&spid=999';
+                        $get .= '&sid='. urlencode($smartHomeDevice['device']['ain']);
+                        $get .= '&type=7';
+                        if(isset($smartHomeDevice['temperature'])) {
+
+                            $get .= '&v1='. $smartHomeDevice['temperature']['temperature'];
+                        } else {
+
+                            $get .= '&v1=0.0';
+                        }
+                        if(isset($smartHomeDevice['powermeter'])) {
+
+                            $get .= '&v2='. $smartHomeDevice['powermeter']['power'];
+                            $get .= '&v3='. $smartHomeDevice['powermeter']['energy'];
+                        } else {
+
+                            $get .= '&v2=0';
+                            $get .= '&v3=0';
+                        }
+
+                        //HTTP Anfrage
+                        $http_options = stream_context_create(array(
+                            'http' => array(
+                                'method'  => 'GET',
+                                'user_agent' => "SHC Framework Sensor Transmitter Version ". SHC::VERSION,
+                                'max_redirects' => 3
+                            )
+                        ));
+                        @file_get_contents('http://localhost:80/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
+                    }
+
+                    $smartHome->rebuildCache();
+                    $wlan->rebuildCache();
                 }
+            } catch(\SoapFault $e) {
+
+                $cli = new CliUtil();
+                $cli->writeLineColored('Fritz!Box verbindung Fehlgeschlagen: '. $e->getMessage(), 'red');
             }
-
-            SwitchableEditor::getInstance()->updateState();
-
-            //Sensordaten an den Sensorempfaenger senden
-            if(isset($smartHomeDevice['powermeter']) || isset($smartHomeDevice['temperature'])) {
-
-                $get = '&spid=999';
-                $get .= '&sid='. urlencode($smartHomeDevice['device']['ain']);
-                $get .= '&type=7';
-                if(isset($smartHomeDevice['temperature'])) {
-
-                    $get .= '&v1='. $smartHomeDevice['temperature']['temperature'];
-                } else {
-
-                    $get .= '&v1=0.0';
-                }
-                if(isset($smartHomeDevice['powermeter'])) {
-
-                    $get .= '&v2='. $smartHomeDevice['powermeter']['power'];
-                    $get .= '&v3='. $smartHomeDevice['powermeter']['energy'];
-                } else {
-
-                    $get .= '&v2=0';
-                    $get .= '&v3=0';
-                }
-
-                //HTTP Anfrage
-                $http_options = stream_context_create(array(
-                    'http' => array(
-                        'method'  => 'GET',
-                        'user_agent' => "SHC Framework Sensor Transmitter Version ". SHC::VERSION,
-                        'max_redirects' => 3
-                    )
-                ));
-                @file_get_contents('http://localhost:80/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
-            }
-
-            $smartHome->rebuildCache();
-            $wlan->rebuildCache();
         }
     }
 }
