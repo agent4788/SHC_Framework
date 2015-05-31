@@ -170,6 +170,38 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectSmartphone->requiredField(true);
         $this->addFormElementToTab('ui', $redirectSmartphone);
 
+        //Fritz Box
+        $this->addTab('fritzBox', RWF::getLanguage()->get('acp.settings.tabs.fritzBox'), RWF::getLanguage()->get('acp.settings.tabs.fritzBox.description'));
+
+        //FritzBox Adresse
+        $fbAddress = new TextField('rwf_fritzBox_address',RWF::getSetting('rwf.fritzBox.address'), array('maxlength' => 25));
+        $fbAddress->setTitle(RWF::getLanguage()->get('acp.settings.form.fbAddress'));
+        $fbAddress->setDescription(RWF::getLanguage()->get('acp.settings.form.fbAddress.decription'));
+        $fbAddress->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbAddress);
+
+        //hat die Fritz!Box ein 5GHz WLAn
+        $_5ghzWlan = new OnOffOption('rwf_fritzBox_has5GHzWlan', RWF::getSetting('rwf.fritzBox.has5GHzWlan'));
+        $_5ghzWlan->setYesNoLabel();
+        $_5ghzWlan->setTitle(RWF::getLanguage()->get('acp.settings.form.5GHzWlan'));
+        $_5ghzWlan->setDescription(RWF::getLanguage()->get('acp.settings.form.5GHzWlan.decription'));
+        $_5ghzWlan->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $_5ghzWlan);
+
+        //FritzBox Adresse
+        $fbUser = new TextField('rwf_fritzBox_user',RWF::getSetting('rwf.fritzBox.user'), array('maxlength' => 25));
+        $fbUser->setTitle(RWF::getLanguage()->get('acp.settings.form.fbUser'));
+        $fbUser->setDescription(RWF::getLanguage()->get('acp.settings.form.fbUser.decription'));
+        $fbUser->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbUser);
+
+        //FritzBox Adresse
+        $fbPassword = new TextField('rwf_fritzBox_password',RWF::getSetting('rwf.fritzBox.password'), array('maxlength' => 25));
+        $fbPassword->setTitle(RWF::getLanguage()->get('acp.settings.form.fbPassword'));
+        $fbPassword->setDescription(RWF::getLanguage()->get('acp.settings.form.fbPassword.decription'));
+        $fbPassword->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbPassword);
+
         RWF::getLanguage()->enableAutoHtmlEndocde();
     }
 }
