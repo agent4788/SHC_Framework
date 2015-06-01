@@ -202,6 +202,44 @@ class SettingsForm extends TabbedHtmlForm {
         $fbPassword->requiredField(true);
         $this->addFormElementToTab('fritzBox', $fbPassword);
 
+        //Fritz!BOx Status
+        $showFbState = new OnOffOption('pcc_fritzBox_showState', RWF::getSetting('pcc.fritzBox.showState'));
+        $showFbState->setOnOffLabel();
+        $showFbState->setTitle(RWF::getLanguage()->get('acp.settings.form.fbShowState'));
+        $showFbState->setDescription(RWF::getLanguage()->get('acp.settings.form.fbShowState.decription'));
+        $showFbState->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFbState);
+
+        //Fritz Box Anrufliste
+        $showFbCallList = new OnOffOption('pcc_fritzBox_showCallList', RWF::getSetting('pcc.fritzBox.showCallList'));
+        $showFbCallList->setOnOffLabel();
+        $showFbCallList->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallList'));
+        $showFbCallList->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallList.decription'));
+        $showFbCallList->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFbCallList);
+
+        //Anzahl der Anrufe
+        $fbCallListMax = new IntegerInputField('pcc_fritzBox_callListMax',RWF::getSetting('pcc.fritzBox.callListMax'), array('min' => 1, 'max' => 999));
+        $fbCallListMax->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallListMax'));
+        $fbCallListMax->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallListMax.decription'));
+        $fbCallListMax->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbCallListMax);
+
+        //Zeitraum der Anrufe
+        $fbCallListDays = new IntegerInputField('pcc_fritzBox_callListDays',RWF::getSetting('pcc.fritzBox.callListDays'), array('min' => 1, 'max' => 999));
+        $fbCallListDays->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallListDays'));
+        $fbCallListDays->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallListDays.decription'));
+        $fbCallListDays->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbCallListDays);
+
+        //Fritz Box Log
+        $showFbLog = new OnOffOption('pcc_fritzBox_showLog', RWF::getSetting('pcc.fritzBox.showLog'));
+        $showFbLog->setOnOffLabel();
+        $showFbLog->setTitle(RWF::getLanguage()->get('acp.settings.form.fbLog'));
+        $showFbLog->setDescription(RWF::getLanguage()->get('acp.settings.form.fbLog.decription'));
+        $showFbLog->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFbLog);
+
         RWF::getLanguage()->enableAutoHtmlEndocde();
     }
 }
