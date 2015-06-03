@@ -142,3 +142,15 @@ $l['index.fbstate.wlan.wlan1Ssid'] = 'SSID';
 $l['index.fbstate.wlan.2ghzWlan'] = '2,4GHz WlLan';
 $l['index.fbstate.wlan.5ghzWlan'] = '5GHz WlLan';
 $l['index.fbstate.wlan.guestWlan'] = 'Gäste WlLan';
+
+$l['index.fbSmartHome.name'] = 'Name: ';
+$l['index.fbSmartHome.identifier'] = 'Identifizierung';
+$l['index.fbSmartHome.present'] = 'Verbunden';
+$l['index.fbSmartHome.fwversion'] = 'Firmmware';
+$l['index.fbSmartHome.manufacturer'] = 'Hersteller';
+$l['index.fbSmartHome.productname'] = 'Produkt';
+$l['index.fbSmartHome.switchState'] = 'Schaltzustand';
+$l['index.fbSmartHome.power'] = 'Energieverbrauch';
+$l['index.fbSmartHome.powerCurrent'] = 'aktuell';
+$l['index.fbSmartHome.energy'] = 'gesamt';
+$l['index.fbSmartHome.temp'] = 'Temperatur';
