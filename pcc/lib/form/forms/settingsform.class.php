@@ -210,6 +210,14 @@ class SettingsForm extends TabbedHtmlForm {
         $showFbState->requiredField(true);
         $this->addFormElementToTab('fritzBox', $showFbState);
 
+        //Fritz!BOX SmartHome Geraete
+        $showFSmartHomeDevices = new OnOffOption('pcc_fritzBox_showSmartHomeDevices', RWF::getSetting('pcc.fritzBox.showSmartHomeDevices'));
+        $showFSmartHomeDevices->setOnOffLabel();
+        $showFSmartHomeDevices->setTitle(RWF::getLanguage()->get('acp.settings.form.fbSmartHomeDevices'));
+        $showFSmartHomeDevices->setDescription(RWF::getLanguage()->get('acp.settings.form.fbSmartHomeDevices.decription'));
+        $showFSmartHomeDevices->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFSmartHomeDevices);
+
         //Fritz Box Anrufliste
         $showFbCallList = new OnOffOption('pcc_fritzBox_showCallList', RWF::getSetting('pcc.fritzBox.showCallList'));
         $showFbCallList->setOnOffLabel();
