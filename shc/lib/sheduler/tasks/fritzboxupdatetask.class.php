@@ -84,7 +84,7 @@ class FritzBoxUpdateTask extends AbstractTask {
                     SwitchableEditor::getInstance()->updateState();
 
                     //Sensordaten an den Sensorempfaenger senden
-                    if(isset($smartHomeDevice['powermeter']) || isset($smartHomeDevice['temperature'])) {
+                    if($smartHomeDevice['present'] == 1 && (isset($smartHomeDevice['powermeter']) || isset($smartHomeDevice['temperature']))) {
 
                         $get = '&spid=999';
                         $get .= '&sid='. urlencode($smartHomeDevice['device']['ain']);
