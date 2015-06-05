@@ -240,14 +240,6 @@ class SettingsForm extends TabbedHtmlForm {
         $fbCallListDays->requiredField(true);
         $this->addFormElementToTab('fritzBox', $fbCallListDays);
 
-        //Fritz Box Log
-        $showFbLog = new OnOffOption('pcc_fritzBox_showLog', RWF::getSetting('pcc.fritzBox.showLog'));
-        $showFbLog->setOnOffLabel();
-        $showFbLog->setTitle(RWF::getLanguage()->get('acp.settings.form.fbLog'));
-        $showFbLog->setDescription(RWF::getLanguage()->get('acp.settings.form.fbLog.decription'));
-        $showFbLog->requiredField(true);
-        $this->addFormElementToTab('fritzBox', $showFbLog);
-
         RWF::getLanguage()->enableAutoHtmlEndocde();
     }
 }

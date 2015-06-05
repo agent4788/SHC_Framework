@@ -28,9 +28,6 @@
                         {premission premission='pcc.ucp.fbCallList' setting='pcc.fritzBox.showCallList'}
                         <li><a href="index.php?app=pcc&ajax=fbcalllist">{lang var='index.tabs.fbcalllist'}</a></li>
                         {/premission}
-                        {premission premission='pcc.ucp.fbLog' setting='pcc.fritzBox.showLog'}
-                        <li><a href="index.php?app=pcc&ajax=fblog">{lang var='index.tabs.fblog'}</a></li>
-                        {/premission}
                     {/ifsetting}
                 </ul>
             </div>
@@ -43,6 +40,20 @@
                     activate : function( event, ui ){
                         $.cookie( 'activeTabMainViewPCC', ui.newTab.index(),{
                             expires : 10
+                        });
+                    },
+                    beforeLoad: function( event, ui ) {
+
+                        ui.panel.html('<div id="pcc-view-tabLoad-progress"></div>');
+                        $("#pcc-view-tabLoad-progress").progressbar({
+                            value: false
+                        });
+
+                        ui.jqXHR.done(function(data) {
+                            ui.panel.html(data);
+                        });
+                        ui.jqXHR.fail(function() {
+                            ui.panel.html('Fehler');
                         });
                     }
                 });

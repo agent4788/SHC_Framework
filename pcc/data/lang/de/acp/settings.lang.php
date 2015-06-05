@@ -73,8 +73,6 @@ $l['acp.settings.form.fbCallListMax'] = 'Einträge';
 $l['acp.settings.form.fbCallListMax.decription'] = 'Wievile Eintraäe der Anrufliste sollen Maximal angezeigt werden';
 $l['acp.settings.form.fbCallListDays'] = 'Tage';
 $l['acp.settings.form.fbCallListDays.decription'] = 'gibt an wie alt die Einträge maxmal sein dürfen (1 = heute, 7 = die letzte Woche)';
-$l['acp.settings.form.fbLog'] = 'Log';
-$l['acp.settings.form.fbLog.decription'] = 'Soll die Fritz!Box Log angezeigt werden';
 $l['acp.settings.form.redirectActive'] = 'Umleitung Aktiv';
 $l['acp.settings.form.redirectActive.decription'] = 'ist die Umleitung anktiv werden PCs, Tablets und Smartphones auf die EIngestellten Oberflächen umgeleitet';
 $l['acp.settings.form.redirectPcTo'] = 'PC Umleitung';
