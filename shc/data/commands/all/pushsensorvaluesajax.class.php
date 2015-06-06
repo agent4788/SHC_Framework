@@ -225,9 +225,7 @@ class PushSensorValuesAjax extends AjaxCommand {
             case 999:
 
                 //Sensorpunkt Spannung
-
-                $sensorPoint = SensorPointEditor::getInstance()->getSensorPointById($spId);
-                if($sensorPoint->setVoltage($value1)) {
+                if(SensorPointEditor::getInstance()->setSensorPointVoltage($spId, $value1)) {
 
                     //erfolgreich gespeichert
                     $this->data = 1;
