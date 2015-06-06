@@ -10,6 +10,8 @@ use RWF\Util\DataTypeUtil;
 use SHC\Command\CommandSheduler;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\AvmSocket;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -78,26 +80,38 @@ class ExecuteSwitchCommandAjax extends AjaxCommand {
             return;
         }
 
-        //je nach befehl schalten
-        if($command == 0) {
+        try{
 
-            $switchable->switchOff();
-        } elseif($command == 1) {
+            //je nach befehl schalten
+            if($command == 0) {
 
-            $switchable->switchOn();
-        } else {
+                $switchable->switchOff();
+            } elseif($command == 1) {
+
+                $switchable->switchOn();
+            } else {
+
+                //Fehler ungueltiger Befehl
+                $this->data = array(
+                    'success' => false,
+                    'message' => RWF::getLanguage()->get('index.room.error.command')
+                );
+                RWF::getLanguage()->enableAutoHtmlEndocde();
+                return;
+            }
+        } catch(\SoapFault $e) {
 
             //Fehler ungueltiger Befehl
             $this->data = array(
                 'success' => false,
-                'message' => RWF::getLanguage()->get('index.room.error.command')
+                'message' => 'Fritz!Box Error: '. $e->getMessage()
             );
             RWF::getLanguage()->enableAutoHtmlEndocde();
             return;
         }
 
         //Befele Senden (nur Wake On lan sendet die Pakete direkt
-        if(!$switchable instanceof WakeOnLan) {
+        if(!$switchable instanceof WakeOnLan && !$switchable instanceof AvmSocket && !$switchable instanceof FritzBox) {
 
             try {
 

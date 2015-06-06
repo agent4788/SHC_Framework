@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Form\FormElements\SelectMultiple;
 use SHC\Room\Room;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -18,7 +19,9 @@ use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
+use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
@@ -86,6 +89,12 @@ class ElementsForBoxChooser extends SelectMultiple {
             } elseif($element instanceof Script) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
+            } elseif($element instanceof AvmSocket) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.avmSocket');
+            } elseif($element instanceof FritzBox) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox');
             }
             $values['element-'. $element->getId()] = array($element->getName() .' ('. $type .')', $box->isElementInBox($element));
         }
@@ -119,6 +128,9 @@ class ElementsForBoxChooser extends SelectMultiple {
             } elseif($sensor instanceof LDR) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.LDR');
+            } elseif($sensor instanceof AvmMeasuringSocket) {
+
+                $type = RWF::getLanguage()->get('acp.switchableManagement.element.avmMeasuringSocket');
             }
             $values['sensor-'. $sensor->getId()] = array($sensor->getName() .' ('. $type .')', $box->isElementInBox($sensor));
         }

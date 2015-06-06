@@ -195,6 +195,33 @@ class PushSensorValuesAjax extends AjaxCommand {
                 $this->data = 3;
                 return;
                 break;
+            case SensorPointEditor::SENSOR_AVM_MEASURING_SOCKET:
+
+                if($sId === null) {
+
+                    //Fehlende Plichtangabe
+                    $this->data = 2;
+                    return;
+                }
+
+                //Sensor ID pruefen
+                if($spId >= 1 && $spId <= 999 && $sId == (int) $sId && $value2 !== null && $value3 !== null) {
+
+                    //$value1 => Temperatur
+                    //$value2 => aktuell entnommene Leistung
+                    //$value3 => entnommene Leistung
+                    if(SensorPointEditor::getInstance()->pushSensorValues($spId, $sId, SensorPointEditor::SENSOR_AVM_MEASURING_SOCKET, (float) $value1, (int) $value2, (int) $value3)) {
+
+                        //erfolgreich gespeichert
+                        $this->data = 1;
+                        return;
+                    }
+                    //Speichern fehlgeschlagen
+                }
+                //ungültige Sensor ID
+                $this->data = 3;
+                return;
+                break;
             case 999:
 
                 //Sensorpunkt Spannung

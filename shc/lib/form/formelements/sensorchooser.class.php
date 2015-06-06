@@ -5,6 +5,7 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Form\FormElements\SelectMultiple;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -94,7 +95,7 @@ class SensorChooser extends SelectMultiple {
                 //alle Sensoren
                 $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
-            } elseif($filter & self::TEMPERATURE && ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP)) {
+            } elseif($filter & self::TEMPERATURE && ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP || $sensor instanceof AvmMeasuringSocket)) {
 
                 //Temperatursenoren
                 $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));

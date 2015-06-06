@@ -1,0 +1,35 @@
+<div>
+    <table class="pcc-view-contentTable">
+        <thead>
+            <tr>
+                <th>{lang var='index.fbCalList.head.date'}</th>
+                <th>{lang var='index.fbCalList.head.type'}</th>
+                <th>{lang var='index.fbCalList.head.name'}</th>
+                <th>{lang var='index.fbCalList.head.device'}</th>
+                <th>{lang var='index.fbCalList.head.ownNumber'}</th>
+                <th>{lang var='index.fbCalList.head.duration'}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$callList item='call'}
+            <tr>
+                <td>{$call.date|timeline}</td>
+                <td><img src="./pcc/inc/img/icons/call_type_{#$call.type}.png" width="16" height="16"> {#$call.typeNamed}</td>
+                <td>{#$call.extContact}</td>
+                <td>{#$call.device}</td>
+                <td>{#$call.intContact}</td>
+                <td>{#$call.duration}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="6">{lang var='index.fbCalList.emptyList'}</td>
+            </tr>
+            {/foreach}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">{lang var='index.fbCalList.createdAt'}{$creationDate|date}</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
