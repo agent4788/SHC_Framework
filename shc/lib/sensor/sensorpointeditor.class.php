@@ -376,12 +376,15 @@ class SensorPointEditor {
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
             $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-            $sensorPoint['voltage'] = $voltage;
-            $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
+            if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                $sensorPoint['voltage'] = $voltage;
+                $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
 
-                return true;
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -401,11 +404,14 @@ class SensorPointEditor {
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
             $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-            $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
+            if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
 
-                return true;
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -880,9 +886,15 @@ class SensorPointEditor {
             if(isset($this->sensorPoints[$spId])) {
 
                 $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-                $sensorPoint['orderId'] = $orderId;
+                if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+                    $sensorPoint['orderId'] = $orderId;
+
+                    if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+
+                        return false;
+                    }
+                } else {
 
                     return false;
                 }
@@ -972,15 +984,21 @@ class SensorPointEditor {
             if($this->getSensorById($sId) !== null) {
 
                 $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
-                foreach($order as $roomId => $order) {
+                if(isset($sensorData['id']) && (int) $sensorData['id'] == $sId) {
 
-                    if($sensorData['order'][$roomId]) {
+                    foreach($order as $roomId => $order) {
 
-                        $sensorData['order'][$roomId] = $order;
+                        if($sensorData['order'][$roomId]) {
+
+                            $sensorData['order'][$roomId] = $order;
+                        }
                     }
-                }
 
-                if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+                    if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+
+                        return false;
+                    }
+                } else {
 
                     return false;
                 }
