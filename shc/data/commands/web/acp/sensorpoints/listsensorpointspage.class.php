@@ -19,7 +19,7 @@ use SHC\Sensor\SensorPointEditor;
  */
 class ListSensorPointsPage extends PageCommand {
 
-    protected $premission = 'shc.acp.sensorpointsManagement';
+    protected $requiredPremission = 'shc.acp.sensorpointsManagement';
 
     protected $template = 'listsensorpoints.html';
 

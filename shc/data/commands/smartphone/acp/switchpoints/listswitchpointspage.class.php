@@ -21,7 +21,7 @@ class ListSwitchPointsPage extends PageCommand {
 
     protected $template = 'listswitchpoints.html';
 
-    protected $premission = 'shc.acp.switchpointsManagement';
+    protected $requiredPremission = 'shc.acp.switchpointsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

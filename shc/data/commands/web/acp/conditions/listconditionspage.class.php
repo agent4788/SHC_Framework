@@ -20,7 +20,7 @@ use SHC\Core\SHC;
  */
 class ListConditionsPage extends PageCommand {
 
-    protected $premission = 'shc.acp.conditionsManagement';
+    protected $requiredPremission = 'shc.acp.conditionsManagement';
 
     protected $template = 'listconditions.html';
 

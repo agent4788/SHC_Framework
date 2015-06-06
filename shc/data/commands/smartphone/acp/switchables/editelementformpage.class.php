@@ -50,7 +50,7 @@ class EditElementFormPage extends PageCommand {
 
     protected $template = 'editelementform.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

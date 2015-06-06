@@ -26,7 +26,7 @@ class ListSwitchFunctionsPage extends PageCommand {
 
     protected $template = 'listswitchfunctions.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

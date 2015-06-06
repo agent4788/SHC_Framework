@@ -21,7 +21,7 @@ class InfoPage extends PageCommand {
 
     protected $template = 'acpinfo.html';
 
-    protected $premission = 'pcc.acp.menu';
+    protected $requiredPremission = 'pcc.acp.menu';
 
     /**
      * Sprachpakete die geladen werden sollen

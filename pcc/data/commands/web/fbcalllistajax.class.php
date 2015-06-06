@@ -19,7 +19,7 @@ use RWF\Request\Commands\AjaxCommand;
  */
 class FBCallListAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.fbCallList';
+    protected $requiredPremission = 'pcc.ucp.fbCallList';
 
     /**
      * Sprachpakete die geladen werden sollen

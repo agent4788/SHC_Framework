@@ -59,7 +59,7 @@ class ManageSwitchablesInSwitchPointsPage extends PageCommand {
 
     protected $template = 'manageswitchablesinswitchpoints.html';
 
-    protected $premission = 'shc.acp.switchpointsManagement';
+    protected $requiredPremission = 'shc.acp.switchpointsManagement';
 
     protected $languageModules = array('switchablemanagement', 'conditionmanagement', 'acpindex', 'form', 'switchpointsmanagment', 'index');
 

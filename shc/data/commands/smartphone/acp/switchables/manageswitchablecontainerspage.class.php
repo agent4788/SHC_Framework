@@ -35,7 +35,7 @@ class ManageSwitchableContainersPage extends PageCommand {
 
     protected $template = 'manageswitchablecontainers.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

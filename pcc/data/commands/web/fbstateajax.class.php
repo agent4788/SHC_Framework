@@ -18,7 +18,7 @@ use RWF\Request\Commands\AjaxCommand;
  */
 class FBStateAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.fbState';
+    protected $requiredPremission = 'pcc.ucp.fbState';
 
     /**
      * Sprachpakete die geladen werden sollen

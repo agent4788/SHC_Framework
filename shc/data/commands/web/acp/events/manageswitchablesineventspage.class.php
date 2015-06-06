@@ -64,7 +64,7 @@ class ManageSwitchablesInEventsPage extends PageCommand {
 
     protected $template = 'manageswitchablesinevents.html';
 
-    protected $premission = 'shc.acp.eventsManagement';
+    protected $requiredPremission = 'shc.acp.eventsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

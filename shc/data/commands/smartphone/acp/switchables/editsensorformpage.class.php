@@ -39,7 +39,7 @@ class EditSensorFormPage extends PageCommand {
 
     protected $template = 'editsensorform.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

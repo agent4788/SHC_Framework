@@ -21,7 +21,7 @@ use RWF\Util\FileUtil;
  */
 class DataSyncAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.viewSysData';
+    protected $requiredPremission = 'pcc.ucp.viewSysData';
 
     /**
      * Sprachpakete die geladen werden sollen

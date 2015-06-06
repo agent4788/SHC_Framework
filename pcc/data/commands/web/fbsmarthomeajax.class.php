@@ -18,7 +18,7 @@ use RWF\Request\Commands\AjaxCommand;
  */
 class FBSmartHomeAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.fbSmartHomeDevices';
+    protected $requiredPremission = 'pcc.ucp.fbSmartHomeDevices';
 
     /**
      * Sprachpakete die geladen werden sollen

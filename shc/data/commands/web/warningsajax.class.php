@@ -21,8 +21,6 @@ use SHC\SwitchServer\SwitchServerEditor;
  */
 class WarningsAjax extends AjaxCommand {
 
-    protected $premission = '';
-
     /**
      * Sprachpakete die geladen werden sollen
      *

@@ -20,7 +20,7 @@ use PCC\Form\Forms\SettingsForm;
  */
 class SettingsFormPage extends PageCommand {
 
-    protected $premission = 'pcc.acp.settings';
+    protected $requiredPremission = 'pcc.acp.settings';
 
     protected $template = 'settings.html';
 

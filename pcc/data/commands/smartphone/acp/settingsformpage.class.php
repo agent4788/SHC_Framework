@@ -22,7 +22,7 @@ class SettingsFormPage extends PageCommand {
 
     protected $template = 'settingsform.html';
 
-    protected $premission = 'pcc.acp.settings';
+    protected $requiredPremission = 'pcc.acp.settings';
 
     /**
      * Sprachpakete die geladen werden sollen

@@ -27,7 +27,7 @@ class EditUserAtHomeFormPage extends PageCommand {
 
     protected $template = 'edituserathomeform.html';
 
-    protected $premission = 'shc.acp.usersathomeManagement';
+    protected $requiredPremission = 'shc.acp.usersathomeManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
