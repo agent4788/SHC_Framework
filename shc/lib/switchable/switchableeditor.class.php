@@ -301,6 +301,7 @@ class SwitchableEditor {
                     $object = new Script();
                     $object->setOnCommand((string) $switchable['onCommand']);
                     $object->setOffCommand((string) $switchable['offCommand']);
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 case self::TYPE_AVM_SOCKET:
 
