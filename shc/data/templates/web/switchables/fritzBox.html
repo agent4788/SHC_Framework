@@ -3,7 +3,7 @@
     <span class="shc-icon {$switchable->getIcon()}"></span>
     <div class="shc-contentbox-body-row-content">
         <div id="shc-view-switchable-set-{$roomId}-{$switchable->getId()}">
-            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: {if $switchable->getFunction() <= 4}5em{else}8em{/if}; height: 2em; font-size: 1.3em;">
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: {if $switchable->getFunction() <= 3}5em{else}8em{/if}; height: 2em; font-size: 1.3em;">
                 {if $switchable->getFunction() <= 3}
                 {lang var='index.room.button.on'}
                 {elseif $switchable->getFunction() == 4}
