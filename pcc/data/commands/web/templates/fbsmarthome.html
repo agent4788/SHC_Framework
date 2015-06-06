@@ -33,10 +33,10 @@
                     <td>{#$device.powermeter.energy} Wh</td>
                 </tr>
             {/if}
-            <tr>
-                <th colspan="4">{lang var='index.fbSmartHome.temp'}</th>
-            </tr>
             {if $device.temperature|isset}
+                <tr>
+                    <th colspan="4">{lang var='index.fbSmartHome.temp'}</th>
+                </tr>
                 <tr>
                     <td style="font-weight: bold;">{lang var='index.fbSmartHome.temp'}</td>
                     <td colspan="3">{#$device.temperature.temperature} &deg;C</td>
