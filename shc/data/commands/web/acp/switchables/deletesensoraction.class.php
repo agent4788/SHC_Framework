@@ -49,7 +49,7 @@ class DeleteSensorAction extends ActionCommand {
     public function executeAction() {
 
         //Sensor Objekt laden
-        $sensorId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
+        $sensorId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::STRING);
         $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
 
         //pruefen ob das Element existiert
