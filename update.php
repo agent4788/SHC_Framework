@@ -956,6 +956,56 @@ if(file_exists('./shc/data/storage/switchables.xml')) {
     file_put_contents('./shc/app.json', $content);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Update v2.2.0 auf v2.2.1 ////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+if(file_exists('./shc/app.json') || file_exists('./pcc/app.json')) {
+
+    //neue RWF Einstellungen
+    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
+
+    //Datenbank
+    addSetting('rwf.fritzBox.address', 'fritz.box', TYPE_STRING);
+    addSetting('rwf.fritzBox.has5GHzWlan', 'false', TYPE_BOOLEAN);
+    addSetting('rwf.fritzBox.user', '', TYPE_STRING);
+    addSetting('rwf.fritzBox.password', '', TYPE_STRING);
+
+    //XML Speichern
+    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+}
+
+if(file_exists('./pcc/app.json')) {
+
+    //neue PCC Einstellungen
+    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
+
+    //Datenbank
+    addSetting('pcc.fritzBox.showState', 'true', TYPE_BOOLEAN);
+    addSetting('pcc.fritzBox.showSmartHomeDevices', 'true', TYPE_BOOLEAN);
+    addSetting('pcc.fritzBox.showCallList', 'true', TYPE_BOOLEAN);
+    addSetting('pcc.fritzBox.callListMax', '25', TYPE_INTEGER);
+    addSetting('pcc.fritzBox.callListDays', '999', TYPE_INTEGER);
+
+    //XML Speichern
+    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+
+    //neue Benutzerechte erstellen
+    $usersXml = new SimpleXMLElement('./rwf/data/storage/users.xml', null, true);
+
+    //Gruppenrechte vorbereiten
+    foreach ($usersXml->groups->group as $group) {
+
+        //Rechte
+        addPremission($group, 'pcc.ucp.fbState', '1');
+        addPremission($group, 'pcc.ucp.fbSmartHomeDevices', '1');
+        addPremission($group, 'pcc.ucp.fbCallList', '1');
+    }
+
+    //XML Speichern
+    $usersXml->asXML('./rwf/data/storage/users.xml');
+}
+
 print("Update erfolgreich\n");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
