@@ -55,6 +55,12 @@ class SHC extends RWF {
 
         global $argv;
 
+        //pruefen ob APP installiert ist
+        if(!file_exists(PATH_SHC .'app.json')) {
+
+            throw new \Exception('Die App "SHC" ist nicht installiert', 1013);
+        }
+
         //XML Initialisieren
         $this->initXml();
 

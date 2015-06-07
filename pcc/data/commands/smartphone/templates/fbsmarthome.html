@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="state">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                {foreach from=$smartHomeDevices item='device' name='smartHome'}
+                    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                        <li data-role="list-divider" role="heading">{lang var='index.fbSmartHome.name'}{#$device.name}</li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.manufacturer'}:</h1>
+                            <p>
+                                {#$device.device.manufacturer}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.productname'}:</h1>
+                            <p>
+                                {#$device.device.productname}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.identifier'}:</h1>
+                            <p>
+                                {#$device.device.identifier}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.fwversion'}:</h1>
+                            <p>
+                                {#$device.device.fwversion}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.present'}:</h1>
+                            <p>
+                                {if $device.present == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbSmartHome.switchState'}:</h1>
+                            <p>
+                                {if $device.switch.state == 1}{lang var='global.on'}{else}{lang var='global.off'}{/if}
+                            </p>
+                        </li>
+                        {if $device.powermeter|isset}
+                            <li data-role="list-divider" role="heading">{lang var='index.fbSmartHome.power'}</li>
+                            <li>
+                                <h1>{lang var='index.fbSmartHome.powerCurrent'}:</h1>
+                                <p>
+                                    {#$device.powermeter.power} mW
+                                </p>
+                            </li>
+                            <li>
+                                <h1>{lang var='index.fbSmartHome.energy'}:</h1>
+                                <p>
+                                    {#$device.powermeter.energy} Wh
+                                </p>
+                            </li>
+                        {/if}
+                        {if $device.temperature|isset}
+                            <li data-role="list-divider" role="heading">{lang var='index.fbSmartHome.temp'}</li>
+                            <li>
+                                <h1>{lang var='index.fbSmartHome.temp'}:</h1>
+                                <p>
+                                    {#$device.temperature.temperature} &deg;C
+                                </p>
+                            </li>
+                        {/if}
+                    </ul>
+                {/foreach}
+            </div>
+        </div>
+    </body>
+</html>

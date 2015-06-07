@@ -19,7 +19,7 @@ use SHC\Event\EventEditor;
  */
 class ListEventsPage extends PageCommand {
 
-    protected $premission = 'shc.acp.eventsManagement';
+    protected $requiredPremission = 'shc.acp.eventsManagement';
 
     protected $template = 'listevents.html';
 

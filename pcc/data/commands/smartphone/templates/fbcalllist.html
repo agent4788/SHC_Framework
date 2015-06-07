@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="state">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                    {foreach from=$callList item='call'}
+                        <li>
+                            <h1>{#$call.extContact}</h1>
+                            <p>
+                                <span style="font-weight: bold;">{lang var='index.fbCalList.head.date'}:</span> {$call.date|timeline}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.fbCalList.head.type'}:</span> <img src="./pcc/inc/img/icons/call_type_{#$call.type}.png" width="16" height="16"> {#$call.typeNamed}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.fbCalList.head.device'}:</span> {#$call.device}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.fbCalList.head.ownNumber'}:</span> {#$call.intContact}
+                                <br/>
+                                <span style="font-weight: bold;">{lang var='index.fbCalList.head.duration'}:</span> {#$call.duration}
+                            </p>
+                        </li>
+                    {foreachelse}
+                        <li>{lang var='index.fbCalList.emptyList'}</li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -21,7 +21,7 @@ class ListEventsPage extends PageCommand {
 
     protected $template = 'listevents.html';
 
-    protected $premission = 'shc.acp.eventsManagement';
+    protected $requiredPremission = 'shc.acp.eventsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

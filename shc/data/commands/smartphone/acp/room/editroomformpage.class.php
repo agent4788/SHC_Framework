@@ -27,7 +27,7 @@ class EditRoomFormPage extends PageCommand {
 
     protected $template = 'editroomform.html';
 
-    protected $premission = 'shc.acp.roomManagement';
+    protected $requiredPremission = 'shc.acp.roomManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

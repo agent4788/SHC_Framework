@@ -21,7 +21,7 @@
         {/if}
     {/if}
     <h3>
-        {if $title|isset == true}{#$title}{else}{setting name='pcc.title' encodeHtml=1}{/if}
+        {if $title|isset == true}{$title}{else}{setting name='pcc.title' encodeHtml=1}{/if}
     </h3>
     {if $user->isUser()}
     <a data-role="button" href="index.php?app=pcc&action=logout&m" data-icon="minus" data-iconpos="left" class="ui-btn-right">

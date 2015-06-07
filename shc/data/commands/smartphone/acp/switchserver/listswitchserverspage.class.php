@@ -21,7 +21,7 @@ class ListSwitchServersPage extends PageCommand {
 
     protected $template = 'listswitchservers.html';
 
-    protected $premission = 'shc.acp.switchserverManagement';
+    protected $requiredPremission = 'shc.acp.switchserverManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

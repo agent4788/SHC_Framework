@@ -19,7 +19,7 @@ use SHC\Room\RoomEditor;
  */
 class ListRoomsPage extends PageCommand {
 
-    protected $premission = 'shc.acp.roomManagement';
+    protected $requiredPremission = 'shc.acp.roomManagement';
 
     protected $template = 'listrooms.html';
 

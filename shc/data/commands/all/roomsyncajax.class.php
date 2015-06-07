@@ -12,6 +12,7 @@ use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -21,6 +22,7 @@ use SHC\Sensor\Sensors\RainSensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\FritzBox;
 
 /**
  * Daten eines Raumes Synchronisieren
@@ -81,7 +83,19 @@ class RoomSyncAjax extends AjaxCommand {
                     $wolValues[$switchable->getId()] = $switchable->getState();
                 } elseif ($switchable instanceof Switchable) {
 
-                    $switchableValues[$switchable->getId()] = $switchable->getState();
+                    if($switchable instanceof Script && $switchable->getOnCommand() != '' && $switchable->getOffCommand() != '') {
+
+                        $switchableValues[$switchable->getId()] = $switchable->getState();
+                    } elseif($switchable instanceof FritzBox) {
+
+                        if($switchable->getFunction() <= 3) {
+
+                            $switchableValues[$switchable->getId()] = $switchable->getState();
+                        }
+                    } elseif(!$switchable instanceof Script) {
+
+                        $switchableValues[$switchable->getId()] = $switchable->getState();
+                    }
                 } elseif ($switchable instanceof Readable) {
 
                     //Status lesen ohne ihn zu speichern
@@ -129,6 +143,13 @@ class RoomSyncAjax extends AjaxCommand {
                     $analogValues[$sensor->getId()] = array(
                         'value' => String::formatInteger($sensor->getValue() * 100 / 1023)
                     );
+                } elseif ($sensor instanceof AvmMeasuringSocket) {
+
+                    $avmPowerValues[$sensor->getId()] = array(
+                        'temp' => String::formatFloat($sensor->getTemperature(), 1),
+                        'power' => String::formatFloat(($sensor->getPower() / 1000), 2),
+                        'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .'Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 3) .'kWh')
+                    );
                 }
             }
         }
@@ -138,6 +159,7 @@ class RoomSyncAjax extends AjaxCommand {
         $response['dht'] = $dhtValues;
         $response['bmp'] = $bmpValues;
         $response['analog'] = $analogValues;
+        $response['syncAvmPowerSockect'] = $avmPowerValues;
 
         $this->data = $response;
     }

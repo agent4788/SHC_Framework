@@ -24,6 +24,10 @@ span.shc-icon-ldr {
     background-image: url(../../../img/sensor/ldr.png);
 }
 
+span.shc-icon-avmPowerSensor {
+    background-image: url(../../../img/sensor/pwoersocket.png);
+}
+
 /* Icons fuer Schaltbare Elemente */
 
 span.shc-icon-chip {
@@ -112,6 +116,14 @@ span.shc-icon-reboot {
 
 span.shc-icon-shutdown {
     background-image: url(../../../img/switchables/shutdown.png);
+}
+
+span.shc-icon-wifi {
+    background-image: url(../../../img/switchables/wifi.png);
+}
+
+span.shc-icon-reconnect {
+    background-image: url(../../../img/switchables/reconnect.png);
 }
 
 /* Status Icons */

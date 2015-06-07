@@ -747,7 +747,6 @@ if(is_array($data)) {
             foreach($dataSet as $index => $value) {
 
                 $redis->lPush('sensors:sensorData:'. $key, $value);
-                var_dump('sensors:sensorData:'. $key, $value);
             }
         }
         $cli->writeLineColored('Sensor Daten erfolgreich wiederhergestellt', 'green');

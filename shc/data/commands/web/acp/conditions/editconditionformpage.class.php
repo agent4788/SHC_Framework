@@ -63,7 +63,7 @@ class EditConditionFormPage extends PageCommand {
 
     protected $template = 'editconditionform.html';
 
-    protected $premission = 'shc.acp.conditionsManagement';
+    protected $requiredPremission = 'shc.acp.conditionsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

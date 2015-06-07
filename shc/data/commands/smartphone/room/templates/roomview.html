@@ -105,6 +105,14 @@
 
                                             $('#shc-view-sensor-analog-{$room->getId()}-'+ index +'-value').text(value.value);
                                         });
+
+                                        //AVM Power Sensoren
+                                        $.each(data.syncAvmPowerSockect, function (index, value) {
+
+                                            $('#shc-view-sensor-avmPowerSensor-{$room->getId()}-'+ index +'-temp').text(value.temp);
+                                            $('#shc-view-sensor-avmPowerSensor-{$room->getId()}-'+ index +'-power').text(value.power);
+                                            $('#shc-view-sensor-avmPowerSensor-{$room->getId()}-'+ index +'-energy').text(value.energy);
+                                        });
                                     }
                                 }
                         );

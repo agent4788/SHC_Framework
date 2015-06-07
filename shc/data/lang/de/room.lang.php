@@ -20,6 +20,7 @@ $l['index.room.button.off'] = 'aus';
 $l['index.room.button.start'] = 'start';
 $l['index.room.button.reboot'] = 'Neustart';
 $l['index.room.button.shutdown'] = 'Herunterfahren';
+$l['index.room.button.reconnect'] = 'Reconnect';
 
 //Meldungen
 $l['index.room.error.title'] = 'Fehler';
@@ -38,3 +39,5 @@ $l['index.room.sensorValue.press'] = 'Luftdruck';
 $l['index.room.sensorValue.alti'] = 'Höhe';
 $l['index.room.sensorValue.lightIntensity'] = 'Lichtstärke';
 $l['index.room.sensorValue.moisture'] = 'Feuchtigkeit';
+$l['index.room.sensorValue.power'] = 'Leistung';
+$l['index.room.sensorValue.energy'] = 'Energie';

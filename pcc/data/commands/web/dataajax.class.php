@@ -17,7 +17,7 @@ use RWF\Request\Commands\AjaxCommand;
  */
 class DataAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.viewSysData';
+    protected $requiredPremission = 'pcc.ucp.viewSysData';
 
     /**
      * Sprachpakete die geladen werden sollen

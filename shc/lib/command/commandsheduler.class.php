@@ -160,7 +160,10 @@ class CommandSheduler {
                 } catch(\Exception $e) {
 
                     //GPIO Schaltserver nicht errreicht
-                    throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
+                    if($gpioSend === true) {
+
+                        throw new \Exception('der Schaltserver für den GPIO konnte nicht erreicht werden', 1510);
+                    }
                 }
 
             //Arduino Schaltserver
@@ -307,7 +310,7 @@ class CommandSheduler {
                     }
 
                     //Antwort Lesen
-                    $rawData = base64_decode($socket->read(8192));
+                    $rawData = base64_decode(@$socket->read(8192));
                     $response = json_decode($rawData, true);
                     if (isset($response['state'])) {
 

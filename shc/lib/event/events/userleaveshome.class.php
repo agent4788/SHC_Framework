@@ -42,13 +42,15 @@ class UserLeavesHome extends AbstractEvent {
         //pruefen ob Warteintervall angegeben und noch nicht abgelaufen
         if(isset($this->data['interval'])) {
 
-            $date = DateTime::now();
-            $date->sub(new \DateInterval('PT'. $this->data['interval'] .'S'));
+            if($this->time instanceof DateTime){
 
-            if($this->time instanceof DateTime && $this->time > $date) {
+                $date = clone $this->time;
+                $date->add(new \DateInterval('PT'. $this->data['interval'] .'S'));
+                if($date->isFuture()) {
 
-                //noch in der Sperrzeit fuer weitere Events
-                return false;
+                    //noch in der Sperrzeit fuer weitere Events
+                    return false;
+                }
             }
         }
 

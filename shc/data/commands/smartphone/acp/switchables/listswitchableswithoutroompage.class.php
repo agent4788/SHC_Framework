@@ -22,7 +22,7 @@ class ListSwitchablesWithoutRoomPage extends PageCommand {
 
     protected $template = 'listswitchableswithoutroom.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
