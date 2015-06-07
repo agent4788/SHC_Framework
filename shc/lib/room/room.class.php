@@ -243,12 +243,25 @@ class Room {
      */
     public function toArray() {
 
+        $allowedGroups = array();
+        if($this->allowedUserGroups !== null) {
+
+            foreach($this->allowedUserGroups as $group) {
+
+                /* @var $group \RWF\User\UserGroup */
+                $allowedGroups[] = $group->getId();
+            }
+        } else {
+
+            $allowedGroups = null;
+        }
+
         return array(
             'id' => $this->id,
             'name' => $this->name,
             'orderId' => $this->orderId,
             'enabled' => $this->enabled,
-            'allowedUserGroups' => $this->allowedUserGroups
+            'allowedUserGroups' => $allowedGroups
         );
     }
 }

@@ -28,7 +28,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0';
+    const VERSION = '2.2.1';
 
     /**
      * Sensor Transmitter
@@ -54,6 +54,12 @@ class SHC extends RWF {
     public function __construct() {
 
         global $argv;
+
+        //pruefen ob APP installiert ist
+        if(!file_exists(PATH_SHC .'app.json')) {
+
+            throw new \Exception('Die App "SHC" ist nicht installiert', 1013);
+        }
 
         //XML Initialisieren
         $this->initXml();

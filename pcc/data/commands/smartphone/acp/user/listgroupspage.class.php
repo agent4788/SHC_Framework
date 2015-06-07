@@ -21,7 +21,7 @@ class ListGroupsPage extends PageCommand {
 
     protected $template = 'groupslist.html';
 
-    protected $premission = 'pcc.acp.userManagement';
+    protected $requiredPremission = 'pcc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

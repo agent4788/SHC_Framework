@@ -32,6 +32,8 @@
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
                                     <input type="hidden" name="switchableOrder[{$room->getId()}][{$element->getId()}]" value="{$element->getOrderId($room->getId())}" />
                                 </p>
                             </a>
@@ -67,6 +69,7 @@
                                     {instanceof element=$element class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
                                     {instanceof element=$element class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                                    {instanceof element=$element class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
                                     <input type="hidden" name="sensorOrder[{$room->getId()}][{$element->getId()}]" value="{$element->getOrderId($room->getId())}" />
                                 </p>
                             </a>
@@ -99,6 +102,8 @@
                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
+                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
+                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
                                             <input type="hidden" name="switchableOrder[{$room->getId()}][{$boxElement->getId()}]" value="{$boxElement->getOrderId($room->getId())}" />
                                         </p>
                                     </a>
@@ -134,6 +139,7 @@
                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
                                             {instanceof element=$boxElement class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
+                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
                                             <input type="hidden" name="sensorOrder[{$room->getId()}][{$boxElement->getId()}]" value="{$boxElement->getOrderId($room->getId())}" />
                                         </p>
                                     </a>

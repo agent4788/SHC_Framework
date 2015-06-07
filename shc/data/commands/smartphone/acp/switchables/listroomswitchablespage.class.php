@@ -26,7 +26,7 @@ class ListRoomSwitchablesPage extends PageCommand {
 
     protected $template = 'listroomswitchables.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

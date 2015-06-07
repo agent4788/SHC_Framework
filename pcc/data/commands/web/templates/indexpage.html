@@ -18,6 +18,17 @@
                     {premission premission='pcc.ucp.viewSysData'}
                     <li><a href="index.php?app=pcc&ajax=data">{lang var='index.tabs.data'}</a></li>
                     {/premission}
+                    {ifsetting name='rwf.fritzBox.user'}
+                        {premission premission='pcc.ucp.fbState' setting='pcc.fritzBox.showState'}
+                        <li><a href="index.php?app=pcc&ajax=fbstate">{lang var='index.tabs.fbstate'}</a></li>
+                        {/premission}
+                        {premission premission='pcc.ucp.fbState' setting='pcc.fritzBox.showState'}
+                        <li><a href="index.php?app=pcc&ajax=fbsmarthome">{lang var='index.tabs.fbsmarthome'}</a></li>
+                        {/premission}
+                        {premission premission='pcc.ucp.fbCallList' setting='pcc.fritzBox.showCallList'}
+                        <li><a href="index.php?app=pcc&ajax=fbcalllist">{lang var='index.tabs.fbcalllist'}</a></li>
+                        {/premission}
+                    {/ifsetting}
                 </ul>
             </div>
         </div>
@@ -29,6 +40,20 @@
                     activate : function( event, ui ){
                         $.cookie( 'activeTabMainViewPCC', ui.newTab.index(),{
                             expires : 10
+                        });
+                    },
+                    beforeLoad: function( event, ui ) {
+
+                        ui.panel.html('<div id="pcc-view-tabLoad-progress"></div>');
+                        $("#pcc-view-tabLoad-progress").progressbar({
+                            value: false
+                        });
+
+                        ui.jqXHR.done(function(data) {
+                            ui.panel.html(data);
+                        });
+                        ui.jqXHR.fail(function() {
+                            ui.panel.html('Fehler');
                         });
                     }
                 });

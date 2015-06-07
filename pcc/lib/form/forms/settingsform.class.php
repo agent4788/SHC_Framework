@@ -170,6 +170,76 @@ class SettingsForm extends TabbedHtmlForm {
         $redirectSmartphone->requiredField(true);
         $this->addFormElementToTab('ui', $redirectSmartphone);
 
+        //Fritz Box
+        $this->addTab('fritzBox', RWF::getLanguage()->get('acp.settings.tabs.fritzBox'), RWF::getLanguage()->get('acp.settings.tabs.fritzBox.description'));
+
+        //FritzBox Adresse
+        $fbAddress = new TextField('rwf_fritzBox_address',RWF::getSetting('rwf.fritzBox.address'), array('maxlength' => 25));
+        $fbAddress->setTitle(RWF::getLanguage()->get('acp.settings.form.fbAddress'));
+        $fbAddress->setDescription(RWF::getLanguage()->get('acp.settings.form.fbAddress.decription'));
+        $fbAddress->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbAddress);
+
+        //hat die Fritz!Box ein 5GHz WLAn
+        $_5ghzWlan = new OnOffOption('rwf_fritzBox_has5GHzWlan', RWF::getSetting('rwf.fritzBox.has5GHzWlan'));
+        $_5ghzWlan->setYesNoLabel();
+        $_5ghzWlan->setTitle(RWF::getLanguage()->get('acp.settings.form.5GHzWlan'));
+        $_5ghzWlan->setDescription(RWF::getLanguage()->get('acp.settings.form.5GHzWlan.decription'));
+        $_5ghzWlan->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $_5ghzWlan);
+
+        //FritzBox Adresse
+        $fbUser = new TextField('rwf_fritzBox_user',RWF::getSetting('rwf.fritzBox.user'), array('maxlength' => 25));
+        $fbUser->setTitle(RWF::getLanguage()->get('acp.settings.form.fbUser'));
+        $fbUser->setDescription(RWF::getLanguage()->get('acp.settings.form.fbUser.decription'));
+        $fbUser->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbUser);
+
+        //FritzBox Adresse
+        $fbPassword = new TextField('rwf_fritzBox_password',RWF::getSetting('rwf.fritzBox.password'), array('maxlength' => 25));
+        $fbPassword->setTitle(RWF::getLanguage()->get('acp.settings.form.fbPassword'));
+        $fbPassword->setDescription(RWF::getLanguage()->get('acp.settings.form.fbPassword.decription'));
+        $fbPassword->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbPassword);
+
+        //Fritz!BOx Status
+        $showFbState = new OnOffOption('pcc_fritzBox_showState', RWF::getSetting('pcc.fritzBox.showState'));
+        $showFbState->setOnOffLabel();
+        $showFbState->setTitle(RWF::getLanguage()->get('acp.settings.form.fbShowState'));
+        $showFbState->setDescription(RWF::getLanguage()->get('acp.settings.form.fbShowState.decription'));
+        $showFbState->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFbState);
+
+        //Fritz!BOX SmartHome Geraete
+        $showFSmartHomeDevices = new OnOffOption('pcc_fritzBox_showSmartHomeDevices', RWF::getSetting('pcc.fritzBox.showSmartHomeDevices'));
+        $showFSmartHomeDevices->setOnOffLabel();
+        $showFSmartHomeDevices->setTitle(RWF::getLanguage()->get('acp.settings.form.fbSmartHomeDevices'));
+        $showFSmartHomeDevices->setDescription(RWF::getLanguage()->get('acp.settings.form.fbSmartHomeDevices.decription'));
+        $showFSmartHomeDevices->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFSmartHomeDevices);
+
+        //Fritz Box Anrufliste
+        $showFbCallList = new OnOffOption('pcc_fritzBox_showCallList', RWF::getSetting('pcc.fritzBox.showCallList'));
+        $showFbCallList->setOnOffLabel();
+        $showFbCallList->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallList'));
+        $showFbCallList->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallList.decription'));
+        $showFbCallList->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $showFbCallList);
+
+        //Anzahl der Anrufe
+        $fbCallListMax = new IntegerInputField('pcc_fritzBox_callListMax',RWF::getSetting('pcc.fritzBox.callListMax'), array('min' => 1, 'max' => 999));
+        $fbCallListMax->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallListMax'));
+        $fbCallListMax->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallListMax.decription'));
+        $fbCallListMax->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbCallListMax);
+
+        //Zeitraum der Anrufe
+        $fbCallListDays = new IntegerInputField('pcc_fritzBox_callListDays',RWF::getSetting('pcc.fritzBox.callListDays'), array('min' => 1, 'max' => 999));
+        $fbCallListDays->setTitle(RWF::getLanguage()->get('acp.settings.form.fbCallListDays'));
+        $fbCallListDays->setDescription(RWF::getLanguage()->get('acp.settings.form.fbCallListDays.decription'));
+        $fbCallListDays->requiredField(true);
+        $this->addFormElementToTab('fritzBox', $fbCallListDays);
+
         RWF::getLanguage()->enableAutoHtmlEndocde();
     }
 }

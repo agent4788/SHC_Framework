@@ -9,6 +9,7 @@ use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
 use SHC\Room\Room;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\BMP;
@@ -98,6 +99,13 @@ class SensorPointEditor {
      * @var Integer
      */
     const SENSOR_LDR = 6;
+
+    /**
+     * AVM Steckdose
+     *
+     * @var Integer
+     */
+    const SENSOR_AVM_MEASURING_SOCKET = 7;
 
     /**
      * Sensorpunkte
@@ -268,6 +276,27 @@ class SensorPointEditor {
                     $sensor->valueVisibility(((int) $sensorData['valueVisibility'] == true ? 1 : 0));
                     $sensor->setOffset((int) $sensorData['valueOffset']);
                     break;
+                case self::SENSOR_AVM_MEASURING_SOCKET:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'temp' => (float) $dataSet['temp'],
+                            'power' => (float) $dataSet['power'],
+                            'energy' => (float) $dataSet['energy'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new AvmMeasuringSocket($values);
+                    $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->powerVisibility(((int) $sensorData['powerVisibility'] == true ? 1 : 0));
+                    $sensor->energyVisibility(((int) $sensorData['energyVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    break;
             }
 
             //Allgemeine Daten setzen
@@ -347,12 +376,15 @@ class SensorPointEditor {
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
             $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-            $sensorPoint['voltage'] = $voltage;
-            $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
+            if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                $sensorPoint['voltage'] = $voltage;
+                $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
 
-                return true;
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -372,11 +404,14 @@ class SensorPointEditor {
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
             $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-            $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
+            if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-            if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
 
-                return true;
+                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+
+                    return true;
+                }
             }
         }
         return false;
@@ -713,6 +748,13 @@ class SensorPointEditor {
                 $newSensor['valueVisibility'] = true;
                 $newSensor['valueOffset'] = 0;
                 break;
+            case self::SENSOR_AVM_MEASURING_SOCKET:
+
+                $newSensor['temperatureVisibility'] = true;
+                $newSensor['powerVisibility'] = true;
+                $newSensor['energyVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                break;
         }
 
         if(SHC::getDatabase()->hSetNx(self::$tableName . ':sensors', $sId, $newSensor) == 0) {
@@ -791,6 +833,15 @@ class SensorPointEditor {
                     'time' => DateTime::now()->getDatabaseDateTime()
                 );
                 break;
+            case self::SENSOR_AVM_MEASURING_SOCKET:
+
+                $data = array(
+                    'temp' => (float) $value1,
+                    'power' => (float) $value2,
+                    'energy' => (float) $value3,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
         }
 
         if(SHC::getDatabase()->lPush(self::$tableName .':sensorData:'. $sId, $data) !== false) {
@@ -835,9 +886,15 @@ class SensorPointEditor {
             if(isset($this->sensorPoints[$spId])) {
 
                 $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
-                $sensorPoint['orderId'] = $orderId;
+                if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
-                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+                    $sensorPoint['orderId'] = $orderId;
+
+                    if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+
+                        return false;
+                    }
+                } else {
 
                     return false;
                 }
@@ -927,15 +984,21 @@ class SensorPointEditor {
             if($this->getSensorById($sId) !== null) {
 
                 $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
-                foreach($order as $roomId => $order) {
+                if(isset($sensorData['id']) && (int) $sensorData['id'] == $sId) {
 
-                    if($sensorData['order'][$roomId]) {
+                    foreach($order as $roomId => $order) {
 
-                        $sensorData['order'][$roomId] = $order;
+                        if($sensorData['order'][$roomId]) {
+
+                            $sensorData['order'][$roomId] = $order;
+                        }
                     }
-                }
 
-                if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+                    if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+
+                        return false;
+                    }
+                } else {
 
                     return false;
                 }
@@ -1216,6 +1279,64 @@ class SensorPointEditor {
         $data = array(
             'valueVisibility' => $valueVisibility,
             'valueOffset' => $valueOffset
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen BMP Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
+     * @param  Boolean $powerVisibility          Sichtbarkeit aktuell entnommene Leistung
+     * @param  Boolean $energyVisibility         Sichtbarkeit entnommene Leistung
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @return Boolean
+     */
+    public function editAvmMeasuringSocket($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $powerVisibility = null, $energyVisibility = null, $dataRecording = null, $temperatureOffset = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'temperatureVisibility' => $temperatureVisibility,
+            'powerVisibility' => $powerVisibility,
+            'energyVisibility' => $energyVisibility,
+            'temperatureOffset' => $temperatureOffset
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Avm Power Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
+     * @param  Boolean $powerVisibility          Sichtbarkeit Luftdruck
+     * @param  Boolean $energyVisibility         Sichtbarkeit Hoehe
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @return Boolean
+     */
+    public function editAvmMeasuringSensor($id, $name = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $powerVisibility = null, $energyVisibility = null, $dataRecording = null, $temperatureOffset = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'temperatureVisibility' => $temperatureVisibility,
+            'powerVisibility' => $powerVisibility,
+            'energyVisibility' => $energyVisibility,
+            'temperatureOffset' => $temperatureOffset
         );
 
         //Sensor bearbeiten

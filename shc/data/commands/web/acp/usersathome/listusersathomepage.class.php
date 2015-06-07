@@ -19,7 +19,7 @@ use SHC\UserAtHome\UserAtHomeEditor;
  */
 class ListUsersAtHomePage extends PageCommand {
 
-    protected $premission = 'shc.acp.usersathomeManagement';
+    protected $requiredPremission = 'shc.acp.usersathomeManagement';
 
     protected $template = 'listusersathome.html';
 

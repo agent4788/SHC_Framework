@@ -225,7 +225,12 @@ class EventEditor {
             //Objekt status vom alten Objekt ins neue übertragen
             if(isset($oldEvents[(int) $event['id']])) {
 
+                /* @var $eventObj \SHC\Event\Event */
                 $eventObj->setState($oldEvents[(int) $event['id']]->getState());
+                if($oldEvents[(int) $event['id']]->getTime() instanceof DateTime) {
+
+                    $eventObj->setTime($oldEvents[(int) $event['id']]->getTime());
+                }
             }
             $this->events[(int) $event['id']] = $eventObj;
         }

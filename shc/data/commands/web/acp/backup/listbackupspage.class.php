@@ -19,7 +19,7 @@ use SHC\Core\SHC;
  */
 class ListBackupsPage extends PageCommand {
 
-    protected $premission = 'shc.acp.backupsManagement';
+    protected $requiredPremission = 'shc.acp.backupsManagement';
 
     protected $template = 'listbackups.html';
 

@@ -17,7 +17,7 @@ use RWF\Request\Commands\AjaxCommand;
  */
 class StateAjax extends AjaxCommand {
 
-    protected $premission = 'pcc.ucp.viewSysState';
+    protected $requiredPremission = 'pcc.ucp.viewSysState';
 
     /**
      * Sprachpakete die geladen werden sollen

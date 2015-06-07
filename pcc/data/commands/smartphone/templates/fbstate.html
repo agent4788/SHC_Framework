@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="state">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b" data-inset="true">
+                    <li data-role="list-divider" role="heading">{lang var='index.fbstate.device.title'}</li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.model'}:</h1>
+                        <p>
+                            {#$modelName}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.hardwareVersion'}:</h1>
+                        <p>
+                            {#$hardwareVersion}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.softwareVersion'}:</h1>
+                        <p>
+                            {#$softwareVersion}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.uptime'}:</h1>
+                        <p>
+                            {#$uptime|seconds}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.dns1'}:</h1>
+                        <p>
+                            {#$dns1}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.dns2'}:</h1>
+                        <p>
+                            {#$dns2}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.voipDns1'}:</h1>
+                        <p>
+                            {#$voipDns1}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.device.voipDns2'}:</h1>
+                        <p>
+                            {#$voipDns2}
+                        </p>
+                    </li>
+                    <li data-role="list-divider" role="heading">{lang var='index.fbstate.wan.title'}</li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.pyhsicalState'}:</h1>
+                        <p>
+                            {#$pyhsicalState}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.accessType'}:</h1>
+                        <p>
+                            {#$accessType}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.state'}:</h1>
+                        <p>
+                            {#$connectState}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.uptime'}:</h1>
+                        <p>
+                            {#$connectUptime|seconds}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.externalIp'}:</h1>
+                        <p>
+                            {#$externalIp}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.downMax'}:</h1>
+                        <p>
+                            {@$downMax} Mbit/s
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.upMax'}:</h1>
+                        <p>
+                            {@$upMax} Mbit/s
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.downCurr'}:</h1>
+                        <p>
+                            {@$downCurr} Mbit/s
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.upCurr'}:</h1>
+                        <p>
+                            {@$upCurr} Mbit/s
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.downTotal'}:</h1>
+                        <p>
+                            {#$downTotal|filesizebinary}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wan.upTotal'}:</h1>
+                        <p>
+                            {#$upTotal|filesizebinary}
+                        </p>
+                    </li>
+                    <li data-role="list-divider" role="heading">{lang var='index.fbstate.wlan.2ghzWlan'}</li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1IsEnabled'}:</h1>
+                        <p>
+                            {if $wlan1IsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Standard'}:</h1>
+                        <p>
+                            IEEE 802.11{#$wlan1Standard}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Mac'}:</h1>
+                        <p>
+                            {#$wlan1Mac}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1MaxBitRate'}:</h1>
+                        <p>
+                            {#$wlan1MaxBitRate}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Ssid'}:</h1>
+                        <p>
+                            {#$wlan1Ssid}
+                        </p>
+                    </li>
+                    {ifsetting name="rwf.fritzBox.has5GHzWlan"}
+                        <li data-role="list-divider" role="heading">{lang var='index.fbstate.wlan.5ghzWlan'}</li>
+                        <li>
+                            <h1>{lang var='index.fbstate.wlan.wlan1IsEnabled'}:</h1>
+                            <p>
+                                {if $wlan2IsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbstate.wlan.wlan1Standard'}:</h1>
+                            <p>
+                                IEEE 802.11{#$wlan2Standard}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbstate.wlan.wlan1Mac'}:</h1>
+                            <p>
+                                {#$wlan2Mac}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbstate.wlan.wlan1MaxBitRate'}:</h1>
+                            <p>
+                                {#$wlan2MaxBitRate}
+                            </p>
+                        </li>
+                        <li>
+                            <h1>{lang var='index.fbstate.wlan.wlan1Ssid'}:</h1>
+                            <p>
+                                {#$wlan2Ssid}
+                            </p>
+                        </li>
+                    {/ifsetting}
+                    <li data-role="list-divider" role="heading">{lang var='index.fbstate.wlan.guestWlan'}</li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1IsEnabled'}:</h1>
+                        <p>
+                            {if $wlanGuestIsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Standard'}:</h1>
+                        <p>
+                            IEEE 802.11{#$wlanGuestStandard}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Mac'}:</h1>
+                        <p>
+                            {#$wlanGuestMac}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1MaxBitRate'}:</h1>
+                        <p>
+                            {#$wlanGuestMaxBitRate}
+                        </p>
+                    </li>
+                    <li>
+                        <h1>{lang var='index.fbstate.wlan.wlan1Ssid'}:</h1>
+                        <p>
+                            {#$wlanGuestSsid}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

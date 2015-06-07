@@ -21,7 +21,7 @@ class ListSensorPointsPage extends PageCommand {
 
     protected $template = 'listsensorpoints.html';
 
-    protected $premission = 'shc.acp.sensorpointsManagement';
+    protected $requiredPremission = 'shc.acp.sensorpointsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

@@ -21,7 +21,7 @@ use SHC\Form\Forms\SettingsForm;
  */
 class SettingsFormPage extends PageCommand {
 
-    protected $premission = 'shc.acp.settings';
+    protected $requiredPremission = 'shc.acp.settings';
 
     protected $template = 'settings.html';
 

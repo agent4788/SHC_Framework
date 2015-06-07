@@ -28,7 +28,7 @@ class EditSwitchPointFormPage extends PageCommand {
 
     protected $template = 'editswitchpointform.html';
 
-    protected $premission = 'shc.acp.switchpointsManagement';
+    protected $requiredPremission = 'shc.acp.switchpointsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

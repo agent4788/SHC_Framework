@@ -26,7 +26,7 @@ class EditGroupFormPage extends PageCommand {
 
     protected $template = 'editgroupform.html';
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $requiredPremission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

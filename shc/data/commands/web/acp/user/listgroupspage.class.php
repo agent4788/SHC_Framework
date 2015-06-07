@@ -21,7 +21,7 @@ class ListGroupsPage extends PageCommand {
 
     protected $template = 'grouplist.html';
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $requiredPremission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

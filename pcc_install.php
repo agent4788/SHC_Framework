@@ -90,6 +90,11 @@ addSetting('pcc.ui.redirectSmartphoneTo', '1', TYPE_INTEGER);
 addSetting('pcc.title', 'PCC%202.2', TYPE_STRING);
 addSetting('pcc.defaultStyle', 'redmond', TYPE_STRING);
 addSetting('pcc.defaultMobileStyle', 'default', TYPE_STRING);
+addSetting('pcc.fritzBox.showState', 'true', TYPE_BOOLEAN);
+addSetting('pcc.fritzBox.showSmartHomeDevices', 'true', TYPE_BOOLEAN);
+addSetting('pcc.fritzBox.showCallList', 'true', TYPE_BOOLEAN);
+addSetting('pcc.fritzBox.callListMax', '25', TYPE_INTEGER);
+addSetting('pcc.fritzBox.callListDays', '999', TYPE_INTEGER);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');
@@ -113,6 +118,9 @@ foreach($usersXml->groups->group as $group) {
     $group = $group->premissions;
     addPremission($group, 'pcc.ucp.viewSysState', '1');
     addPremission($group, 'pcc.ucp.viewSysData', '1');
+    addPremission($group, 'pcc.ucp.fbState', '1');
+    addPremission($group, 'pcc.ucp.fbSmartHomeDevices', '1');
+    addPremission($group, 'pcc.ucp.fbCallList', '1');
     addPremission($group, 'pcc.acp.menu', '0');
     addPremission($group, 'pcc.acp.userManagement', '0');
     addPremission($group, 'pcc.acp.settings', '0');

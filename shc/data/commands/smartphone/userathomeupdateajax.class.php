@@ -20,7 +20,7 @@ use SHC\UserAtHome\UserAtHomeEditor;
  */
 class UserAtHomeUpdateAjax extends AjaxCommand {
 
-    protected $premission = 'shc.ucp.viewUserAtHome';
+    protected $requiredPremission = 'shc.ucp.viewUserAtHome';
 
     /**
      * Sprachpakete die geladen werden sollen

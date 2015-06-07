@@ -1,0 +1,137 @@
+<div>
+    {contentbox name='index.fbstate.device.title'}
+        <table class="pcc-view-contentTable">
+            <tr>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.device.model'}</td>
+                <td style="width: 35%;">{#$modelName}</td>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.device.hardwareVersion'}</td>
+                <td style="width: 35%;">{#$hardwareVersion}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.uptime'}</td>
+                <td>{#$uptime|seconds}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.softwareVersion'}</td>
+                <td>{#$softwareVersion}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.dns1'}</td>
+                <td>{#$dns1}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.voipDns1'}</td>
+                <td>{#$voipDns1}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.dns2'}</td>
+                <td>{#$dns2}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.device.voipDns2'}</td>
+                <td>{#$voipDns2}</td>
+            </tr>
+        </table>
+    {/contentbox}
+    {contentbox name='index.fbstate.wan.title'}
+        <table class="pcc-view-contentTable">
+            <tr>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.pyhsicalState'}</td>
+                <td style="width: 35%;">{#$pyhsicalState}</td>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.accessType'}</td>
+                <td style="width: 35%;">{#$accessType}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.state'}</td>
+                <td>{#$connectState}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.uptime'}</td>
+                <td>{#$connectUptime|seconds}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.externalIp'}</td>
+                <td>{#$externalIp}</td>
+                <td style="font-weight: bold;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downMax'}</td>
+                <td>{@$downMax} Mbit/s</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upMax'}</td>
+                <td>{@$upMax} Mbit/s</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downCurr'}</td>
+                <td>{@$downCurr} Mbit/s</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upCurr'}</td>
+                <td>{@$upCurr} Mbit/s</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downTotal'}</td>
+                <td>{#$downTotal|filesizebinary}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upTotal'}</td>
+                <td>{#$upTotal|filesizebinary}</td>
+            </tr>
+        </table>
+    {/contentbox}
+    {contentbox name='index.fbstate.wlan.title'}
+        <table class="pcc-view-contentTable">
+            <tr>
+                <th colspan="4">{lang var='index.fbstate.wlan.2ghzWlan'}</th>
+            </tr>
+            <tr>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1IsEnabled'}</td>
+                <td style="width: 35%;">{if $wlan1IsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}</td>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Standard'}</td>
+                <td style="width: 35%;">IEEE 802.11{#$wlan1Standard}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Mac'}</td>
+                <td>{#$wlan1Mac}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1MaxBitRate'}</td>
+                <td>{#$wlan1MaxBitRate}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Ssid'}</td>
+                <td colspan="3">{#$wlan1Ssid}</td>
+            </tr>
+        </table>
+        {ifsetting name="rwf.fritzBox.has5GHzWlan"}
+            <table class="pcc-view-contentTable">
+                <tr>
+                    <th colspan="4">{lang var='index.fbstate.wlan.5ghzWlan'}</th>
+                </tr>
+                <tr>
+                    <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1IsEnabled'}</td>
+                    <td style="width: 35%;">{if $wlan2IsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}</td>
+                    <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Standard'}</td>
+                    <td style="width: 35%;">IEEE 802.11{#$wlan2Standard}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Mac'}</td>
+                    <td>{#$wlan2Mac}</td>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1MaxBitRate'}</td>
+                    <td>{#$wlan2MaxBitRate}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Ssid'}</td>
+                    <td colspan="3">{#$wlan2Ssid}</td>
+                </tr>
+            </table>
+        {/ifsetting}
+        <table class="pcc-view-contentTable">
+            <tr>
+                <th colspan="4">{lang var='index.fbstate.wlan.guestWlan'}</th>
+            </tr>
+            <tr>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1IsEnabled'}</td>
+                <td style="width: 35%;">{if $wlanGuestIsEnabled == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}</td>
+                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Standard'}</td>
+                <td style="width: 35%;">IEEE 802.11{#$wlanGuestStandard}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Mac'}</td>
+                <td>{#$wlanGuestMac}</td>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1MaxBitRate'}</td>
+                <td>{#$wlanGuestMaxBitRate}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">{lang var='index.fbstate.wlan.wlan1Ssid'}</td>
+                <td colspan="3">{#$wlanGuestSsid}</td>
+            </tr>
+        </table>
+    {/contentbox}
+</div>

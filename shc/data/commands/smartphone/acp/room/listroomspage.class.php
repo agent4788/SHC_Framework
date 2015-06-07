@@ -25,7 +25,7 @@ class ListRoomsPage extends PageCommand {
 
     protected $template = 'listrooms.html';
 
-    protected $premission = 'shc.acp.roomManagement';
+    protected $requiredPremission = 'shc.acp.roomManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

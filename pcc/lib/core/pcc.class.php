@@ -23,7 +23,7 @@ class PCC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.0';
+    const VERSION = '2.2.1';
 
     /**
      * Style
@@ -33,6 +33,12 @@ class PCC extends RWF {
     protected static $style = null;
 
     public function __construct() {
+
+        //pruefen ob APP installiert ist
+        if(!file_exists(PATH_PCC .'app.json')) {
+
+            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
+        }
 
         //XML Initialisieren
         $this->initXml();

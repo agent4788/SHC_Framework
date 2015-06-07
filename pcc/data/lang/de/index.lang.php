@@ -33,6 +33,10 @@ $l['index.login.error'] = 'Benutzername oder Passwort falsch';
 //Status
 $l['index.tabs.state'] = 'Status';
 $l['index.tabs.data'] = 'Systemdaten';
+$l['index.tabs.fbstate'] = 'Fritz!Box Status';
+$l['index.tabs.fbcalllist'] = 'Fritz!Box Anrufliste';
+$l['index.tabs.fblog'] = 'Fritz!Box Log';
+$l['index.tabs.fbsmarthome'] = 'Fritz!Box SmartHome Geräte';
 
 $l['index.box.time.title'] = 'Systemzeit';
 $l['index.box.time.uptime'] = 'Laufzeit';
@@ -105,3 +109,63 @@ $l['index.box.usb.title'] = 'USB Geräte';
 $l['index.box.usb.count'] = 'Anzahl';
 $l['index.box.usb.class'] = 'Geräte Klasse';
 $l['index.box.usb.current'] = 'max. Stromaufnahme';
+
+$l['index.fbstate.device.title'] = 'Geräteinformationen';
+$l['index.fbstate.device.model'] = 'Modell';
+$l['index.fbstate.device.uptime'] = 'Laufzeit';
+$l['index.fbstate.device.hardwareVersion'] = 'Hardware';
+$l['index.fbstate.device.softwareVersion'] = 'Software';
+$l['index.fbstate.device.dns1'] = '1. DNS Server';
+$l['index.fbstate.device.dns2'] = '2. DNS Server';
+$l['index.fbstate.device.voipDns1'] = '1. VOIP DNS Server';
+$l['index.fbstate.device.voipDns2'] = '2. VOIP DNS Server';
+
+$l['index.fbstate.wan.title'] = 'Verbindungsinformationen';
+$l['index.fbstate.wan.state'] = 'Status';
+$l['index.fbstate.wan.uptime'] = 'Laufzeit';
+$l['index.fbstate.wan.downMax'] = 'max. Download';
+$l['index.fbstate.wan.upMax'] = 'max. Upload';
+$l['index.fbstate.wan.downCurr'] = 'Download';
+$l['index.fbstate.wan.upCurr'] = 'Upload';
+$l['index.fbstate.wan.downTotal'] = 'Download gesamt';
+$l['index.fbstate.wan.upTotal'] = 'Upload gesamt';
+$l['index.fbstate.wan.pyhsicalState'] = 'Hardwareverbindung';
+$l['index.fbstate.wan.accessType'] = 'Typ';
+$l['index.fbstate.wan.externalIp'] = 'externe IP';
+
+$l['index.fbstate.wlan.title'] = 'WLan Status';
+$l['index.fbstate.wlan.wlan1IsEnabled'] = 'aktiv';
+$l['index.fbstate.wlan.wlan1Standard'] = 'Standard';
+$l['index.fbstate.wlan.wlan1Mac'] = 'MAC';
+$l['index.fbstate.wlan.wlan1MaxBitRate'] = 'max. Bitrate';
+$l['index.fbstate.wlan.wlan1Ssid'] = 'SSID';
+$l['index.fbstate.wlan.2ghzWlan'] = '2,4GHz WlLan';
+$l['index.fbstate.wlan.5ghzWlan'] = '5GHz WlLan';
+$l['index.fbstate.wlan.guestWlan'] = 'Gäste WlLan';
+
+$l['index.fbSmartHome.name'] = 'Name: ';
+$l['index.fbSmartHome.identifier'] = 'Identifizierung';
+$l['index.fbSmartHome.present'] = 'Verbunden';
+$l['index.fbSmartHome.fwversion'] = 'Firmmware';
+$l['index.fbSmartHome.manufacturer'] = 'Hersteller';
+$l['index.fbSmartHome.productname'] = 'Produkt';
+$l['index.fbSmartHome.switchState'] = 'Schaltzustand';
+$l['index.fbSmartHome.power'] = 'Energieverbrauch';
+$l['index.fbSmartHome.powerCurrent'] = 'aktuell';
+$l['index.fbSmartHome.energy'] = 'gesamt';
+$l['index.fbSmartHome.temp'] = 'Temperatur';
+
+$l['index.fbCalList.head.date'] = 'Datum';
+$l['index.fbCalList.head.type'] = 'Typ';
+$l['index.fbCalList.head.name'] = 'Name/Rufnummer';
+$l['index.fbCalList.head.ownNumber'] = 'eigene Nummer';
+$l['index.fbCalList.head.device'] = 'Gerät';
+$l['index.fbCalList.head.duration'] = 'dauer (hh:mm)';
+$l['index.fbCalList.emptyList'] = 'keine Einträge';
+$l['index.fbCalList.createdAt'] = 'erstellt am: ';
+$l['index.fbCalList.type.1'] = 'eingehend';
+$l['index.fbCalList.type.2'] = 'verpasst';
+$l['index.fbCalList.type.3'] = 'ausgehend';
+$l['index.fbCalList.type.9'] = 'eingehend aktiv';
+$l['index.fbCalList.type.10'] = 'abgelehnt';
+$l['index.fbCalList.type.11'] = 'ausgehend aktiv';
