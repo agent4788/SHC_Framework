@@ -116,6 +116,7 @@ class RoomSyncAjax extends AjaxCommand {
         $dhtValues = array();
         $bmpValues = array();
         $analogValues = array();
+        $avmPowerValues = array();
         foreach($sensors as $sensor) {
 
             if($sensor->isVisible()) {
