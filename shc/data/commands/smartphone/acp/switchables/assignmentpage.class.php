@@ -28,7 +28,7 @@ class AssignmentPage extends PageCommand {
 
     protected $template = 'assignment.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

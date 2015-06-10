@@ -19,7 +19,7 @@ use SHC\Core\SHC;
  */
 class InfoPage extends PageCommand {
 
-    protected $premission = 'shc.acp.menu';
+    protected $requiredPremission = 'shc.acp.menu';
 
     protected $template = 'acpinfo.html';
 

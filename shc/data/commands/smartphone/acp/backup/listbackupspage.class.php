@@ -21,7 +21,7 @@ class ListBackupsPage extends PageCommand {
 
     protected $template = 'listbackups.html';
 
-    protected $premission = 'shc.acp.backupsManagement';
+    protected $requiredPremission = 'shc.acp.backupsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

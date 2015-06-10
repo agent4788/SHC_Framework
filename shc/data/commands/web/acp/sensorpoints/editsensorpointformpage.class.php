@@ -27,7 +27,7 @@ class EditSensorPointFormPage extends PageCommand {
 
     protected $template = 'sensorpointform.html';
 
-    protected $premission = 'shc.acp.sensorpointsManagement';
+    protected $requiredPremission = 'shc.acp.sensorpointsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

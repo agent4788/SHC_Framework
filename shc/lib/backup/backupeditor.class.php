@@ -240,7 +240,7 @@ class BackupEditor {
                 $data['rooms'] = array();
                 foreach($db->hGetAll('rooms') as $id => $value) {
 
-                    $data['rooms']['rooms:'. $id] = $value;
+                    $data['rooms'][$id] = $value;
                 }
             }
 

@@ -33,7 +33,7 @@ class AddEventFormPage extends PageCommand {
 
     protected $template = 'addeventform.html';
 
-    protected $premission = 'shc.acp.eventsManagement';
+    protected $requiredPremission = 'shc.acp.eventsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

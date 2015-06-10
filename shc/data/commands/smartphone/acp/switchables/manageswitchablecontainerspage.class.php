@@ -12,7 +12,9 @@ use SHC\Core\SHC;
 use SHC\Form\FormElements\SwitchCommandChooser;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
+use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
@@ -33,7 +35,7 @@ class ManageSwitchableContainersPage extends PageCommand {
 
     protected $template = 'manageswitchablecontainers.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -79,6 +81,8 @@ class ManageSwitchableContainersPage extends PageCommand {
                     || $switchableElement instanceof Shutdown
                     || $switchableElement instanceof Reboot
                     || $switchableElement instanceof Script
+                    || $switchableElement instanceof AvmSocket
+                    || $switchableElement instanceof FritzBox
                 ) {
 
                     //pruefen ob Element schon registriert
@@ -116,6 +120,12 @@ class ManageSwitchableContainersPage extends PageCommand {
                     } elseif($switchableElement instanceof Script) {
 
                         $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
+                    } elseif($switchableElement instanceof AvmSocket) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.avmSocket');
+                    } elseif($switchableElement instanceof FritzBox) {
+
+                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox');
                     }
                     $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }

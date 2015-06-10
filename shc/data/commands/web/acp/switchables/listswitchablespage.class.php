@@ -22,7 +22,7 @@ class ListSwitchablesPage extends PageCommand {
 
     protected $template = 'listswitchables.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

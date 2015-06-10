@@ -22,7 +22,7 @@ class DatabasePage extends PageCommand {
 
     protected $template = 'database.html';
 
-    protected $premission = 'shc.acp.databaseManagement';
+    protected $requiredPremission = 'shc.acp.databaseManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

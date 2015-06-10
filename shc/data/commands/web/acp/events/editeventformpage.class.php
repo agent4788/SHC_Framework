@@ -46,7 +46,7 @@ class EditEventFormPage extends PageCommand {
 
     protected $template = 'editeventform.html';
 
-    protected $premission = 'shc.acp.eventsManagement';
+    protected $requiredPremission = 'shc.acp.eventsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

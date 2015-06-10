@@ -23,7 +23,7 @@ class AddRoomFormPage extends PageCommand {
 
     protected $template = 'addroomform.html';
 
-    protected $premission = 'shc.acp.roomManagement';
+    protected $requiredPremission = 'shc.acp.roomManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

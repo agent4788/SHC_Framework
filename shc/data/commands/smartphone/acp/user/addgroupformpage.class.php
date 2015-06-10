@@ -23,7 +23,7 @@ class AddGroupFormPage extends PageCommand {
 
     protected $template = 'groupform.html';
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $requiredPremission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

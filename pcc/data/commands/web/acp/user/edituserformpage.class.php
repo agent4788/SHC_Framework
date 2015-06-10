@@ -26,7 +26,7 @@ class EditUserFormPage extends PageCommand {
 
     protected $template = 'userform.html';
 
-    protected $premission = 'pcc.acp.userManagement';
+    protected $requiredPremission = 'pcc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

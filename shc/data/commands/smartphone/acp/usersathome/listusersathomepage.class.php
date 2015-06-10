@@ -21,7 +21,7 @@ class ListUsersAtHomePage extends PageCommand {
 
     protected $template = 'listusersathome.html';
 
-    protected $premission = 'shc.acp.usersathomeManagement';
+    protected $requiredPremission = 'shc.acp.usersathomeManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

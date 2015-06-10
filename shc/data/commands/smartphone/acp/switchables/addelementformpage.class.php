@@ -12,7 +12,9 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\FormElements\ElementTypeChooser;
 use SHC\Form\Forms\ActivityForm;
+use SHC\Form\Forms\AvmSocketForm;
 use SHC\Form\Forms\CountdownForm;
+use SHC\Form\Forms\FritzBoxForm;
 use SHC\Form\Forms\RadiosocketForm;
 use SHC\Form\Forms\RebootForm;
 use SHC\Form\Forms\RpiGpioInputForm;
@@ -35,7 +37,7 @@ class AddElementFormPage extends PageCommand {
 
     protected $template = 'addelementform.html';
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -540,6 +542,103 @@ class AddElementFormPage extends PageCommand {
                     } else {
 
                         $tpl->assign('elementForm', $scriptForm);
+                    }
+                    break;
+                case SwitchableEditor::TYPE_AVM_SOCKET:
+
+                    $avmSocketForm = new AvmSocketForm();
+                    $avmSocketForm->setAction('index.php?app=shc&m&page=addelementform');
+                    $avmSocketForm->setView(Form::SMARTPHONE_VIEW);
+                    $avmSocketForm->addId('shc-view-form-addElement');
+
+                    if($avmSocketForm->isSubmitted() && $avmSocketForm->validate()) {
+
+                        //Speichern
+                        $name = $avmSocketForm->getElementByName('name')->getValue();
+                        $icon = $avmSocketForm->getElementByName('icon')->getValue();
+                        $buttonText = $avmSocketForm->getElementByName('buttonText')->getValue();
+                        $rooms = $avmSocketForm->getElementByName('rooms')->getValues();
+                        $ain = $avmSocketForm->getElementByName('ain')->getValue();
+                        $enabled = $avmSocketForm->getElementByName('enabled')->getValue();
+                        $visibility = $avmSocketForm->getElementByName('visibility')->getValue();
+                        $allowedUsers = $avmSocketForm->getElementByName('allowedUsers')->getValues();
+
+                        $message = new Message();
+                        try {
+
+                            SwitchableEditor::getInstance()->addAvmSocket($name, $enabled, $visibility, $icon, $rooms, array(), $ain, $allowedUsers, $buttonText);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addAvmSocket.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addAvmSocket.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addAvmSocket.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('elementForm', $avmSocketForm);
+                    }
+                    break;
+                case SwitchableEditor::TYPE_FRITZBOX:
+
+                    $fritzBox= new FritzBoxForm();
+                    $fritzBox->setAction('index.php?app=shc&m&page=addelementform');
+                    $fritzBox->setView(Form::SMARTPHONE_VIEW);
+                    $fritzBox->addId('shc-view-form-addElement');
+
+                    if($fritzBox->isSubmitted() && $fritzBox->validate()) {
+
+                        //Speichern
+                        $rooms = $fritzBox->getElementByName('rooms')->getValues();
+                        $function = $fritzBox->getElementByName('function')->getValue();
+                        $enabled = $fritzBox->getElementByName('enabled')->getValue();
+                        $visibility = $fritzBox->getElementByName('visibility')->getValue();
+                        $allowedUsers = $fritzBox->getElementByName('allowedUsers')->getValues();
+
+                        $message = new Message();
+                        try {
+
+                            SwitchableEditor::getInstance()->addFritzBox('', $enabled, $visibility, '', $rooms, array(), $function, $allowedUsers);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addFritzBox.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addFritzBox.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addFritzBox.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('elementForm', $fritzBox);
                     }
                     break;
             }

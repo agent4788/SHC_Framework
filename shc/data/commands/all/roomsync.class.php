@@ -12,6 +12,7 @@ use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
@@ -21,6 +22,7 @@ use SHC\Sensor\Sensors\RainSensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\WakeOnLan;
 
@@ -88,6 +90,12 @@ class RoomSync extends SyncCommand {
                         if($switchable instanceof Script && $switchable->getOnCommand() != '' && $switchable->getOffCommand() != '') {
 
                             $switchableValues[$switchable->getId()] = $switchable->getState();
+                        } elseif($switchable instanceof FritzBox) {
+
+                            if($switchable->getFunction() <= 3) {
+
+                                $switchableValues[$switchable->getId()] = $switchable->getState();
+                            }
                         } elseif(!$switchable instanceof Script) {
 
                             $switchableValues[$switchable->getId()] = $switchable->getState();
@@ -130,6 +138,7 @@ class RoomSync extends SyncCommand {
                 $dhtValues = array();
                 $bmpValues = array();
                 $analogValues = array();
+                $avmPowerValues = array();
                 foreach($sensors as $sensor) {
 
                     if($sensor->isVisible()) {
@@ -156,6 +165,13 @@ class RoomSync extends SyncCommand {
 
                             $analogValues[$sensor->getId()] = array(
                                 'value' => String::formatInteger($sensor->getValue() * 100 / 1023)
+                            );
+                        } elseif ($sensor instanceof AvmMeasuringSocket) {
+
+                            $avmPowerValues[$sensor->getId()] = array(
+                                'temp' => String::formatFloat($sensor->getTemperature(), 1),
+                                'power' => String::formatFloat(($sensor->getPower() / 1000), 2),
+                                'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh')
                             );
                         }
                     }
@@ -186,6 +202,13 @@ class RoomSync extends SyncCommand {
                     $response->addRetry(1000);
                     $response->addEvent('syncAnalog');
                     $response->addArrayAsJson($analogValues);
+                    $response->flush();
+                }
+                if(count($avmPowerValues) > 0) {
+
+                    $response->addRetry(1000);
+                    $response->addEvent('syncAvmPowerSockect');
+                    $response->addArrayAsJson($avmPowerValues);
                     $response->flush();
                 }
 

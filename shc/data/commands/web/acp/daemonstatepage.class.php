@@ -21,7 +21,7 @@ use SHC\SwitchServer\SwitchServerEditor;
  */
 class DaemonStatePage extends PageCommand {
 
-    protected $premission = 'shc.acp.menu';
+    protected $requiredPremission = 'shc.acp.menu';
 
     protected $template = 'daemonstate.html';
 

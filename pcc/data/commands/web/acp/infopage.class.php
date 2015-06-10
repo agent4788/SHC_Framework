@@ -19,7 +19,7 @@ use RWF\Util\FileUtil;
  */
 class InfoPage extends PageCommand {
 
-    protected $premission = 'pcc.acp.menu';
+    protected $requiredPremission = 'pcc.acp.menu';
 
     protected $template = 'acpinfo.html';
 

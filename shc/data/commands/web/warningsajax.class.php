@@ -21,8 +21,6 @@ use SHC\SwitchServer\SwitchServerEditor;
  */
 class WarningsAjax extends AjaxCommand {
 
-    protected $premission = '';
-
     /**
      * Sprachpakete die geladen werden sollen
      *
@@ -44,24 +42,27 @@ class WarningsAjax extends AjaxCommand {
         foreach(SwitchServerEditor::getInstance()->listSwitchServers(SwitchServerEditor::SORT_BY_NAME) as $switchServer) {
 
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
-            $socket = $switchServer->getSocket();
-            $socket->setTimeout(1);
+            if($switchServer->isEnabled()) {
 
-            try {
+                $socket = $switchServer->getSocket();
+                $socket->setTimeout(1);
 
-                //Verbindungsversuch
-                $socket->open();
-                $socket->close();
-                $foundRunningServer = true;
-            } catch(\Exception $e) {
+                try {
 
-                if($e->getCode() == 1150) {
+                    //Verbindungsversuch
+                    $socket->open();
+                    $socket->close();
+                    $foundRunningServer = true;
+                } catch(\Exception $e) {
 
-                    $message->addSubMessage(RWF::getLanguage()->get('index.warnings.switchserver.stop', $switchServer->getName()));
-                } else {
+                    if($e->getCode() == 1150) {
 
-                    //Fehler erneut werfen wenn unerwarteter Fehler aufgetreten
-                    throw $e;
+                        $message->addSubMessage(RWF::getLanguage()->get('index.warnings.switchserver.stop', $switchServer->getName()));
+                    } else {
+
+                        //Fehler erneut werfen wenn unerwarteter Fehler aufgetreten
+                        throw $e;
+                    }
                 }
             }
         }
@@ -120,6 +121,8 @@ class WarningsAjax extends AjaxCommand {
         //Sensorpunkte
         $inPast = DateTime::now()->sub(new \DateInterval('PT2H'));
         $sensorPoints = SensorPointEditor::getInstance()->listSensorPoints(SensorPointEditor::SORT_BY_NAME);
+
+        //zu lange nicht gemeldet
         foreach($sensorPoints as $sensorPoint) {
 
             /* @var $sensorPoint \SHC\Sensor\SensorPoint */
@@ -127,6 +130,18 @@ class WarningsAjax extends AjaxCommand {
             if($lastConnect < $inPast) {
 
                 $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorPoint.stop', $sensorPoint->getName()));
+            }
+        }
+
+        //Unterspannung
+        foreach($sensorPoints as $sensorPoint) {
+
+            /* @var $sensorPoint \SHC\Sensor\SensorPoint */
+            $voltage = $sensorPoint->getVoltage();
+            $warningLevel = $sensorPoint->getWarnLevel();
+            if($warningLevel > 0.0 && $voltage < $warningLevel) {
+
+                $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorPoint.underVoltage', $sensorPoint->getName(), $voltage));
             }
         }
 

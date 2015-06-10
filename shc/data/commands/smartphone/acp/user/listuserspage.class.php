@@ -21,7 +21,7 @@ class ListUsersPage extends PageCommand {
 
     protected $template = 'userlist.html';
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $requiredPremission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

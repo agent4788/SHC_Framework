@@ -21,7 +21,7 @@ class ListConditionsPage extends PageCommand {
 
     protected $template = 'listconditions.html';
 
-    protected $premission = 'shc.acp.conditionsManagement';
+    protected $requiredPremission = 'shc.acp.conditionsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

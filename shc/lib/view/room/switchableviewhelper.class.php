@@ -8,7 +8,9 @@ use SHC\Core\SHC;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\ArduinoOutput;
+use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
@@ -69,6 +71,12 @@ class SwitchableViewHelper {
         } elseif ($switchable instanceof Script) {
 
             return self::showScript($switchable, $ignoreShow);
+        } elseif ($switchable instanceof AvmSocket) {
+
+            return self::shoAvmSocket($switchable, $ignoreShow);
+        } elseif ($switchable instanceof FritzBox) {
+
+            return self::showFritzBox($switchable, $ignoreShow);
         }
         return '<span>Unbekanntes schaltbares Element</span>';
     }
@@ -292,6 +300,62 @@ class SwitchableViewHelper {
             } else {
                 //Web Ansicht
                 $html = $tpl->fetchString('script.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer AVM Steckdose zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\AvmSocket $switchable AVM Socket
+     * @param  Boolean                               $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function shoAvmSocket(AvmSocket $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileAvmSocket.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('avmSocket.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer Script zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\FritzBox $switchable FritzBox
+     * @param  Boolean                              $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showFritzBox(FritzBox $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileFritzBox.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('fritzBox.html');
             }
         }
         return $html;

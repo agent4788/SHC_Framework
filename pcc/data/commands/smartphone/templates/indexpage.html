@@ -24,6 +24,29 @@
                         </a>
                     </li>
                     {/premission}
+                    {ifsetting name='rwf.fritzBox.user'}
+                        {premission premission='pcc.ucp.fbState' setting='pcc.fritzBox.showState'}
+                            <li data-theme="c">
+                                <a href="index.php?app=pcc&m&page=fbstate" data-transition="slide">
+                                    {lang var='index.tabs.fbstate'}
+                                </a>
+                            </li>
+                        {/premission}
+                        {premission premission='pcc.ucp.fbState' setting='pcc.fritzBox.showState'}
+                            <li data-theme="c">
+                                <a href="index.php?app=pcc&m&page=fbsmarthome" data-transition="slide">
+                                    {lang var='index.tabs.fbsmarthome'}
+                                </a>
+                            </li>
+                        {/premission}
+                        {premission premission='pcc.ucp.fbCallList' setting='pcc.fritzBox.showCallList'}
+                            <li data-theme="c">
+                                <a href="index.php?app=pcc&m&page=fbcalllist" data-transition="slide">
+                                    {lang var='index.tabs.fbcalllist'}
+                                </a>
+                            </li>
+                        {/premission}
+                    {/ifsetting}
                 </ul>
             </div>
         </div>

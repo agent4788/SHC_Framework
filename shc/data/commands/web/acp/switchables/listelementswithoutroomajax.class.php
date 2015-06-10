@@ -19,7 +19,7 @@ use SHC\Switchable\SwitchableEditor;
  */
 class ListElementsWithoutRoomAjax extends AjaxCommand {
 
-    protected $premission = 'shc.acp.switchableManagement';
+    protected $requiredPremission = 'shc.acp.switchableManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

@@ -27,7 +27,7 @@ class EditSwitchServerFormPage extends PageCommand {
 
     protected $template = 'switchserverform.html';
 
-    protected $premission = 'shc.acp.switchserverManagement';
+    protected $requiredPremission = 'shc.acp.switchserverManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

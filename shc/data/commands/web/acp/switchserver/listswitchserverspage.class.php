@@ -19,7 +19,7 @@ use SHC\SwitchServer\SwitchServerEditor;
  */
 class ListSwitchServersPage extends PageCommand {
 
-    protected $premission = 'shc.acp.switchserverManagement';
+    protected $requiredPremission = 'shc.acp.switchserverManagement';
 
     protected $template = 'listswitchservers.html';
 

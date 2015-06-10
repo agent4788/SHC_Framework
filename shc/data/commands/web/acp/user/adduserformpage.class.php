@@ -23,7 +23,7 @@ class AddUserFormPage extends PageCommand {
 
     protected $template = 'userform.html';
 
-    protected $premission = 'shc.acp.userManagement';
+    protected $requiredPremission = 'shc.acp.userManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

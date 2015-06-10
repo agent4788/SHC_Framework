@@ -44,3 +44,4 @@ $l['index.warnings.arduinoSensorReciver.stop'] = 'Der Arduino Sensor Receiver l�
 $l['index.warnings.sensorDataReciver.stop'] = 'Der Sensor Receiver läuft nicht';
 $l['index.warnings.sensorDataTransmitter.stop'] = 'Der Sensor Transmitter läuft nicht';
 $l['index.warnings.sensorPoint.stop'] = 'Der Sensorpunkt "{1:s}" hat seit mehr als 2 Stunden keine Daten mehr übermittelt';
+$l['index.warnings.sensorPoint.underVoltage'] = 'Der Sensorpunkt "{1:s}" meldet eine Unterspannung ({2:f:2}V)';
