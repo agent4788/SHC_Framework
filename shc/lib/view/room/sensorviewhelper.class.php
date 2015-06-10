@@ -417,7 +417,7 @@ abstract class SensorViewHelper {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 3) .' kWh') . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh') . '</span>';
                 }
                 $html .= '</li>';
             } else {
@@ -436,14 +436,14 @@ abstract class SensorViewHelper {
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::formatFloat(($sensor->getPower() / 1000), 2) . '</span> W';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::formatFloat(($sensor->getPower() / 1000), 1) . '</span> W';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 3) .' kWh') . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh') . '</span>';
                     $i++;
                 }
                 $html .= '</div>';

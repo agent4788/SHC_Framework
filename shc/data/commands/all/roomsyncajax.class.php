@@ -149,7 +149,7 @@ class RoomSyncAjax extends AjaxCommand {
                     $avmPowerValues[$sensor->getId()] = array(
                         'temp' => String::formatFloat($sensor->getTemperature(), 1),
                         'power' => String::formatFloat(($sensor->getPower() / 1000), 2),
-                        'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .'Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 3) .'kWh')
+                        'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh')
                     );
                 }
             }
