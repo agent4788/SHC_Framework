@@ -4,7 +4,7 @@
     {/if}
     <span>{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
-        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-power" style="width: 6em;">{lang var='index.room.button.start'}</a>
+        <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn ui-btn-inline ui-btn-c ui-icon-power ui-shadow ui-corner-all" style="width: 6em;">{lang var='index.room.button.start'}</a>
     </div>
 </li>
 <script type="text/javascript">
@@ -19,10 +19,8 @@
 
                         if (data.success == true) {
 
-                            {if $device != 'smartphone'}
                             $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').removeClass('shc-icon-offline');
                             $('#shc-view-wolDevice-{$roomId}-{$switchable->getId()}').addClass('shc-icon-online');
-                            {/if}
                             $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass('ui-icon-power ui-btn-c').addClass('ui-icon-arrow-r ui-btn-b');
                         } else {
 
@@ -31,10 +29,6 @@
                     }
             );
             return false;
-        });
-        
-        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
-            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
         });
     });
 </script>
