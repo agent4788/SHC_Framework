@@ -658,14 +658,15 @@ $usersXml->asXML('./rwf/data/storage/users.xml');
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$content =
-'{
-  "app": "shc",
-  "name": "Raspberry Pi SmartHome Control",
-  "icon": "./shc/inc/img/shc-icon.png",
-  "order": 10,
-  "installed": true
-}';
+$content = '
+    {
+        "app": "shc",
+        "name": "Raspberry Pi SmartHome Control",
+        "icon": "./shc/inc/img/shc-icon.png",
+        "order": 10,
+        "installed": true,
+        "apLevel": 11
+    }';
 file_put_contents('./shc/app.json', $content);
 
 print("SHC erfolgreich installiert\n");
