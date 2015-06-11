@@ -198,6 +198,28 @@ class MovieCollection {
     }
 
     /**
+     * setzt die Verpackung
+     *
+     * @param  MovieCase $type
+     * @return \MB\Movie\MovieCollection
+     */
+    public function setCase(MovieCase $case) {
+
+        $this->case = $case;
+        return $this;
+    }
+
+    /**
+     * gibt die Verpackung zurueck
+     *
+     * @return \MB\Movie\MovieCase
+     */
+    public function getCase() {
+
+        return $this->case;
+    }
+
+    /**
      * setzt den Haendler
      *
      * @param  MovieDealer $dealer
@@ -283,28 +305,6 @@ class MovieCollection {
     public function getEan() {
 
         return $this->ean;
-    }
-
-    /**
-     * setzt die Verpackung
-     *
-     * @param  MovieCase $type
-     * @return \MB\Movie\MovieCollection
-     */
-    public function setCase(MovieCase $case) {
-
-        $this->case = $case;
-        return $this;
-    }
-
-    /**
-     * gibt die Verpackung zurueck
-     *
-     * @return \MB\Movie\MovieCase
-     */
-    public function getCase() {
-
-        return $this->case;
     }
 
     /**
