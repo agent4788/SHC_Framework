@@ -3,7 +3,10 @@
 namespace MB\Core;
 
 //Imports
+use MB\Database\NoSQL\Redis;
 use RWF\Core\RWF;
+use RWF\Session\Session;
+use RWF\Settings\Settings;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
 
@@ -13,8 +16,8 @@ use RWF\User\User;
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2015, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.2.0-0
- * @version    2.2.0-0
+ * @since      2.3.0-0
+ * @version    2.3.0-0
  */
 class MB extends RWF {
 
@@ -31,6 +34,13 @@ class MB extends RWF {
      * @var \RWF\Style\Style
      */
     protected static $style = null;
+
+    /**
+     * Datenbank
+     *
+     * @var \MB\Database\NoSQL\Redis
+     */
+    protected static $redis = null;
 
     public function __construct() {
 
@@ -49,6 +59,9 @@ class MB extends RWF {
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
 
+            //Datenbank Initalisieren
+            $this->initDatabase();
+
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_MB . 'data/templates');
             $this->initStyle();
@@ -61,6 +74,17 @@ class MB extends RWF {
     protected function initXml() {
 
 
+    }
+
+    /**
+     * Datenbankverbindung Initalisieren
+     *
+     * @throws \Exception
+     */
+    protected function initDatabase() {
+
+        self::$redis = new Redis();
+        self::$redis->connect();
     }
 
     /**
@@ -101,5 +125,39 @@ class MB extends RWF {
     public static function getStyle() {
 
         return self::$style;
+    }
+
+    /**
+     * gibt das Datenbankobjekt zutueck
+     *
+     * @return \MB\Database\NoSQL\Redis
+     */
+    public static function getDatabase() {
+
+        return self::$redis;
+    }
+
+    /**
+     * beendet die Anwendung
+     */
+    public function finalize() {
+
+        //Einstellungen Speichern
+        if (self::$settings instanceof Settings) {
+
+            self::$settings->finalize();
+        }
+
+        //Sessionobjekt abschliesen
+        if (self::$session instanceof Session) {
+
+            self::$session->finalize();
+        }
+
+        //Datenbankverbindung beenden
+        if(self::$redis instanceof Redis) {
+
+            self::$redis->close();
+        }
     }
 }
