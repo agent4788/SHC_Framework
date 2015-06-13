@@ -3,6 +3,7 @@
 namespace MB\Movie\Editor;
 
 //Imports
+use MB\Core\MB;
 use MB\Movie\MovieDealer;
 
 /**
@@ -82,7 +83,7 @@ class MovieDealerEditor {
             $dealerObject->setLink($dealer['link']);
             $dealerObject->setIcon($dealer['icon']);
 
-            $this->dealer[$hash] = $dealer;
+            $this->dealer[$hash] = $dealerObject;
         }
     }
 

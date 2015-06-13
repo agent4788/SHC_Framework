@@ -34,3 +34,33 @@ $l['index.login.error'] = 'Benutzername oder Passwort falsch';
 $l['index.tabs.movies'] = 'Filme';
 $l['index.tabs.movieCollections'] = 'Filmreihen';
 $l['index.tabs.statistics'] = 'Statistik';
+
+//Filmeliste
+$l['index.listMovies.button.addMovie'] = 'neuer Film';
+$l['index.listMovies.button.executeFilter'] = 'Filter Anwenden';
+
+$l['index.listMovies.box.filter'] = 'Filter';
+$l['index.listMovies.box.movies'] = 'Filme';
+
+//Film Formular
+$l['index.movieForm.contentBox.title'] = 'Film erstellen';
+$l['index.movieForm.title'] = 'Titel';
+$l['index.movieForm.title.description'] = 'Titel des Films';
+$l['index.movieForm.description'] = 'Beschreibung';
+$l['index.movieForm.description.description'] = 'Beschreibung des Films';
+$l['index.movieForm.length'] = 'Länge';
+$l['index.movieForm.length.description'] = 'Länge des Films in Minuten';
+$l['index.movieForm.fsk'] = 'FSK';
+$l['index.movieForm.fsk.description'] = 'Altersbeschränkung des Films';
+$l['index.movieForm.genre'] = 'Genre';
+$l['index.movieForm.genre.description'] = 'Genre des Films';
+$l['index.movieForm.type'] = 'Medium';
+$l['index.movieForm.type.description'] = 'Medium des Films';
+$l['index.movieForm.case'] = 'Verpackung';
+$l['index.movieForm.case.description'] = 'Verpackung des Films';
+$l['index.movieForm.rating'] = 'Bewertung';
+$l['index.movieForm.rating.description'] = 'Bewertung des Films (5 = beste Bewertung, 1 = schlechteste)';
+$l['index.movieForm.dealer'] = 'Händler';
+$l['index.movieForm.dealer.description'] = 'Händler bei dem der Film gekauft wurde';
+$l['index.movieForm.price'] = 'Preis';
+$l['index.movieForm.price.description'] = 'Preis in €';

@@ -3,6 +3,8 @@
 namespace MB\Movie\Editor;
 
 //Imports
+use MB\Core\MB;
+use MB\Movie\MovieGenre;
 
 /**
  * Film Genre Editor
@@ -68,7 +70,7 @@ class MovieGenreEditor {
         foreach($genres as $genre) {
 
             $hash = $genre['hash'];
-            $genreObject = new MovieDealer();
+            $genreObject = new MovieGenre();
             $genreObject->setHash($hash);
             $genreObject->setName($genre['name']);
             $genreObject->setIcon($genre['icon']);

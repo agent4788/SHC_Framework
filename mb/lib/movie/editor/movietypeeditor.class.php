@@ -3,6 +3,7 @@
 namespace MB\Movie\Editor;
 
 //Imports
+use MB\Core\MB;
 use MB\Movie\MovieType;
 
 /**

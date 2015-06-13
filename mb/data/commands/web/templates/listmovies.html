@@ -1,0 +1,133 @@
+<div>
+    {contentbox name='index.listMovies.box.filter'}
+        <form>
+            <div>
+
+            </div>
+            <div class="mb-view-buttons">
+                <div class="mb-view-buttonSet">
+                    <input type="reset" value="{lang var='form.button.reset'}" />
+                    <input type="button" value="{lang var='index.listMovies.button.executeFilter'}" />
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.mb-view-buttonSet').buttonset();
+                });
+            </script>
+        </form>
+    {/contentbox}
+    {contentbox name='index.listMovies.box.movies'}
+        <div>
+            <div id="mb-view-movieTable"></div>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+
+                $('#mb-view-movieTable').jtable({
+                    paging: true,
+                    pageSize: 25,
+                    jqueryuiTheme: true,
+                    sorting: false,
+                    actions: {
+                        listAction: 'index.php?ajax=movielistdata'
+                    },
+                    fields: {
+                        movieId: {
+                            key: true,
+                            list: false
+                        },
+                        title: {
+                            title: 'Titel',
+                            create: false,
+                            edit: false,
+                            width: '25%',
+                            display: function(data) {
+
+                                return $('<span class="showMovieDialog">' + data.record.title + '</span>').click(function() {
+
+                                    $.get('index.php?ajax=movielist&command=showmovie&mid=' + data.record.movieId, function(data, textStatus, jqXHR) {
+                                        $('#movieDialog').html(data);
+                                    });
+                                    $('#movieDialog').dialog({
+                                        title: data.record.title,
+                                        resizable: false,
+                                        width: 750,
+                                        maxHeight: 800,
+                                        buttons: {
+                                            "<?php echo utf8_decode('schließen'); ?>": function() {
+
+                                                $(this).dialog('close');
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        },
+                        genre: {
+                            title: 'Genre',
+                            create: false,
+                            edit: false
+                        },
+                        length: {
+                            title: '<?php echo utf8_decode('Länge'); ?>',
+                            create: false,
+                            edit: false,
+                            width: '10%'
+                        },
+                        type: {
+                            title: 'Typ',
+                            create: false,
+                            edit: false
+                        },
+                        case: {
+                            title: 'Schachtel',
+                            create: false,
+                            edit: false
+                        },
+                        fsk: {
+                            title: 'FSK',
+                            create: false,
+                            edit: false,
+                            width: '5%'
+                        },
+                        price: {
+                            title: 'Preis',
+                            create: false,
+                            edit: false,
+                            width: '5%',
+                            visibility: 'hidden'
+                        },
+                        trader: {
+                            title: '<?php echo utf8_decode('Händler'); ?>',
+                            create: false,
+                            edit: false,
+                            visibility: 'hidden'
+                        },
+                        purchaseDate: {
+                            title: 'Kaufdatum',
+                            create: false,
+                            edit: false,
+                            width: '10%',
+                            visibility: 'hidden'
+                        }
+                    }
+                });
+            });
+        </script>
+        {premission premission='mb.ucp.editMovies'}
+            <div class="mb-view-buttons">
+                <div class="mb-view-buttonSet">
+                    <a href="index.php?app=mb&page=addmovieform">{lang var='index.listMovies.button.addMovie'}</a>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.mb-view-buttonSet').buttonset();
+                });
+            </script>
+        {/premission}
+    {/contentbox}
+</div>
