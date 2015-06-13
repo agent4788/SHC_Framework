@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\RoomChooser;
