@@ -8,5 +8,48 @@
     </head>
     <body>
         {include file='headline.html'}
+        <div id="mb-content">
+            <div id="mb-content-tabs">
+                <ul>
+                    {premission premission='mb.ucp.viewMovies'}
+                    <li><a href="index.php?app=mb&ajax=listmovies">{lang var='index.tabs.movies'}</a></li>
+                    {/premission}
+                    {premission premission='mb.ucp.viewMovieCollections'}
+                    <li><a href="index.php?app=mb&ajax=listmoviecollections">{lang var='index.tabs.movieCollections'}</a></li>
+                    {/premission}
+                    {premission premission='mb.ucp.viewStatistics'}
+                    <li><a href="index.php?app=mb&ajax=statictics">{lang var='index.tabs.statistics'}</a></li>
+                    {/premission}
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+
+                $("#mb-content-tabs").tabs({
+                    active   : $.cookie('activeTabMainViewmb'),
+                    activate : function( event, ui ){
+                        $.cookie( 'activeTabMainViewmb', ui.newTab.index(),{
+                            expires : 10
+                        });
+                    },
+                    beforeLoad: function( event, ui ) {
+
+                        ui.panel.html('<div id="mb-view-tabLoad-progress"></div>');
+                        $("#mb-view-tabLoad-progress").progressbar({
+                            value: false
+                        });
+
+                        ui.jqXHR.done(function(data) {
+                            ui.panel.html(data);
+                        });
+                        ui.jqXHR.fail(function() {
+                            ui.panel.html('Fehler');
+                        });
+                    }
+                });
+
+            });
+        </script>
     </body>
 </html>

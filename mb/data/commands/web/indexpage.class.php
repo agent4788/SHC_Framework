@@ -36,8 +36,9 @@ class IndexPage extends PageCommand {
      */
     public function processData() {
 
-        MB::getTemplate()->assign('apps', MB::listApps());
-        MB::getTemplate()->assign('style', MB::getStyle());
-        MB::getTemplate()->assign('user', MB::getVisitor());
+        $tpl = MB::getTemplate();
+        $tpl->assign('apps', MB::listApps());
+        $tpl->assign('style', MB::getStyle());
+        $tpl->assign('user', MB::getVisitor());
     }
 }
