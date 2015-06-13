@@ -4,11 +4,8 @@ namespace MB\Movie\Editor;
 
 //Imports
 use MB\Core\MB;
-use MB\Movie\MovieType;
-use MB\Movie\MovieCase;
 use RWF\Date\DateTime;
 use MB\Movie\Movie;
-
 
 /**
  * Film Editor
@@ -80,10 +77,10 @@ class MovieEditor {
             $movieObject->setDescription($movie['description']);
             $movieObject->setLength($movie['length']);
             $movieObject->setFsk($movie['fsk']);
-            //$movieObject->setType($movie['type']); -> laden aus Type Editor
-            //$movieObject->setCase($movie['case']); -> laden aus Case Editor
+            $movieObject->setType(MovieTypeEditor::getInstance()->getMovieTypeByHash($movie['type']));
+            $movieObject->setCase(MovieCaseEditor::getInstance()->getMovieCaseByHash($movie['case']));
             $movieObject->setRating($movie['rating']);
-            //$movieObject->setDealer($movie['dealer']); -> laden aus Dealer Editor
+            $movieObject->setDealer(MovieDealerEditor::getInstance()->getMovieDealerByHash($movie['dealer']));
             $movieObject->setPrice($movie['price']);
             $movieObject->setPurchaseDate(DateTime::createFromDatabaseDateTime($movie['purchaseDate']));
             $movieObject->setEan($movie['ean']);
@@ -93,9 +90,10 @@ class MovieEditor {
             foreach($movie['genres'] as $genreHash) {
 
                 //Genre aus Hash laden und zum Film Hinzufuegen
+                $movieObject->addGenre(MovieGenreEditor::getInstance()->getMovieGenreByHash($genreHash));
             }
 
-            $this->movies[$hash];
+            $this->movies[$hash] = $movieObject;
         }
     }
 
@@ -123,7 +121,7 @@ class MovieEditor {
      *  )
      * @return Array
      */
-    public function listRooms($orderBy = 'name') {
+    public function listMovies($orderBy = 'name') {
 
         if ($orderBy == 'name') {
 
@@ -211,7 +209,7 @@ class MovieEditor {
     }
 
     /**
-     * erstellt einen Film
+     * bearbeitet einen Film
      *
      * @param  string             $hash             eindeutige Identifizierung
      * @param  string             $title            Titel

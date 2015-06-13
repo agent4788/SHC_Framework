@@ -52,27 +52,6 @@ class MovieCollection {
     protected $case = null;
 
     /**
-     * Haendler
-     *
-     * @var \MB\Movie\MovieDealer
-     */
-    protected $dealer = null;
-
-    /**
-     * Preis
-     *
-     * @var float
-     */
-    protected $price = 0.0;
-
-    /**
-     * Kaufdatum
-     *
-     * @var \RWF\Date\DateTime
-     */
-    protected $purchaseDate = null;
-
-    /**
      * EAN Code
      *
      * @var string
@@ -220,72 +199,6 @@ class MovieCollection {
     }
 
     /**
-     * setzt den Haendler
-     *
-     * @param  MovieDealer $dealer
-     * @return \MB\Movie\MovieCollection
-     */
-    public function setDealer(MovieDealer $dealer) {
-
-        $this->dealer = $dealer;
-        return $this;
-    }
-
-    /**
-     * gibt den Haendler zurueck
-     *
-     * @return \MB\Movie\MovieDealer
-     */
-    public function getDealer() {
-
-        return $this->dealer;
-    }
-
-    /**
-     * setzt den Preis des Films
-     *
-     * @param  float $price
-     * @return \MB\Movie\MovieCollection
-     */
-    public function setPrice($price) {
-
-        $this->price = $price;
-        return $this;
-    }
-
-    /**
-     * gibt den Preis des Films zurueck
-     *
-     * @return float
-     */
-    public function getPrice() {
-
-        return $this->price;
-    }
-
-    /**
-     * setzt das Kaufdatum des Films
-     *
-     * @param  DateTime $date
-     * @return \MB\Movie\MovieCollection
-     */
-    public function setPurchaseDate(DateTime $date) {
-
-        $this->purchaseDate = $date;
-        return $this;
-    }
-
-    /**
-     * gibt das Kaufdatum des Films zurueck
-     *
-     * @return \RWF\Date\DateTime
-     */
-    public function getPurchaseDate() {
-
-        return $this->purchaseDate;
-    }
-
-    /**
      * setzt die EAN des Films
      *
      * @param  string $ean
@@ -381,5 +294,21 @@ class MovieCollection {
             $length += $movie->getLength();
         }
         return $length;
+    }
+
+    /**
+     * gibt den Preis des Films zurueck
+     *
+     * @return float
+     */
+    public function getPrice() {
+
+        $price = 0.0;
+        foreach($this->movies as $movie) {
+
+            /* @var $movie \MB\Movie\Movie */
+            $price += $movie->getPrice();
+        }
+        return $price;
     }
 }

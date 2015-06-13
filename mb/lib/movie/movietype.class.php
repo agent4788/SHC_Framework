@@ -31,6 +31,13 @@ class MovieType {
     protected $name = '';
 
     /**
+     * Icon
+     *
+     * @var string
+     */
+    protected $icon = '';
+
+    /**
      * setzt den Hash
      *
      * @param  string $hash
@@ -72,5 +79,27 @@ class MovieType {
     public function getName() {
 
         return $this->name;
+    }
+
+    /**
+     * setzt das Icon des Typs
+     *
+     * @param  string $icon
+     * @return \MB\Movie\MovieType
+     */
+    public function setIcon($icon) {
+
+        $this->icon = $icon;
+        return $this;
+    }
+
+    /**
+     * gibt das Icon des Tpyps zurueck
+     *
+     * @return string
+     */
+    public function getIcon() {
+
+        return $this->icon;
     }
 }
