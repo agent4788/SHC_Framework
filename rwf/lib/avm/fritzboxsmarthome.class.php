@@ -64,6 +64,7 @@ class FritzBoxSmartHome extends FritzBox {
 
         if(!isset($this->cache['smarthome']['devices'])) {
 
+            $this->cache['smarthome']['devices'] = array();
             $list = $this->getDeviceList();
             foreach($list as $device) {
 
