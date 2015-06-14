@@ -2,7 +2,7 @@
     {if $device != 'smartphone'}
     <span class="shc-icon shc-icon-reboot"></span>
     {/if}
-    <span>{#$switchable->getName()}:</span>
+    <span style="font-weight: bold;">{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
         <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all ui-btn-icon-left" style="width: 6em;">{lang var='index.room.button.reboot'}</a>
     </div>

@@ -2,7 +2,7 @@
     {if $device != 'smartphone'}
     <span class="shc-icon {if $switchable->getState() == 1}shc-icon-online{else}shc-icon-offline{/if}"></span>
     {/if}
-    <span>{#$switchable->getName()}:</span>
+    <span style="font-weight: bold;">{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
         <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn ui-btn-inline ui-btn-c ui-icon-power ui-shadow ui-corner-all" style="width: 6em;">{lang var='index.room.button.start'}</a>
     </div>
