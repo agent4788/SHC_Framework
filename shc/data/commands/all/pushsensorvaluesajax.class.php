@@ -205,7 +205,7 @@ class PushSensorValuesAjax extends AjaxCommand {
                 }
 
                 //Sensor ID pruefen
-                if($spId >= 1 && $spId <= 999 && $sId == $sId && $value2 !== null && $value3 !== null) {
+                if($spId >= 1 && $spId <= 999 && preg_match('#^[0-9a-fA-F\:\. ]{1,}$#', $sId) && $value2 !== null && $value3 !== null) {
 
                     //$value1 => Temperatur
                     //$value2 => aktuell entnommene Leistung
