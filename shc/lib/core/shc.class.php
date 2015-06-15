@@ -77,8 +77,7 @@ class SHC extends RWF {
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
             $this->redirection();
             $this->initStyle();
-        } elseif((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv)))
-            || (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
+        } elseif((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv)))) {
 
             //Sheduler initalisieren
 
