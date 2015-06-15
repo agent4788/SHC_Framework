@@ -27,46 +27,48 @@
             </tr>
         </table>
     {/contentbox}
-    {contentbox name='index.fbstate.wan.title'}
-        <table class="pcc-view-contentTable">
-            <tr>
-                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.pyhsicalState'}</td>
-                <td style="width: 35%;">{#$pyhsicalState}</td>
-                <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.accessType'}</td>
-                <td style="width: 35%;">{#$accessType}</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.state'}</td>
-                <td>{#$connectState}</td>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.uptime'}</td>
-                <td>{#$connectUptime|seconds}</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.externalIp'}</td>
-                <td>{#$externalIp}</td>
-                <td style="font-weight: bold;"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downMax'}</td>
-                <td>{@$downMax} Mbit/s</td>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upMax'}</td>
-                <td>{@$upMax} Mbit/s</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downCurr'}</td>
-                <td>{@$downCurr} Mbit/s</td>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upCurr'}</td>
-                <td>{@$upCurr} Mbit/s</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.downTotal'}</td>
-                <td>{#$downTotal|filesizebinary}</td>
-                <td style="font-weight: bold;">{lang var='index.fbstate.wan.upTotal'}</td>
-                <td>{#$upTotal|filesizebinary}</td>
-            </tr>
-        </table>
-    {/contentbox}
+    {ifsetting name='pcc.fritzBox.dslConnected'}
+        {contentbox name='index.fbstate.wan.title'}
+            <table class="pcc-view-contentTable">
+                <tr>
+                    <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.pyhsicalState'}</td>
+                    <td style="width: 35%;">{#$pyhsicalState}</td>
+                    <td style="width: 15%; font-weight: bold;">{lang var='index.fbstate.wan.accessType'}</td>
+                    <td style="width: 35%;">{#$accessType}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.state'}</td>
+                    <td>{#$connectState}</td>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.uptime'}</td>
+                    <td>{#$connectUptime|seconds}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.externalIp'}</td>
+                    <td>{#$externalIp}</td>
+                    <td style="font-weight: bold;"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.downMax'}</td>
+                    <td>{@$downMax} Mbit/s</td>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.upMax'}</td>
+                    <td>{@$upMax} Mbit/s</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.downCurr'}</td>
+                    <td>{@$downCurr} Mbit/s</td>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.upCurr'}</td>
+                    <td>{@$upCurr} Mbit/s</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.downTotal'}</td>
+                    <td>{#$downTotal|filesizebinary}</td>
+                    <td style="font-weight: bold;">{lang var='index.fbstate.wan.upTotal'}</td>
+                    <td>{#$upTotal|filesizebinary}</td>
+                </tr>
+            </table>
+        {/contentbox}
+    {/ifsetting}
     {contentbox name='index.fbstate.wlan.title'}
         <table class="pcc-view-contentTable">
             <tr>
