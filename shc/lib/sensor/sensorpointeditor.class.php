@@ -958,6 +958,14 @@ class SensorPointEditor {
      */
     public function removeSensorPoint($spId) {
 
+        //Sensoren loeschen
+        $sensors = $this->getSensorPointById($spId)->listSensors();
+        foreach($sensors as $sensor) {
+
+            /* @var $sensor \SHC\Sensor\Sensor */
+            $this->removeSensor($sensor->getId());
+        }
+
         $db = SHC::getDatabase();
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
