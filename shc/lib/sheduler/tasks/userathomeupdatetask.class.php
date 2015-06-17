@@ -3,6 +3,7 @@
 namespace SHC\Sheduler\Tasks;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\UserAtHome\UserAtHomeEditor;
 use SHC\Switchable\Element;
@@ -38,6 +39,26 @@ class UserAtHomeUpdateTask extends AbstractTask {
      */
     public function executeTask() {
 
+        //Intervall festlegen
+        switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+            case 1:
+
+                //fast
+                $this->interval = 'PT15S';
+                break;
+            case 2:
+
+                //default
+                $this->interval = 'PT30S';
+                break;
+            case 3:
+
+                //slow
+                $this->interval = 'PT60S';
+                break;
+        }
+        
         //Liste mit den Benutzern zu Hause holen
         $usersAtHome = UserAtHomeEditor::getInstance()->listUsersAtHome();
 

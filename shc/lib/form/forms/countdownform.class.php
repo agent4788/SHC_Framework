@@ -66,7 +66,25 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($rooms);
 
         //Intervall
-        $interval = new IntegerInputField('interval', ($countdown instanceof Countdown ? $countdown->getInterval() : 30), array('min' => 30, 'max' => 14400, 'step' => 5));
+        switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+            case 1:
+
+                //fast
+                $min = 5;
+                break;
+            case 2:
+
+                //default
+                $min = 30;
+                break;
+            case 3:
+
+                //slow
+                $min = 60;
+                break;
+        }
+        $interval = new IntegerInputField('interval', ($countdown instanceof Countdown ? $countdown->getInterval() : 30), array('min' => $min, 'max' => 14400, 'step' => 5));
         $interval->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval'));
         $interval->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval.description'));
         $interval->requiredField(true);

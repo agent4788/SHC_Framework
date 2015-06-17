@@ -49,13 +49,6 @@ class TemperatureEventForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Bedingungen
-        /*$conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
-        $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
-        $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
-        $conditions->requiredField(true);
-        $this->addFormElement($conditions);*/
-
         //Sensoren
         $sensors = new SensorChooser('sensors', ($event !== null ? explode(',', $event->getData()['sensors']) : array()), SensorChooser::TEMPERATURE);
         $sensors->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.sensors'));
@@ -71,7 +64,25 @@ class TemperatureEventForm extends DefaultHtmlForm {
         $this->addFormElement($humidity);
 
         //Intervall
-        $name = new IntegerInputField('interval', ($event !== null ? $event->getData()['interval'] : 30), array('min' => 10, 'max' => 3600));
+        switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+            case 1:
+
+                //fast
+                $min = 5;
+                break;
+            case 2:
+
+                //default
+                $min = 10;
+                break;
+            case 3:
+
+                //slow
+                $min = 30;
+                break;
+        }
+        $name = new IntegerInputField('interval', ($event !== null ? $event->getData()['interval'] : 30), array('min' => $min, 'max' => 3600));
         $name->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.interval'));
         $name->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.interval.description'));
         $name->requiredField(true);
