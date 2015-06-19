@@ -60,7 +60,7 @@ abstract class AbstractTask implements Task {
         if ($this->nextRunTime !== null && $this->interval != '' && $this->nextRunTime->isPast()) {
 
             $this->executeTask();
-            $this->nextRunTime->add(new \DateInterval($this->interval));var_dump(get_class($this) .'-'. $this->interval);
+            $this->nextRunTime->add(new \DateInterval($this->interval));
         } elseif($this->nextRunTime === null) {
             
             $this->executeTask();
