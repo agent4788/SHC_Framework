@@ -50,7 +50,7 @@ class FritzBoxUpdateTask extends AbstractTask {
                 case 1:
 
                     //fast
-                    $this->interval = 'PT30S';
+                    $this->interval = 'PT10S';
                     break;
                 case 2:
 
