@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Core\SHC;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\UserComesHome;
 use SHC\Event\Events\UserLeavesHome;

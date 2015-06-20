@@ -32,6 +32,13 @@ abstract class AbstractSensor implements Sensor {
     protected $sensorPointId = 0;
 
     /**
+     * Icon des Sensors
+     *
+     * @var String
+     */
+    protected $icon = '';
+
+    /**
      * Name
      * 
      * @var String 
@@ -129,6 +136,28 @@ abstract class AbstractSensor implements Sensor {
     public function getSensorPointId() {
 
         return $this->sensorPointId;
+    }
+
+    /**
+     * setzt das Icon welches Angezeigt werden soll
+     *
+     * @param  String $path Dateiname
+     * @return \SHC\Sensor\Sensor
+     */
+    public function setIcon($path) {
+
+        $this->icon = $path;
+        return $this;
+    }
+
+    /**
+     * gibt den Dateinamen des Icons zurueck
+     *
+     * @return String
+     */
+    public function getIcon() {
+
+        return $this->icon;
     }
 
     /**

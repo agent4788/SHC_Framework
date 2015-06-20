@@ -77,6 +77,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $bmpSensorForm->getElementByName('name')->getValue();
+                $icon = $bmpSensorForm->getElementByName('icon')->getValue();
                 $rooms = $bmpSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $bmpSensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $bmpSensorForm->getElementByName('temperatureVisibility')->getValue();
@@ -90,7 +91,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording, $temperatureOffset, $pressureOffset, $altitudeOffset);
+                    SensorPointEditor::getInstance()->editBMP($sensorId, $name, $icon, $rooms, null, $visibility, $temperatureVisibility, $pressureVisibility, $altitudeVisibility, $dataRecording, $temperatureOffset, $pressureOffset, $altitudeOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -128,6 +129,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $dhtSensorForm->getElementByName('name')->getValue();
+                $icon = $dhtSensorForm->getElementByName('icon')->getValue();
                 $rooms = $dhtSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $dhtSensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $dhtSensorForm->getElementByName('temperatureVisibility')->getValue();
@@ -139,7 +141,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording, $temperatureOffset, $humidityOffset);
+                    SensorPointEditor::getInstance()->editDHT($sensorId, $name, $icon, $rooms, null, $visibility, $temperatureVisibility, $humidityVisibility, $dataRecording, $temperatureOffset, $humidityOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -177,6 +179,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $ds18x20SensorForm->getElementByName('name')->getValue();
+                $icon = $ds18x20SensorForm->getElementByName('icon')->getValue();
                 $rooms = $ds18x20SensorForm->getElementByName('rooms')->getValues();
                 $visibility = $ds18x20SensorForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $ds18x20SensorForm->getElementByName('temperatureVisibility')->getValue();
@@ -186,7 +189,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $dataRecording, $temperatureOffset);
+                    SensorPointEditor::getInstance()->editDS18x20($sensorId, $name, $icon, $rooms, null, $visibility, $temperatureVisibility, $dataRecording, $temperatureOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -224,6 +227,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $hygrometerSensorForm->getElementByName('name')->getValue();
+                $icon = $hygrometerSensorForm->getElementByName('icon')->getValue();
                 $rooms = $hygrometerSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $hygrometerSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $hygrometerSensorForm->getElementByName('valueVisibility')->getValue();
@@ -233,7 +237,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
+                    SensorPointEditor::getInstance()->editHygrometer($sensorId, $name, $icon, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -271,6 +275,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $rainSensorForm->getElementByName('name')->getValue();
+                $icon = $rainSensorForm->getElementByName('icon')->getValue();
                 $rooms = $rainSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $rainSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $rainSensorForm->getElementByName('valueVisibility')->getValue();
@@ -280,7 +285,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
+                    SensorPointEditor::getInstance()->editRainSensor($sensorId, $name, $icon, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -318,6 +323,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $ldrSensorForm->getElementByName('name')->getValue();
+                $icon = $ldrSensorForm->getElementByName('icon')->getValue();
                 $rooms = $ldrSensorForm->getElementByName('rooms')->getValues();
                 $visibility = $ldrSensorForm->getElementByName('visibility')->getValue();
                 $valueVisibility = $ldrSensorForm->getElementByName('valueVisibility')->getValue();
@@ -327,7 +333,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
+                    SensorPointEditor::getInstance()->editLDR($sensorId, $name, $icon, $rooms, null, $visibility, $valueVisibility, $dataRecording, $valueOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -365,6 +371,7 @@ class EditSensorFormPage extends PageCommand {
 
                 //Speichern
                 $name = $avmMeasuringSocketForm->getElementByName('name')->getValue();
+                $icon = $avmMeasuringSocketForm->getElementByName('icon')->getValue();
                 $rooms = $avmMeasuringSocketForm->getElementByName('rooms')->getValues();
                 $visibility = $avmMeasuringSocketForm->getElementByName('visibility')->getValue();
                 $temperatureVisibility = $avmMeasuringSocketForm->getElementByName('temperatureVisibility')->getValue();
@@ -376,7 +383,7 @@ class EditSensorFormPage extends PageCommand {
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editAvmMeasuringSensor($sensorId, $name, $rooms, null, $visibility, $temperatureVisibility, $powerVisibility, $energyVisibility, $dataRecording, $temperatureOffset);
+                    SensorPointEditor::getInstance()->editAvmMeasuringSensor($sensorId, $name, $icon, $rooms, null, $visibility, $temperatureVisibility, $powerVisibility, $energyVisibility, $dataRecording, $temperatureOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {

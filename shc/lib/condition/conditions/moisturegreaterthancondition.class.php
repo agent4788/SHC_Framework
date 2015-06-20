@@ -4,9 +4,8 @@ namespace SHC\Condition\Conditions;
 
 //Imports
 use SHC\Condition\AbstractCondition;
+use SHC\Sensor\Model\Moisture;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\Hygrometer;
-use SHC\Sensor\Sensors\RainSensor;
 
 /**
  * Bedingung Feuchtigkeit groeßer als
@@ -42,9 +41,9 @@ class MoistureGreaterThanCondition extends AbstractCondition {
         foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
-            if ($sensor instanceof RainSensor || $sensor instanceof Hygrometer) {
+            if ($sensor instanceof Moisture) {
 
-                $humidity = $sensor->getValue();
+                $humidity = $sensor->getMoisture();
                 if ($humidity >= (float) $this->data['moisture']) {
 
                     return true;
