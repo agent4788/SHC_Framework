@@ -174,7 +174,7 @@ class RoomSync extends SyncCommand {
                             );
                         } elseif ($sensor instanceof AvmMeasuringSocket) {
 
-                            $avmPowerValues[$sensor->getId()] = array(
+                            $avmPowerValues[str_replace(' ', '-', $sensor->getId())] = array(
                                 'temp' => $sensor->getDisplayTemperature(),
                                 'power' => $sensor->getDisplayPower(),
                                 'energy' => $sensor->getDisplayEnergy()
@@ -213,7 +213,7 @@ class RoomSync extends SyncCommand {
                 if(count($avmPowerValues) > 0) {
 
                     $response->addRetry(1000);
-                    $response->addEvent('syncAvmPowerSockect');
+                    $response->addEvent('syncAvmPowerSocket');
                     $response->addArrayAsJson($avmPowerValues);
                     $response->flush();
                 }
