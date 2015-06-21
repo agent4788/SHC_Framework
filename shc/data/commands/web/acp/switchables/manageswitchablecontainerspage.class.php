@@ -10,8 +10,6 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use SHC\Core\SHC;
 use SHC\Form\FormElements\SwitchCommandChooser;
-use SHC\Room\Room;
-use SHC\Room\RoomEditor;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;

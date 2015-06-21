@@ -93,37 +93,37 @@ class SensorChooser extends SelectMultiple {
             if($filter & self::ALL) {
 
                 //alle Sensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::TEMPERATURE && $sensor instanceof Temperature) {
 
                 //Temperatursenoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::HUMDITY && $sensor instanceof Humidity) {
 
                 //Luftfeuchte Sensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::PRESSURE && $sensor instanceof AirPressure) {
 
                 //Luftdrucksensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::ALTITUDE && $sensor instanceof Altitude) {
 
                 //Hoehen Sensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::MOISTURE && $sensor instanceof Moisture) {
 
                 //Feuchtigkeitssensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::LINGTH_INTENSIVITY && $sensor instanceof LightIntensity) {
 
                 //Feuchtigkeitssensoren
-                $values[$sensor->getId()] = array($sensor->getName(), (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             }
 

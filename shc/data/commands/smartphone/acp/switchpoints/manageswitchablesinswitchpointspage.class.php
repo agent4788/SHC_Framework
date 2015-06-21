@@ -126,7 +126,7 @@ class ManageSwitchablesInSwitchPointsPage extends PageCommand {
                     RWF::getLanguage()->disableAutoHtmlEndocde();
                     $type = $switchableElement->getTypeName();
                     RWF::getLanguage()->enableAutoHtmlEndocde();
-                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .')';
+                    $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }
             }
             $elementChooser->setValues($values);

@@ -6,6 +6,7 @@ namespace SHC\Sensor;
 use SHC\Core\SHC;
 use SHC\Room\Room;
 use RWF\Date\DateTime;
+use SHC\Room\RoomEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\DHT;
@@ -245,6 +246,31 @@ abstract class AbstractSensor implements Sensor {
     public function getRooms() {
 
         return $this->rooms;
+    }
+
+    /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false) {
+
+        $rooms = $this->getRooms();
+        $roomList = array();
+        foreach($rooms as $roomId) {
+
+            $roomObject = RoomEditor::getInstance()->getRoomById($roomId);
+            if($roomObject instanceof Room) {
+
+                $roomList[] = $roomObject->getName();
+            }
+        }
+
+        if($commaSepareted == true) {
+
+            return implode(', ', $roomList);
+        }
+        return $roomList;
     }
 
     /**
