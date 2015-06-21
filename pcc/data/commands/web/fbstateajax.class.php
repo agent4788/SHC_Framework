@@ -3,6 +3,7 @@
 namespace PCC\Command\Web;
 
 //Imports
+use PCC\Core\PCC;
 use RWF\AVM\FritzBoxFactory;
 use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
@@ -56,18 +57,21 @@ class FBStateAjax extends AjaxCommand {
         $tpl->assign('voipDns2', $fbDev->getVoipDNSServer2());
 
         //WAN Informationen
-        $fbWan = $fritzBox->getWan();
-        $tpl->assign('pyhsicalState', $fbWan->getPhysicalLinkStatus());
-        $tpl->assign('accessType', $fbWan->getAccessType());
-        $tpl->assign('connectState', $fbWan->getConnectionStatus());
-        $tpl->assign('connectUptime', $fbWan->getConnectionUptime());
-        $tpl->assign('downMax', $fbWan->getConnectionDownstreamMaxBitRate() / 1000);
-        $tpl->assign('upMax', $fbWan->getConnectionUpstreamMaxBitRate() / 1000);
-        $tpl->assign('downCurr', $fbWan->getConnectionDownstreamCurrentBitRate() / 1000);
-        $tpl->assign('upCurr', $fbWan->getConnectionUpstreamCurrentBitRate() / 1000);
-        $tpl->assign('downTotal', $fbDev->getTotalBytesReceived());
-        $tpl->assign('upTotal', $fbDev->getTotalBytesSent());
-        $tpl->assign('externalIp', $fbWan->getExternalIp());
+        if(PCC::getSetting('pcc.fritzBox.dslConnected')) {
+
+            $fbWan = $fritzBox->getWan();
+            $tpl->assign('pyhsicalState', $fbWan->getPhysicalLinkStatus());
+            $tpl->assign('accessType', $fbWan->getAccessType());
+            $tpl->assign('connectState', $fbWan->getConnectionStatus());
+            $tpl->assign('connectUptime', $fbWan->getConnectionUptime());
+            $tpl->assign('downMax', $fbWan->getConnectionDownstreamMaxBitRate() / 1000);
+            $tpl->assign('upMax', $fbWan->getConnectionUpstreamMaxBitRate() / 1000);
+            $tpl->assign('downCurr', $fbWan->getConnectionDownstreamCurrentBitRate() / 1000);
+            $tpl->assign('upCurr', $fbWan->getConnectionUpstreamCurrentBitRate() / 1000);
+            $tpl->assign('downTotal', $fbDev->getTotalBytesReceived());
+            $tpl->assign('upTotal', $fbDev->getTotalBytesSent());
+            $tpl->assign('externalIp', $fbWan->getExternalIp());
+        }
 
         //WLan Informationen
         $fbWlan = $fritzBox->getWlan();

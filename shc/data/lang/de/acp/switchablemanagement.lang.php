@@ -23,6 +23,8 @@ $l['acp.switchableManagement.title.nothing'] = 'keine:';
 $l['acp.switchableManagement.message.id.error'] = 'Ungültige Raum ID';
 $l['acp.switchableManagement.title.addSwitchable'] = 'schaltbares Element hinzufügen';
 $l['acp.switchableManagement.button.switchFunctions'] = 'Schaltfunktionen';
+$l['acp.switchableManagement.switchables'] = 'Schaltbare Elemente';
+$l['acp.switchableManagement.sensors'] = 'Sensoren';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
@@ -182,6 +184,8 @@ $l['acp.switchableManagement.form.addWol.allowedUsers.description'] = 'legt fest
 
 $l['acp.switchableManagement.form.sensorForm.name'] = 'Name';
 $l['acp.switchableManagement.form.sensorForm.name.description'] = 'Name des Sensors';
+$l['acp.switchableManagement.form.sensorForm.icon'] = 'Icon';
+$l['acp.switchableManagement.form.sensorForm.icon.description'] = 'Icon des Sensors';
 $l['acp.switchableManagement.form.sensorForm.room'] = 'Raum';
 $l['acp.switchableManagement.form.sensorForm.room.description'] = 'Raum in dem sich der Sensor befindet';
 $l['acp.switchableManagement.form.sensorForm.visibility'] = 'Sichtbarkeit';

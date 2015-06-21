@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
 use SHC\Room\Room;
 use SHC\Sensor\Sensors\DHT;
@@ -39,6 +40,13 @@ class DHTSensorForm extends DefaultHtmlForm {
         $name->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.name.description'));
         $name->requiredField(true);
         $this->addFormElement($name);
+
+        //Icon
+        $icon = new IconChooser('icon', ($sensor instanceof DHT ? ($sensor->getIcon() != '' ? $sensor->getIcon() : 'shc-icon-dht') : ''));
+        $icon->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.icon'));
+        $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.icon.description'));
+        $icon->requiredField(true);
+        $this->addFormElement($icon);
 
         //Raeume
         $rooms = new RoomChooser('rooms', ($sensor instanceof DHT && count($sensor->getRooms()) > 0 ? $sensor->getRooms(): array()));

@@ -5,6 +5,7 @@ namespace SHC\Sheduler\Tasks;
 //Imports
 use SHC\Command\CommandSheduler;
 use SHC\Condition\ConditionEditor;
+use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchable;
@@ -42,6 +43,26 @@ class TimerTask extends AbstractTask {
      * falls ein Intervall angegeben ist wird automatisch die Ausfuerung in den vogegebenen Zeitabstaenden verzoegert
      */
     public function executeTask() {
+
+        //Intervall festlegen
+        switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+            case 1:
+
+                //fast
+                $this->interval = 'PT1S';
+                break;
+            case 2:
+
+                //default
+                $this->interval = 'PT5S';
+                break;
+            case 3:
+
+                //slow
+                $this->interval = 'PT15S';
+                break;
+        }
 
         //Liste mit den Schaltbaren Elementen holen
         ConditionEditor::getInstance()->loadData();

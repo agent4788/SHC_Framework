@@ -31,13 +31,6 @@ abstract class AbstractTask implements Task {
     protected $interval = '';
 
     /**
-     * Zeitintervall Objekt
-     * 
-     * @var \DateInterval 
-     */
-    protected $dateInterval = null;
-
-    /**
      * Zeit der naechsten Ausfuehrung
      *  
      * @var \RWF\Date\DateTime 
@@ -46,11 +39,7 @@ abstract class AbstractTask implements Task {
 
     public function __construct() {
 
-        if ($this->interval != '') {
-
-            $this->nextRunTime = DateTime::now();
-            $this->dateInterval = new \DateInterval($this->interval);
-        }
+        $this->nextRunTime = DateTime::now();
     }
 
     /**
@@ -68,10 +57,10 @@ abstract class AbstractTask implements Task {
      */
     public function execute() {
 
-        if ($this->nextRunTime !== null && $this->nextRunTime->isPast()) {
+        if ($this->nextRunTime !== null && $this->interval != '' && $this->nextRunTime->isPast()) {
 
             $this->executeTask();
-            $this->nextRunTime->add($this->dateInterval);
+            $this->nextRunTime->add(new \DateInterval($this->interval));
         } elseif($this->nextRunTime === null) {
             
             $this->executeTask();

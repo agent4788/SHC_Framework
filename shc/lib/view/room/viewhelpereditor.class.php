@@ -344,12 +344,6 @@ class ViewHelperEditor {
      */
     public function addBox($name, $roomId, $orderId) {
 
-        //Ausnahme wenn Boxname schon belegt
-        if (!$this->isBoxNameAvailable($name)) {
-
-            throw new \Exception('Der Name ist schon vergeben', 1507);
-        }
-
         $db = SHC::getDatabase();
         $index = $db->autoIncrement(self::$tableName);
 
@@ -387,12 +381,6 @@ class ViewHelperEditor {
 
             //Name
             if ($name !== null) {
-
-                //Ausnahme wenn Name der Box schon belegt
-                if ($name != (string) $box['name'] && !$this->isBoxNameAvailable($name)) {
-
-                    throw new \Exception('Der Name ist schon vergeben', 1507);
-                }
 
                 $box['name'] = $name;
             }

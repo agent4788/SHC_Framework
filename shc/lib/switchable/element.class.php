@@ -259,4 +259,11 @@ interface Element {
      * @return Boolean
      */
     public function isUserEntitled(Visitor $user);
+
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName();
 }

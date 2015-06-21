@@ -69,12 +69,7 @@ class AddBoxFormPage extends PageCommand {
                 $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addbox.success'));
             } catch(\Exception $e) {
 
-                if($e->getCode() == 1507) {
-
-                    //Raumname schon vergeben
-                    $message->setType(Message::ERROR);
-                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addbox.error.1507'));
-                }  elseif($e->getCode() == 1102) {
+                if($e->getCode() == 1102) {
 
                     //fehlende Schreibrechte
                     $message->setType(Message::ERROR);

@@ -28,20 +28,7 @@
                             <tr>
                                 <td>{if $event->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$event->getName()}{if $event->isEnabled() == false}</span>{/if}</td>
                                 <td>
-                                    {instanceof element=$event class='\SHC\Event\Events\HumidityClimbOver'}{lang var="acp.eventsManagement.events.HumidityClimbOver"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\HumidityFallsBelow'}{lang var="acp.eventsManagement.events.HumidityFallsBelow"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\InputHigh'}{lang var="acp.eventsManagement.events.InputHigh"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\InputLow'}{lang var="acp.eventsManagement.events.InputLow"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\LightIntensityClimbOver'}{lang var="acp.eventsManagement.events.LightIntensityClimbOver"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\LightIntensityFallBelow'}{lang var="acp.eventsManagement.events.LightIntensityFallBelow"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\MoistureClimbOver'}{lang var="acp.eventsManagement.events.MoistureClimbOver"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\MoistureFallsBelow'}{lang var="acp.eventsManagement.events.MoistureFallsBelow"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\TemperatureClimbOver'}{lang var="acp.eventsManagement.events.TemperatureClimbOver"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\TemperatureFallsBelow'}{lang var="acp.eventsManagement.events.TemperatureFallsBelow"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\UserComesHome'}{lang var="acp.eventsManagement.events.UserComesHome"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\UserLeavesHome'}{lang var="acp.eventsManagement.events.UserLeavesHome"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\Sunrise'}{lang var="acp.eventsManagement.events.Sunrise"}{/instanceof}
-                                    {instanceof element=$event class='\SHC\Event\Events\Sunset'}{lang var="acp.eventsManagement.events.Sunset"}{/instanceof}
+                                    {$event->getTypeName()}
                                 </td>
                                 <td>{if $event->getLastExecute()->format('d.m.Y') != '01.01.2000'}{$event->getLastExecute()|timeline}{else}{lang var="acp.eventsManagement.eventList.table.head.never"}{/if}</td>
                                 <td>

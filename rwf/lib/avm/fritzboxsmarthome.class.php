@@ -64,11 +64,68 @@ class FritzBoxSmartHome extends FritzBox {
 
         if(!isset($this->cache['smarthome']['devices'])) {
 
-            $list = $this->getDeviceList();
-            foreach($list as $device) {
+            $this->cache['smarthome']['devices'] = array();
 
-                $data = $this->getDevice($device);
-                $this->cache['smarthome']['devices'][] = $data;
+            $devList = $this->getDeviceList();
+            if(!isset($devList[0])) {
+
+                //keine SmartHome Geraete
+                return array();
+            }
+
+            //HTTP Anfrage
+            $http_options = stream_context_create(array(
+                'http' => array(
+                    'method'  => 'GET',
+                    'user_agent' => "RWF Framework Version ". RWF::VERSION
+                )
+            ));
+            $result = @file_get_contents('http://'. $this->address .'/webservices/homeautoswitch.lua?switchcmd=getdevicelistinfos&ain='. urlencode($devList[0]) .'&'. $this->getSid(), false, $http_options);
+
+            //XML Daten auswerten
+            $xml = XmlEditor::createFromString($result);
+
+            foreach($xml->device as $device) {
+
+                $atrr = $device->attributes();
+                $ain = (string) $atrr->identifier;
+                $data = array(
+                    'device' => array(
+                        'ain' => $ain,
+                        'identifier' => $ain,
+                        'id' => (string) $atrr->id,
+                        'functionbitmask' => (string) $atrr->functionbitmask,
+                        'fwversion' => (string) $atrr->fwversion,
+                        'manufacturer' => (string) $atrr->manufacturer,
+                        'productname' => (string) $atrr->productname,
+                    ),
+
+                    'present' => ((int) $device->present == 1 ? true : false),
+                    'name' => (string) $device->name
+                );
+                if(isset($device->switch)) {
+
+                    $data['switch'] = array(
+                        'state' => (string) $device->switch->state,
+                        'mode' => (string) $device->switch->mode,
+                        'lock' => ((int) $device->switch->lock == 1 ? true : false),
+                    );
+                }
+                if(isset($device->powermeter)) {
+
+                    $data['powermeter'] = array(
+                        'power' => (int) $device->powermeter->power,
+                        'energy' => (int) $device->powermeter->energy,
+                    );
+                }
+                if(isset($device->temperature)) {
+
+                    $data['temperature'] = array(
+                        'temperature' => ((float) $device->temperature->celsius != 0.0 ? (float) $device->temperature->celsius / 10 : 0.0),
+                        'offset' => ((float) $device->temperature->offset != 0.0 ? (float) $device->temperature->offset / 10 : 0.0)
+                    );
+                }
+                $this->cache['smarthome']['devices'][$ain] = $data;
             }
         }
         return $this->cache['smarthome']['devices'];
@@ -82,55 +139,12 @@ class FritzBoxSmartHome extends FritzBox {
      */
     public function getDevice($ain) {
 
-        //HTTP Anfrage
-        $http_options = stream_context_create(array(
-            'http' => array(
-                'method'  => 'GET',
-                'user_agent' => "RWF Framework Version ". RWF::VERSION
-            )
-        ));
-        $result = @file_get_contents('http://'. $this->address .'/webservices/homeautoswitch.lua?switchcmd=getdevicelistinfos&ain='. urlencode($ain) .'&'. $this->getSid(), false, $http_options);
+        $devices = $this->listDevices();
+        if(isset($devices[$ain])) {
 
-        //XML Daten auswerten
-        $xml = XmlEditor::createFromString($result);
-        $atrr = $xml->device->attributes();
-        $data = array(
-            'device' => array(
-                'ain' => $ain,
-                'identifier' => (string) $atrr->identifier,
-                'id' => (string) $atrr->id,
-                'functionbitmask' => (string) $atrr->functionbitmask,
-                'fwversion' => (string) $atrr->fwversion,
-                'manufacturer' => (string) $atrr->manufacturer,
-                'productname' => (string) $atrr->productname,
-            ),
-
-            'present' => ((int) $xml->device->present == 1 ? true : false),
-            'name' => (string) $xml->device->name
-        );
-        if(isset($xml->device->switch)) {
-
-            $data['switch'] = array(
-                'state' => (string) $xml->device->switch->state,
-                'mode' => (string) $xml->device->switch->mode,
-                'lock' => ((int) $xml->device->switch->lock == 1 ? true : false),
-            );
+            return $devices[$ain];
         }
-        if(isset($xml->device->powermeter)) {
-
-            $data['powermeter'] = array(
-                'power' => (int) $xml->device->powermeter->power,
-                'energy' => (int) $xml->device->powermeter->energy,
-            );
-        }
-        if(isset($xml->device->temperature)) {
-
-            $data['temperature'] = array(
-                'temperature' => ((float) $xml->device->temperature->celsius != 0.0 ? (float) $xml->device->temperature->celsius / 10 : 0.0),
-                'offset' => ((float) $xml->device->temperature->offset != 0.0 ? (float) $xml->device->temperature->offset / 10 : 0.0)
-            );
-        }
-        return $data;
+        return null;
     }
 
     /**

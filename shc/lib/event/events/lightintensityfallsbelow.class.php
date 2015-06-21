@@ -4,9 +4,9 @@ namespace SHC\Event\Events;
 
 //Imports
 use SHC\Event\AbstractEvent;
+use SHC\Sensor\Model\LightIntensity;
 use SHC\Sensor\SensorPointEditor;
 use RWF\Date\DateTime;
-use SHC\Sensor\Sensors\LDR;
 
 /**
  * Ereignis Lichtstaerke faellt unter Grenzsert
@@ -67,24 +67,24 @@ class LightIntensityFallsBelow extends AbstractEvent {
         foreach($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensors\LDR */
-            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof LDR) {
+            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof LightIntensity) {
 
                 if(isset($this->state[$sensor->getId()])) {
 
-                    if($this->state[$sensor->getId()] > $limit && $sensor->getValue() <= $limit) {
+                    if($this->state[$sensor->getId()] > $limit && $sensor->getLightIntensity() <= $limit) {
 
                         //Sensor bekannt, Sensorwert ist ueber Grenzwert gestiegen
-                        $this->state[$sensor->getId()] = $sensor->getValue();
+                        $this->state[$sensor->getId()] = $sensor->getLightIntensity();
                         $success = true;
                     } else {
 
                         //Sensor bekannt, Grenzwert aber nicht ueberschritten
-                        $this->state[$sensor->getId()] = $sensor->getValue();
+                        $this->state[$sensor->getId()] = $sensor->getLightIntensity();
                     }
                 } else {
 
                     //Sensor unbekannt => registrieren und aktuellen Sensorwert speichern
-                    $this->state[$sensor->getId()] = $sensor->getValue();
+                    $this->state[$sensor->getId()] = $sensor->getLightIntensity();
                 }
             }
         }

@@ -276,7 +276,7 @@ class ClassLoader {
 
                 @require_once($path);
                 //pruefen ob Klasse jetzt bekannt
-                if (!class_exists($class, false) && !interface_exists($class, false)) {
+                if (!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)) {
 
                     throw new ClassNotFoundException($class, 1002, 'Die Klasse "' . $class . '" konnte nicht geladen werden');
                 }

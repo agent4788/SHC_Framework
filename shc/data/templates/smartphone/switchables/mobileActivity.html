@@ -2,7 +2,7 @@
     {if $device != 'smartphone'}
     <span class="shc-icon {$switchable->getIcon()}"></span>
     {/if}
-    <span>{#$switchable->getName()}:</span>
+    <span style="font-weight: bold;">{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
         <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-b ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-check" style="width: 6em;">
             {if $switchable->getButtonText() == 2}

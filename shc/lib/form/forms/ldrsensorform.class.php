@@ -5,8 +5,10 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
+use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
 use SHC\Room\Room;
 use SHC\Sensor\Sensors\LDR;
@@ -39,6 +41,13 @@ class LDRSensorForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
+        //Icon
+        $icon = new IconChooser('icon', ($sensor instanceof LDR ? ($sensor->getIcon() != '' ? $sensor->getIcon() : 'shc-icon-ldr') : ''));
+        $icon->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.icon'));
+        $icon->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.icon.description'));
+        $icon->requiredField(true);
+        $this->addFormElement($icon);
+
         //Raeume
         $rooms = new RoomChooser('rooms', ($sensor instanceof LDR && count($sensor->getRooms()) > 0 ? $sensor->getRooms(): array()));
         $rooms->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.room'));
@@ -55,7 +64,7 @@ class LDRSensorForm extends DefaultHtmlForm {
         $this->addFormElement($visibility);
 
         //Wert Sichtbar
-        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof LDR ? $sensor->isValueVisible() : true));
+        $valueVisibility = new OnOffOption('valueVisibility', ($sensor instanceof LDR ? $sensor->isLightIntensityVisible() : true));
         $valueVisibility->setOnOffLabel();
         $valueVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility'));
         $valueVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueVisibility.description'));
@@ -63,7 +72,7 @@ class LDRSensorForm extends DefaultHtmlForm {
         $this->addFormElement($valueVisibility);
 
         //Werte Offset
-        $valueOffset = new IntegerInputField('valOffset', ($sensor instanceof Hygrometer ? $sensor->getOffset() : 0.0), array('min' => -50, 'max' => 50));
+        $valueOffset = new IntegerInputField('valOffset', ($sensor instanceof LDR ? $sensor->getLightIntensityOffset() : 0.0), array('min' => -50, 'max' => 50));
         $valueOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.valueOffset'));
         $valueOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
         $valueOffset->requiredField(true);
