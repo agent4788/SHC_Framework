@@ -7,6 +7,16 @@ use RWF\Core\RWF;
 use RWF\User\Visitor;
 use SHC\Command\CommandSheduler;
 use SHC\Room\RoomEditor;
+use SHC\Switchable\Switchables\Activity;
+use SHC\Switchable\Switchables\AvmSocket;
+use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\FritzBox;
+use SHC\Switchable\Switchables\RadioSocket;
+use SHC\Switchable\Switchables\Reboot;
+use SHC\Switchable\Switchables\RpiGpioOutput;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
 use RWF\User\User;
@@ -591,4 +601,47 @@ abstract class AbstractSwitchable implements Switchable {
         return true;
     }
 
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName() {
+
+        if($this instanceof RadioSocket) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket');
+        } elseif($this instanceof RpiGpioOutput) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioOutput');
+        } elseif($this instanceof WakeOnLan) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.wakeOnLan');
+        } elseif($this instanceof Activity) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.activity');
+        } elseif($this instanceof Countdown) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.countdown');
+        } elseif($this instanceof Reboot) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.reboot');
+        } elseif($this instanceof Shutdown) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.shutdown');
+        } elseif($this instanceof Script) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
+        } elseif($this instanceof AvmSocket) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.avmSocket');
+        } elseif($this instanceof FritzBox) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox');
+        } else {
+
+            $type = 'unknown';
+        }
+        return $type;
+    }
 }

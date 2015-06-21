@@ -101,32 +101,7 @@ class ManageSwitchableContainersPage extends PageCommand {
                         continue;
                     }
 
-                    $type = '';
-                    if($switchableElement instanceof RadioSocket) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.radiosocket');
-                    } elseif($switchableElement instanceof RpiGpioOutput) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioOutput');
-                    } elseif($switchableElement instanceof WakeOnLan) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.wakeOnLan');
-                    } elseif($switchableElement instanceof Shutdown) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.shutdown');
-                    } elseif($switchableElement instanceof Reboot) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.reboot');
-                    } elseif($switchableElement instanceof Script) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.script');
-                    } elseif($switchableElement instanceof AvmSocket) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.avmSocket');
-                    } elseif($switchableElement instanceof FritzBox) {
-
-                        $type = RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox');
-                    }
+                    $type = $switchableElement->getTypeName();
                     $values[$switchableElement->getId()] = $switchableElement->getName() .' ('. $type .') ['. $switchableElement->getNamedRoomList(true) .']';
                 }
             }

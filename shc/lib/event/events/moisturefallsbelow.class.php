@@ -4,10 +4,9 @@ namespace SHC\Event\Events;
 
 //Imports
 use SHC\Event\AbstractEvent;
+use SHC\Sensor\Model\Moisture;
 use SHC\Sensor\SensorPointEditor;
 use RWF\Date\DateTime;
-use SHC\Sensor\Sensors\Hygrometer;
-use SHC\Sensor\Sensors\RainSensor;
 
 /**
  * Ereignis Feuchtigkeit steigt ueber Grenzsert
@@ -68,24 +67,24 @@ class MoistureFallsBelow extends AbstractEvent {
         foreach($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensors\RainSensor */
-            if(in_array($sensor->getId(), $this->data['sensors']) && ($sensor instanceof RainSensor || $sensor instanceof Hygrometer)) {
+            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof Moisture) {
 
                 if(isset($this->state[$sensor->getId()])) {
 
-                    if($this->state[$sensor->getId()] > $limit && $sensor->getValue() <= $limit) {
+                    if($this->state[$sensor->getId()] > $limit && $sensor->getMoisture() <= $limit) {
 
                         //Sensor bekannt, Sensorwert ist ueber Grenzwert gestiegen
-                        $this->state[$sensor->getId()] = $sensor->getValue();
+                        $this->state[$sensor->getId()] = $sensor->getMoisture();
                         $success =  true;
                     } else {
 
                         //Sensor bekannt, Grenzwert aber nicht ueberschritten
-                        $this->state[$sensor->getId()] = $sensor->getValue();
+                        $this->state[$sensor->getId()] = $sensor->getMoisture();
                     }
                 } else {
 
                     //Sensor unbekannt => registrieren und aktuellen Sensorwert speichern
-                    $this->state[$sensor->getId()] = $sensor->getValue();
+                    $this->state[$sensor->getId()] = $sensor->getMoisture();
                 }
             }
         }

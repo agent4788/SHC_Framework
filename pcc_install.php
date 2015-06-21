@@ -95,6 +95,7 @@ addSetting('pcc.fritzBox.showSmartHomeDevices', 'true', TYPE_BOOLEAN);
 addSetting('pcc.fritzBox.showCallList', 'true', TYPE_BOOLEAN);
 addSetting('pcc.fritzBox.callListMax', '25', TYPE_INTEGER);
 addSetting('pcc.fritzBox.callListDays', '999', TYPE_INTEGER);
+addSetting('pcc.fritzBox.dslConnected', 'true', TYPE_BOOLEAN);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');
@@ -142,17 +143,21 @@ if($newXml === true) {
     $user->register = (new DateTime('now'))->format('Y-m-d');
 }
 
+//XML Speichern
+$usersXml->asXML('./rwf/data/storage/users.xml');
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // APP als Installiert markieren ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$content =
-'{
-    "app": "pcc",
-    "name": "Raspberry Pi Control Center",
-    "icon": "./pcc/inc/img/pcc-icon.png",
-    "order": 20,
-    "installed": true
-}';
+$content = '
+    {
+        "app": "pcc",
+        "name": "Raspberry Pi Control Center",
+        "icon": "./pcc/inc/img/pcc-icon.png",
+        "order": 20,
+        "installed": true,
+        "apLevel": 11
+    }';
 file_put_contents('./pcc/app.json', $content);
 
 print("PCC erfolgreich installiert\n");

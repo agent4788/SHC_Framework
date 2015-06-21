@@ -1,18 +1,19 @@
 <?php
 
 /**
- * Update von Version 2.0.2 auf 2.0.3
+ * Update von Version 2.2.1 auf 2.2.1
  *
  * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
+ * @copyright  Copyright (c) 2015, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.3-0
- * @version    2.0.3-0
+ * @since      2.2.2-0
+ * @version    2.2.2-0
  */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Hilfsfunktionen //////////////////////////////////////////////////////////////////////////////////////////////////////
+// Hilfsfunktionen /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 define('TYPE_BOOLEAN', 'bool');
 define('TYPE_STRING', 'string');
 define('TYPE_INTEGER', 'int');
@@ -75,7 +76,7 @@ function randomStr($length = 10) {
  * Kommandozeilen Hilfsfunktionen
  *
  * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
+ * @copyright  Copyright (c) 2015, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
  * @version    2.0.0-0
@@ -344,669 +345,134 @@ class CliUtil {
 
 }
 
+$cli = new CliUtil();
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update v2.0.0-2 auf v2.0.3 //////////////////////////////////////////////////////////////////////////////////////////
+// Update vorbereiten //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Datenupdate Ereignisse
-if(file_exists(__DIR__ .'/shc/data/storage/events.xml')) {
+//Initialisieren
+$shcInstalled = false;
+$shcApiLevel = 10;
+$pccInstalled = false;
+$pccApiLevel = 10;
 
-    $xml = new SimpleXMLElement(__DIR__ .'/shc/data/storage/events.xml', null, true);
+//SHC
+if(file_exists('./shc/app.json')) {
 
-    foreach($xml->event as $event) {
+    $shcInstalled = true;
+    $shcApp = json_decode(file_get_contents('./shc/app.json'), true);
+    if(isset($shcApp['apLevel'])) {
 
-        if(!isset($event->lastExecute)) {
-
-            $event->addChild('lastExecute', '2000-01-01 00:00:00');
-        }
+        $shcApiLevel = (int) $shcApp['apLevel'];
     }
+}
 
-    $xml->asXML(__DIR__ .'/shc/data/storage/events.xml');
+//PCC
+if(file_exists('./pcc/app.json')) {
+
+    $pccInstalled = true;
+    $pccApp = json_decode(file_get_contents('./pcc/app.json'), true);
+    if(isset($pccApp['apLevel'])) {
+
+        $pccApiLevel = (int) $pccApp['apLevel'];
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update v2.0.3 auf v2.2.0 ////////////////////////////////////////////////////////////////////////////////////////////
+// Update v2.2.1 auf v2.2.2  (API Level 10 auf 11) /////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if(file_exists('./shc/data/storage/switchables.xml')) {
+//SHC
+if($shcInstalled === true && $shcApiLevel == 10) {
 
-    //Redis Einstellungen abfragen
-    $cli = new CliUtil();
+    //Update Funktionen
 
-    //IP Adresse
-    $n = 0;
-    $valid = true;
-    $valid_address = '127.0.0.1';
-    $address_not_change = false;
-    while ($n < 5) {
-
-        $address = $cli->input('Redis IP Adresse (127.0.0.1): ');
-
-        //Adresse nicht aendern
-        if (strlen($address) == 0) {
-
-            $address_not_change = true;
-            $valid = true;
-            break;
-        }
-
-        //Adresse pruefen
-        $parts = explode('.', $address);
-        for ($i = 0; $i < 3; $i++) {
-
-            if (isset($parts[$i]) && (int)$parts[$i] >= 0 && (int)$parts[$i] <= 255) {
-
-                continue;
-            }
-
-            $cli->writeLnColored('ungültige IP Adresse', 'red');
-            $n++;
-            $valid = false;
-            break;
-        }
-
-        if ($valid === true) {
-
-            $valid_address = $address;
-            break;
-        }
-    }
-
-    if ($valid === false) {
-
-        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
-        exit(1);
-    }
-
-    //Port
-    $n = 0;
-    $valid = true;
-    $valid_port = '6379';
-    $port_not_change = false;
-    while ($n < 5) {
-
-        $port = $cli->input('Redis Port (6379)');
-
-        //Port nicht aendern
-        if (strlen($port) == 0) {
-
-            $port_not_change = true;
-            $valid = true;
-            break;
-        }
-
-        if (!preg_match('#^[0-9]{1,5}$#', $port) || (int)$port <= 0 || (int)$port >= 65000) {
-
-            $cli->writeLnColored('ungültiger Port', 'red');
-            $n++;
-            $valid = false;
-            continue;
-        }
-
-        if ($valid === true) {
-
-            $valid_port = $port;
-            break;
-        }
-    }
-
-    if ($valid === false) {
-
-        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
-        exit(1);
-    }
-
-    //Timeout
-    $n = 0;
-    $valid = true;
-    $valid_timeout = '6379';
-    $timeout_not_change = false;
-    while ($n < 5) {
-
-        $timeout = $cli->input('Redis Timeout (1): ');
-
-        //Port nicht aendern
-        if (strlen($timeout) == 0) {
-
-            $timeout_not_change = true;
-            $valid = true;
-            break;
-        }
-
-        if (!preg_match('#^[0-9]{1,2}$#', $timeout) || (int)$timeout <= 0 || (int)$timeout > 10) {
-
-            $cli->writeLnColored('ungültiger Timeout', 'red');
-            $n++;
-            $valid = false;
-            continue;
-        }
-
-        if ($valid === true) {
-
-            $valid_timeout = $timeout;
-            break;
-        }
-    }
-
-    if ($valid === false) {
-
-        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
-        exit(1);
-    }
-
-    //Datenbank
-    $n = 0;
-    $valid = true;
-    $valid_db = '0';
-    $db_not_change = false;
-    while ($n < 5) {
-
-        $db = $cli->input('Redis Datenbank (0): ');
-
-        //Port nicht aendern
-        if (strlen($db) == 0) {
-
-            $db_not_change = true;
-            $valid = true;
-            break;
-        }
-
-        if (!preg_match('#^[0-9]{1,2}$#', $db) || (int)$db < 0 || (int)$db > 30) {
-
-            $cli->writeLnColored('ungültige Datenbank', 'red');
-            $n++;
-            $valid = false;
-            continue;
-        }
-
-        if ($valid === true) {
-
-            $valid_db = $db;
-            break;
-        }
-    }
-
-    if ($valid === false) {
-
-        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
-        exit(1);
-    }
-
-    //IP Adresse
-    $n = 0;
-    $valid = true;
-    $valid_password = '';
-    $password_not_change = false;
-    while ($n < 5) {
-
-        $password = $cli->input('Redis Passwort (): ');
-
-        //Adresse nicht aendern
-        if (strlen($password) == 0) {
-
-            $password_not_change = true;
-            $valid = true;
-            break;
-        }
-
-        //Adresse pruefen
-        if (strlen($password) == 0 || strlen($password) > 20) {
-
-            $cli->writeLnColored('ungültiges Passwort', 'red');
-            $n++;
-            $valid = false;
-            break;
-        }
-
-        if ($valid === true) {
-
-            $valid_password = $password;
-            break;
-        }
-    }
-
-    if ($valid === false) {
-
-        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
-        exit(1);
-    }
-
-    //neue Einstellungen und Rechte eintragen
+    //Neue Einstellungen
     $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
 
-    //Datenbank
-    addSetting('shc.redis.host', $valid_address, TYPE_STRING);
-    addSetting('shc.redis.port', $valid_port, TYPE_INTEGER);
-    addSetting('shc.redis.timeout', $valid_timeout, TYPE_INTEGER);
-    addSetting('shc.redis.db', $valid_db, TYPE_INTEGER);
-    addSetting('shc.redis.pass', $valid_password, TYPE_STRING);
-
-    //Sonstige Einstellungen
-    addSetting('rwf.date.useTimeline', 'true', TYPE_BOOLEAN);
-    addSetting('shc.shedulerDaemon.blinkPin', '-1', TYPE_INTEGER);
-    addSetting('shc.sensorTransmitter.blinkPin', '-1', TYPE_INTEGER);
+    addSetting('shc.shedulerDaemon.performanceProfile', '2', TYPE_INTEGER);
 
     //XML Speichern
     $settingsXml->asXML('./rwf/data/storage/settings.xml');
 
+    //apiLevel hochzaehlen
+    $shcApiLevel++;
+}
+
+//PCC
+if($pccInstalled === true && $pccApiLevel == 10) {
+
+    //Update Funktionen
+
+    //Neue Einstellungen
+    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
+
+    addSetting('pcc.fritzBox.dslConnected', 'true', TYPE_BOOLEAN);
+
+    //XML Speichern
+    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+
+    //Fix Berechtigungen
     $usersXml = new SimpleXMLElement('./rwf/data/storage/users.xml', null, true);
 
     //Gruppenrechte vorbereiten
-    foreach ($usersXml->groups->group as $group) {
-
-        //Rechte
-        addPremission($group, 'shc.ucp.warnings', '0');
-        addPremission($group, 'shc.acp.databaseManagement', '0');
+    foreach($usersXml->groups->group as $group) {
+        
+        $group = $group->premissions;
+        addPremission($group, 'pcc.ucp.viewSysState', '1');
+        addPremission($group, 'pcc.ucp.viewSysData', '1');
+        addPremission($group, 'pcc.acp.menu', '0');
+        addPremission($group, 'pcc.acp.userManagement', '0');
+        addPremission($group, 'pcc.acp.settings', '0');
     }
 
     //XML Speichern
     $usersXml->asXML('./rwf/data/storage/users.xml');
 
-    //Daten aus den XML Dateien in Redis Übertragen
-    $redis = new \Redis();
-
-    //Verbinden
-    if (!$redis->connect($valid_address, $valid_port, $valid_timeout)) {
-
-        $cli->writeLineColored('Verbindung zur Datenbank fehlgeschlagen', 'red');
-        exit(1);
-    }
-
-    //Anmelden
-    if ($valid_password != '') {
-
-        if (!$redis->auth($valid_password)) {
-
-            $cli->writeLineColored('Authentifizierung Fehlgeschlagen', 'red');
-            exit(1);
-        }
-    }
-
-    //Datenbank auswaehlen
-    if (!$redis->select($valid_db)) {
-
-        $cli->writeLineColored('Auswahl der Datenbank Fehlgeschlagen', 'red');
-        exit(1);
-    }
-
-    //Optionen setzen
-    $redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
-    $redis->setOption(\Redis::OPT_PREFIX, 'shc:');
-
-    //Bedingungen importieren
-    if(file_exists('./shc/data/storage/conditions.xml')) {
-
-        $conditionsXml = new SimpleXMLElement('./shc/data/storage/conditions.xml', null, true);
-
-        //Daten einlesen
-        foreach ($conditionsXml->condition as $condition) {
-
-            //Variablen Vorbereiten
-            $data = array();
-            foreach ($condition as $index => $value) {
-
-                if (!in_array($index, array('id', 'name', 'class', 'enabled'))) {
-                    $data[$index] = (string) $value;
-                }
-            }
-
-            $conditionData = array(
-                'id' => (int) $condition->id,
-                'class' => (string) $condition->class,
-                'name' => (string) $condition->name,
-                'enabled' => (((int) $condition->enabled == 1 ? true : false) == true ? true : false)
-            );
-            $conditionData = array_merge($conditionData, $data);
-
-            if($redis->hSetNx('conditions', (int) $condition->id, $conditionData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import der Bedingung "'. (string) $condition->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:conditions', (int) $conditionsXml->nextAutoIncrementId);
-    }
-
-    //Ereignisse importieren
-    if(file_exists('./shc/data/storage/events.xml')) {
-
-        $eventsXml = new SimpleXMLElement('./shc/data/storage/events.xml', null, true);
-
-        //Daten einlesen
-        foreach ($eventsXml->event as $event) {
-
-            $data = array();
-            foreach ($event as $index => $value) {
-
-                if (!in_array($index, array('id', 'name', 'class', 'enabled', 'conditions', 'lastExecute', 'switchable'))) {
-
-                    $data[$index] = (string) $value;
-                }
-            }
-
-            $eventData = array(
-                'id' => (int) $event->id,
-                'class' => (string) $event->class,
-                'name' => (string) $event->name,
-                'enabled' => ((int) $event->enabled == true ? true : false),
-                'conditions' => explode(',', (string) $event->conditions),
-                'lastExecute' => (string) $event->lastExecute
-            );
-            $eventData = array_merge($eventData, $data);
-
-            if($redis->hSetNx('events', (int) $event->id, $eventData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des Ereignisses "'. (string) $event->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:events', (int) $eventsXml->nextAutoIncrementId);
-    }
-
-    //Raeume importieren
-    if(file_exists('./shc/data/storage/rooms.xml')) {
-
-        $roomsXml = new SimpleXMLElement('./shc/data/storage/rooms.xml', null, true);
-
-        //Daten einlesen
-        foreach ($roomsXml->room as $room) {
-
-            $roomData = array(
-                'id' => (int) $room->id,
-                'name' => (string) $room->name,
-                'orderId' => (int) $room->orderId,
-                'enabled' => ((int) $room->enabled == 1 ? true : false),
-                'allowedUserGroups' => explode(',', (string) $room->allowedUserGroups)
-            );
-
-            if($redis->hSetNx('rooms', (int) $room->id, $roomData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des Raum "'. (string) $room->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:rooms', (int) $roomsXml->nextAutoIncrementId);
-    }
-
-    //Schaltbare Elemente importieren
-    if(file_exists('./shc/data/storage/switchables.xml')) {
-
-        $switchablesXml = new SimpleXMLElement('./shc/data/storage/switchables.xml', null, true);
-
-        //Daten einlesen
-        foreach ($switchablesXml->switchable as $switchable) {
-
-            //Objekte initialisiernen und Spezifische Daten setzen
-            $data = array();
-            switch ((int) $switchable->type) {
-
-                case 1:
-
-                    //Aktivitaet
-                    $list = array();
-                    foreach ($switchable->switchable as $activitySwitchable) {
-
-                        /* @var $activitySwitchable \SimpleXmlElement */
-                        $attributes = $activitySwitchable->attributes();
-                        $list[] = array('id' => (int) $attributes->id, 'command' => (int) $attributes->command);
-                    }
-                    $data = array(
-                        'switchable' => $list,
-                        'buttonText' => 1
-                    );
-                    break;
-                case 4:
-
-                    //Countdown
-                    $list = array();
-                    foreach ($switchable->switchable as $countdownSwitchable) {
-
-                        /* @var $countdownSwitchable \SimpleXmlElement */
-                        $attributes = $countdownSwitchable->attributes();
-                        $list[] = array('id' => (int) $attributes->id, 'command' => (int) $attributes->command);
-                    }
-                    $data = array(
-                        'switchable' => $list,
-                        'interval' => (string) $switchable->interval,
-                        'switchOffTime' => '2000-01-01 00:00:00'
-                    );
-                    break;
-                case 8:
-
-                    //Funksteckdose
-                    $data = array(
-                        'protocol' => (string) $switchable->protocol,
-                        'systemCode' => (string) $switchable->systemCode,
-                        'deviceCode' => (string) $switchable->deviceCode,
-                        'continuous' => (string) $switchable->continuous,
-                        'buttonText' => 1
-                    );
-                    break;
-                case 16:
-
-                    //GPIO Output
-                    $data = array(
-                        'switchServer' => (int) $switchable->switchServer,
-                        'pinNumber' => (int) $switchable->pinNumber,
-                        'buttonText' => 1
-                    );
-                    break;
-
-                case 32:
-
-                    //Wake On Lan
-                    $data = array(
-                        'mac' => (string) $switchable->mac,
-                        'ipAddress' => (string) $switchable->mac
-                    );
-                    break;
-                case 128:
-
-                    //GPIO Input
-                    $data = array(
-                        'switchServer' => (int) $switchable->switchServer,
-                        'pinNumber' => (int) $switchable->pinNumber
-                    );
-                    break;
-                default:
-
-                    $cli->writeLineColored('Import des schaltbaren Elementes "'. (string) $switchable->name .'" fehlgeschlagen', 'red');
-                    continue;
-            }
-
-            $switchableData = array(
-                'type' => (int) $switchable->type,
-                'id' => (int) $switchable->id,
-                'name' => (string) $switchable->name,
-                'order' => array(),
-                'enabled' => ((string) $switchable->enabled == 1 ? true : false),
-                'visibility' => ((string) $switchable->visibility == 1 ? true : false),
-                'state' => (int) $switchable->state,
-                'icon' => (string) $switchable->icon,
-                'rooms' => array(),
-                'switchPoints' => explode(',', (string) $switchable->switchPoints),
-                'allowedUserGroups' => explode(',', (string) $switchable->allowedUserGroups)
-            );
-            $switchableData = array_merge($switchableData, $data);
-
-            if($redis->hSetNx('switchables', (int) $switchable->id, $switchableData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des schaltbaren Elementes "'. (string) $switchable->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:switchables', (int) $roomsXml->nextAutoIncrementId);
-    }
-
-    //Schaltpunkte importieren
-    if(file_exists('./shc/data/storage/switchpoints.xml')) {
-
-        $switchpointsXml = new SimpleXMLElement('./shc/data/storage/switchpoints.xml', null, true);
-
-        //Daten einlesen
-        foreach ($switchpointsXml->switchPoint as $switchPoint) {
-
-            $switchPointData = array(
-                'id' => (int) $switchPoint->id,
-                'name' => (string) $switchPoint->name,
-                'enabled' => ((int) $switchPoint->enabled == 1 ? true : false),
-                'command' => (int) $switchPoint->command,
-                'year' => explode(',', (string) $switchPoint->year),
-                'month' => explode(',', (string) $switchPoint->month),
-                'week' => explode(',', (string) $switchPoint->week),
-                'day' => explode(',', (string) $switchPoint->day),
-                'hour' => explode(',', (string) $switchPoint->hour),
-                'minute' => explode(',', (string) $switchPoint->minute),
-                'lastExecute' => (string) $switchPoint->lastExecute,
-                'conditions' => explode(',', (string) $switchPoint->conditions)
-            );
-
-            if($redis->hSetNx('switchpoints', (int) $switchPoint->id, $switchPointData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des Schaltpunktes "'. (string) $room->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:switchpoints', (int) $switchpointsXml->nextAutoIncrementId);
-    }
-
-    //Schaltserver importieren
-    if(file_exists('./shc/data/storage/switchserver.xml')) {
-
-        $switchServerXml = new SimpleXMLElement('./shc/data/storage/switchserver.xml', null, true);
-
-        //Daten einlesen
-        foreach ($switchServerXml->switchserver as $switchserver) {
-
-            $switchServerData = array(
-                'id' => (int) $switchserver->id,
-                'name' => (string) $switchserver->name,
-                'enabled' => ((int) $switchserver->enabled == 1 ? true : false),
-                'address' => (string) $switchserver->address,
-                'port' => (int) $switchserver->port,
-                'model' => (int) $switchserver->model,
-                'radioSockets' => ((int) $switchserver->radioSockets == 1 ? true : false),
-                'writeGpios' => ((int) $switchserver->writeGpios == 1 ? true : false),
-                'readGpios' => ((int) $switchserver->readGpios == 1 ? true : false),
-                'timeout' => (int) $switchserver->timeout,
-            );
-
-            if($redis->hSetNx('switchServers', (int) $switchserver->id, $switchServerData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des Schaltservers "'. (string) $room->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:switchServers', (int) $switchServerXml->nextAutoIncrementId);
-    }
-
-    //Benutzer zu Hause importieren
-    if(file_exists('./shc/data/storage/usersathome.xml')) {
-
-        $userAtHomeXml = new SimpleXMLElement('./shc/data/storage/usersathome.xml', null, true);
-
-        //Daten einlesen
-        foreach ($userAtHomeXml->user as $usersAtHome) {
-
-            $switchServerData = array(
-                'id' => (int) $usersAtHome->id,
-                'name' => (string) $usersAtHome->name,
-                'enabled' => ((int) $usersAtHome->enabled == 1 ? true : false),
-                'ipAddress' => (string) $usersAtHome->ipAddress,
-                'orderId' => (int) $usersAtHome->orderId,
-                'visibility' => ((int) $usersAtHome->visibility == 1 ? true : false),
-                'state' => (int) $usersAtHome->state
-            );
-
-            if($redis->hSetNx('usersrathome', (int) $usersAtHome->id, $switchServerData) == 0) {
-
-                //Import Fehler
-                $cli->writeLineColored('Import des Benutzers "'. (string) $room->name .'" fehlgeschlagen', 'red');
-            }
-        }
-
-        //Autoincrement Setzen
-        $redis->incrBy('autoIncrement:usersrathome', (int) $switchServerXml->nextAutoIncrementId);
-    }
-
-    //alte XML Dateien loeschen
-    @unlink('./shc/data/storage/conditions.xml');
-    @unlink('./shc/data/storage/events.xml');
-    @unlink('./shc/data/storage/rooms.xml');
-    @unlink('./shc/data/storage/switchables.xml');
-    @unlink('./shc/data/storage/switchpoints.xml');
-    @unlink('./shc/data/storage/switchserver.xml');
-    @unlink('./shc/data/storage/usersathome.xml');
-
-    //App Json anpassen
-    $content = file_get_contents('./shc/app.json');
-    $content = str_replace('"installed": false', '"installed": true', $content);
+    //apiLevel hochzaehlen
+    $pccApiLevel++;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// neue app.json Dateien schreiben /////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//SHC
+if($shcInstalled === true) {
+
+    $content = '
+        {
+            "app": "shc",
+            "name": "Raspberry Pi SmartHome Control",
+            "icon": "./shc/inc/img/shc-icon.png",
+            "order": 10,
+            "installed": true,
+            "apLevel": '. $shcApiLevel .'
+        }';
     file_put_contents('./shc/app.json', $content);
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update v2.2.0 auf v2.2.1 ////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//PCC
+if($pccInstalled === true) {
 
-if(file_exists('./shc/app.json') || file_exists('./pcc/app.json')) {
-
-    //neue RWF Einstellungen
-    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
-
-    //Datenbank
-    addSetting('rwf.fritzBox.address', 'fritz.box', TYPE_STRING);
-    addSetting('rwf.fritzBox.has5GHzWlan', 'false', TYPE_BOOLEAN);
-    addSetting('rwf.fritzBox.user', '', TYPE_STRING);
-    addSetting('rwf.fritzBox.password', '', TYPE_STRING);
-
-    //XML Speichern
-    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+    $content = '
+        {
+            "app": "pcc",
+            "name": "Raspberry Pi Control Center",
+            "icon": "./pcc/inc/img/pcc-icon.png",
+            "order": 20,
+            "installed": true,
+            "apLevel": '. $pccApiLevel .'
+        }';
+    file_put_contents('./pcc/app.json', $content);
 }
 
-if(file_exists('./pcc/app.json')) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// neue app.json Dateien schreiben /////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //neue PCC Einstellungen
-    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
-
-    //Datenbank
-    addSetting('pcc.fritzBox.showState', 'true', TYPE_BOOLEAN);
-    addSetting('pcc.fritzBox.showSmartHomeDevices', 'true', TYPE_BOOLEAN);
-    addSetting('pcc.fritzBox.showCallList', 'true', TYPE_BOOLEAN);
-    addSetting('pcc.fritzBox.callListMax', '25', TYPE_INTEGER);
-    addSetting('pcc.fritzBox.callListDays', '999', TYPE_INTEGER);
-
-    //XML Speichern
-    $settingsXml->asXML('./rwf/data/storage/settings.xml');
-
-    //neue Benutzerechte erstellen
-    $usersXml = new SimpleXMLElement('./rwf/data/storage/users.xml', null, true);
-
-    //Gruppenrechte vorbereiten
-    foreach ($usersXml->groups->group as $group) {
-
-        //Rechte
-        addPremission($group, 'pcc.ucp.fbState', '1');
-        addPremission($group, 'pcc.ucp.fbSmartHomeDevices', '1');
-        addPremission($group, 'pcc.ucp.fbCallList', '1');
-    }
-
-    //XML Speichern
-    $usersXml->asXML('./rwf/data/storage/users.xml');
-}
-
-print("Update erfolgreich\n");
+$cli->writeLineColored('Update erfolgreich', 'green');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // sich selbst loeschen ////////////////////////////////////////////////////////////////////////////////////////////////

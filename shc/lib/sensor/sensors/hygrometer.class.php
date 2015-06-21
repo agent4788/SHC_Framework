@@ -5,6 +5,8 @@ namespace SHC\Sensor\Sensors;
 //Imports
 use SHC\Sensor\AbstractSensor;
 use RWF\Date\DateTime;
+use SHC\Sensor\Model\AbstractMoisture;
+use SHC\Sensor\Model\Moisture;
 
 /**
  * Feuchtigkeits Sensor
@@ -15,29 +17,10 @@ use RWF\Date\DateTime;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class Hygrometer extends AbstractSensor {
-    
-    /**
-     * Wert
-     *  
-     * @var Integer 
-     */
-    protected $value = 0;
-    
-    /**
-     * Wert Anzeigen
-     * 
-     * @var Integer
-     */
-    protected $valueVisibility = 1;
+class Hygrometer extends AbstractSensor implements Moisture {
 
-    /**
-     * Temperatur Offset
-     *
-     * @var Integer
-     */
-    protected $valueOffset = 0;
-    
+    use AbstractMoisture;
+
     /**
      * @param Array  $values   Sensorwerte
      */
@@ -46,63 +29,9 @@ class Hygrometer extends AbstractSensor {
         if(count($values) <= 25) {
             
             $this->oldValues = $values;
-            $this->value = $values[0]['value'];
+            $this->moisture = $values[0]['value'];
             $this->time = $values[0]['time'];
         }
-    }
-    
-    /**
-     * gibt den Aktuellen ANalogwert zurueck
-     * 
-     * @return Integer
-     */
-    public function getValue() {
-        
-        return $this->value + $this->valueOffset;
-    }
-
-    /**
-     * setzt das Offset
-     *
-     * @param  Float $offset
-     * @return \SHC\Sensor\Sensors\Hygrometer
-     */
-    public function setOffset($offset) {
-
-        $this->valueOffset = $offset;
-        return $this;
-    }
-
-    /**
-     * gbit das Offset zurueck
-     *
-     * @return Float
-     */
-    public function getOffset() {
-
-        return $this->valueOffset;
-    }
-    
-    /**
-     * setzt die Sichtbarkeit des Wertes
-     * 
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\Hygrometer
-     */
-    public function valueVisibility($visibility) {
-        
-        $this->valueVisibility = $visibility;
-        return $this;
-    }
-    
-    /**
-     * gibt die Sichtbarkeit des Wertes an
-     * 
-     * @return Boolean
-     */
-    public function isValueVisible() {
-        
-        return ($this->valueVisibility == 1 ? true : false);
     }
     
     /**
@@ -124,7 +53,7 @@ class Hygrometer extends AbstractSensor {
         }
         
         //Werte setzten
-        $this->value = $value;
+        $this->moisture = $value;
         $this->time = $date;
         $this->isModified = true;
     }

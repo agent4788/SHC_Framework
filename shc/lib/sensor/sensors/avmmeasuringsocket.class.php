@@ -5,6 +5,12 @@ namespace SHC\Sensor\Sensors;
 //Imports
 use SHC\Sensor\AbstractSensor;
 use RWF\Date\DateTime;
+use SHC\Sensor\Model\AbstractEnergy;
+use SHC\Sensor\Model\AbstractPower;
+use SHC\Sensor\Model\AbstractTemperature;
+use SHC\Sensor\Model\Energy;
+use SHC\Sensor\Model\Power;
+use SHC\Sensor\Model\Temperature;
 
 /**
  * BMP085/180 Sensor
@@ -15,56 +21,9 @@ use RWF\Date\DateTime;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class AvmMeasuringSocket extends AbstractSensor {
+class AvmMeasuringSocket extends AbstractSensor implements Temperature, Power, Energy {
 
-    /**
-     * Temperatur
-     *
-     * @var Float
-     */
-    protected $temperature = 0.0;
-
-    /**
-     * aktuell entnommene Leistung in mW
-     *
-     * @var int
-     */
-    protected $power = 0;
-
-    /**
-     * entnomme Leistung in Wh
-     *
-     * @var int
-     */
-    protected $energy = 0;
-
-    /**
-     * Temperatur Anzeigen
-     *
-     * @var Integer
-     */
-    protected $temperatureVisibility = 1;
-
-    /**
-     * entnommene Leustung Anzeigen
-     *
-     * @var Integer
-     */
-    protected $powerVisibility = 1;
-
-    /**
-     * Leistung Anzeigen
-     *
-     * @var Integer
-     */
-    protected $energyVisibility = 1;
-
-    /**
-     * Temperatur Offset
-     *
-     * @var Float
-     */
-    protected $temperatureOffset = 0.0;
+    use AbstractTemperature, AbstractPower, AbstractEnergy;
 
     /**
      * @param Array   $values   Sensorwerte
@@ -79,124 +38,6 @@ class AvmMeasuringSocket extends AbstractSensor {
             $this->energy = $values[0]['energy'];
             $this->time = $values[0]['time'];
         }
-    }
-
-    /**
-     * gibt den Aktuellen Temperaturwert zurueck
-     *
-     * @return Float
-     */
-    public function getTemperature() {
-
-        return $this->temperature + $this->temperatureOffset;
-    }
-
-    /**
-     * gibt ie aktuell entnommene Leistung zurueck
-     *
-     * @return int
-     */
-    public function getPower() {
-
-        return $this->power;
-    }
-
-    /**
-     * gibt die entnommene Leistung zurueck
-     *
-     * @return Float
-     */
-    public function getEnergy() {
-
-        return $this->energy;
-    }
-
-    /**
-     * setzt das Temperatur Offset
-     *
-     * @param  Float $temperatureOffset
-     * @return \SHC\Sensor\Sensors\AvmMeasuringSocket
-     */
-    public function setTemperatureOffset($temperatureOffset) {
-
-        $this->temperatureOffset = $temperatureOffset;
-        return $this;
-    }
-
-    /**
-     * gbit das Temperatur Offset zurueck
-     *
-     * @return Float
-     */
-    public function getTemperatureOffset() {
-
-        return $this->temperatureOffset;
-    }
-
-    /**
-     * setzt die Sichtbarkeit der Temperatur
-     *
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\AvmMeasuringSocket
-     */
-    public function temperatureVisibility($visibility) {
-
-        $this->temperatureVisibility = $visibility;
-        return $this;
-    }
-
-    /**
-     * gibt die Sichtbarkeit der Temperatur an
-     *
-     * @return Boolean
-     */
-    public function isTemperatureVisible() {
-
-        return ($this->temperatureVisibility == 1 ? true : false);
-    }
-
-    /**
-     * setzt die Sichtbarkeit der aktuell entnommenen Leistung
-     *
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\AvmMeasuringSocket
-     */
-    public function powerVisibility($visibility) {
-
-        $this->powerVisibility = $visibility;
-        return $this;
-    }
-
-    /**
-     * gibt die Sichtbarkeit  der aktuell entnommenen Leistung an
-     *
-     * @return Boolean
-     */
-    public function isPowerVisible() {
-
-        return ($this->powerVisibility == 1 ? true : false);
-    }
-
-    /**
-     * setzt die Sichtbarkeit  der entnommenen Leistung
-     *
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\AvmMeasuringSocket
-     */
-    public function energyVisibility($visibility) {
-
-        $this->energyVisibility = $visibility;
-        return $this;
-    }
-
-    /**
-     * gibt die Sichtbarkeit  der entnommenen Leistung an
-     *
-     * @return Boolean
-     */
-    public function isEnergyVisible() {
-
-        return ($this->energyVisibility == 1 ? true : false);
     }
 
     /**

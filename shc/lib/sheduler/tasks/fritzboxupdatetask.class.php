@@ -44,6 +44,26 @@ class FritzBoxUpdateTask extends AbstractTask {
         //pruefen ob die FritzBox Konfiguriert ist
         if(RWF::getSetting('rwf.fritzBox.user') != '') {
 
+            //Intervall festlegen
+            switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+                case 1:
+
+                    //fast
+                    $this->interval = 'PT10S';
+                    break;
+                case 2:
+
+                    //default
+                    $this->interval = 'PT15S';
+                    break;
+                case 3:
+
+                    //slow
+                    $this->interval = 'PT60S';
+                    break;
+            }
+
             try {
 
                 //Fritz Box initialisieren

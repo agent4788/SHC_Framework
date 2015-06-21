@@ -7,6 +7,21 @@ use RWF\Core\RWF;
 use SHC\Command\CommandSheduler;
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
+use SHC\Core\SHC;
+use SHC\Event\Events\HumidityClimbOver;
+use SHC\Event\Events\HumidityFallsBelow;
+use SHC\Event\Events\InputHigh;
+use SHC\Event\Events\InputLow;
+use SHC\Event\Events\LightIntensityClimbOver;
+use SHC\Event\Events\LightIntensityFallsBelow;
+use SHC\Event\Events\MoistureClimbOver;
+use SHC\Event\Events\MoistureFallsBelow;
+use SHC\Event\Events\Sunrise;
+use SHC\Event\Events\Sunset;
+use SHC\Event\Events\TemperatureClimbOver;
+use SHC\Event\Events\TemperatureFallsBelow;
+use SHC\Event\Events\UserComesHome;
+use SHC\Event\Events\UserLeavesHome;
 use SHC\Switchable\Switchable;
 
 /**
@@ -393,5 +408,64 @@ abstract class AbstractEvent implements Event {
 
             $this->execute();
         }
+    }
+
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName() {
+
+        if($this instanceof HumidityClimbOver) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.HumidityClimbOver');
+        } elseif($this instanceof HumidityFallsBelow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.HumidityFallsBelow');
+        } elseif($this instanceof HumidityFallsBelow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.HumidityFallsBelow');
+        } elseif($this instanceof InputHigh) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.InputHigh');
+        } elseif($this instanceof InputLow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.InputLow');
+        } elseif($this instanceof LightIntensityClimbOver) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.LightIntensityClimbOver');
+        } elseif($this instanceof LightIntensityFallsBelow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.LightIntensityFallBelow');
+        } elseif($this instanceof MoistureClimbOver) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.MoistureClimbOver');
+        } elseif($this instanceof MoistureFallsBelow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.MoistureFallsBelow');
+        } elseif($this instanceof TemperatureClimbOver) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.TemperatureClimbOver');
+        } elseif($this instanceof TemperatureFallsBelow) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.TemperatureFallsBelow');
+        } elseif($this instanceof UserComesHome) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.UserComesHome');
+        } elseif($this instanceof UserLeavesHome) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.UserLeavesHome');
+        } elseif($this instanceof Sunrise) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.Sunrise');
+        } elseif($this instanceof Sunset) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.Sunset');
+        } else {
+
+            $type = 'unknown';
+        }
+        return $type;
     }
 }

@@ -46,13 +46,6 @@ class SunriseEventForm extends DefaultHtmlForm {
         $name->requiredField(true);
         $this->addFormElement($name);
 
-        //Bedingungen
-        /*$conditions = new ConditionsChooser('conditions', ($event !== null ? $event->listConditions() : array()));
-        $conditions->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition'));
-        $conditions->setDescription(RWF::getLanguage()->get('acp.eventsManagement.form.event.condition.decription'));
-        $conditions->requiredField(true);
-        $this->addFormElement($conditions);*/
-
         //Aktiv/Inaktiv
         $enabled = new OnOffOption('enabled', ($event !== null ? $event->isEnabled() : true));
         $enabled->setActiveInactiveLabel();

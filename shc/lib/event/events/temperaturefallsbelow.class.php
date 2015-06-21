@@ -4,10 +4,8 @@ namespace SHC\Event\Events;
 
 //Imports
 use SHC\Event\AbstractEvent;
+use SHC\Sensor\Model\Temperature;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\BMP;
-use SHC\Sensor\Sensors\DHT;
-use SHC\Sensor\Sensors\DS18x20;
 use RWF\Date\DateTime;
 
 /**
@@ -66,7 +64,7 @@ class TemperatureFallsBelow extends AbstractEvent {
         foreach($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensors\DS18x20 */
-            if(in_array($sensor->getId(), $this->data['sensors']) && ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP)) {
+            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof Temperature) {
 
                 if(isset($this->state[$sensor->getId()])) {
 

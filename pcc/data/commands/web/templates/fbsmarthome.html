@@ -1,52 +1,51 @@
 <div>
-    {foreach from=$smartHomeDevices item='device' name='smartHome'}
-        <table class="pcc-view-contentTable">
-            <tr>
-                <th colspan="4">{lang var='index.fbSmartHome.name'}{#$device.name}</th>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">{lang var='index.fbSmartHome.manufacturer'}</td>
-                <td>{#$device.device.manufacturer}</td>
-                <td style="font-weight: bold;">{lang var='index.fbSmartHome.productname'}</td>
-                <td>{#$device.device.productname}</td>
-            </tr>
-            <tr>
-                <td style="width: 15%; font-weight: bold;">{lang var='index.fbSmartHome.identifier'}</td>
-                <td style="width: 35%;">{#$device.device.identifier}</td>
-                <td style="font-weight: bold;">{lang var='index.fbSmartHome.fwversion'}</td>
-                <td>{#$device.device.fwversion}</td>
-            </tr>
-            <tr>
-                <td style="width: 15%; font-weight: bold;">{lang var='index.fbSmartHome.present'}</td>
-                <td style="width: 35%;">{if $device.present == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}</td>
-                <td style="font-weight: bold;">{lang var='index.fbSmartHome.switchState'}</td>
-                <td>{if $device.switch.state == 1}{lang var='global.on'}{else}{lang var='global.off'}{/if}</td>
-            </tr>
-            <tr>
-                <th colspan="4">{lang var='index.fbSmartHome.power'}</th>
-            </tr>
-            {if $device.powermeter|isset}
-                <tr>
-                    <td style="font-weight: bold;">{lang var='index.fbSmartHome.powerCurrent'}</td>
-                    <td>{#$device.powermeter.power} mW</td>
-                    <td style="font-weight: bold;">{lang var='index.fbSmartHome.energy'}</td>
-                    <td>{#$device.powermeter.energy} Wh</td>
-                </tr>
-            {/if}
-            {if $device.temperature|isset}
-                <tr>
-                    <th colspan="4">{lang var='index.fbSmartHome.temp'}</th>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;">{lang var='index.fbSmartHome.temp'}</td>
-                    <td colspan="3">{#$device.temperature.temperature} &deg;C</td>
-                </tr>
-            {/if}
-        </table>
-        {if $tpl.foreach.smartHome.last == false}
-            <br/>
-            <hr>
-            <br/>
-        {/if}
+    {foreach from=$smartHomeDevices item='device'}
+        <div class="pcc-contentbox ui-tabs ui-widget ui-widget-content ui-corner-all">
+            <div class="pcc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                {#$device.name}
+            </div>
+            <div class="pcc-contentbox-body">
+                <table class="pcc-view-contentTable">
+                    <tr>
+                        <td style="font-weight: bold;">{lang var='index.fbSmartHome.manufacturer'}</td>
+                        <td>{#$device.device.manufacturer}</td>
+                        <td style="font-weight: bold;">{lang var='index.fbSmartHome.productname'}</td>
+                        <td>{#$device.device.productname}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%; font-weight: bold;">{lang var='index.fbSmartHome.identifier'}</td>
+                        <td style="width: 35%;">{#$device.device.identifier}</td>
+                        <td style="font-weight: bold;">{lang var='index.fbSmartHome.fwversion'}</td>
+                        <td>{#$device.device.fwversion}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%; font-weight: bold;">{lang var='index.fbSmartHome.present'}</td>
+                        <td style="width: 35%;">{if $device.present == 1}{lang var='global.yes'}{else}{lang var='global.no'}{/if}</td>
+                        <td style="font-weight: bold;">{lang var='index.fbSmartHome.switchState'}</td>
+                        <td>{if $device.switch.state == 1}{lang var='global.on'}{else}{lang var='global.off'}{/if}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">{lang var='index.fbSmartHome.power'}</th>
+                    </tr>
+                    {if $device.powermeter|isset}
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='index.fbSmartHome.powerCurrent'}</td>
+                            <td>{#$device.powermeter.power} mW</td>
+                            <td style="font-weight: bold;">{lang var='index.fbSmartHome.energy'}</td>
+                            <td>{#$device.powermeter.energy} Wh</td>
+                        </tr>
+                    {/if}
+                    {if $device.temperature|isset}
+                        <tr>
+                            <th colspan="4">{lang var='index.fbSmartHome.temp'}</th>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='index.fbSmartHome.temp'}</td>
+                            <td colspan="3">{#$device.temperature.temperature} &deg;C</td>
+                        </tr>
+                    {/if}
+                </table>
+            </div>
+        </div>
     {/foreach}
 </div>
