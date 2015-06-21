@@ -152,7 +152,7 @@ class RoomSyncAjax extends AjaxCommand {
                     );
                 } elseif ($sensor instanceof AvmMeasuringSocket) {
 
-                    $avmPowerValues[$sensor->getId()] = array(
+                    $avmPowerValues[str_replace(' ', '-', $sensor->getId())] = array(
                         'temp' => $sensor->getDisplayTemperature(),
                         'power' => $sensor->getDisplayPower(),
                         'energy' => $sensor->getDisplayEnergy()
@@ -166,7 +166,7 @@ class RoomSyncAjax extends AjaxCommand {
         $response['dht'] = $dhtValues;
         $response['bmp'] = $bmpValues;
         $response['analog'] = $analogValues;
-        $response['syncAvmPowerSockect'] = $avmPowerValues;
+        $response['syncAvmPowerSocket'] = $avmPowerValues;
 
         $this->data = $response;
     }

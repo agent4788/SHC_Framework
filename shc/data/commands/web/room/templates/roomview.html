@@ -109,7 +109,7 @@
                     $('#shc-view-sensor-analog-{$roomId}-'+ index +'-value').text(value.value);
                 });
             });
-            eventSource.addEventListener('syncAvmPowerSockect', function(e) {
+            eventSource.addEventListener('syncAvmPowerSocket', function(e) {
 
                 //JOSN parsen
                 var data = JSON.parse(e.data);
@@ -210,7 +210,7 @@
                                 });
 
                                 //AVM Power Sensoren
-                                $.each(data.syncAvmPowerSockect, function (index, value) {
+                                $.each(data.syncAvmPowerSocket, function (index, value) {
 
                                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-temp').text(value.temp);
                                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
