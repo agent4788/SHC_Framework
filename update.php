@@ -416,12 +416,16 @@ if($pccInstalled === true && $pccApiLevel == 10) {
     //Fix Berechtigungen
     $usersXml = new SimpleXMLElement('./rwf/data/storage/users.xml', null, true);
 
-    $group = $group->premissions;
-    addPremission($group, 'pcc.ucp.viewSysState', '1');
-    addPremission($group, 'pcc.ucp.viewSysData', '1');
-    addPremission($group, 'pcc.acp.menu', '0');
-    addPremission($group, 'pcc.acp.userManagement', '0');
-    addPremission($group, 'pcc.acp.settings', '0');
+    //Gruppenrechte vorbereiten
+    foreach($usersXml->groups->group as $group) {
+        
+        $group = $group->premissions;
+        addPremission($group, 'pcc.ucp.viewSysState', '1');
+        addPremission($group, 'pcc.ucp.viewSysData', '1');
+        addPremission($group, 'pcc.acp.menu', '0');
+        addPremission($group, 'pcc.acp.userManagement', '0');
+        addPremission($group, 'pcc.acp.settings', '0');
+    }
 
     //XML Speichern
     $usersXml->asXML('./rwf/data/storage/users.xml');
