@@ -579,6 +579,7 @@ addSetting('shc.defaultMobileStyle', 'default', TYPE_STRING);
 //Sheduler Daemon
 addSetting('shc.shedulerDaemon.active', 'true', TYPE_BOOLEAN);
 addSetting('shc.shedulerDaemon.blinkPin', '-1', TYPE_INTEGER);
+addSetting('shc.shedulerDaemon.performanceProfile', '2', TYPE_INTEGER);
 
 //Schaltserver
 addSetting('shc.switchServer.active', 'true', TYPE_BOOLEAN);

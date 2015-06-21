@@ -388,6 +388,14 @@ if($shcInstalled === true && $shcApiLevel == 10) {
 
     //Update Funktionen
 
+    //Neue Einstellungen
+    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
+
+    addSetting('shc.shedulerDaemon.performanceProfile', '2', TYPE_INTEGER);
+
+    //XML Speichern
+    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+
     //apiLevel hochzaehlen
     $shcApiLevel++;
 }
@@ -396,6 +404,27 @@ if($shcInstalled === true && $shcApiLevel == 10) {
 if($pccInstalled === true && $pccApiLevel == 10) {
 
     //Update Funktionen
+
+    //Neue Einstellungen
+    $settingsXml = new SimpleXMLElement('./rwf/data/storage/settings.xml', null, true);
+
+    addSetting('pcc.fritzBox.dslConnected', 'true', TYPE_BOOLEAN);
+
+    //XML Speichern
+    $settingsXml->asXML('./rwf/data/storage/settings.xml');
+
+    //Fix Berechtigungen
+    $usersXml = new SimpleXMLElement('./rwf/data/storage/users.xml', null, true);
+
+    $group = $group->premissions;
+    addPremission($group, 'pcc.ucp.viewSysState', '1');
+    addPremission($group, 'pcc.ucp.viewSysData', '1');
+    addPremission($group, 'pcc.acp.menu', '0');
+    addPremission($group, 'pcc.acp.userManagement', '0');
+    addPremission($group, 'pcc.acp.settings', '0');
+
+    //XML Speichern
+    $usersXml->asXML('./rwf/data/storage/users.xml');
 
     //apiLevel hochzaehlen
     $pccApiLevel++;

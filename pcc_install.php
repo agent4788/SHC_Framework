@@ -95,6 +95,7 @@ addSetting('pcc.fritzBox.showSmartHomeDevices', 'true', TYPE_BOOLEAN);
 addSetting('pcc.fritzBox.showCallList', 'true', TYPE_BOOLEAN);
 addSetting('pcc.fritzBox.callListMax', '25', TYPE_INTEGER);
 addSetting('pcc.fritzBox.callListDays', '999', TYPE_INTEGER);
+addSetting('pcc.fritzBox.dslConnected', 'true', TYPE_BOOLEAN);
 
 //XML Speichern
 $settingsXml->asXML('./rwf/data/storage/settings.xml');
