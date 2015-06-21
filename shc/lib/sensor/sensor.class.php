@@ -175,4 +175,10 @@ interface Sensor {
      */
     public function isModified();
 
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName();
 }

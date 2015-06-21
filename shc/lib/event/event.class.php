@@ -199,4 +199,11 @@ interface Event {
      * prueft on das Ereignis gerade zutrifft und fuehrt wenn es Zutrifft die zugeordneten Befehle aus
      */
     public function run();
+
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName();
 }

@@ -57,16 +57,7 @@
                                             </script>
                                         </td>
                                         <td>
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
+                                            {$element->getTypeName()}
                                         </td>
                                         <td>
                                             {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}
@@ -87,7 +78,7 @@
                                     <tr>
                                         <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                                         <td>
-                                            {instanceof element=$element class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
+                                            {$element->getTypeName()}
                                         </td>
                                         <td>
                                             {editlink link='index.php?app=shc&page=editelementform&id=' id=$element->getId()}
@@ -102,13 +93,7 @@
                                     <tr>
                                         <td>{if $element->isVisible() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isVisible() == false}</span>{/if}</td>
                                         <td>
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
-                                            {instanceof element=$element class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
+                                            {$element->getTypeName()}
                                         </td>
                                         <td>
                                             {editlink link='index.php?app=shc&page=editsensorform&id=' id=$element->getId()}
@@ -162,16 +147,7 @@
                                                             </script>
                                                         </td>
                                                         <td>
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Countdown'}{lang var="acp.switchableManagement.element.countdown"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\AvmSocket'}{lang var="acp.switchableManagement.element.avmSocket"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Switchables\FritzBox'}{lang var="acp.switchableManagement.element.fritzBox"}{/instanceof}
+                                                            {$boxElement->getTypeName()}
                                                         </td>
                                                         <td>
                                                             {instanceof element=$boxElement class='\SHC\Switchable\Switchables\Activity'}
@@ -192,7 +168,7 @@
                                                     <tr>
                                                         <td>{if $boxElement->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isEnabled() == false}</span>{/if}</td>
                                                         <td>
-                                                            {instanceof element=$boxElement class='\SHC\Switchable\Readables\RPiGpioInput'}{lang var="acp.switchableManagement.element.rpiGpioInput"}{/instanceof}
+                                                            {$boxElement->getTypeName()}
                                                         </td>
                                                         <td>
                                                             {editlink link='index.php?app=shc&page=editelementform&id=' id=$boxElement->getId()}
@@ -207,13 +183,7 @@
                                                     <tr>
                                                         <td>{if $boxElement->isVisible() == false}<span style="text-decoration: line-through;">{/if}{#$boxElement->getName()}{if $boxElement->isVisible() == false}</span>{/if}</td>
                                                         <td>
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
-                                                            {instanceof element=$boxElement class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
+                                                            {$boxElement->getTypeName()}
                                                         </td>
                                                         <td>
                                                             {editlink link='index.php?app=shc&page=editsensorform&id=' id=$boxElement->getId()}

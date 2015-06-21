@@ -81,4 +81,11 @@ interface Condition {
      * @return Boolean
      */
     public function isSatisfies();
+
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName();
 }

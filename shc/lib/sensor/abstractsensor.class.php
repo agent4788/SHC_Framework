@@ -3,8 +3,16 @@
 namespace SHC\Sensor;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Room\Room;
 use RWF\Date\DateTime;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
+use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\DHT;
+use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\Hygrometer;
+use SHC\Sensor\Sensors\LDR;
+use SHC\Sensor\Sensors\RainSensor;
 
 /**
  * Standard Sensor
@@ -371,4 +379,38 @@ abstract class AbstractSensor implements Sensor {
         return $this->isModified;
     }
 
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName() {
+
+        if($this instanceof BMP) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.BMP');
+        } elseif($this instanceof DHT) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.DHT');
+        } elseif($this instanceof DS18x20) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.DS18x20');
+        } elseif($this instanceof Hygrometer) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.Hygrometer');
+        } elseif($this instanceof LDR) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.LDR');
+        } elseif($this instanceof RainSensor) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.RainSensor');
+        } elseif($this instanceof AvmMeasuringSocket) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.avmMeasuringSocket');
+        } else {
+
+            $type = 'unknown';
+        }
+        return $type;
+    }
 }
