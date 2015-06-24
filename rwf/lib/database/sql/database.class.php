@@ -1,6 +1,6 @@
 <?php
 
-namespace RWF\Database;
+namespace RWF\Database\SQL;
 
 /**
  * Datenbank Basisklasse

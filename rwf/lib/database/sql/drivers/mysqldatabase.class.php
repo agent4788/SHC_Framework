@@ -1,9 +1,9 @@
 <?php
 
-namespace RWF\Database\Drivers;
+namespace RWF\Database\SQL\Drivers;
 
 //Imports
-use RWF\Database\Database;
+use RWF\Database\SQL\Database;
 
 /**
  * MySQL Datenbanktreiber

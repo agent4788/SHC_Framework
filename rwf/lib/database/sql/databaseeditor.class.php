@@ -1,10 +1,10 @@
 <?php
 
-namespace RWF\Database;
+namespace RWF\Database\SQL;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Database\Drivers\MySQLDatabase;
+use RWF\Database\SQL\Drivers\MySQLDatabase;
 
 /**
  * Verwaltung der Datenbankverbindungen
