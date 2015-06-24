@@ -43,13 +43,6 @@ class SHC extends RWF {
      * @var \RWF\Style\Style 
      */
     protected static $style = null;
-
-    /**
-     * Datenbank
-     *
-     * @var \SHC\Database\NoSQL\Redis
-     */
-    protected static $redis = null;
     
     public function __construct() {
 
@@ -70,29 +63,21 @@ class SHC extends RWF {
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
 
-            //Datenbank Initalisieren
-            $this->initDatabase();
-
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
             $this->redirection();
             $this->initStyle();
-        } elseif((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv)))) {
+        } else {
 
-            //Sheduler initalisieren
+            //CLI Anfrage
+            if((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
 
-            //Datenbank Initalisieren
-            $this->initDatabase();
+                $this->initDatabase();
+                $this->initSettings();
+                $this->initLanguage();
+            }
         }
-    }
-
-    /**
-     * XML Verwaltung initialisieren
-     */
-    protected function initXml() {
-        
-        $fileManager = XmlFileManager::getInstance();
-        $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
 
     /**
@@ -134,6 +119,15 @@ class SHC extends RWF {
             //Webzugriff
             self::$redis->connect();
         }
+    }
+
+    /**
+     * XML Verwaltung initialisieren
+     */
+    protected function initXml() {
+        
+        $fileManager = XmlFileManager::getInstance();
+        $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
     
     /**

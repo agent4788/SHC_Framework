@@ -3,6 +3,7 @@
 namespace RWF\Core;
 
 //Imports
+use RWF\Database\NoSQL\Redis;
 use RWF\Request\Request;
 use RWF\Request\SSEResponse;
 use RWF\Settings\Settings;
@@ -15,6 +16,7 @@ use RWF\User\UserEditor;
 use RWF\User\User;
 use RWF\Language\Language;
 use RWF\Template\Template;
+use RWF\Util\CliUtil;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -84,6 +86,13 @@ class RWF {
     protected static $template = null;
 
     /**
+     * Datenbank
+     *
+     * @var \RWF\Database\NoSQL\Redis
+     */
+    protected static $redis = null;
+
+    /**
      * liste mit den installierten Apps
      *
      * @var Array
@@ -91,6 +100,8 @@ class RWF {
     protected static $appList = array();
 
     public function __construct() {
+
+        global $argv;
 
         //Multibyte Engine Konfigurieren
         if (function_exists('mb_internal_encoding')) {
@@ -143,6 +154,7 @@ class RWF {
         if (ACCESS_METHOD_HTTP) {
             
             //Anfrage vom Browser
+            $this->initDatabase();
             $this->initSettings();
             $this->initRequest();
             $this->initSession();
@@ -150,12 +162,20 @@ class RWF {
             $this->initLanguage();
             $this->initTemplate();
         } else {
-            
-            //CLI Anfrage
-            $this->initSettings();
+
             $this->initRequest();
-            $this->initLanguage();
         }
+    }
+
+    /**
+     * Datenbankverbindung Initalisieren
+     *
+     * @throws \Exception
+     */
+    protected function initDatabase() {
+
+        self::$redis = new Redis();
+        self::$redis->connect();
     }
 
     /**
@@ -267,6 +287,16 @@ class RWF {
         }
 
         self::$template = new Template(array(), PATH_RWF_CACHE_TEMPLATES, $prefix, DEVELOPMENT_MODE);
+    }
+
+    /**
+     * gibt das Datenbankobjekt zutueck
+     *
+     * @return \RWF\Database\NoSQL\Redis
+     */
+    public static function getDatabase() {
+
+        return self::$redis;
     }
 
     /**
