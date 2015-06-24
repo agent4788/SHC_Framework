@@ -194,7 +194,7 @@ class SwitchableEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchables';
+    protected static $tableName = 'shc:switchables';
 
     protected function __construct() {
 

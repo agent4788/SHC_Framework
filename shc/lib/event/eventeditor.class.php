@@ -162,7 +162,7 @@ class EventEditor {
      *
      * @var String
      */
-    protected static $tableName = 'events';
+    protected static $tableName = 'shc:events';
 
     protected function __construct() {
 

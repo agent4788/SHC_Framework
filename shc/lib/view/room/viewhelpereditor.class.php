@@ -92,7 +92,7 @@ class ViewHelperEditor {
      *
      * @var String
      */
-    protected static $tableName = 'roomView';
+    protected static $tableName = 'shc:roomView';
 
     protected function __construct() {
 

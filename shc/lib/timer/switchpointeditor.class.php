@@ -61,7 +61,7 @@ class SwitchPointEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchpoints';
+    protected static $tableName = 'shc:switchpoints';
 
     protected function __construct() {
 

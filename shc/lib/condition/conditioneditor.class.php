@@ -58,7 +58,7 @@ class ConditionEditor {
      *
      * @var String
      */
-    protected static $tableName = 'conditions';
+    protected static $tableName = 'shc:conditions';
 
     protected function __construct() {
 

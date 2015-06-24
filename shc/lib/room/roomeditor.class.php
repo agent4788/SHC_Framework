@@ -69,7 +69,7 @@ class RoomEditor {
      *
      * @var String
      */
-    protected static $tableName = 'rooms';
+    protected static $tableName = 'shc:rooms';
 
     protected function __construct() {
 

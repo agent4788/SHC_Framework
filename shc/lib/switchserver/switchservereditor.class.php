@@ -58,7 +58,7 @@ class SwitchServerEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchServers';
+    protected static $tableName = 'shc:switchServers';
     
     protected function __construct() {
 

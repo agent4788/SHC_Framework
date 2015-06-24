@@ -126,7 +126,7 @@ class SensorPointEditor {
      *
      * @var String
      */
-    protected static $tableName = 'sensors';
+    protected static $tableName = 'shc:sensors';
 
     protected function __construct() {
 

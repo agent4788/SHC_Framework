@@ -65,7 +65,7 @@ class UserAtHomeEditor {
      *
      * @var String
      */
-    protected static $tableName = 'usersrathome';
+    protected static $tableName = 'shc:usersrathome';
     
     protected function __construct() {
 
