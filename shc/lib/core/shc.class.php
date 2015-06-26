@@ -4,6 +4,7 @@ namespace SHC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Language\Language;
 use RWF\Session\Session;
 use RWF\Settings\Settings;
 use RWF\Util\CliUtil;
@@ -36,6 +37,13 @@ class SHC extends RWF {
      * @var String
      */
     const XML_SENSOR_TRANSMITTER = 'sensortransmitter';
+
+    /**
+     * Schaltserver Einstellungen
+     *
+     * @var String
+     */
+    const XML_SWITCHSERVER_SETTINGS = 'switchserversettings';
     
     /**
      * Style
@@ -74,8 +82,11 @@ class SHC extends RWF {
                 (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
 
                 $this->initDatabase();
-                $this->initSettings();
-                $this->initLanguage();
+                $this->initCliLanguage();
+            } elseif((ACCESS_METHOD_CLI && (in_array('-ss', $argv) || in_array('--switchserver', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv)))) {
+
+                $this->initCliLanguage();
             }
         }
     }
@@ -127,6 +138,7 @@ class SHC extends RWF {
     protected function initXml() {
         
         $fileManager = XmlFileManager::getInstance();
+        $fileManager->registerXmlFile(self::XML_SWITCHSERVER_SETTINGS, PATH_SHC_STORAGE . 'switchserversettings.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserversettings.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
     
@@ -256,6 +268,14 @@ class SHC extends RWF {
             $this->finalize();
             exit(0);
         }
+    }
+
+    /**
+     * initalisiert die Sprachpakete fuer die Kommandozeile
+     */
+    protected function initCliLanguage() {
+
+        self::$language = new Language('de');
     }
     
     /**

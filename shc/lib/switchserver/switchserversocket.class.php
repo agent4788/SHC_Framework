@@ -9,6 +9,7 @@ use RWF\IO\SocketServer;
 use RWF\IO\SocketServerClient;
 use RWF\Request\CliResponse;
 use RWF\Util\FileUtil;
+use SHC\Command\CLI\SwitchServerCli;
 
 /**
  * Schaltserver
@@ -85,6 +86,21 @@ class SwitchServerSocket {
     );
 
     /**
+     * CLI Kommando
+     *
+     * @var \SHC\Command\CLI\SwitchServerCli
+     */
+    protected $command = null;
+
+    /**
+     * @param SwitchServerCli $command
+     */
+    public function __connstruct(SwitchServerCli $command) {
+
+        $this->command = $command;
+    }
+
+    /**
      * startet den Server und wartet auf Anfragen
      * 
      * @param \RWF\Request\CliResponse $response Antwortobjekt
@@ -97,18 +113,18 @@ class SwitchServerSocket {
         $this->debug = $debug;
 
         //Einstellungen laden
-        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
-        $sendGpio = RWF::getSetting('shc.switchServer.sendLedPin');
-        $senderActive = RWF::getSetting('shc.switchServer.senderActive');
-        $writeGPIO = RWF::getSetting('shc.switchServer.writeGpio');
-        $readGPIO = RWF::getSetting('shc.switchServer.readGpio');
+        $gpioPath = $this->command->getSetting('shc.switchServer.gpioCommand');
+        $sendGpio = $this->command->getSetting('shc.switchServer.sendLedPin');
+        $senderActive = $this->command->getSetting('shc.switchServer.senderActive');
+        $writeGPIO = $this->command->getSetting('shc.switchServer.writeGpio');
+        $readGPIO = $this->command->getSetting('shc.switchServer.readGpio');
 
         //Server initialisieren
-        $this->server = new SocketServer(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'));
+        $this->server = new SocketServer($this->command->getSetting('shc.switchServer.ip'), $this->command->getSetting('shc.switchServer.port'));
         $this->server->startServer();
 
         //Startmeldung
-        $this->response->writeLnColored(RWF::getLanguage()->get('switchServer.startedSuccessfully', RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port')), 'green');
+        $this->response->writeLnColored(RWF::getLanguage()->get('switchServer.startedSuccessfully', $this->command->getSetting('shc.switchServer.ip'), $this->command->getSetting('shc.switchServer.port')), 'green');
 
         //GPIO fuer die Status LED initalisieren
         if ($sendGpio >= 0) {
@@ -206,8 +222,8 @@ class SwitchServerSocket {
      */
     protected function send433MHzCommand(array $requests) {
 
-        $sendPath = RWF::getSetting('shc.switchServer.sendCommand');
-        $rcSendPath = RWF::getSetting('shc.switchServer.rcswitchPiCommand');
+        $sendPath = $this->command->getSetting('shc.switchServer.sendCommand');
+        $rcSendPath = $this->command->getSetting('shc.switchServer.rcswitchPiCommand');
 
         //Anfragen solange durchlaufen bis auch alle mehrfach gesendeten Befehle versndet sind
         $requestData = array();
@@ -338,7 +354,7 @@ class SwitchServerSocket {
      */
     protected function writeGpio(array $request) {
 
-        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        $gpioPath = $this->command->getSetting('shc.switchServer.gpioCommand');
         
         //Modus setzen
         if (!in_array($request['pinNumber'], $this->gpioModeSet)) {
@@ -367,7 +383,7 @@ class SwitchServerSocket {
      */
     protected function readGpio(SocketServerClient $client, array $request) {
 
-        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        $gpioPath = $this->command->getSetting('shc.switchServer.gpioCommand');
         
         //Modus setzen
         if (!in_array($request['pinNumber'], $this->gpioModeSet)) {

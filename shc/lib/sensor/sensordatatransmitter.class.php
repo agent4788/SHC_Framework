@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
+use SHC\Command\CLI\SensorDatatTransmitterCli;
 use SHC\Core\SHC;
 
 /**
@@ -19,6 +20,21 @@ use SHC\Core\SHC;
  * @version    2.0.0-0
  */
 class SensorDataTransmitter {
+
+    /**
+     * CLI Kommando
+     *
+     * @var \SHC\Command\CLI\SensorDatatTransmitterCli
+     */
+    protected $command = null;
+
+    /**
+     * @param SensorDatatTransmitterCli $command
+     */
+    public function __construct(SensorDatatTransmitterCli $command) {
+
+        $this->command = $command;
+    }
 
     /**
      * gibt die Sensordaten zur Fehlersuche auf die Kommandozeile aus
@@ -81,13 +97,13 @@ class SensorDataTransmitter {
                 'max_redirects' => 3
             )
         ));
-        $result = @file_get_contents('http://'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
+        $result = @file_get_contents('http://'. $this->command->getSetting('shc.sensorTransmitter.ip') .':'. $this->command->getSetting('shc.sensorTransmitter.port') .'/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
 
         //Verbindung Fehlgeschlagen
         if($result === false) {
 
             $cli = new CliUtil();
-            $cli->writeLineColored('Verbindung zum Server "'. SHC::getSetting('shc.sensorTransmitter.ip') .':'. SHC::getSetting('shc.sensorTransmitter.port') .'" fehlgeschlagen', 'red');
+            $cli->writeLineColored('Verbindung zum Server "'. $this->command->getSetting('shc.sensorTransmitter.ip') .':'. $this->command->getSetting('shc.sensorTransmitter.port') .'" fehlgeschlagen', 'red');
             $cli->writeLineColored('erneuter Versuch in 30 Sekunden', 'yellow');
 
             //30 Sekunden Wartezeit
@@ -114,8 +130,8 @@ class SensorDataTransmitter {
         $LEDnextRuntime = DateTime::now();
 
         //GPIO Vorbereiten
-        $pin = RWF::getSetting('shc.sensorTransmitter.blinkPin');
-        $gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+        $pin = $this->command->getSetting('shc.sensorTransmitter.blinkPin');
+        $gpioPath = $this->command->getSetting('shc.switchServer.gpioCommand');
         $state = 0;
 
         //Status LED initalisieren
@@ -153,7 +169,7 @@ class SensorDataTransmitter {
 
                             //Datenpaket vorbereiten
                             $data = array(
-                                'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                                'spid' => $this->command->getSetting('shc.sensorTransmitter.pointId'),
                                 'type' => 1,
                                 'sid' => $file,
                                 'v1' => $temp
@@ -181,7 +197,7 @@ class SensorDataTransmitter {
 
                         //Datenpaket vorbereiten
                         $data = array(
-                            'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                            'spid' => $this->command->getSetting('shc.sensorTransmitter.pointId'),
                             'type' => 2,
                             'sid' => $dht['id'],
                             'v1' => $values['temp'],
@@ -206,7 +222,7 @@ class SensorDataTransmitter {
 
                     //Datenpaket vorbereiten
                     $data = array(
-                        'spid' => RWF::getSetting('shc.sensorTransmitter.pointId'),
+                        'spid' => $this->command->getSetting('shc.sensorTransmitter.pointId'),
                         'type' => 3,
                         'sid' => SensorEditor::getInstance()->getBMPsensorId(),
                         'v1' => $values['temp'],
