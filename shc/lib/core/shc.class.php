@@ -7,7 +7,6 @@ use RWF\Core\RWF;
 use RWF\Language\Language;
 use RWF\Session\Session;
 use RWF\Settings\Settings;
-use RWF\Util\CliUtil;
 use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
@@ -100,37 +99,7 @@ class SHC extends RWF {
     protected function initDatabase() {
 
         self::$redis = new Redis();
-
-        if(ACCESS_METHOD_CLI) {
-
-            //Zugriff ueber Kommandozeile
-            $cli = new CliUtil();
-            $error = 0;
-            while(true) {
-
-                try {
-
-                    self::$redis->connect();
-                    break;
-                } catch(\Exception $e) {
-
-                    if($error < 6) {
-
-                        $cli->writeLineColored('Verbindung zur Datenbank Fehlgeschlagen, erneuter Versuch in 10 Sekunden', 'yellow');
-                        $error++;
-                        sleep(10);
-                    } else {
-
-                        $cli->writeLineColored('verbindungsaufbau zur Datenbank Fehlgeschlagen', 'red');
-                        throw $e;
-                    }
-                }
-            }
-        } else {
-
-            //Webzugriff
-            self::$redis->connect();
-        }
+        self::$redis->connect();
     }
 
     /**
