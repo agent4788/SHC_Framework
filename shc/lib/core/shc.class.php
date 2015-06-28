@@ -83,6 +83,7 @@ class SHC extends RWF {
 
                 $this->initDatabase();
                 $this->initCliLanguage();
+                $this->initSettings();
             } elseif((ACCESS_METHOD_CLI && (in_array('-ss', $argv) || in_array('--switchserver', $argv))) ||
                 (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv)))) {
 
@@ -130,6 +131,31 @@ class SHC extends RWF {
             //Webzugriff
             self::$redis->connect();
         }
+    }
+
+    /**
+     * initialisiert die Einstellungen
+     */
+    protected function initSettings() {
+
+        parent::initSettings();
+        $settings = self::$settings;
+
+        //SHC Einstellungen hinzufuegen
+        //Allgemein
+        $settings->addSetting('shc.ui.redirectActive', Settings::TYPE_BOOL, true);
+        $settings->addSetting('shc.ui.redirectPcTo', Settings::TYPE_INT, 1);
+        $settings->addSetting('shc.ui.redirectTabletTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('shc.ui.redirectSmartphoneTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('shc.ui.index.showUsersAtHome', Settings::TYPE_BOOL, true);
+        $settings->addSetting('shc.title', Settings::TYPE_STRING, 'SHC 2.2');
+        $settings->addSetting('shc.defaultStyle', Settings::TYPE_STRING, 'redmond');
+        $settings->addSetting('shc.defaultMobileStyle', Settings::TYPE_STRING, 'default');
+
+        //Sheduler
+        $settings->addSetting('shc.shedulerDaemon.active', Settings::TYPE_BOOL, false);
+        $settings->addSetting('shc.shedulerDaemon.blinkPin', Settings::TYPE_INT, -1);
+        $settings->addSetting('shc.shedulerDaemon.performanceProfile', Settings::TYPE_INT, 2);
     }
 
     /**
@@ -302,12 +328,6 @@ class SHC extends RWF {
      * beendet die Anwendung
      */
     public function finalize() {
-
-        //Einstellungen Speichern
-        if (self::$settings instanceof Settings) {
-
-            self::$settings->finalize();
-        }
 
         //Sessionobjekt abschliesen
         if (self::$session instanceof Session) {

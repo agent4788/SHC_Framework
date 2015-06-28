@@ -4,6 +4,7 @@ namespace PCC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Settings\Settings;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
 
@@ -54,6 +55,34 @@ class PCC extends RWF {
             $this->redirection();
             $this->initStyle();
         }
+    }
+
+    /**
+     * initialisiert die Einstellungen
+     */
+    protected function initSettings() {
+
+        parent::initSettings();
+        $settings = self::$settings;
+
+        //PCC Einstellungen hinzufuegen
+        //Allgemein
+        $settings->addSetting('pcc.ui.redirectActive', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.ui.redirectPcTo', Settings::TYPE_INT, 1);
+        $settings->addSetting('pcc.ui.redirectTabletTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('pcc.ui.redirectSmartphoneTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('pcc.ui.index.showUsersAtHome', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.title', Settings::TYPE_STRING, 'PCC 2.2');
+        $settings->addSetting('pcc.defaultStyle', Settings::TYPE_STRING, 'redmond');
+        $settings->addSetting('pcc.defaultMobileStyle', Settings::TYPE_STRING, 'default');
+
+        //Fritz!Box Einstellungen
+        $settings->addSetting('pcc.fritzBox.showState', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.showSmartHomeDevices', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.showCallList', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.callListMax', Settings::TYPE_INT, 25);
+        $settings->addSetting('pcc.fritzBox.callListDays', Settings::TYPE_INT, 999);
+        $settings->addSetting('pcc.fritzBox.dslConnected', Settings::TYPE_BOOL, true);
     }
 
     /**

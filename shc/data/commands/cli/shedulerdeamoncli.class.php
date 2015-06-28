@@ -211,7 +211,7 @@ class ShedulerDeamonCli extends CliCommand {
 
         try {
 
-            RWF::getSettings()->saveAndReload();
+            RWF::getSettings()->reloadSettings();
             $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.save.success'), 'green');
         } catch(\Exception $e) {
 
