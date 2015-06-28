@@ -79,7 +79,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($temperatureOffset);
 
         //Luftdruck sichtbar
-        $pressureVisibility = new OnOffOption('pressureVisibility', ($sensor instanceof BMP ? $sensor->isPressureVisible() : true));
+        $pressureVisibility = new OnOffOption('pressureVisibility', ($sensor instanceof BMP ? $sensor->isAirPressureVisible() : true));
         $pressureVisibility->setOnOffLabel();
         $pressureVisibility->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureVisibility'));
         $pressureVisibility->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureVisibility.description'));
@@ -87,7 +87,7 @@ class BMPSensorForm extends DefaultHtmlForm {
         $this->addFormElement($pressureVisibility);
 
         //Luftdruck Offset
-        $pressureOffset = new FloatInputField('pressOffset', ($sensor instanceof BMP ? $sensor->getPressureOffset() : 0.0), array('min' => -100.0, 'max' => 100.0, 'step' => 0.1));
+        $pressureOffset = new FloatInputField('pressOffset', ($sensor instanceof BMP ? $sensor->getAirPressureOffset() : 0.0), array('min' => -100.0, 'max' => 100.0, 'step' => 0.1));
         $pressureOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.pressureOffset'));
         $pressureOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
         $pressureOffset->requiredField(true);
