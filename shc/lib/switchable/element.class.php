@@ -66,6 +66,13 @@ interface Element {
      * @var Integer
      */
     const BUTTONS_OPEN_CLOSED = 4;
+
+    /**
+     * Button Text Start/Stop
+     *
+     * @var Integer
+     */
+    const BUTTONS_START_STOP = 5;
     
     /**
      * setzt den Status des Objekts
