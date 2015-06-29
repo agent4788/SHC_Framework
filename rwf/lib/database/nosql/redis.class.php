@@ -24,7 +24,15 @@ class Redis extends RedisCore {
     public function connect() {
 
         $dbConfig = array();
-        require_once(PATH_RWF .'db.config.php');
+        if(file_exists(PATH_RWF .'db.config.php')) {
+
+            require_once(PATH_RWF .'db.config.php');
+        } else {
+
+            throw new \Exception('Die Datenbankkonfiguration fehlt (db.config.php)', 1015);
+        }
+
+
         $host = $dbConfig['host'];
         $port = $dbConfig['port'];
         $timeout = $dbConfig['timeout'];
