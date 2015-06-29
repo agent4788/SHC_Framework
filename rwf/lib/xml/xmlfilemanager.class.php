@@ -62,7 +62,6 @@ class XmlFileManager {
 
         //RWF XML Dateien Registrieren
         $this->registerXmlFile(self::XML_USERS, PATH_RWF_STORAGE . 'users.xml', PATH_RWF_STORAGE . 'default/defaultUsers.xml');
-        $this->registerXmlFile(self::XML_SETTINGS, PATH_RWF_STORAGE . 'settings.xml', PATH_RWF_STORAGE . 'default/defaultSettings.xml');
     }
 
     /**
