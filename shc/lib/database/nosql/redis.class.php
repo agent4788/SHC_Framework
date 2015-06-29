@@ -16,13 +16,4 @@ use RWF\Database\NoSQL\Redis as RedisCore;
  */
 class Redis extends RedisCore {
 
-    /**
-     * gibt zu einem Datensatz den naechsten Index zurueck
-     *
-     * @param $dataSet
-     */
-    public function autoIncrement($dataSet) {
-
-        return $this->incr('autoIncrement:'. $dataSet);
-    }
 }

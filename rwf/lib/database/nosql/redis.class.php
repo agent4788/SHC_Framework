@@ -63,4 +63,14 @@ class Redis extends RedisCore {
         $this->setOption(self::OPT_PREFIX, 'rwf:');
         return true;
     }
+
+    /**
+     * gibt zu einem Datensatz den naechsten Index zurueck
+     *
+     * @param $dataSet
+     */
+    public function autoIncrement($dataSet) {
+
+        return $this->incr('autoIncrement:'. $dataSet);
+    }
 }
