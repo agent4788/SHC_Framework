@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Language\Language;
 use RWF\Session\Session;
 use RWF\Settings\Settings;
+use RWF\User\UserEditor;
 use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
@@ -63,6 +64,9 @@ class SHC extends RWF {
 
         //XML Initialisieren
         $this->initXml();
+
+        //Berechtigungen initialisieren
+        $this->initPermissions();
 
         //Basisklasse initalisieren
         parent::__construct();
@@ -125,6 +129,32 @@ class SHC extends RWF {
         $settings->addSetting('shc.shedulerDaemon.active', Settings::TYPE_BOOL, false);
         $settings->addSetting('shc.shedulerDaemon.blinkPin', Settings::TYPE_INT, -1);
         $settings->addSetting('shc.shedulerDaemon.performanceProfile', Settings::TYPE_INT, 2);
+    }
+
+    /**
+     * initialisiert die Berechtigungen
+     */
+    protected function initPermissions() {
+
+        $userEditor = UserEditor::getInstance();
+
+        //Benutzerrechte
+        $userEditor->addPermission('shc.ucp.viewUserAtHome', true);
+        $userEditor->addPermission('shc.ucp.warnings', true);
+
+        //Adminrechte
+        $userEditor->addPermission('shc.acp.menu', false);
+        $userEditor->addPermission('shc.acp.userManagement', false);
+        $userEditor->addPermission('shc.acp.settings', false);
+        $userEditor->addPermission('shc.acp.databaseManagement', false);
+        $userEditor->addPermission('shc.acp.backupsManagement', false);
+        $userEditor->addPermission('shc.acp.switchableManagement', false);
+        $userEditor->addPermission('shc.acp.sensorpointsManagement', false);
+        $userEditor->addPermission('shc.acp.usersathomeManagement', false);
+        $userEditor->addPermission('shc.acp.conditionsManagement', false);
+        $userEditor->addPermission('shc.acp.switchpointsManagement', false);
+        $userEditor->addPermission('shc.acp.eventsManagement', false);
+        $userEditor->addPermission('shc.acp.switchserverManagement', false);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace RWF\User;
 
 //Imports
-use RWF\XML\XmlFileManager;
+use RWF\Core\RWF;
 use RWF\Util\String;
 
 /**
@@ -37,7 +37,14 @@ class UserEditor {
      * @var String
      */
     const SORT_NOTHING = 'unsorted';
-    
+
+    /**
+     * liste mit allen bekannten Rechnetn
+     *
+     * @var array
+     */
+    protected $permissions = array();
+
     /**
      * Liste mit allen Benutzergruppen
      * 
@@ -66,51 +73,167 @@ class UserEditor {
      */
     protected static $instance = null;
 
-    protected function __construct() {
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $usersTableName = 'users';
 
-        //Daten einlesen
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS);
+    /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $groupsTableName = 'groups';
 
-        //Benutzergruppen
-        foreach ($xml->groups->group as $group) {
+    /**
+     * laedt die Benutzer und Gruppen
+     */
+    public function loadData() {
 
-            //Berechtigungen
-            $premissions = array();
-            foreach ($group->premissions->premission as $premission) {
+        $db = RWF::getDatabase();
 
-                $attr = $premission->attributes();
-                $premissions[(string) $attr->name] = ((int) $attr->value == 1 ? true : false);
+        //Benutzergruppen laden
+        $groups = $db->hGetAll(self::$groupsTableName);
+        foreach($groups as $group) {
+
+            //Gruppendaten Laden
+            $permissions = array();
+            foreach ($this->permissions as $name => $value) {
+
+                $permissions[$name] = (isset($group['permissions'][$name]) ? $group['permissions'][$name] : $value);
             }
 
-            $this->userGroups[(int) $group->id] = new UserGroup(
-                    (int) $group->id, (string) $group->name, (string) $group->description, $premissions, ((int) $group->isSystemGroup == 1 ? true : false)
+            $this->userGroups[$group['id']] = new UserGroup(
+                $group['id'], $group['name'], $group['description'], $permissions, ($group['isSystemGroup'] == 1 ? true : false)
             );
         }
+
+        //Benutzerladen
+        $users = $db->hGetAll(self::$usersTableName);
+        foreach($users as $user) {
+
+            //Gruppen vorbereiten
+            $userGroups = array();
+            foreach ($user['userGroups'] as $groupId) {
+
+                $userGroups[$groupId] = $this->getUserGroupById($groupId);
+            }
+
+            //Benutzer laden
+            $this->users[$user['id']] = new User(
+                $user['id'],
+                $user['authCode'],
+                $user['name'],
+                $user['password'],
+                ($user['isOriginator'] == 1 ? true : false),
+                $this->getUserGroupById($user['mainUserGroup']),
+                $userGroups,
+                ($user['language'] != '' ? $user['language'] : null),
+                ($user['webStyle'] != '' ? $user['webStyle'] : null),
+                ($user['mobileStyle'] != '' ? $user['mobileStyle'] : null),
+                \DateTime::createFromFormat('Y-m-d', (string) $user['register'])
+            );
+        }
+
+        //Benutzer und Gruppen initialisieren
+        if(count($this->users) == 0) {
+
+            $this->addSystemUsersAndGroups();
+            $this->loadData();
+        }
+    }
+
+    /**
+     * erstellt die Systembenutzer und Systemgruppen
+     */
+    protected function addSystemUsersAndGroups() {
+
+        $db = RWF::getDatabase();
+        $date = new \DateTime('now');
 
         //Benutzer
-        foreach ($xml->users->user as $user) {
+        $db->autoIncrement(self::$usersTableName);
+        $newUser = array(
+            'id' => 1,
+            'name' => 'admin',
+            'password' => password_hash('admin', PASSWORD_DEFAULT),
+            'authCode' => String::randomStr(64),
+            'language' => '',
+            'webStyle' => '',
+            'mobileStyle' => '',
+            'register' => $date->format('Y-m-d'),
+            'mainUserGroup' => 1,
+            'userGroups' => array(),
+            'isOriginator' => 1
+        );
 
-            //Benutzergruppen des Benutzers
-            $userGroups = array();
-            foreach (explode(',', (string) $user->userGroups) as $groupId) {
+        if($db->hSetNx(self::$usersTableName, 1, $newUser) == 0) {
 
-                $userGroups[(int) $groupId] = $this->getUserGroupById((int) $groupId);
-            }
-
-            $this->users[(int) $user->id] = new User(
-                (int) $user->id,
-                (string) $user->authCode,
-                (string) $user->name,
-                (string) $user->password,
-                ((int) $user->isOriginator == 1 ? true : false),
-                $this->getUserGroupById((int) $user->mainUserGroup),
-                $userGroups,
-                ((string) $user->language != '' ? (string) $user->language : null),
-                ((string) $user->webStyle != '' ? (string) $user->webStyle : null),
-                ((string) $user->mobileStyle != '' ? (string) $user->mobileStyle : null),
-                \DateTime::createFromFormat('Y-m-d', (string) $user->register)
-            );
+            return false;
         }
+
+        //Gruppen
+        $db->autoIncrement(self::$groupsTableName);
+        $newGroup = array(
+            'id' => 1,
+            'name' => 'Administratoren',
+            'description' => 'Die Benutzer dieser Gruppen können die Anwendung verwalten',
+            'isSystemGroup' => 1,
+            'permissions' => array()
+        );
+
+        if($db->hSetNx(self::$groupsTableName, 1, $newGroup) == 0) {
+
+            return false;
+        }
+
+        $db->autoIncrement(self::$groupsTableName);
+        $newGroup = array(
+            'id' => 2,
+            'name' => 'Benutzer',
+            'description' => 'angemeldete Benutzer',
+            'isSystemGroup' => 1,
+            'permissions' => array()
+        );
+
+        if($db->hSetNx(self::$groupsTableName, 2, $newGroup) == 0) {
+
+            return false;
+        }
+
+        $db->autoIncrement(self::$groupsTableName);
+        $newGroup = array(
+            'id' => 3,
+            'name' => 'Gäste',
+            'description' => 'Besucher der Seite (nicht angemeldet)',
+            'isSystemGroup' => 1,
+            'permissions' => array()
+        );
+
+        if($db->hSetNx(self::$groupsTableName, 3, $newGroup) == 0) {
+
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * erstellt ein neues Recht
+     *
+     * @param  sting $name         Name der Berechtigung
+     * @param  bool  $defaultValue Standardwert
+     * @return bool
+     */
+    public function addPermission($name, $defaultValue) {
+
+        if(!isset($this->permissions[$name])) {
+
+            $this->permissions[$name] = (bool) $defaultValue;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -276,7 +399,6 @@ class UserEditor {
      * @param  String  $webStyle    Name des Styles fuer die Webaoberflaeche 
      * @param  String  $mobileStyle Name des Styles fuer die Mobiloberflaeche
      * @return Integer
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function addUser($name, $password, $mainGroupId, array $userGroups = array(), $language = null, $webStyle = null, $mobileStyle = null) {
 
@@ -289,33 +411,45 @@ class UserEditor {
             throw new \Exception('Der Benutzername ist schon vergeben', 1110);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
-
-        //Autoincrement
-        $nextId = (int) $xml->users->nextAutoIncrementId;
-        $xml->users->nextAutoIncrementId = $nextId + 1;
+        $db = RWF::getDatabase();
 
         //Datum
         $date = new \DateTime('now');
 
-        //TAGs erstellen
-        $user = $xml->users->addChild('user');
-        $user->addChild('id', $nextId);
-        $user->addChild('name', $name);
-        $user->addChild('password', password_hash($password, PASSWORD_DEFAULT));
-        $user->addChild('authCode', String::randomStr(64));
-        $user->addChild('language', ($language !== null ? $language : ''));
-        $user->addChild('webStyle', ($webStyle !== null ? $webStyle : ''));
-        $user->addChild('mobileStyle', ($mobileStyle !== null ? $mobileStyle : ''));
-        $user->addChild('register', $date->format('Y-m-d'));
-        $user->addChild('mainUserGroup', $mainGroupId);
-        $user->addChild('userGroups', implode(',', $userGroups));
-        $user->addChild('isOriginator', 0);
+        //ID
+        $id = $db->autoIncrement(self::$usersTableName);
 
-        //Daten Speichern
-        $xml->save();
-        return $nextId;
+        //Benutzergruppen vorbereiten
+        $groups = array();
+        foreach($userGroups as $group) {
+
+            /** @var $group \RWF\User\UserGroup */
+            if($group !== null) {
+
+                $groups[] = $group->getId();
+            }
+        }
+
+        //User Objekt
+        $newUser = array(
+            'id' => $id,
+            'name' => $name,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'authCode' => String::randomStr(64),
+            'language' => ($language !== null ? $language : ''),
+            'webStyle' => ($webStyle !== null ? $webStyle : ''),
+            'mobileStyle' => ($mobileStyle !== null ? $mobileStyle : ''),
+            'register' => $date->format('Y-m-d'),
+            'mainUserGroup' => $mainGroupId,
+            'userGroups' => $groups,
+            'isOriginator' => 0
+        );
+
+        if($db->hSetNx(self::$usersTableName, $id, $newUser) == 0) {
+
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -330,70 +464,75 @@ class UserEditor {
      * @param  String  $webStyle    Name des Styles fuer die Webaoberflaeche 
      * @param  String  $mobileStyle Name des Styles fuer die Mobiloberflaeche
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function editUser($id, $name = null, $password = null, $mainGroupId = null, array $userGroups = null, $language = null, $webStyle = null, $mobileStyle = null) {
 
-        //Passwort Libary einbinden fuer PHP Versionen < PHP 5.5
-        require_once(PATH_RWF_CLASSES . 'external/password/password.php');
+        $db = RWF::getDatabase();
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$usersTableName, $id)) {
 
-        foreach ($xml->users->user as $user) {
+            $user = $db->hGet(self::$usersTableName, $id);
 
-            //Benutzer suchen
-            if ((int) $user->id == $id) {
+            //Benutzername
+            if ($name !== null) {
 
-                //Benutzername
-                if ($name !== null) {
+                //puefen ob neuer Benutzername schon belegt
+                if ((string) $user['name'] != $name && !$this->isUserNameAvailable($name)) {
 
-                    //puefen ob neuer Benutzername schon belegt
-                    if ((string) $user->name != $name && !$this->isUserNameAvailable($name)) {
+                    throw new \Exception('Der Benutzername ist schon vergeben', 1110);
+                }
+                $user['name'] = $name;
+            }
 
-                        throw new \Exception('Der Benutzername ist schon vergeben', 1110);
+            //Passwort
+            if ($password !== null) {
+
+                $user['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+
+            //Hauptgruppe
+            if ($mainGroupId !== null) {
+
+                $user['mainUserGroup'] = $mainGroupId;
+            }
+
+            //Benutzergruppen
+            if (count($userGroups)) {
+
+                //Benutzergruppen vorbereiten
+                $groups = array();
+                foreach($userGroups as $group) {
+
+                    /** @var $group \RWF\User\UserGroup */
+                    if($group !== null) {
+
+                        $groups[] = $group->getId();
                     }
-                    $user->name = $name;
                 }
+                $user['userGroups'] = $groups;
+            }
 
-                //Passwort
-                if ($password !== null) {
+            //Sprache
+            if ($language !== null) {
 
-                    $user->password = password_hash($password, PASSWORD_DEFAULT);
-                }
+                $user['language'] = $language;
+            }
 
-                //Hauptgruppe
-                if ($mainGroupId !== null) {
+            //Web Style
+            if ($webStyle !== null) {
 
-                    $user->mainUserGroup = $mainGroupId;
-                }
+                $user['webStyle'] = $webStyle;
+            }
 
-                //Benutzergruppen
-                if ($userGroups !== null) {
+            //Mobile Style
+            if ($mobileStyle !== null) {
 
-                    $user->userGroups = implode(',', $userGroups);
-                }
+                $user['mobileStyle'] = $mobileStyle;
+            }
 
-                //Sprache
-                if ($language !== null) {
+            if($db->hSet(self::$usersTableName, $id, $user) == 0) {
 
-                    $user->language = $language;
-                }
-
-                //Web Style
-                if ($webStyle !== null) {
-
-                    $user->webStyle = $webStyle;
-                }
-
-                //Mobile Style
-                if ($mobileStyle !== null) {
-
-                    $user->mobileStyle = $mobileStyle;
-                }
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -405,30 +544,16 @@ class UserEditor {
      * 
      * @param  Integer $id Benutzer ID
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function removeUser($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
+        $db = RWF::getDatabase();
 
-        for ($i = 0; $i < count($xml->users->user); $i++) {
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$usersTableName, $id)) {
 
-            //Benutzer suchen
-            if ((int) $xml->users->user[$i]->id == $id) {
+            if($db->hDel(self::$usersTableName, $id)) {
 
-                //Pruefen ob es nicht der Gruender ist
-                if ((string) $xml->users->user[$i]->isOriginator == true) {
-
-                    //Ausnahme der Gruender kann nicht geloescht werden
-                    throw new \Exception('Der Gründer kann nicht gelöscht werden', 1111);
-                }
-
-                //Benutzer loeschen
-                unset($xml->users->user[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -534,11 +659,10 @@ class UserEditor {
      * 
      * @param  String  $name        Gruppen Name
      * @param  String  $description Beschreibung der Gruppe
-     * @param  Array   $premissions Berechtigung (Name => Wert)
+     * @param  Array   $permissions Berechtigung (Name => Wert)
      * @return Integer
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function addUserGroup($name, $description, array $premissions = array()) {
+    public function addUserGroup($name, $description, array $permissions = array()) {
 
         //Ausnahme wenn Gruppenname schon belegt
         if (!$this->isUserGroupNameAvailable($name)) {
@@ -546,32 +670,21 @@ class UserEditor {
             throw new \Exception('Der Gruppenname ist schon vergeben', 1112);
         }
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
+        $db = RWF::getDatabase();
+        $id = $db->autoIncrement(self::$groupsTableName);
+        $newGroup = array(
+            'id' => $id,
+            'name' => $name,
+            'description' => $description,
+            'isSystemGroup' => 0,
+            'permissions' => $permissions
+        );
 
-        //Autoincrement
-        $nextId = (int) $xml->groups->nextAutoIncrementId;
-        $xml->groups->nextAutoIncrementId = $nextId + 1;
+        if($db->hSetNx(self::$groupsTableName, $id, $newGroup) == 0) {
 
-        //TAGs erstellen
-        $group = $xml->groups->addChild('group');
-        $group->addChild('id', $nextId);
-        $group->addChild('name', $name);
-        $group->addChild('description', $description);
-        $group->addChild('isSystemGroup', 0);
-        $premissionsTag = $group->addChild('premissions');
-
-        //Berechtigungen hinzufuegen
-        foreach ($premissions as $name => $value) {
-
-            $premission = $premissionsTag->addChild('premission');
-            $premission->addAttribute('name', $name);
-            $premission->addAttribute('value', ($value == true ? 1 : 0));
+            return false;
         }
-
-        //Daten Speichern
-        $xml->save();
-        return $nextId;
+        return true;
     }
 
     /**
@@ -580,64 +693,45 @@ class UserEditor {
      * @param  Integer $id          Gruppen ID
      * @param  String  $name        Gruppen Name
      * @param  String  $description Beschreibung der Gruppe
-     * @param  Array   $premissions Berechtigung (Name => Wert)
+     * @param  Array   $permissions Berechtigung (Name => Wert)
      * @return Integer
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
-    public function editUserGroup($id, $name = null, $description = null, array $premissions = array()) {
+    public function editUserGroup($id, $name = null, $description = null, array $permissions = array()) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
+        $db = RWF::getDatabase();
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$groupsTableName, $id)) {
 
-        foreach ($xml->groups->group as $group) {
+            $group = $db->hGet(self::$groupsTableName, $id);
 
-            //Gruppe suchen
-            if ((int) $group->id == $id) {
+            //Grupenname
+            if ($name !== null) {
 
-                //Grupenname
-                if ($name !== null) {
+                //puefen ob neuer Gruppenname schon belegt
+                if ($name != (string) $group['name'] && !$this->isUserGroupNameAvailable($name)) {
 
-                    //puefen ob neuer Gruppenname schon belegt
-                    if ($name != (string) $group->name && !$this->isUserGroupNameAvailable($name)) {
-
-                        throw new \Exception('Der Gruppenname ist schon vergeben', 1112);
-                    }
-                    $group->name = $name;
+                    throw new \Exception('Der Gruppenname ist schon vergeben', 1112);
                 }
+                $group['name'] = $name;
+            }
 
-                //Passwort
-                if ($description !== null) {
+            //Beschreibung
+            if ($description !== null) {
 
-                    $group->description = $description;
+                $group['description'] = $description;
+            }
+
+            //Berechtigungen
+            if(count($permissions) > 0) {
+
+                foreach($this->permissions as $name => $value) {
+
+                    $group['permissions'][$name] = (isset($permissions[$name]) ? $permissions[$name] : $value);
                 }
+            }
 
-                //Berechtigungen
-                foreach ($premissions as $name => $value) {
+            if($db->hSet(self::$groupsTableName, $id, $group) == 0) {
 
-                    //XML Tag suchen
-                    $found = false;
-                    foreach ($group->premissions->premission as $premission) {
-
-                        $attr = $premission->attributes();
-                        if ((string) $attr->name == $name) {
-
-                            $attr->value = ($value == true ? 1 : 0);
-                            $found = true;
-                            break;
-                        }
-                    }
-
-                    if($found === false) {
-
-                        //TAG nicht gefunden, neues erstellen
-                        $premission = $group->premissions->addChild('premission');
-                        $premission->addAttribute('name', $name);
-                        $premission->addAttribute('value', ((bool) $value == true ? 1 : 0));
-                    }
-                }
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }
@@ -649,30 +743,16 @@ class UserEditor {
      * 
      * @param  Integer $id Gruppen ID
      * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
      */
     public function removeUserGroup($id) {
 
-        //XML Daten Laden
-        $xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_USERS, true);
+        $db = RWF::getDatabase();
 
-        for ($i = 0; $i < count($xml->groups->group); $i++) {
+        //pruefen ob Datensatz existiert
+        if($db->hExists(self::$groupsTableName, $id)) {
 
-            //Benutzer suchen
-            if ((int) $xml->groups->group[$i]->id == $id) {
+            if($db->hDel(self::$groupsTableName, $id)) {
 
-                //Pruefen ob es es sich um eine Systemgruppe handelt
-                if ((int) $xml->groups->group[$i]->isSystemGroup == true) {
-
-                    //Ausnahme der Gruender kann nicht geloescht werden
-                    throw new \Exception('Eine System Gruppe kann nicht gelöscht werden', 1113);
-                }
-
-                //Gruppe loeschen
-                unset($xml->groups->group[$i]);
-
-                //Daten Speichern
-                $xml->save();
                 return true;
             }
         }

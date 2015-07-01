@@ -59,7 +59,7 @@ abstract class AbstractCommand implements Command {
         $this->response = $response;
         
         //rechte Pruefen
-        if($this->requiredPremission != '' && RWF::getVisitor()->checkPremission($this->requiredPremission) === false) {
+        if($this->requiredPremission != '' && RWF::getVisitor()->checkPermission($this->requiredPremission) === false) {
             
             throw new AccessDeniedException($this->requiredPremission);
         }

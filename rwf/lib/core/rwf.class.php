@@ -270,6 +270,7 @@ class RWF {
      */
     protected function initUser() {
 
+        UserEditor::getInstance()->loadData();
         $user = UserEditor::getInstance()->getUserByAuthCode(self::$session->get('authCode'));
         if ($user instanceof User) {
 

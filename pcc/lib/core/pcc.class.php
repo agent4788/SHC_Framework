@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Settings\Settings;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
+use RWF\User\UserEditor;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -43,6 +44,9 @@ class PCC extends RWF {
 
         //XML Initialisieren
         $this->initXml();
+
+        //Berechtigungen initialisieren
+        $this->initPermissions();
 
         //Basisklasse initalisieren
         parent::__construct();
@@ -83,6 +87,26 @@ class PCC extends RWF {
         $settings->addSetting('pcc.fritzBox.callListMax', Settings::TYPE_INT, 25);
         $settings->addSetting('pcc.fritzBox.callListDays', Settings::TYPE_INT, 999);
         $settings->addSetting('pcc.fritzBox.dslConnected', Settings::TYPE_BOOL, true);
+    }
+
+    /**
+     * initialisiert die Berechtigungen
+     */
+    protected function initPermissions() {
+
+        $userEditor = UserEditor::getInstance();
+
+        //Benutzerrechte
+        $userEditor->addPermission('pcc.ucp.viewSysState', true);
+        $userEditor->addPermission('pcc.ucp.viewSysData', true);
+        $userEditor->addPermission('pcc.ucp.fbState', true);
+        $userEditor->addPermission('pcc.ucp.fbSmartHomeDevices', true);
+        $userEditor->addPermission('pcc.ucp.fbCallList', true);
+
+        //Admin Rechte
+        $userEditor->addPermission('pcc.acp.menu', false);
+        $userEditor->addPermission('pcc.acp.userManagement', false);
+        $userEditor->addPermission('pcc.acp.settings', false);
     }
 
     /**
