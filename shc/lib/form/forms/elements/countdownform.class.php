@@ -8,6 +8,7 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Core\SHC;
 use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
@@ -66,6 +67,7 @@ class CountdownForm extends DefaultHtmlForm {
         $this->addFormElement($rooms);
 
         //Intervall
+        $min = 30;
         switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
 
             case 1:
