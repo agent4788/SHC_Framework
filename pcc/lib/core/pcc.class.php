@@ -36,12 +36,6 @@ class PCC extends RWF {
 
     public function __construct() {
 
-        //pruefen ob APP installiert ist
-        if(!file_exists(PATH_PCC .'app.json')) {
-
-            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
-        }
-
         //XML Initialisieren
         $this->initXml();
 
@@ -50,6 +44,22 @@ class PCC extends RWF {
 
         //Basisklasse initalisieren
         parent::__construct();
+
+        //pruefen ob App installiert ist
+        $found = false;
+        foreach(self::$appList as $app) {
+
+            if($app['app'] == 'pcc') {
+
+                $found = true;
+                break;
+            }
+        }
+
+        if($found === false) {
+
+            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
+        }
 
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {

@@ -113,27 +113,6 @@ class RWF {
             define('MULTIBYTE_STRING', false);
         }
 
-        //APPs einlesen
-        $dir = opendir(PATH_BASE);
-        while($element = readdir($dir)) {
-
-            //ueberspringen
-            if($element == '.' || $element == '..') {
-
-                continue;
-            }
-
-            //APP Ordner suchen und app.json einlesen
-            if(is_dir($element) && $element != 'rwf' && file_exists(PATH_BASE . $element .'/app.json')) {
-
-                $app = json_decode(file_get_contents(PATH_BASE . $element .'/app.json'));
-                if(isset($app->installed) && $app->installed == true) {
-
-                    self::$appList[] = $app;
-                }
-            }
-        }
-
         //APP Liste sortieren
         $orderFunction = function($a, $b) {
 
@@ -155,6 +134,7 @@ class RWF {
             
             //Anfrage vom Browser
             $this->initDatabase();
+            $this->loadApps();
             $this->initSettings();
             $this->initRequest();
             $this->initSession();
@@ -176,6 +156,19 @@ class RWF {
 
         self::$redis = new Redis();
         self::$redis->connect();
+    }
+
+    /**
+     * pruefen ob die angeforderte App installiert ist
+     */
+    protected function loadApps() {
+
+        $db = self::getDatabase();
+        $apps = $db->hGetAll('apps');
+        foreach($apps as $app) {
+
+            self::$appList[] = $app;
+        }
     }
 
     /**
