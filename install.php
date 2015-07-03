@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Update von Version 2.2.1 auf 2.2.1
+ * Install SHC
  *
  * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2015, Oliver Kleditzsch
+ * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.2.2-0
- * @version    2.2.2-0
+ * @since      2.0.3-0
+ * @version    2.0.3-0
  */
-exit(1); //für Version 2.2.3 gibt es kein Update
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Hilfsfunktionen /////////////////////////////////////////////////////////////////////////////////////////////////////
+// Hilfsfunktionen //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function randomStr($length = 10) {
@@ -35,7 +35,7 @@ function randomStr($length = 10) {
  * Kommandozeilen Hilfsfunktionen
  *
  * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2015, Oliver Kleditzsch
+ * @copyright  Copyright (c) 2014, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
  * @version    2.0.0-0
@@ -304,97 +304,333 @@ class CliUtil {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Datenbank Einstellungen /////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 $cli = new CliUtil();
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update vorbereiten //////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!file_exists('./rwf/db.config.php')) {
 
-//Initialisieren
-$shcInstalled = false;
-$shcApiLevel = 10;
-$pccInstalled = false;
-$pccApiLevel = 10;
+    //IP Adresse
+    $n = 0;
+    $valid = true;
+    $valid_address = '127.0.0.1';
+    $address_not_change = false;
+    while ($n < 5) {
 
-//SHC
-if(file_exists('./shc/app.json')) {
+        $address = $cli->input('Redis IP Adresse (127.0.0.1): ');
 
-    $shcInstalled = true;
-    $shcApp = json_decode(file_get_contents('./shc/app.json'), true);
-    if(isset($shcApp['apLevel'])) {
+        //Adresse nicht aendern
+        if (strlen($address) == 0) {
 
-        $shcApiLevel = (int) $shcApp['apLevel'];
+            $address_not_change = true;
+            $valid = true;
+            break;
+        }
+
+        //Adresse pruefen
+        $parts = explode('.', $address);
+        for ($i = 0; $i < 3; $i++) {
+
+            if (isset($parts[$i]) && (int) $parts[$i] >= 0 && (int) $parts[$i] <= 255) {
+
+                continue;
+            }
+
+            $cli->writeLnColored('ungültige IP Adresse', 'red');
+            $n++;
+            $valid = false;
+            break;
+        }
+
+        if ($valid === true) {
+
+            $valid_address = $address;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+        exit(1);
+    }
+
+    //Port
+    $n = 0;
+    $valid = true;
+    $valid_port = '6379';
+    $port_not_change = false;
+    while ($n < 5) {
+
+        $port = $cli->input('Redis Port (6379)');
+
+        //Port nicht aendern
+        if (strlen($port) == 0) {
+
+            $port_not_change = true;
+            $valid = true;
+            break;
+        }
+
+        if (!preg_match('#^[0-9]{1,5}$#', $port) || (int) $port <= 0 || (int) $port >= 65000) {
+
+            $cli->writeLnColored('ungültiger Port', 'red');
+            $n++;
+            $valid = false;
+            continue;
+        }
+
+        if ($valid === true) {
+
+            $valid_port = $port;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+        exit(1);
+    }
+
+    //Timeout
+    $n = 0;
+    $valid = true;
+    $valid_timeout = '6379';
+    $timeout_not_change = false;
+    while ($n < 5) {
+
+        $timeout = $cli->input('Redis Timeout (1): ');
+
+        //Port nicht aendern
+        if (strlen($timeout) == 0) {
+
+            $timeout_not_change = true;
+            $valid = true;
+            break;
+        }
+
+        if (!preg_match('#^[0-9]{1,2}$#', $timeout) || (int) $timeout <= 0 || (int) $timeout > 10) {
+
+            $cli->writeLnColored('ungültiger Timeout', 'red');
+            $n++;
+            $valid = false;
+            continue;
+        }
+
+        if ($valid === true) {
+
+            $valid_timeout = $timeout;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+        exit(1);
+    }
+
+    //Datenbank
+    $n = 0;
+    $valid = true;
+    $valid_db = '0';
+    $db_not_change = false;
+    while ($n < 5) {
+
+        $db = $cli->input('Redis Datenbank (0): ');
+
+        //Port nicht aendern
+        if (strlen($db) == 0) {
+
+            $db_not_change = true;
+            $valid = true;
+            break;
+        }
+
+        if (!preg_match('#^[0-9]{1,2}$#', $db) || (int) $db < 0 || (int) $db > 30) {
+
+            $cli->writeLnColored('ungültige Datenbank', 'red');
+            $n++;
+            $valid = false;
+            continue;
+        }
+
+        if ($valid === true) {
+
+            $valid_db = $db;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+        exit(1);
+    }
+
+    //IP Adresse
+    $n = 0;
+    $valid = true;
+    $valid_password = '';
+    $password_not_change = false;
+    while ($n < 5) {
+
+        $password = $cli->input('Redis Passwort (): ');
+
+        //Adresse nicht aendern
+        if (strlen($password) == 0) {
+
+            $password_not_change = true;
+            $valid = true;
+            break;
+        }
+
+        //Adresse pruefen
+        if(strlen($password) == 0 || strlen($password) > 20) {
+
+            $cli->writeLnColored('ungültiges Passwort', 'red');
+            $n++;
+            $valid = false;
+            break;
+        }
+
+        if ($valid === true) {
+
+            $valid_password = $password;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe, versuche es später noch einmal', 'red');
+        exit(1);
+    }
+
+//DB Config erstellen
+    $dbConfig =
+        "<?php
+
+/**
+ * Redis NoSQL Dantenbank Konfiguration
+ *
+ * @created ". (new DateTime())->format('H:i d.m.Y') ."
+ */
+
+\$dbConfig = array(
+    'host' => '$valid_address',
+    'port' => $valid_port,
+    'timeout' => $valid_timeout,
+    'pass' => $valid_password,
+    'db' => $valid_db
+);
+";
+    if(@file_put_contents('./rwf/db.config.php', $dbConfig)) {
+
+        $cli->writeLineColored('Die Datenbankkonfiguration wurde erfolgreich erstellt', 'green');
+    } else {
+
+        $cli->writeLineColored('Die Datenbankkonfiguration konnte nicht erstellt werden', 'red');
+        exit(1);
     }
 }
 
-//PCC
-if(file_exists('./pcc/app.json')) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Datenbankverbindung herstellen //////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $pccInstalled = true;
-    $pccApp = json_decode(file_get_contents('./pcc/app.json'), true);
-    if(isset($pccApp['apLevel'])) {
+$dbConfig = array();
+if(file_exists(PATH_RWF .'db.config.php')) {
 
-        $pccApiLevel = (int) $pccApp['apLevel'];
+    require_once(PATH_RWF .'db.config.php');
+} else {
+
+    $cli->writeLineColored('Die Datenbankkonfiguration fehlt (db.config.php)', 'red');
+    exit(1);
+}
+
+$host = $dbConfig['host'];
+$port = $dbConfig['port'];
+$timeout = $dbConfig['timeout'];
+$db = $dbConfig['db'];
+$pass = $dbConfig['pass'];
+
+$redis = new \Redis();
+
+//Verbinden
+if(!$redis->connect($host, $port, $timeout)) {
+
+    $cli->writeLineColored('Verbindung zur Datenbank fehlgeschlagen', 'red');
+    exit(1);
+}
+//Anmelden
+if($pass != '') {
+
+    if(!$redis->auth($pass)) {
+
+        $cli->writeLineColored('Authentifizierung Fehlgeschlagen', 'red');
+        exit(1);
     }
 }
+//Datenbank auswaehlen
+if(!$redis->select($db)) {
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update v2.2.1 auf v2.2.2  (API Level 10 auf 11) /////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//SHC
-if($shcInstalled === true && $shcApiLevel == 10) {
-
-    //Update Funktionen
-
+    $cli->writeLineColored('Auswahl der Datenbank Fehlgeschlagen', 'red');
+    exit(1);
 }
 
-//PCC
-if($pccInstalled === true && $pccApiLevel == 10) {
+//Optionen
+$redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
+$redis->setOption(\Redis::OPT_PREFIX, 'rwf:');
 
-    //Update Funktionen
-
-}
+$cli->writeLineColored('Datenbankverbindung erfolgreich hergestellt', 'green');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// neue app.json Dateien schreiben /////////////////////////////////////////////////////////////////////////////////////
+// SHC installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//SHC
-if($shcInstalled === true) {
+if(!$redis->hExists('apps', 'shc')) {
 
-    $content = '
-        {
-            "app": "shc",
-            "name": "Raspberry Pi SmartHome Control",
-            "icon": "./shc/inc/img/shc-icon.png",
-            "order": 10,
-            "installed": true,
-            "apLevel": '. $shcApiLevel .'
-        }';
-    file_put_contents('./shc/app.json', $content);
-}
+    //APP Daten anmelden
+    $redis->hset('apps', 'shc', array(
+        'app' => 'shc',
+        'name' => 'Raspberry Pi SmartHome Control',
+        'icon' => './shc/inc/img/shc-icon.png',
+        'order' => 10,
+        'apLevel' => 12
+    ));
 
-//PCC
-if($pccInstalled === true) {
-
-    $content = '
-        {
-            "app": "pcc",
-            "name": "Raspberry Pi Control Center",
-            "icon": "./pcc/inc/img/pcc-icon.png",
-            "order": 20,
-            "installed": true,
-            "apLevel": '. $pccApiLevel .'
-        }';
-    file_put_contents('./pcc/app.json', $content);
+    //App erfolgreich installiert
+    $cli->writeLineColored('Das SHC wurde erfolgreich installiert', 'green');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// neue app.json Dateien schreiben /////////////////////////////////////////////////////////////////////////////////////
+// PCC installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$cli->writeLineColored('Update erfolgreich', 'green');
+if(!$redis->hExists('apps', 'pcc')) {
+
+    //APP Daten Anmelden
+    $redis->hset('apps', 'shc', array(
+        'app' => 'pcc',
+        'name' => 'Raspberry Pi Control Center',
+        'icon' => './pcc/inc/img/pcc-icon.png',
+        'order' => 20,
+        'apLevel' => 12
+    ));
+
+    //App erfolgreich installiert
+    $cli->writeLineColored('Das PCC wurde erfolgreich installiert', 'green');
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SHC installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+print("SHC erfolgreich installiert\n");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // sich selbst loeschen ////////////////////////////////////////////////////////////////////////////////////////////////
