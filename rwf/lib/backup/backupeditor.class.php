@@ -182,7 +182,7 @@ class BackupEditor {
      */
     protected function makeFileBackup($ignoreHiddenFiles = false) {
 
-        $filename = $this->backupPath . 'shc__' . DateTime::now()->format('Y_m_d__H_i') .'__'. md5(DateTime::now()->getTimestamp()) . '.zip';
+        $filename = $this->backupPath . 'rwf__' . DateTime::now()->format('Y_m_d__H_i') .'__'. md5(DateTime::now()->getTimestamp()) . '.zip';
         $zip = new \ZipArchive();
         if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
 
