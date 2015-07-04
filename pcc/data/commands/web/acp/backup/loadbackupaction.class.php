@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Command\Web;
+namespace PCC\Command\Web;
 
 //Imports
 use RWF\Backup\Backup;
@@ -9,7 +9,6 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Session\Session;
-use RWF\Settings\Settings;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 
@@ -29,7 +28,7 @@ class LoadBackupAction extends ActionCommand {
      *
      * @var String
      */
-    protected $requiredPremission = 'shc.acp.backupsManagement';
+    protected $requiredPremission = 'pcc.acp.backupsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen

@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Command\Web;
+namespace PCC\Command\Smartphone;
 
 //Imports
 use RWF\Backup\Backup;
@@ -29,7 +29,7 @@ class LoadBackupAction extends ActionCommand {
      *
      * @var String
      */
-    protected $requiredPremission = 'shc.acp.backupsManagement';
+    protected $requiredPremission = 'pcc.acp.backupsManagement';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -79,6 +79,12 @@ class LoadBackupAction extends ActionCommand {
         fclose($fh);
 
         //Anwendung vorzeitig beenden
+
+        //Einstellungen Speichern
+        if (RWF::getSettings() instanceof Settings) {
+
+            RWF::getSettings()->finalize();
+        }
 
         //Sessionobjekt abschliesen
         if (RWF::getSession() instanceof Session) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Command\Web;
+namespace PCC\Command\Smartphone;
 
 //Imports
 use RWF\Backup\Backup;
@@ -8,13 +8,11 @@ use RWF\Backup\BackupEditor;
 use RWF\Core\RWF;
 use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
-use RWF\Session\Session;
-use RWF\Settings\Settings;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 
 /**
- * download eines Backups
+ * loescht ein Backup
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2014, Oliver Kleditzsch
@@ -22,14 +20,21 @@ use RWF\Util\Message;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class LoadBackupAction extends ActionCommand {
+class DeleteBackupAction extends ActionCommand {
 
     /**
      * benoetigte Berechtigung
      *
      * @var String
      */
-    protected $requiredPremission = 'shc.acp.backupsManagement';
+    protected $requiredPremission = 'pcc.acp.backupsManagement';
+
+    /**
+     * Ziel nach dem ausfuehren
+     *
+     * @var String
+     */
+    protected $location = 'index.php?app=pcc&m&page=listbackups';
 
     /**
      * Sprachpakete die geladen werden sollen
@@ -57,34 +62,18 @@ class LoadBackupAction extends ActionCommand {
             return;
         }
 
-        //Backup Download
-        //Download initalisieren
-        header('Content-Type: application/force-download');
-        header('Content-Disposition: attachment; filename="' . $backup->getFileName() . '"');
-        header('Content-Length: ' . $backup->getSize());
-        header('Content-Transfer-Encoding: binary');
-        header('Accept-Ranges: bytes');
+        //Backup loeschen
+        $message = new Message();
+        if(BackupEditor::getInstance()->removeBackup($hash)) {
 
-        //Daten senden
-        $fh = fopen($backup->getPath() . $backup->getFileName(), 'rb');
+            $message->setType(Message::SUCCESSFULLY);
+            $message->setMessage(RWF::getLanguage()->get('acp.backupsManagement.success.deleteBackup'));
+        } else {
 
-        //Daten Senden
-        while (!feof($fh)) {
-
-            echo fread($fh, 2048);
-            flush();
+            $message->setType(Message::ERROR);
+            $message->setMessage(RWF::getLanguage()->get('acp.backupsManagement.error.deleteBackup'));
         }
 
-        //Datei schliesen
-        fclose($fh);
-
-        //Anwendung vorzeitig beenden
-
-        //Sessionobjekt abschliesen
-        if (RWF::getSession() instanceof Session) {
-
-            RWF::getSession()->finalize();
-        }
-        exit(0);
+        RWF::getSession()->setMessage($message);
     }
 }

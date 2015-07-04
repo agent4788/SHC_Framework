@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="pcc-content">
+            {contentbox name="acp.acpinfo.title" id='pcc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div class="pcc-view-content">
+                    <table class="pcc-view-contentTable">
+                        <tbody>
+                        <tr>
+                            <td style="width: 25%; font-weight: bold;">{lang var='acp.database.version'}</td>
+                            <td style="width: 25%;">{#$info.redis_version}</td>
+                            <td style="width: 25%; font-weight: bold;">{lang var='acp.database.mode'}</td>
+                            <td style="width: 25%;">{if $info.redis_mode|isset}{#$info.redis_mode}{elseif $info.role}{#$info.role}{/if}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='acp.database.uptime'}</td>
+                            <td>{#$info.uptime_in_seconds|seconds:1}</td>
+                            <td style="font-weight: bold;">{lang var='acp.database.config'}</td>
+                            <td>{if $info.config_file|isset}{#$info.config_file}{else}unknown{/if}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='acp.database.memory'}</td>
+                            <td>{#$info.used_memory|filesizebinary}</td>
+                            <td style="font-weight: bold;">{lang var='acp.database.memoryPeak'}</td>
+                            <td>{#$info.used_memory_peak|filesizebinary}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='acp.database.lastSave'}</td>
+                            <td>{#$lastSaveDate|timeline}</td>
+                            <td style="font-weight: bold;">{lang var='acp.database.lastSaveState'}</td>
+                            <td>{if $info.rdb_last_bgsave_status|isset}{#$info.rdb_last_bgsave_status}{else}unknown{/if}</td>
+                        </tr>
+                        {if $info.total_net_input_bytes|isset || $info.total_net_output_bytes|isset}
+                        <tr>
+                            <td style="font-weight: bold;">{lang var='acp.database.input'}</td>
+                            <td>{if $info.total_net_input_bytes|isset}{#$info.total_net_input_bytes|filesizebinary}{else}unknown{/if}</td>
+                            <td style="font-weight: bold;">{lang var='acp.database.output'}</td>
+                            <td>{if $info.total_net_output_bytes|isset}{#$info.total_net_output_bytes|filesizebinary}{else}unknown{/if}</td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pcc-view-buttons">
+                    <div class="pcc-view-buttonSet">
+                        <a href="index.php?app=pcc&page=acp">{lang var='global.button.back'}</a>
+                        <a href="index.php?app=pcc&page=database">{lang var='acpindex.reload'}</a>
+                        <a href="index.php?app=pcc&action=dumpdatabase">{lang var='acp.database.buttons.dump'}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.pcc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

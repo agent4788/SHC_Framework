@@ -120,6 +120,8 @@ class PCC extends RWF {
         $userEditor->addPermission('pcc.acp.menu', false);
         $userEditor->addPermission('pcc.acp.userManagement', false);
         $userEditor->addPermission('pcc.acp.settings', false);
+        $userEditor->addPermission('pcc.acp.databaseManagement', false);
+        $userEditor->addPermission('pcc.acp.backupsManagement', false);
     }
 
     /**
