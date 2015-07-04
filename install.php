@@ -524,7 +524,7 @@ if(!file_exists('./rwf/db.config.php')) {
     'host' => '$valid_address',
     'port' => $valid_port,
     'timeout' => $valid_timeout,
-    'pass' => $valid_password,
+    'pass' => '$valid_password'',
     'db' => $valid_db
 );
 ";
