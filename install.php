@@ -592,38 +592,110 @@ $cli->writeLineColored('Datenbankverbindung erfolgreich hergestellt', 'green');
 // SHC installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//pruefen ob das SHC schon installiert ist
 if(!$redis->hExists('apps', 'shc')) {
 
-    //APP Daten anmelden
-    $redis->hset('apps', 'shc', array(
-        'app' => 'shc',
-        'name' => 'Raspberry Pi SmartHome Control',
-        'icon' => './shc/inc/img/shc-icon.png',
-        'order' => 10,
-        'apLevel' => 12
-    ));
+    //Abfragen ob das SHC installiert werden soll
+    $i = 0;
+    $valid = true;
+    $installShc = false;
+    while ($i < 5) {
 
-    //App erfolgreich installiert
-    $cli->writeLineColored('Das SHC wurde erfolgreich installiert', 'green');
+        $safetyRequest = $cli->input('soll das SHC Installiert werden? (ja|nein): ');
+
+        if (!preg_match('#^(ja)|(j)|(nein)|(n)$#i', $safetyRequest)) {
+
+            $cli->writeLnColored('ungültige Eingabe', 'red');
+            $i++;
+            $valid = false;
+            continue;
+        }
+        if ($valid === true && preg_match('#^(ja)|(j)$#i', $safetyRequest)) {
+
+            $installShc = true;
+            break;
+        } elseif ($valid === true && preg_match('#^(nein)|(n)$#i', $safetyRequest)) {
+
+            $installShc = false;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe', 'red');
+        exit(1);
+    }
+
+    //SHC installieren
+    if($installShc === true) {
+
+        //APP Daten anmelden
+        $redis->hset('apps', 'shc', array(
+            'app' => 'shc',
+            'name' => 'Raspberry Pi SmartHome Control',
+            'icon' => './shc/inc/img/shc-icon.png',
+            'order' => 10,
+            'apLevel' => 12
+        ));
+
+        //App erfolgreich installiert
+        $cli->writeLineColored('Das SHC wurde erfolgreich installiert', 'green');
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PCC installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//pruefen ob das PCC schon installiert ist
 if(!$redis->hExists('apps', 'pcc')) {
 
-    //APP Daten Anmelden
-    $redis->hset('apps', 'pcc', array(
-        'app' => 'pcc',
-        'name' => 'Raspberry Pi Control Center',
-        'icon' => './pcc/inc/img/pcc-icon.png',
-        'order' => 20,
-        'apLevel' => 12
-    ));
+    //Abfragen ob das SHC installiert werden soll
+    $i = 0;
+    $valid = true;
+    $installPcc = false;
+    while ($i < 5) {
 
-    //App erfolgreich installiert
-    $cli->writeLineColored('Das PCC wurde erfolgreich installiert', 'green');
+        $safetyRequest = $cli->input('soll das PCC Installiert werden? (ja|nein): ');
+
+        if (!preg_match('#^(ja)|(j)|(nein)|(n)$#i', $safetyRequest)) {
+
+            $cli->writeLnColored('ungültige Eingabe', 'red');
+            $i++;
+            $valid = false;
+            continue;
+        }
+        if ($valid === true && preg_match('#^(ja)|(j)$#i', $safetyRequest)) {
+
+            $installPcc = true;
+            break;
+        } elseif ($valid === true && preg_match('#^(nein)|(n)$#i', $safetyRequest)) {
+
+            $installPcc = false;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe', 'red');
+        exit(1);
+    }
+
+    //PCC installieren
+    if($installPcc === true) {
+
+        //APP Daten Anmelden
+        $redis->hset('apps', 'pcc', array(
+            'app' => 'pcc',
+            'name' => 'Raspberry Pi Control Center',
+            'icon' => './pcc/inc/img/pcc-icon.png',
+            'order' => 20,
+            'apLevel' => 12
+        ));
+
+        //App erfolgreich installiert
+        $cli->writeLineColored('Das PCC wurde erfolgreich installiert', 'green');
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
