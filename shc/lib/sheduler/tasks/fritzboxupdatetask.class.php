@@ -69,8 +69,14 @@ class FritzBoxUpdateTask extends AbstractTask {
                 //Fritz Box initialisieren
                 $fritzBox = FritzBoxFactory::getFritzBox();
                 $smartHome = $fritzBox->getSmartHome();
-                $deviceList = $smartHome->listDevices();
                 $wlan = $fritzBox->getWlan();
+
+                //Cache erneuern
+                $smartHome->rebuildCache();
+                $wlan->rebuildCache();
+
+                //Geräteliste abrufen
+                $deviceList = $smartHome->listDevices();
 
                 //schaltbare Elemente laden
                 SwitchableEditor::getInstance()->loadData();
@@ -136,14 +142,12 @@ class FritzBoxUpdateTask extends AbstractTask {
                         ));
                         @file_get_contents('http://localhost:80/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
                     }
-
-                    $smartHome->rebuildCache();
-                    $wlan->rebuildCache();
                 }
             } catch(\SoapFault $e) {
 
                 $cli = new CliUtil();
                 $cli->writeLineColored('Fritz!Box verbindung Fehlgeschlagen: '. $e->getMessage(), 'red');
+                FritzBoxFactory::getFritzBox()->rebuildCache();
             }
         }
     }
