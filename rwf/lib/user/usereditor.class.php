@@ -150,6 +150,9 @@ class UserEditor {
      */
     protected function addSystemUsersAndGroups() {
 
+        //Passwort Libary einbinden fuer PHP Versionen < PHP 5.5
+        require_once(PATH_RWF_CLASSES . 'external/password/password.php');
+
         $db = RWF::getDatabase();
         $date = new \DateTime('now');
 
@@ -222,7 +225,7 @@ class UserEditor {
     /**
      * erstellt ein neues Recht
      *
-     * @param  sting $name         Name der Berechtigung
+     * @param  string $name         Name der Berechtigung
      * @param  bool  $defaultValue Standardwert
      * @return bool
      */
@@ -487,6 +490,9 @@ class UserEditor {
 
             //Passwort
             if ($password !== null) {
+
+                //Passwort Libary einbinden fuer PHP Versionen < PHP 5.5
+                require_once(PATH_RWF_CLASSES . 'external/password/password.php');
 
                 $user['password'] = password_hash($password, PASSWORD_DEFAULT);
             }
