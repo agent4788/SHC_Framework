@@ -1,6 +1,6 @@
 <?php
 
-namespace SHC\Backup;
+namespace RWF\Backup;
 
 //Imports
 use RWF\Util\FileUtil;

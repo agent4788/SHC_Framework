@@ -304,11 +304,11 @@ if(PHP_SAPI != 'cli') {
 $cli = new CliUtil();
 
 //Dateien einlesen
-$dir = opendir('./shc/backup/');
+$dir = opendir('./rwf/data/backup/');
 $files = array();
 while($file = readdir($dir)) {
 
-    if(is_file('./shc/backup/'. $file) && preg_match('#\.zip$#i', $file)) {
+    if(is_file('./rwf/data/backup/'. $file) && preg_match('#\.zip$#i', $file)) {
 
         $files[] = $file;
     }

@@ -3,9 +3,9 @@
 namespace SHC\Command\Smartphone;
 
 //Imports
+use RWF\Backup\BackupEditor;
 use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
-use SHC\Backup\BackupEditor;
 use SHC\Core\SHC;
 
 /**
@@ -50,7 +50,7 @@ class ListBackupsPage extends PageCommand {
         }
 
         //Backup Liste
-        $tpl->assign('backupList', BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP)->listBackups(BackupEditor::SORT_BY_NAME));
+        $tpl->assign('backupList', BackupEditor::getInstance()->setPath(PATH_RWF_BACKUP)->listBackups(BackupEditor::SORT_BY_NAME));
     }
 
 }

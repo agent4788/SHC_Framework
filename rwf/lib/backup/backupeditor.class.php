@@ -1,12 +1,11 @@
 <?php
 
-namespace SHC\Backup;
+namespace RWF\Backup;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Util\FileUtil;
-use RWF\XML\XmlFileManager;
-use SHC\Core\SHC;
 
 /**
  * Backup Verwaltung
@@ -50,7 +49,7 @@ class BackupEditor {
     /**
      * Singleton Instanz
      *
-     * @var \SHC\Backup\BackupEditor
+     * @var \RWF\Backup\BackupEditor
      */
     protected static $instance = null;
 
@@ -74,7 +73,7 @@ class BackupEditor {
      * setzt den Pfad in dem sich die Backups befinden
      *
      * @param  String $path Pfad
-     * @return \SHC\Backup\BackupEditor
+     * @return \RWF\Backup\BackupEditor
      */
     public function setPath($path){
 
@@ -97,7 +96,7 @@ class BackupEditor {
      * gibt eine Backup aufgrund eines MD5 Haches des Dateinamens zurueck
      *
      * @param  String $hash MD5 Hash
-     * @return \SHC\Backup\Backup
+     * @return \RWF\Backup\Backup
      */
     public function getBackupByMD5Hash($hash) {
 
@@ -165,7 +164,7 @@ class BackupEditor {
 
         if(isset($this->backups[$hash])) {
 
-            /* @var $backup \SHC\Backup\Backup  */
+            /* @var $backup \RWF\Backup\Backup  */
             $backup = $this->backups[$hash];
             if(@unlink($backup->getPath() . $backup->getFileName())) {
 
@@ -188,7 +187,7 @@ class BackupEditor {
         if ($zip->open($filename, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) === true) {
 
             //Datanbank verbindung aufbauen
-            $db = SHC::getDatabase();
+            $db = RWF::getDatabase();
             $keys = $db->getKeys('*');
             $data = array();
 
@@ -329,7 +328,7 @@ class BackupEditor {
     /**
      * gibt den Backup Editor zurueck
      *
-     * @return \SHC\Backup\BackupEditor
+     * @return \RWF\Backup\BackupEditor
      */
     public static function getInstance() {
 
