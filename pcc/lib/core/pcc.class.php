@@ -46,19 +46,22 @@ class PCC extends RWF {
         parent::__construct();
 
         //pruefen ob App installiert ist
-        $found = false;
-        foreach(self::$appList as $app) {
+        if (ACCESS_METHOD_HTTP) {
 
-            if($app['app'] == 'pcc') {
+            $found = false;
+            foreach(self::$appList as $app) {
 
-                $found = true;
-                break;
+                if($app['app'] == 'pcc') {
+
+                    $found = true;
+                    break;
+                }
             }
-        }
 
-        if($found === false) {
+            if($found === false) {
 
-            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
+                throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
+            }
         }
 
         //SHC Initialisieren
