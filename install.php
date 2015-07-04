@@ -398,7 +398,7 @@ if(!file_exists('./rwf/db.config.php')) {
     //Timeout
     $n = 0;
     $valid = true;
-    $valid_timeout = '6379';
+    $valid_timeout = '1';
     $timeout_not_change = false;
     while ($n < 5) {
 
@@ -471,7 +471,7 @@ if(!file_exists('./rwf/db.config.php')) {
         exit(1);
     }
 
-    //IP Adresse
+    //Passwort
     $n = 0;
     $valid = true;
     $valid_password = '';
@@ -524,7 +524,7 @@ if(!file_exists('./rwf/db.config.php')) {
     'host' => '$valid_address',
     'port' => $valid_port,
     'timeout' => $valid_timeout,
-    'pass' => '$valid_password'',
+    'pass' => '$valid_password',
     'db' => $valid_db
 );
 ";

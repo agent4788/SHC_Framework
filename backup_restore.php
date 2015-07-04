@@ -505,7 +505,7 @@ if ($valid === false) {
 //Timeout
 $n = 0;
 $valid = true;
-$valid_timeout = '6379';
+$valid_timeout = '1';
 $timeout_not_change = false;
 while ($n < 5) {
 
