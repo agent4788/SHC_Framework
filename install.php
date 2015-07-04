@@ -617,6 +617,7 @@ if(!$redis->hExists('apps', 'shc')) {
         } elseif ($valid === true && preg_match('#^(nein)|(n)$#i', $safetyRequest)) {
 
             $installShc = false;
+            break;
         }
     }
 
@@ -672,6 +673,7 @@ if(!$redis->hExists('apps', 'pcc')) {
         } elseif ($valid === true && preg_match('#^(nein)|(n)$#i', $safetyRequest)) {
 
             $installPcc = false;
+            break;
         }
     }
 
