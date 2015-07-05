@@ -389,7 +389,7 @@ if ($valid === false) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $zip = new ZipArchive();
-if($zip->open('./shc/backup/'. $restoreFile) === true) {
+if($zip->open('./rwf/data/backup/'. $restoreFile) === true) {
 
     //Temp Ordner
     if(!is_dir('/tmp/shcBackupRestore')) {
@@ -407,10 +407,12 @@ if($zip->open('./shc/backup/'. $restoreFile) === true) {
     } else {
 
         $cli->writeLineColored('Die Datei "'. $restoreFile .'" konnte nicht entpackt werden', 'red');
+        exit(1);
     }
 } else {
 
     $cli->writeLineColored('Die Datei "'. $restoreFile .'" konnte nicht geladen werden', 'red');
+    exit(1);
 }
 
 $cli->writeLineColored('Daten erfolgreich entpackt', 'green');
@@ -706,7 +708,14 @@ if(is_array($data)) {
 
             case \Redis::REDIS_STRING:
 
-                $redis->set($key, $value);
+                //Sonderfall Autoincrement
+                if(substr($key, 0, 13) == 'autoIncrement') {
+
+                    $redis->incrBy($key, $value);
+                } else {
+
+                    $redis->set($key, $value);
+                }
                 break;
             case \Redis::REDIS_SET:
 
