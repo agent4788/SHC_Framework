@@ -4,7 +4,6 @@ namespace SHC\SwitchServer;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Date\DateTime;
 use RWF\IO\SocketServer;
 use RWF\IO\SocketServerClient;
 use RWF\Request\CliResponse;
@@ -95,7 +94,7 @@ class SwitchServerSocket {
     /**
      * @param SwitchServerCli $command
      */
-    public function __connstruct(SwitchServerCli $command) {
+    public function __construct(SwitchServerCli $command) {
 
         $this->command = $command;
     }
@@ -105,7 +104,6 @@ class SwitchServerSocket {
      * 
      * @param \RWF\Request\CliResponse $response Antwortobjekt
      * @param Boolean                  $debug    Debug Meldungen ausgeben
-     * @return type
      */
     public function run(CliResponse $response, $debug = false) {
 
@@ -136,17 +134,18 @@ class SwitchServerSocket {
         while (true) {
 
             //Run Flag alle 60 Sekunden setzen
+            $dateTime = new \DateTime('now');
             if(!isset($runTime)) {
 
-                $runTime = DateTime::now();
+                $runTime = $dateTime;
             }
-            if($runTime <= DateTime::now()) {
+            if($runTime <= $dateTime) {
 
                 if(!file_exists(PATH_RWF_CACHE . 'switchServer.flag')) {
 
                     FileUtil::createFile(PATH_RWF_CACHE . 'switchServer.flag', 0777, true);
                 }
-                file_put_contents(PATH_RWF_CACHE . 'switchServer.flag', DateTime::now()->getDatabaseDateTime());
+                file_put_contents(PATH_RWF_CACHE . 'switchServer.flag', $dateTime->format('Y-m-d H:i:s'));
                 $runTime->add(new \DateInterval('PT1M'));
             }
 
