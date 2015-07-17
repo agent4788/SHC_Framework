@@ -203,10 +203,10 @@ class FloatInputField extends AbstractFormElement {
 
         //Schritte
         $absValue = abs($value) * 1000000;
-        $step = $this->options['step'] * 1000000;
+        $step = (isset($this->options['step']) ? $this->options['step'] : 0.5) * 1000000;
         if ((isset($this->options['step']) && $absValue % $step) || (!isset($this->options['step']) && floor(abs($value) / 0.5) != abs($value) / 0.5)) {
 
-            $this->messages[] = $lang->get('form.message.stepsFloat', $this->getTitle(), $this->options['step']);
+            $this->messages[] = $lang->get('form.message.stepsFloat', $this->getTitle(), (isset($this->options['step']) ? $this->options['step'] : 0.5));
             $valid = false;
         }
 
