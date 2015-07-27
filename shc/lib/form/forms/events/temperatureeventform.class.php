@@ -9,6 +9,7 @@ use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Core\Exception\AssertException;
 use SHC\Core\SHC;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\TemperatureClimbOver;
@@ -82,6 +83,9 @@ class TemperatureEventForm extends DefaultHtmlForm {
                 //slow
                 $min = 30;
                 break;
+            default:
+
+                throw new AssertException("Die Einstellung 'shc.shedulerDaemon.performanceProfile' ist Fehlerhaft");
         }
         $name = new IntegerInputField('interval', ($event !== null ? $event->getData()['interval'] : 30), array('min' => $min, 'max' => 3600));
         $name->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.interval'));

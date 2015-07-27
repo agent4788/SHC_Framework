@@ -85,6 +85,9 @@ class CountdownForm extends DefaultHtmlForm {
                 //slow
                 $min = 60;
                 break;
+            default:
+
+                throw new AssertException("Die Einstellung 'shc.shedulerDaemon.performanceProfile' ist Fehlerhaft");
         }
         $interval = new IntegerInputField('interval', ($countdown instanceof Countdown ? $countdown->getInterval() : 30), array('min' => $min, 'max' => 14400, 'step' => 5));
         $interval->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addCountdown.interval'));

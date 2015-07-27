@@ -75,6 +75,9 @@ class UserEventForm extends DefaultHtmlForm {
                 //slow
                 $min = 30;
                 break;
+            default:
+
+                throw new AssertException("Die Einstellung 'shc.shedulerDaemon.performanceProfile' ist Fehlerhaft");
         }
         $name = new IntegerInputField('interval', ($event !== null ? $event->getData()['interval'] : 30), array('min' => $min, 'max' => 3600));
         $name->setTitle(RWF::getLanguage()->get('acp.eventsManagement.form.event.interval'));
