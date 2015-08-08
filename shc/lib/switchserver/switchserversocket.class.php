@@ -201,8 +201,9 @@ class SwitchServerSocket {
 
     /**
      * sendet einen 433MHz Befehl
-     * 
-     * @param Array $request Liste mit allen Anfragen
+     *
+     * @param array $requests
+     * @internal param Array $request Liste mit allen Anfragen
      */
     protected function send433MHzCommand(array $requests) {
 

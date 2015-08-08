@@ -1825,15 +1825,15 @@ class SwitchableEditor {
     /**
      * erstellt ein neue AVM Steckdose
      *
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  int     $function          Funktion
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @param $name
+     * @param  Boolean $enabled Aktiv
+     * @param  Boolean $visibility Sichtbarkeit
+     * @param  String $icon Icon
+     * @param  Array $rooms Raeume
+     * @param  Array $order Sortierung
+     * @param  int $function Funktion
+     * @param  Array $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return bool
      */
     public function addFritzBox($name, $enabled, $visibility, $icon, $rooms, array $order, $function, array $allowedUserGroups = array()) {
 
@@ -1849,17 +1849,16 @@ class SwitchableEditor {
     /**
      * bearbeitet eine AVM Steckdose
      *
-     * @param  Integer $id                ID
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  int     $function          Funktion
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @param  Integer $buttonText        Button Text
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
+     * @param  Integer $id ID
+     * @param  Boolean $enabled Aktiv
+     * @param  Boolean $visibility Sichtbarkeit
+     * @param  String $icon Icon
+     * @param  Array $rooms Raeume
+     * @param  Array $order Sortierung
+     * @param  int $function Funktion
+     * @param  Array $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @return bool
+     * @internal param int $buttonText Button Text
      */
     public function editFritzBox($id, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $function = null, array $allowedUserGroups = null) {
 

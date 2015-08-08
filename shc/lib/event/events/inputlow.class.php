@@ -21,8 +21,8 @@ class InputLow extends AbstractEvent {
 
     /**
      * gibt an ob das Ereigniss erfuellt ist
-     *
-     * @return Boolean
+     * @return bool
+     * @throws \Exception
      */
     public function isSatisfies() {
 

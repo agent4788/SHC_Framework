@@ -110,12 +110,13 @@ class Room {
 
         return $this->name;
     }
-    
+
     /**
      * setzt die SOrtierungs ID des Raumes
-     * 
-     * @param  Integer $id
-     * @return \SHC\Room\Room
+     *
+     * @param $orderId
+     * @return Room
+     * @internal param int $id
      */
     public function setOrderId($orderId) {
         

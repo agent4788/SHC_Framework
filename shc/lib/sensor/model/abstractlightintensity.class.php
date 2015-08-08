@@ -60,8 +60,9 @@ trait AbstractLightIntensity {
     /**
      * setzt das Lichtstaerke Offset
      *
-     * @param  Float $temperatureOffset
-     * @return \SHC\Sensor\Model\LightIntensity
+     * @param $lightIntensityOffset
+     * @return LightIntensity
+     * @internal param Float $temperatureOffset
      */
     public function setLightIntensityOffset($lightIntensityOffset) {
 

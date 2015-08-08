@@ -60,10 +60,10 @@ class SocketServerClient {
 
     /**
      * schreibt in den Socket
-     * 
-     * @param  String  $buffer Daten
-     * @param  Integer $length Laenge
-     * @return Integer
+     *
+     * @param  String $buffer Daten
+     * @return int
+     * @internal param int $length Laenge
      */
     public function write($buffer) {
 
@@ -73,9 +73,9 @@ class SocketServerClient {
     /**
      * schreibt eine Zeile in den Socket
      *
-     * @param  String  $buffer Daten
-     * @param  Integer $length Laenge
-     * @return Integer
+     * @param  String $buffer Daten
+     * @return int
+     * @internal param int $length Laenge
      */
     public function writeLn($buffer) {
 

@@ -295,9 +295,9 @@ class CliUtil {
     /**
      * alle nach dieser Funktion ausgegebenen Zeichen werden in den neu festgelegten Fraben angezeigt
      *
-     * @param  String $color           Vordergrundfarbe
-     * @param  String $backgroundColor Hintergrundfarbe
+     * @param  String $color Vordergrundfarbe
      * @return String
+     * @internal param String $backgroundColor Hintergrundfarbe
      */
     public function colorNext($color) {
 

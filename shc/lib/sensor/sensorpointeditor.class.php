@@ -907,11 +907,14 @@ class SensorPointEditor {
 
     /**
      * bearbeitet einen Sensorpunkt
-     * 
-     * @param  Integer $spId         ID
-     * @param  String  $name         Name
-     * @param  Boolean $visibility   Sichtbarkeit
-     * @param  Float   $warningLevel Warnungs Level
+     *
+     * @param  Integer $spId ID
+     * @param  String $name Name
+     * @param  Boolean $visibility Sichtbarkeit
+     * @param  Float $warningLevel Warnungs Level
+     * @return bool
+     * @return bool
+     * @throws \Exception
      */
     public function editSensorPoint($spId, $name = null, $visibility = null, $warningLevel = null) {
 

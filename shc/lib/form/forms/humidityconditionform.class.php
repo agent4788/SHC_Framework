@@ -26,6 +26,7 @@ class HumidityConditionForm extends DefaultHtmlForm {
 
     /**
      * @param AbstractCondition $condition
+     * @throws \Exception
      */
     public function __construct(AbstractCondition $condition = null) {
 

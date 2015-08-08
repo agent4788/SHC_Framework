@@ -495,9 +495,10 @@ class ConditionEditor {
     /**
      * erstellt eine neue Bedingung fuer die Ueberwachung ob ein Benutzer zu Hause ist
      *
-     * @param  String  $name    Name
+     * @param  String $name Name
+     * @param array $users
      * @param  Boolean $enabled Aktiv
-     * @return Boolean
+     * @return bool
      * @throws \Exception
      */
     public function addUserAtHomeCondition($name, array $users, $enabled) {
@@ -514,10 +515,11 @@ class ConditionEditor {
     /**
      * bearbeitet eine Bedingung fuer die Ueberwachung ob ein Benutzer zu Hause ist
      *
-     * @param  Integer $id      ID
-     * @param  String  $name    Name
+     * @param  Integer $id ID
+     * @param  String $name Name
+     * @param array $users
      * @param  Boolean $enabled Aktiv
-     * @return Boolean
+     * @return bool
      * @throws \Exception
      */
     public function editUserAtHomeCondition($id, $name = null, array $users = null, $enabled = null) {
@@ -534,9 +536,10 @@ class ConditionEditor {
     /**
      * erstellt eine neue Bedingung fuer die Ueberwachung ob ein Benutzer nicht zu Hause ist
      *
-     * @param  String  $name    Name
+     * @param  String $name Name
+     * @param array $users
      * @param  Boolean $enabled Aktiv
-     * @return Boolean
+     * @return bool
      * @throws \Exception
      */
     public function addUserNotAtHomeCondition($name, array $users, $enabled) {
@@ -553,10 +556,11 @@ class ConditionEditor {
     /**
      * bearbeitet eine Bedingung fuer die Ueberwachung ob ein Benutzer nicht zu Hause ist
      *
-     * @param  Integer $id      ID
-     * @param  String  $name    Name
+     * @param  Integer $id ID
+     * @param  String $name Name
+     * @param array $users
      * @param  Boolean $enabled Aktiv
-     * @return Boolean
+     * @return bool
      * @throws \Exception
      */
     public function editUserNotAtHomeCondition($id, $name = null, array $users = null, $enabled = null) {
@@ -1006,9 +1010,10 @@ class ConditionEditor {
     /**
      * bearbeitet eine Eingangsbedingung
      *
-     * @param  Integer $id           ID
-     * @param  Array   $inputs       Eingaenge
-     * @param  Boolean $enabled      Aktiv
+     * @param  Integer $id ID
+     * @param null $name
+     * @param  Array $inputs Eingaenge
+     * @param  Boolean $enabled Aktiv
      * @return Booelan
      * @throws \Exception
      */
@@ -1046,9 +1051,10 @@ class ConditionEditor {
     /**
      * bearbeitet eine Eingangsbedingung
      *
-     * @param  Integer $id           ID
-     * @param  Array   $inputs       Eingaenge
-     * @param  Boolean $enabled      Aktiv
+     * @param  Integer $id ID
+     * @param null $name
+     * @param  Array $inputs Eingaenge
+     * @param  Boolean $enabled Aktiv
      * @return Booelan
      * @throws \Exception
      */
@@ -1088,10 +1094,11 @@ class ConditionEditor {
     /**
      * bearbeitet eine Eingangsbedingung
      *
-     * @param  Integer $id           ID
-     * @param  Integer $holidays     Feiertage
-     * @param  Boolean $enabled      Aktiv
-     * @param  Boolean $invert       Invertiert
+     * @param  Integer $id ID
+     * @param null $name
+     * @param  Integer $holidays Feiertage
+     * @param  Boolean $enabled Aktiv
+     * @param  Boolean $invert Invertiert
      * @return Booelan
      * @throws \Exception
      */

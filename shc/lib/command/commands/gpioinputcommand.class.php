@@ -50,11 +50,11 @@ class GpioInputCommand extends AbstractCommand {
      * @var Integer 
      */
     protected $state = 0;
-    
+
     /**
      * @param Integer $switchServer ID des Schaltservers
-     * @param Integer $pinNumber    Pin Nummer
-     * @param Integer $command      Kommando
+     * @param Integer $pinNumber Pin Nummer
+     * @internal param int $command Kommando
      */
     public function __construct($switchServer, $pinNumber) {
         

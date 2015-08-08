@@ -26,7 +26,8 @@ use SHC\SwitchServer\SwitchServer;
 class SwitchServerForm extends DefaultHtmlForm {
 
     /**
-     * @param SwitchServer $userAtHome
+     * @param SwitchServer $switchServer
+     * @internal param SwitchServer $userAtHome
      */
     public function __construct(SwitchServer $switchServer = null) {
 

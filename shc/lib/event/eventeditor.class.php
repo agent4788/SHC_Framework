@@ -239,8 +239,9 @@ class EventEditor {
     /**
      * gibt das Ereignis mit der IOD zurueck
      *
-     * @param  Integer ID $id Ereignis ID
-     * @return \SHC\Event\Event
+     * @param $id
+     * @return Event
+     * @internal param ID $Integer $id Ereignis ID
      */
     public function getEventById($id) {
 
@@ -1029,9 +1030,10 @@ class EventEditor {
     /**
      * erstellt ein neuen Event Sonnenaufgang
      *
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiviert
-     * @param  Array   $conditions Liste der Bedingunen
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiviert
+     * @param  Array $conditions Liste der Bedingunen
+     * @return bool
      */
     public function addSunriseEvent($name, $enabled, array $conditions = null) {
 
@@ -1042,10 +1044,11 @@ class EventEditor {
     /**
      * bearbeitet ein Event Sonnenaufgang
      *
-     * @param  Integer $id         ID
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiviert
-     * @param  Array   $conditions Liste der Bedingunen
+     * @param  Integer $id ID
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiviert
+     * @param  Array $conditions Liste der Bedingunen
+     * @return bool
      */
     public function editSunriseEvent($id, $name = null, $enabled = null, array $conditions = null) {
 
@@ -1056,9 +1059,10 @@ class EventEditor {
     /**
      * erstellt ein neuen Event Sonnenuntergang
      *
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiviert
-     * @param  Array   $conditions Liste der Bedingunen
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiviert
+     * @param  Array $conditions Liste der Bedingunen
+     * @return bool
      */
     public function addSunsetEvent($name, $enabled, array $conditions = null) {
 
@@ -1069,10 +1073,11 @@ class EventEditor {
     /**
      * bearbeitet ein Event Sonnenuntergang
      *
-     * @param  Integer $id         ID
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiviert
-     * @param  Array   $conditions Liste der Bedingunen
+     * @param  Integer $id ID
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiviert
+     * @param  Array $conditions Liste der Bedingunen
+     * @return bool
      */
     public function editSunsetEvent($id, $name = null, $enabled = null, array $conditions = null) {
 

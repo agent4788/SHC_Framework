@@ -35,9 +35,9 @@ abstract class SensorViewHelper {
     /**
      * erstellt das HTML Fragment zur Anzeige eines Sensors
      *
-     * @param  Integer             $roomId     Raum ID
-     * @param  \SHC\Sensor\Sensor  $sensor     Sensor
-     * @param  Booelan             $ignoreShow Sensoren Anzeigen trotz abgewahlt
+     * @param  Integer $roomId Raum ID
+     * @param  \SHC\Sensor\Sensor $sensor Sensor
+     * @param bool|Booelan $ignoreShow Sensoren Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showSensor($roomId, Sensor $sensor, $ignoreShow = false) {
