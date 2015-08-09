@@ -16,7 +16,7 @@ class SocketServerClient {
     /**
      * Socket Verbindung
      * 
-     * @var Recource
+     * @var recource
      */
     protected $socket = null;
 
@@ -28,7 +28,7 @@ class SocketServerClient {
     protected $opend = false;
 
     /**
-     * @param Recource $socket Verbindungs Handle
+     * @param recource $socket Verbindungs Handle
      */
     public function __construct($socket) {
 

@@ -9,11 +9,11 @@ use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
+use SHC\Core\Exception\AssertException;
 use SHC\Core\SHC;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\MoistureClimbOver;
 use SHC\Event\Events\MoistureFallsBelow;
-use SHC\Form\FormElements\ConditionsChooser;
 use SHC\Form\FormElements\SensorChooser;
 
 /**

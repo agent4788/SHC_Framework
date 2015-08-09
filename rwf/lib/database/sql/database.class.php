@@ -317,7 +317,7 @@ abstract class Database {
     /**
      * gibt den Speicherbedarf der datenbank in Bytes zurueck
      *
-     * @param  String  Datenbank
+     * @param  String  $database Datenbank
      * @return Integer
      * @throws \PDOException
      */
@@ -384,7 +384,7 @@ abstract class Database {
 
     /**
      * gibt das PDO Objekt zurueck
-     * @return PDO
+     * @return \PDO
      */
     public function getPDO() {
 

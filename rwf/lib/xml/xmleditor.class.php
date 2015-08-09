@@ -20,7 +20,7 @@ class XmlEditor extends \SimpleXMLElement {
     /**
      * Dateiname der XML Datei
      * 
-     * @var type 
+     * @var string
      */
     protected $fileName = '';
 

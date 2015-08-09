@@ -3,7 +3,6 @@
 namespace SHC\Form\FormElements;
 
 //Imports
-use RWF\Form\FormElements\Select;
 use RWF\Form\FormElements\SelectMultiple;
 use SHC\UserAtHome\UserAtHomeEditor;
 

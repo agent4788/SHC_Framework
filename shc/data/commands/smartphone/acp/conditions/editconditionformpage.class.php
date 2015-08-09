@@ -4,6 +4,7 @@ namespace SHC\Command\Smartphone;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
@@ -31,7 +32,6 @@ use SHC\Condition\Conditions\TimeOfDayCondition;
 use SHC\Condition\Conditions\UserAtHomeCondition;
 use SHC\Condition\Conditions\UserNotAtHomeCondition;
 use SHC\Core\SHC;
-use SHC\Form\FormElements\ConditionTypeChooser;
 use SHC\Form\Forms\Conditions\DateConditionForm;
 use SHC\Form\Forms\Conditions\DayOfWeekConditionForm;
 use SHC\Form\Forms\Conditions\FileExistsConditionForm;

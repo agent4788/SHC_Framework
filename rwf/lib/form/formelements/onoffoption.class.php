@@ -227,15 +227,8 @@ class OnOffOption extends AbstractFormElement {
             $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
-        //Label
-        $html = '';
-        $wrapperClass = 'custom-label-flipswitch';
-        if (String::length($this->label['on']) > 4 || String::length($this->label['off']) > 4) {
-
-            $wrapperClass = 'custom-size-flipswitch';
-        }
-
         //HTML Code
+        $html = '';
         $html .= '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld

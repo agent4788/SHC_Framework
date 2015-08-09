@@ -27,14 +27,14 @@ class DatabaseEditor {
     /**
      * Datenbankobjekt
      *
-     * @var \RWF\Database\Database
+     * @var \RWF\Database\SQL\Database
      */
     protected $database = null;
 
     /**
      * Singleton Instanz
      *
-     * @var \RWF\Database\DatabaseEditor
+     * @var \RWF\Database\SQL\DatabaseEditor
      */
     protected static $instance = null;
 
@@ -46,7 +46,7 @@ class DatabaseEditor {
     /**
      * Datenbankobjekt erzeugen
      *
-     * @return \RWF\Database\Database|MySQLDatabase
+     * @return \RWF\Database\SQL\Database|MySQLDatabase
      * @throws \Exception
      */
     public function getDatabaseObject() {
@@ -84,7 +84,7 @@ class DatabaseEditor {
     /**
      * gibt den Datanbank Editor zurueck
      *
-     * @return \RWF\Database\DatabaseEditor
+     * @return \RWF\Database\SQL\DatabaseEditor
      */
     public static function getInstance() {
 

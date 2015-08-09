@@ -11,9 +11,7 @@ use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\Script;
-use SHC\Switchable\Switchables\Shutdown;
 
 /**
  * Funksteckdose Formular

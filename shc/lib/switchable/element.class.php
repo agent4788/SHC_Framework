@@ -4,7 +4,6 @@ namespace SHC\Switchable;
 
 //Imports
 use RWF\User\Visitor;
-use SHC\Room\Room;
 use RWF\User\UserGroup;
 
 /**

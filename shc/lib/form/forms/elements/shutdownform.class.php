@@ -9,7 +9,6 @@ use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\Shutdown;
 
 /**

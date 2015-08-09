@@ -35,7 +35,6 @@ abstract class TimeUtil {
         $days = 0;
         $hours = 0;
         $minutes = 0;
-        $sec = 0;
 
         //Jahre
         $jears_in_sec = 365 * 24 * 60 * 60;
@@ -129,7 +128,6 @@ abstract class TimeUtil {
             } else {
                 $string .= $minutes . ' ' . ($minutes == 1 ? RWF::getLanguage()->val('global.date.time.minute') : RWF::getLanguage()->val('global.date.time.minutes')) . ', ';
             }
-            $first = true;
         }
         //Sekunden
         if ($short == true) {

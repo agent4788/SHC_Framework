@@ -11,6 +11,7 @@ use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Condition\ConditionEditor;
 use SHC\Core\SHC;
+use SHC\Form\FormElements\ConditionTypeChooser;
 use SHC\Form\Forms\Conditions\DateConditionForm;
 use SHC\Form\Forms\Conditions\DayOfWeekConditionForm;
 use SHC\Form\Forms\Conditions\FileExistsConditionForm;

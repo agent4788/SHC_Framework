@@ -5,8 +5,6 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Form\FormElements\Select;
 use RWF\Runtime\RaspberryPi;
-use RWF\User\User;
-use RWF\User\UserEditor;
 use SHC\Arduino\Arduino;
 use SHC\SwitchServer\SwitchServerEditor;
 

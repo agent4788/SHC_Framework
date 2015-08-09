@@ -16,7 +16,6 @@ use RWF\User\UserEditor;
 use RWF\User\User;
 use RWF\Language\Language;
 use RWF\Template\Template;
-use RWF\Util\CliUtil;
 
 /**
  * Kernklasse (initialisiert das RWF)
@@ -100,8 +99,6 @@ class RWF {
     protected static $appList = array();
 
     public function __construct() {
-
-        global $argv;
 
         //Multibyte Engine Konfigurieren
         if (function_exists('mb_internal_encoding')) {

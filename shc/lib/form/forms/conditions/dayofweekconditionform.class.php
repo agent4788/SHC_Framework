@@ -8,7 +8,6 @@ use RWF\Date\DateTime;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
-use SHC\Condition\Conditions\DateCondition;
 use SHC\Condition\Conditions\DayOfWeekCondition;
 use SHC\Form\FormElements\DayOfWeekChooser;
 

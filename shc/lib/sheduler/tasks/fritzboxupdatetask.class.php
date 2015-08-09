@@ -9,6 +9,8 @@ use RWF\Util\CliUtil;
 use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\AvmSocket;
+use SHC\Switchable\Switchables\FritzBox;
 
 /**
  * wenn aktiviert kann eine LED mit 0,5Hz Binktakt anzeigen ob der Sheduler läuft
@@ -88,19 +90,19 @@ class FritzBoxUpdateTask extends AbstractTask {
                     //schaltbare Elemente aktualisieren
                     foreach($switchableList as $switchable) {
 
-                        if($switchable instanceof \SHC\Switchable\Switchables\AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
+                        if($switchable instanceof AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
 
                             //status der Steckdose akualisieren
                             $switchable->setState(((int) $smartHomeDevice['switch']['state'] == 1 ? 1 : 0));
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 1) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 1) {
 
                             //WLan 1 Status aktualisieren
                             $switchable->setState($wlan->is2GHzWlanEnabled());
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 2) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 2) {
 
                             //WLan 2 Status aktualisieren
                             $switchable->setState($wlan->is5GHzWlanEnabled());
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 3) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 3) {
 
                             //WLan 3 Status aktualisieren
                             $switchable->setState($wlan->isGuestWlanEnabled());

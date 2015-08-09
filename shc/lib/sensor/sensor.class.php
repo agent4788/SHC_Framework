@@ -3,7 +3,6 @@
 namespace SHC\Sensor;
 
 //Imports
-use SHC\Room\Room;
 
 /**
  * Sensor Schnittstelle

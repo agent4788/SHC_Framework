@@ -9,7 +9,6 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Session\Session;
-use RWF\Settings\Settings;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 

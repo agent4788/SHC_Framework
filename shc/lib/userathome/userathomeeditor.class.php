@@ -5,7 +5,6 @@ namespace SHC\UserAtHome;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 
 /**
  * Benutzer zu Hause Editor
@@ -81,16 +80,16 @@ class UserAtHomeEditor {
         $this->usersAtHome = array();
 
         $usersAtHome = SHC::getDatabase()->hGetAll(self::$tableName);
-        foreach($usersAtHome as $usersAtHome) {
+        foreach($usersAtHome as $userAtHome) {
             
-            $this->usersAtHome[(int) $usersAtHome['id']] = new UserAtHome(
-                    (int) $usersAtHome['id'],
-                    (string) $usersAtHome['name'],
-                    (string) $usersAtHome['ipAddress'],
-                    (int) $usersAtHome['orderId'],
-                    ((int) $usersAtHome['enabled'] == true ? true : false),
-                    (int) $usersAtHome['visibility'],
-                    (int) $usersAtHome['state']
+            $this->usersAtHome[(int) $userAtHome['id']] = new UserAtHome(
+                    (int) $userAtHome['id'],
+                    (string) $userAtHome['name'],
+                    (string) $userAtHome['ipAddress'],
+                    (int) $userAtHome['orderId'],
+                    ((int) $userAtHome['enabled'] == true ? true : false),
+                    (int) $userAtHome['visibility'],
+                    (int) $userAtHome['state']
             );
         }
         
@@ -299,7 +298,7 @@ class UserAtHomeEditor {
      * 
      * @param  Integer $id         Benutzer ID
      * @param  String  $name       Name
-     * @param  Strung  $ipAddress  IP Adresse
+     * @param  String  $ipAddress  IP Adresse
      * @param  Boolean $enabled    Aktiv
      * @param  Boolean $visibility Sichtbarkeit
      * @return Boolean

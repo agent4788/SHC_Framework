@@ -10,7 +10,6 @@ use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Room\Room;
 use SHC\Sensor\Sensors\BMP;
 
 /**

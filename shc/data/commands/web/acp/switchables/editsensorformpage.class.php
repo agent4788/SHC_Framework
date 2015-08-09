@@ -4,7 +4,6 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
@@ -413,7 +412,7 @@ class EditSensorFormPage extends PageCommand {
         } else {
 
             //Ungueltige ID
-            RWF::getSession()->setMessage(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id'));
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
 
             //Umleiten
             $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');

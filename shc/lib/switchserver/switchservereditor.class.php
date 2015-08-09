@@ -5,7 +5,7 @@ namespace SHC\SwitchServer;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
+
 
 /**
  * Verwaltung der Schaltserver

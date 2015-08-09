@@ -4,7 +4,6 @@ namespace SHC\Form\FormElements;
 
 //Imports
 use RWF\Form\FormElements\Select;
-use RWF\Util\FileUtil;
 use SHC\Core\SHC;
 
 /**

@@ -81,7 +81,7 @@ abstract class AbstractHtmlElement {
      */
     public function removeClass($class) {
 
-        $this->classes = array_diff($this->classes, array($id));
+        $this->classes = array_diff($this->classes, array($class));
     }
 
     /**

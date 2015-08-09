@@ -10,7 +10,6 @@ use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Room\Room;
 use SHC\Sensor\Sensors\DHT;
 
 /**
@@ -72,7 +71,7 @@ class DHTSensorForm extends DefaultHtmlForm {
         $this->addFormElement($temperatureVisibility);
 
         //Temperatur Offset
-        $temperatureOffset = new FloatInputField('tempOffset', ($sensor instanceof BMP ? $sensor->getTemperatureOffset() : 0.0), array('min' => -10.0, 'max' => 10.0, 'step' => 0.1));
+        $temperatureOffset = new FloatInputField('tempOffset', ($sensor instanceof DHT ? $sensor->getTemperatureOffset() : 0.0), array('min' => -10.0, 'max' => 10.0, 'step' => 0.1));
         $temperatureOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureOffset'));
         $temperatureOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
         $temperatureOffset->requiredField(true);

@@ -34,7 +34,7 @@ class InputLowCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['inputs']) || !is_array($this->data['inputs'])) {
 
-            throw new Exception('Eingänge müssen angegeben werden', 1580);
+            throw new \Exception('Eingänge müssen angegeben werden', 1580);
         }
 
         foreach($this->data['inputs'] as $inputId) {

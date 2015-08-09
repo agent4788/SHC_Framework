@@ -135,7 +135,6 @@ class ShedulerDeamonCli extends CliCommand {
                 continue;
             } else {
 
-                $n++;
                 $valid = true;
                 $valid_pin = $pin;
                 break;

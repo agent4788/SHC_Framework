@@ -8,6 +8,7 @@ use RWF\User\Visitor;
 use SHC\Room\Room;
 use RWF\User\User;
 use RWF\User\UserGroup;
+use SHC\Room\RoomEditor;
 use SHC\Switchable\Readables\RpiGpioInput;
 
 /**

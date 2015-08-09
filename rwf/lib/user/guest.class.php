@@ -16,7 +16,7 @@ class Guest implements Visitor {
     /**
      * Benutzer Hauptgruppe
      * 
-     * @var RWF\User\UserGroup 
+     * @var \RWF\User\UserGroup
      */
     protected $mainGroup = null;
 

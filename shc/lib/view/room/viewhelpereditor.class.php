@@ -5,8 +5,6 @@ namespace SHC\View\Room;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
-use SHC\Room\Room;
 use SHC\Sensor\Sensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
@@ -177,9 +175,11 @@ class ViewHelperEditor {
 
                 if ($element instanceof Readable) {
 
+                    /* @var $element \SHC\Switchable\Readable */
                     $viewHelper->addReadable($element);
                 } elseif ($element instanceof Switchable) {
 
+                    /* @var $element \SHC\Switchable\Switchable */
                     $viewHelper->addSwitchable($element);
                 }
             }
@@ -208,12 +208,15 @@ class ViewHelperEditor {
 
                     if ($element instanceof Readable) {
 
+                        /* @var $element \SHC\Switchable\Readable */
                         $viewHelper->removeReadable($element);
                     } elseif ($element instanceof Switchable) {
 
+                        /* @var $element \SHC\Switchable\Switchable */
                         $viewHelper->removeSwitchable($element);
-                    } elseif ($element instanceof \SHC\Sensor\Sensor) {
+                    } elseif ($element instanceof Sensor) {
 
+                        /* @var $element \SHC\Sensor\Sensor */
                         $viewHelper->removeSensor($element);
                     }
                 }
@@ -517,7 +520,7 @@ class ViewHelperEditor {
                 return true;
             }
         }
-        return false;;
+        return false;
     }
 
     /**

@@ -55,8 +55,8 @@ class RadioSocketDimmer extends AbstractSwitchable {
      * @param String  $protocol   Protokoll
      * @param String  $systemCode System Code
      * @param String  $deviceCode Geraete Code
-     * @param Inetger $dimmLevel  Dimmung (0 - 100%)
-     * @param Integer $continuous Sendevorgaenge
+     * @param int     $dimmLevel  Dimmung (0 - 100%)
+     * @param int     $continuous Sendevorgaenge
      */
     public function __construct($protocol = '', $systemCode = '',  $deviceCode = '', $dimmLevel = 50, $continuous = 1) {
 

@@ -30,7 +30,7 @@ class User implements Visitor {
     /**
      * Benutzername
      * 
-     * @var Atring 
+     * @var string
      */
     protected $name = '';
 
@@ -211,7 +211,7 @@ class User implements Visitor {
     /**
      * gibt das Gruppenobjekt der Hauptgruppe zurueck
      * 
-     * @return RWF\User\User\Group
+     * @return \RWF\User\UserGroup
      */
     public function getMainGroup() {
 
@@ -268,7 +268,7 @@ class User implements Visitor {
         //alle anderen Gruppen
         foreach ($this->userGroups as $group) {
 
-            if ($group instanceof UserGroup && $group->checkPermission($premission) === true) {
+            if ($group instanceof UserGroup && $group->checkPermission($permissions) === true) {
 
                 return true;
             }

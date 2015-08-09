@@ -188,7 +188,6 @@ class SHC extends RWF {
         if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
             //Mobilen Style laden
-            $mobileStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getMobileStyle() != '') {
 
                 $mobileStyle = self::$visitor->getMobileStyle();
@@ -200,7 +199,6 @@ class SHC extends RWF {
         } elseif(defined('RWF_DEVICE') && RWF_DEVICE == 'web') {
 
             //Webstyle laden
-            $webStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
 
                 $webStyle = self::$visitor->getWebStyle();

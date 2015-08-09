@@ -13,8 +13,6 @@ use SHC\Form\FormElements\GroupPremissonChooser;
 use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\ProtocolChooser;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Form\FormElements\SwitchPointsChooser;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\RadioSocket;
 
 /**

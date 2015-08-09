@@ -5,7 +5,6 @@ namespace RWF\Template;
 //Imports
 use RWF\Template\Exception\TemplateCompilerException;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\ClassLoader\Exception\ClassNotFoundException;
 use RWF\Util\String;
 use RWF\Util\FileUtil;
 use RWF\Util\ArrayUtil;
@@ -298,11 +297,11 @@ class TemplateCompiler {
     /**
      * gibt den Plugin Ordner zurueck
      * 
-     * @return String
+     * @return Array
      */
-    public function getPluginDir() {
+    public function getPluginDirs() {
 
-        return $this->pluginDir;
+        return $this->pluginDirs;
     }
 
     /**
@@ -374,6 +373,7 @@ class TemplateCompiler {
 
             return $this->closeTag($tag);
         }
+        return '';
     }
 
     /**
@@ -1115,7 +1115,6 @@ class TemplateCompiler {
 
         //tags Compilieren
         $statusStack = array(0 => 'start');
-        $result = '';
         $modifierData = null;
 
         for ($i = 0, $j = count($vars); $i < $j; $i++) {

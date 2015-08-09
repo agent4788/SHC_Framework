@@ -259,10 +259,10 @@ class BackupEditor {
     /**
      * packt einen Ordner in ein Zip Archiv
      *
-     * @param  ZipArchive $zip               geoeffnetes Zip Archiv
-     * @param  String     $path              Pfad im Dateisystem
-     * @param  String     $innerArchivePath  Pfad im Archiv
-     * @param  Boolean    $ignoreHiddenFiles versteckte Dateien ignorieren
+     * @param  \ZipArchive $zip               geoeffnetes Zip Archiv
+     * @param  String      $path              Pfad im Dateisystem
+     * @param  String      $innerArchivePath  Pfad im Archiv
+     * @param  Boolean     $ignoreHiddenFiles versteckte Dateien ignorieren
      * @return Boolean
      */
     protected function addDir($zip, $path, $innerArchivePath = '', $ignoreHiddenFiles = false) {

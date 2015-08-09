@@ -3,12 +3,9 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Util\FileUtil;
 use RWF\Util\String;
-use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
-use SHC\Room\Room;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
@@ -16,7 +13,6 @@ use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
-use SHC\Room\RoomEditor;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
@@ -800,6 +796,7 @@ class SensorPointEditor {
         }
 
         //Daten vorbereiten
+        $data = array();
         switch($type) {
 
             case self::SENSOR_DS18X20:
@@ -989,18 +986,18 @@ class SensorPointEditor {
     public function editSensorOrder(array $order) {
 
         $db = SHC::getDatabase();
-        foreach($order as $sId => $order) {
+        foreach($order as $sId => $sOrder) {
 
             if($this->getSensorById($sId) !== null) {
 
                 $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
                 if(isset($sensorData['id']) && (int) $sensorData['id'] == $sId) {
 
-                    foreach($order as $roomId => $order) {
+                    foreach($sOrder as $roomId => $roomOrder) {
 
                         if($sensorData['order'][$roomId]) {
 
-                            $sensorData['order'][$roomId] = $order;
+                            $sensorData['order'][$roomId] = $roomOrder;
                         }
                     }
 

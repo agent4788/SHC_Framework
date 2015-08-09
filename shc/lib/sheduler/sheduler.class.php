@@ -116,7 +116,7 @@ class Sheduler {
                     $this->tasks[$object->getPriority()][] = $object;
                 } else {
                     
-                    throw new Exception('Die Aufgabe muss die "Task" Schnittstelle implementieren', 1508);
+                    throw new \Exception('Die Aufgabe muss die "Task" Schnittstelle implementieren', 1508);
                 }
             }
         }

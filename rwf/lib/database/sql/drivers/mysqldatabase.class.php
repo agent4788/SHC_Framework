@@ -362,7 +362,7 @@ class MySQLDatabase extends Database {
     public function showCreateTable($table) {
 
         $smt = $this->pdo->query('SHOW CREATE TABLE ' . $table);
-        $row = $smt->fetch(PDO::FETCH_NUM);
+        $row = $smt->fetch(\PDO::FETCH_NUM);
         return $row[1];
     }
 
@@ -402,7 +402,7 @@ class MySQLDatabase extends Database {
     /**
      * gibt den Speicherbedarf der datenbank in Bytes zurueck
      *
-     * @param  String  Datenbank
+     * @param  String $database Datenbank
      * @return Integer
      * @throws \PDOException
      */

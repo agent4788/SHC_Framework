@@ -3,13 +3,9 @@
 namespace SHC\Switchable;
 
 //Imports
-use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\Activity;
-use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\FritzBox;
@@ -22,9 +18,7 @@ use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
-use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
-use SHC\Room\RoomEditor;
 use SHC\Timer\SwitchPointEditor;
 use SHC\Timer\SwitchPoint;
 use RWF\User\UserEditor;
@@ -316,7 +310,7 @@ class SwitchableEditor {
                     break;
                 default:
 
-                    throw new Exception('Unbekannter Typ', 1506);
+                    throw new \Exception('Unbekannter Typ', 1506);
             }
 
             //Allgemeine Daten setzen
@@ -562,16 +556,16 @@ class SwitchableEditor {
     public function editOrder(array $order) {
 
         $db = SHC::getDatabase();
-        foreach($order as $switchableId => $order) {
+        foreach($order as $switchableId => $switchableOrder) {
 
             if(isset($this->switchables[$switchableId])) {
 
                 $switchableData = $db->hGet(self::$tableName, $switchableId);
-                foreach($order as $roomId => $order) {
+                foreach($switchableOrder as $roomId => $roomOrder) {
 
                     if($switchableData['order'][$roomId]) {
 
-                        $switchableData['order'][$roomId] = $order;
+                        $switchableData['order'][$roomId] = $roomOrder;
                     }
                 }
 
@@ -1369,63 +1363,6 @@ class SwitchableEditor {
         $data = array(
             'mac' => $mac,
             'ipAddress' => $ipAddress
-        );
-
-        //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-    
-    /**
-     * erstellt einen neuen Arduino Eingang
-     * 
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function addArduinoInput($name, $enabled, $visibility, $icon, $rooms, array $order, $deviceId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
-        );
-
-        //Datensatz erstellen
-        return $this->addElement(self::TYPE_ARDUINO_INPUT, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-
-    /**
-     * bearbeitet einen Arduino Eingang
-     * 
-     * @param  Integer $id                ID
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function editArduinoInput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $deviceId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
         );
 
         //Datensatz bearbeiten

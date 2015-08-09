@@ -28,7 +28,7 @@ class CliUtil {
     /**
      * STDIN Datenstrom
      *
-     * @var Recource
+     * @var recource
      */
     protected static $in = null;
 
@@ -101,6 +101,7 @@ class CliUtil {
      * @param  String $str Text
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function write($str) {
 
         if (!$this->print) {
@@ -116,6 +117,7 @@ class CliUtil {
      * @param  String $str Text
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeLine($str) {
 
         if (!$this->print) {
@@ -133,6 +135,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeColored($str, $color, $backgroundColor = null) {
 
         if (!$this->print) {
@@ -155,6 +158,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeLineColored($str, $color, $backgroundColor = null) {
 
         if (!$this->print) {
@@ -173,7 +177,7 @@ class CliUtil {
      * gibt eine Eingabeaufforderung aus und gibt die Eingabe als String rurueck
      *
      * @param  String   $message Meldung
-     * @param  Recource $handle  Eingabestrom
+     * @param  recource $handle  Eingabestrom
      * @return String            EIngabe
      */
     public function input($message, &$handle = null) {
@@ -205,6 +209,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function colorStart($color, $backgroundColor) {
 
         $return = '';
@@ -242,6 +247,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function colorNext($color) {
 
         if (!$this->print) {
@@ -256,6 +262,7 @@ class CliUtil {
      *
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function reset() {
 
         if (!$this->print) {

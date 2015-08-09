@@ -35,10 +35,8 @@ class Slider extends AbstractFormElement {
         $this->addId('a' . $randomId);
 
         //Deaktiviert
-        $disabled = '';
         if ($this->isDisabled()) {
 
-            $disabled = ' disabled="disabled" ';
             $this->addClass('disabled');
         }
 
@@ -111,10 +109,8 @@ class Slider extends AbstractFormElement {
         $this->addId('a' . $randomId);
 
         //Deaktiviert
-        $disabled = '';
         if ($this->isDisabled()) {
 
-            $disabled = ' disabled="disabled" ';
             $this->addClass('disabled');
         }
 
@@ -133,6 +129,7 @@ class Slider extends AbstractFormElement {
         }
 
         //Optionen
+        /*
         $options = '';
         if (isset($this->options['min'])) {
 
@@ -146,14 +143,14 @@ class Slider extends AbstractFormElement {
 
             $options .= ' step="' . $this->options['step'] . '" ';
         }
-        
+        */
         //HTML Code
         $html = '<div class="rwf-ui-form-content">' . "\n";
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
         $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
-        $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
+        $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" '. $id .' name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
         $html .= "</div>\n";
 
         //Pflichtfeld

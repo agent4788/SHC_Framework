@@ -8,12 +8,9 @@ use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\GroupPremissonChooser;
-use SHC\Form\FormElements\IconChooser;
 use SHC\Form\FormElements\IpAddressInputField;
 use SHC\Form\FormElements\MacAddressInputField;
 use SHC\Form\FormElements\RoomChooser;
-use SHC\Form\FormElements\SwitchPointsChooser;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**

@@ -7,8 +7,6 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
-use RWF\Util\JSON;
-use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
@@ -23,6 +21,8 @@ use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\FritzBox;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
  * Daten eines Raumes Synchronisieren

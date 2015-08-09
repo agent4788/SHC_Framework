@@ -119,7 +119,7 @@ class RadioSocketCommand extends AbstractCommand {
     /**
      * gibt den Geraetecode zurueck
      * 
-     * @return Stzring
+     * @return string
      */
     public function getDeviceCode() {
         

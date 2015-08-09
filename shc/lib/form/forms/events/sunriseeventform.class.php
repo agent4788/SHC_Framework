@@ -10,7 +10,6 @@ use RWF\Form\FormElements\TextField;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\Sunrise;
 use SHC\Event\Events\Sunset;
-use SHC\Form\FormElements\ConditionsChooser;
 
 /**
  * Sonnenaufgang/untergang Ereignis

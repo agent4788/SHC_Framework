@@ -422,7 +422,7 @@ class EditSensorFormPage extends PageCommand {
         } else {
 
             //Ungueltige ID
-            RWF::getSession()->setMessage(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id'));
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.form.error.id')));
 
             //Umleiten
             $this->response->addLocationHeader('index.php?app=shc&m&page=listswitchables');

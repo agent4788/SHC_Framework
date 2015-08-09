@@ -151,6 +151,7 @@ class FritzBox extends AbstractSwitchable {
                 return 'shc-icon-reboot';
                 break;
         }
+        return '';
     }
 
     /**

@@ -47,7 +47,7 @@ class XmlFileManager {
     /**
      * Liste mit den bereits geladenen XML Objekten
      * 
-     * @var type 
+     * @var mixed
      */
     protected $xmlObjects = array();
 

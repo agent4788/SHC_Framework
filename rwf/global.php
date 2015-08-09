@@ -26,7 +26,7 @@ define('RWF_COOKIE_PREFIX', 'rwf_');                                            
 define('RWF_GUEST_USER_GROUP', 3);                                              //Benutzergruppe fuer Gaeste
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
-define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
+define('MICROTIME_NOW', strtok(microtime(), ' ') . strtok(''));
 //Zugriffsmethode
 if (PHP_SAPI == 'cli') {
 

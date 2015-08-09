@@ -18,7 +18,7 @@ class Style {
     /**
      * Name des Styles
      * 
-     * @var type 
+     * @var string
      */
     protected $name = '';
 

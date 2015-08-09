@@ -20,7 +20,7 @@ abstract class AbstractCommand implements Command {
     /**
      * benoetigte Berechtigung
      * 
-     * @var type 
+     * @var string
      */
     protected $requiredPremission = '';
     
@@ -41,7 +41,7 @@ abstract class AbstractCommand implements Command {
     /**
      * Anfrageobjekt
      * 
-     * @var \RWF\Request\Response
+     * @var \RWF\Request\CliResponse
      */
     protected $response = null;
     

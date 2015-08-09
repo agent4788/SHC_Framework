@@ -3,7 +3,6 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;

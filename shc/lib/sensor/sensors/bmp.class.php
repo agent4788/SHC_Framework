@@ -43,9 +43,9 @@ class BMP extends AbstractSensor implements Temperature, AirPressure, Altitude {
     /**
      * setzt den aktuellen Sensorwert und schiebt ih in das Werte Array
      * 
-     * @param Float $temperature Temperatur
-     * @param Floet $pressure    Luftdruck
-     * @param Floet $altitude    Hoehe
+     * @param float $temperature Temperatur
+     * @param float $pressure    Luftdruck
+     * @param float $altitude    Hoehe
      */
     public function pushValues($temperature, $pressure, $altitude) {
         

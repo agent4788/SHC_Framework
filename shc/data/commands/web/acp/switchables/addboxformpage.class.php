@@ -4,7 +4,6 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
 use SHC\Core\SHC;

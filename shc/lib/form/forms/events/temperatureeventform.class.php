@@ -14,7 +14,6 @@ use SHC\Core\SHC;
 use SHC\Event\AbstractEvent;
 use SHC\Event\Events\TemperatureClimbOver;
 use SHC\Event\Events\TemperatureFallsBelow;
-use SHC\Form\FormElements\ConditionsChooser;
 use SHC\Form\FormElements\SensorChooser;
 
 /**

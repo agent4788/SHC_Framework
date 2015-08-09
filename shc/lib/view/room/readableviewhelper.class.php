@@ -6,7 +6,6 @@ namespace SHC\View\Room;
 use RWF\Core\RWF;
 use RWF\Util\String;
 use SHC\Switchable\Readable;
-use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
 
 /**
@@ -32,7 +31,7 @@ class ReadableViewHelper {
      *
      * @param  Integer                   $roomId     Raum ID
      * @param  \SHC\Switchable\Readable  $readable   lesbares Element
-     * @param  Booelan                   $ignoreShow Anzeigen trotz abgewahlt
+     * @param  bool                      $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showReadable($roomId, Readable $readable, $ignoreShow = false) {

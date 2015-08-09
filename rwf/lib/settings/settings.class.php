@@ -4,7 +4,6 @@ namespace RWF\Settings;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\XML\XmlFileManager;
 
 /**
  * Einstellungen
