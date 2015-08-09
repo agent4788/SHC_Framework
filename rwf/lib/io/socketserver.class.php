@@ -123,8 +123,8 @@ class SocketServer {
 
     /**
      * verarbeitet ankommende Verbindungen und gibt die Verbindungsobjekte zurueck
-     * 
-     * @return \RWF\IO\Socket
+     * @return Socket
+     * @throws \Exception
      */
     public function accept() {
 

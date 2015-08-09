@@ -296,18 +296,19 @@ class SwitchPointEditor {
 
     /**
      * erstellt einen neuen Schaltpunkt
-     * 
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiv
-     * @param  Integer $command    Befehl
-     * @param  Array   $conditions Liste der Bedingunen
-     * @param  Array   $year       Liste mit den Jahren
-     * @param  Array   $month      Liste mit den Monaten
-     * @param  Array   $week       Liste mit den Kalenderwochen
-     * @param  Array   $day        Liste mit den Tagen
-     * @param  Array   $hour       Liste mit den Stunden
-     * @param  Array   $minute     Liste mit den Minuten
-     * @return Boolean
+     *
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiv
+     * @param  Integer $command Befehl
+     * @param  Array $conditions Liste der Bedingunen
+     * @param  Array $year Liste mit den Jahren
+     * @param  Array $month Liste mit den Monaten
+     * @param  Array $week Liste mit den Kalenderwochen
+     * @param  Array $day Liste mit den Tagen
+     * @param  Array $hour Liste mit den Stunden
+     * @param  Array $minute Liste mit den Minuten
+     * @return bool
+     * @throws \Exception
      */
     public function addSwitchPoint($name, $enabled, $command, array $conditions, array $year, array $month, array $week, array $day, array $hour, array $minute) {
 
@@ -343,19 +344,20 @@ class SwitchPointEditor {
 
     /**
      * bearbeitet einen Schaltpunkt
-     * 
-     * @param  Integre $id         ID
-     * @param  String  $name       Name
-     * @param  Boolean $enabled    Aktiv
-     * @param  Integer $command    Befehl
-     * @param  Array   $conditions Liste der Bedingunen
-     * @param  Array   $year       Liste mit den Jahren
-     * @param  Array   $month      Liste mit den Monaten
-     * @param  Array   $week       Liste mit den Kalenderwochen
-     * @param  Array   $day        Liste mit den Tagen
-     * @param  Array   $hour       Liste mit den Stunden
-     * @param  Array   $minute     Liste mit den Minuten
-     * @return Boolean
+     *
+     * @param  Integre $id ID
+     * @param  String $name Name
+     * @param  Boolean $enabled Aktiv
+     * @param  Integer $command Befehl
+     * @param  Array $conditions Liste der Bedingunen
+     * @param  Array $year Liste mit den Jahren
+     * @param  Array $month Liste mit den Monaten
+     * @param  Array $week Liste mit den Kalenderwochen
+     * @param  Array $day Liste mit den Tagen
+     * @param  Array $hour Liste mit den Stunden
+     * @param  Array $minute Liste mit den Minuten
+     * @return bool
+     * @throws \Exception
      */
     public function editSwitchPoint($id, $name = null, $enabled = null, $command = null, array $conditions = null, array $year = null, array $month = null, array $week = null, array $day = null, array $hour = null, array $minute = null) {
 

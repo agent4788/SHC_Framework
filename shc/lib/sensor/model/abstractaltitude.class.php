@@ -61,8 +61,9 @@ trait AbstractAltitude {
     /**
      * setzt das Temperatur Offset
      *
-     * @param  Float $temperatureOffset
-     * @return \SHC\Sensor\Model\Altitude
+     * @param $altitudeOffset
+     * @return Altitude
+     * @internal param Float $temperatureOffset
      */
     public function setAltitudeOffset($altitudeOffset) {
 

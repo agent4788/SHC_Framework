@@ -27,7 +27,9 @@ use SHC\Form\FormElements\InputChooser;
 class InputEventForm extends DefaultHtmlForm {
 
     /**
-     * @param AbstractEvent $condition
+     * @param AbstractEvent $event
+     * @throws \Exception
+     * @internal param AbstractEvent $condition
      */
     public function __construct(AbstractEvent $event = null) {
 

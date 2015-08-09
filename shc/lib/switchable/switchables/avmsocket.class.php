@@ -25,7 +25,8 @@ class AvmSocket extends AbstractSwitchable {
     protected $ain = '';
 
     /**
-     * @param String $aim Identifizierung
+     * @param string $ain
+     * @internal param String $aim Identifizierung
      */
     public function __construct($ain = '') {
 

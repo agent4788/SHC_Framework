@@ -198,8 +198,9 @@ abstract class AbstractReadable implements Readable {
     /**
      * setzt eine Liste mit Raeumen
      *
-     * @param  Array $roomId Raum IDs
-     * @return \SHC\Switchable\Element
+     * @param array $rooms
+     * @return Element
+     * @internal param Array $roomId Raum IDs
      */
     public function setRooms(array $rooms) {
 
@@ -243,6 +244,7 @@ abstract class AbstractReadable implements Readable {
     /**
      * gibt eine Liste mit den Raumnamen zurueck
      *
+     * @param bool $commaSepareted
      * @return Array
      */
     public function getNamedRoomList($commaSepareted = false) {

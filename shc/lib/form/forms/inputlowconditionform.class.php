@@ -23,7 +23,7 @@ use SHC\Form\FormElements\InputChooser;
 class InputLowConditionForm extends DefaultHtmlForm {
 
     /**
-     * @param InputHighCondition $condition
+     * @param InputHighCondition|InputLowCondition $condition
      */
     public function __construct(InputLowCondition $condition = null) {
 

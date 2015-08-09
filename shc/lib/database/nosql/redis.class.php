@@ -59,6 +59,7 @@ class Redis extends RedisCore {
      * gibt zu einem Datensatz den naechsten Index zurueck
      *
      * @param $dataSet
+     * @return int
      */
     public function autoIncrement($dataSet) {
 

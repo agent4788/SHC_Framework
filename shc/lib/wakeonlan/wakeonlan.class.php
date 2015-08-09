@@ -29,9 +29,10 @@ abstract class WakeOnLan {
 
     /**
      * sendet einen WOL Befehl ins lokale Netzwerk
-     * 
+     *
      * @param String $macAddressHexadecimal MAC Adresse
-     * @param String $broadcastAddress      Broadcast Adresse
+     * @param String $broadcastAddress Broadcast Adresse
+     * @return string
      * @throws \Exception
      */
     public static function wakeUp($macAddressHexadecimal, $broadcastAddress) {

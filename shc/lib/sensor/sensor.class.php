@@ -71,8 +71,9 @@ interface Sensor {
     /**
      * setzt eine Liste mit Raeumen
      *
-     * @param  Array $roomId Raum IDs
-     * @return \SHC\Sensor\Sensor
+     * @param array $rooms
+     * @return Sensor
+     * @internal param Array $roomId Raum IDs
      */
     public function setRooms(array $rooms);
 
@@ -102,6 +103,7 @@ interface Sensor {
     /**
      * gibt eine Liste mit den Raumnamen zurueck
      *
+     * @param bool $commaSepareted
      * @return Array
      */
     public function getNamedRoomList($commaSepareted = false);

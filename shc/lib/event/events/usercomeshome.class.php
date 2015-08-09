@@ -18,11 +18,11 @@ use RWF\Date\DateTime;
  * @version    2.0.0-0
  */
 class UserComesHome extends AbstractEvent {
-    
+
     /**
      * gibt an ob das Ereigniss erfuellt ist
-     * 
-     * @return Boolean
+     * @return bool
+     * @throws \Exception
      */
     public function isSatisfies() {
         

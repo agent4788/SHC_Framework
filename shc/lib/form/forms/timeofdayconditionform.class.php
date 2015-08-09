@@ -23,7 +23,7 @@ use SHC\Condition\Conditions\TimeOfDayCondition;
 class TimeOfDayConditionForm extends DefaultHtmlForm {
 
     /**
-     * @param TimeOfDayConditionForm $condition
+     * @param TimeOfDayCondition|TimeOfDayConditionForm $condition
      */
     public function __construct(TimeOfDayCondition $condition = null) {
 

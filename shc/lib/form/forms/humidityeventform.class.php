@@ -28,7 +28,9 @@ use SHC\Form\FormElements\SensorChooser;
 class HumidityEventForm extends DefaultHtmlForm {
 
     /**
-     * @param AbstractEvent $condition
+     * @param AbstractEvent $event
+     * @throws \Exception
+     * @internal param AbstractEvent $condition
      */
     public function __construct(AbstractEvent $event = null) {
 

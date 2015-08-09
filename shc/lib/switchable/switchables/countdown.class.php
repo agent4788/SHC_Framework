@@ -42,10 +42,10 @@ class Countdown extends AbstractSwitchable {
 
     /**
      * registriet ein Schaltbares Objekt
-     * 
+     *
      * @param  \SHC\Switchable\Switchable $switchable Objekt
-     * @param  Integre                    $command    Befehl
-     * @return \SHC\Switchable\Switchables\Countdown
+     * @param int|Integre $command Befehl
+     * @return Countdown
      * @throws \Exception
      */
     public function addSwitchable(Switchable $switchable, $command = self::STATE_ON) {

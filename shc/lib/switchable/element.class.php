@@ -139,8 +139,9 @@ interface Element {
     /**
      * setzt eine Liste mit Raeumen
      *
-     * @param  Array $roomId Raum IDs
-     * @return \SHC\Switchable\Element
+     * @param array $rooms
+     * @return Element
+     * @internal param Array $roomId Raum IDs
      */
     public function setRooms(array $rooms);
 
@@ -170,6 +171,7 @@ interface Element {
     /**
      * gibt eine Liste mit den Raumnamen zurueck
      *
+     * @param bool $commaSepareted
      * @return Array
      */
     public function getNamedRoomList($commaSepareted = false);
@@ -251,12 +253,12 @@ interface Element {
      * @return \SHC\Switchable\Element
      */
     public function removeAllAllowedUserGroups();
-    
+
     /**
      * prueft ob ein Benutzer berechtigt ist das Element zu schalten
-     * 
-     * @param \RWF\User\User $user
-     * @return Boolean
+     *
+     * @param \RWF\User\User|Visitor $user
+     * @return bool
      */
     public function isUserEntitled(Visitor $user);
 

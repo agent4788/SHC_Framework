@@ -71,9 +71,12 @@ class DataTypeUtil {
 
     /**
      * konvertiert den Uebergebene Wert in das gewuenschte Format und prueft dabei auf Plausibilitaet
-     * 
-     * @param Mixed   $value    Wert
+     *
+     * @param Mixed $value Wert
      * @param Integer $dataType Datentyp Konstante
+     * @return Mixed
+     * @return Mixed
+     * @throws \Exception
      */
     public static function checkAndConvert($value, $dataType) {
 
@@ -120,9 +123,10 @@ class DataTypeUtil {
 
     /**
      * konvertiert den Uebergebene Wert in das gewuenschte Format
-     * 
-     * @param Mixed   $value    Wert
+     *
+     * @param Mixed $value Wert
      * @param Integer $dataType Datentyp Konstante
+     * @return bool|mixed
      */
     public static function convert($value, $dataType) {
 

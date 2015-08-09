@@ -30,9 +30,9 @@ class ReadableViewHelper {
     /**
      * erstellt das HTML Fragment zur Anzeige eines schaltbaren Elements
      *
-     * @param  Integer                   $roomId     Raum ID
-     * @param  \SHC\Switchable\Readable  $readable   lesbares Element
-     * @param  Booelan                   $ignoreShow Anzeigen trotz abgewahlt
+     * @param  Integer $roomId Raum ID
+     * @param  \SHC\Switchable\Readable $readable lesbares Element
+     * @param bool|Booelan $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showReadable($roomId, Readable $readable, $ignoreShow = false) {

@@ -20,8 +20,8 @@ class HumidityGreaterThanCondition extends AbstractCondition {
 
     /**
      * gibt an ob die Bedingung erfuellt ist
-     *
-     * @return Boolean
+     * @return bool
+     * @throws Exception
      */
     public function isSatisfies() {
 
