@@ -164,24 +164,29 @@ class SensorDataTransmitter {
                             //Daten zum senden vorbereiten
                             $match = array();
                             preg_match('#t=(\d{1,6})#', $dataRaw, $match);
-                            $temp = $match[1] / 1000;
 
-                            //Datenpaket vorbereiten
-                            $data = array(
-                                'spid' => $this->command->getSetting('shc.sensorTransmitter.pointId'),
-                                'type' => 1,
-                                'sid' => $file,
-                                'v1' => $temp
-                            );
+                            //pruefen ob die Daten valid sind
+                            if(isset($match[1])) {
 
-                            //Debug Ausgabe
-                            if ($debug) {
+                                $temp = $match[1] / 1000;
 
-                                $this->printDebugData($data);
+                                //Datenpaket vorbereiten
+                                $data = array(
+                                    'spid' => $this->command->getSetting('shc.sensorTransmitter.pointId'),
+                                    'type' => 1,
+                                    'sid' => $file,
+                                    'v1' => $temp
+                                );
+
+                                //Debug Ausgabe
+                                if ($debug) {
+
+                                    $this->printDebugData($data);
+                                }
+
+                                //Daten senden
+                                $this->sendHttpRequest($data);
                             }
-
-                            //Daten senden
-                            $this->sendHttpRequest($data);
                         }
                     }
                 }
