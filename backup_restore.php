@@ -715,8 +715,8 @@ if(is_array($data)) {
 
             case \Redis::REDIS_STRING:
 
-                //Sonderfall Autoincrement
-                if(substr($key, 0, 13) == 'autoIncrement') {
+                //Sonderfall Zahlen
+                if(preg_match("#^\d+$#", $value)) {
 
                     $redis->incrBy($key, $value);
                 } else {
