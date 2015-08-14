@@ -26,7 +26,7 @@
         //Buttons Initialisieren
         $('#shc-view-switchable-set-{$roomId}-{$switchable->getId()}').buttonset();
         {if $switchable->getFunction() <= 3}
-            {if $switchable->getState() == 1}
+                {if $switchable->getState() == 1}
                 $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button({ icons: { primary: 'ui-icon-check' } });
                 {else}
                 $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
@@ -92,6 +92,31 @@
                     $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
 
                         $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
+                    });
+                {else}
+                    $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
+
+                        //An Button gedrueckt
+                        $.getJSON(
+                                "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                                function(data) {
+
+                                    if (data.success == false) {
+
+                                        $('#shc-view-errorFrame').text(data.message);
+                                        $('#shc-view-errorFrame').dialog({
+                                            resizable: false,
+                                            modal: true,
+                                            buttons: {
+                                                OK: function() {
+                                                    $(this).dialog("close");
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                        );
+                        return false;
                     });
                 {/if}
             });
