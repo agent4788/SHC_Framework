@@ -126,6 +126,14 @@ span.shc-icon-reconnect {
     background-image: url(../../../img/switchables/reconnect.png);
 }
 
+span.shc-icon-camera {
+    background-image: url(../../../img/switchables/camera.png);
+}
+
+span.shc-icon-camera2 {
+    background-image: url(../../../img/switchables/camera2.png);
+}
+
 /* Status Icons */
 span.shc-icon-high {
     display: inline-block;
