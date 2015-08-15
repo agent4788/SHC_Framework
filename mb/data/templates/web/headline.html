@@ -1,6 +1,6 @@
 <div id="mb-headline">
     <div>
-        {premission premission='mbacp.menue'}
+        {premission premission='mb.acp.menue'}
         {if $acp|isset == true}
         <a href="index.php?app=mb&page=index" id="mb-display-acp-menu">{lang var='index.button.ucp'}</a>
         {else}
@@ -55,7 +55,7 @@
 {if $apps|count > 1}
 <ul id="rwf-ui-appMenue" style="display: none;">
     {foreach from=$apps item='app'}
-    <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    <li><a href="index.php?app={$app.app}"><img src="{$app.icon}" /> {#$app.name}</a></li>
     {/foreach}
 </ul>
 {/if}
@@ -166,7 +166,7 @@
             });
         {/if}
 </script>
-{premission premission='pcc.acp.menue'}
+{premission premission='mb.acp.menue'}
 <script type="text/javascript">
     $('#mb-display-acp-menu').button().css({
         position: 'absolute',

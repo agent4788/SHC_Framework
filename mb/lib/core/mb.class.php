@@ -9,6 +9,7 @@ use RWF\Session\Session;
 use RWF\Settings\Settings;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
+use RWF\User\UserEditor;
 
 /**
  * Kernklasse (initialisiert die MovieBase)
@@ -35,37 +36,72 @@ class MB extends RWF {
      */
     protected static $style = null;
 
-    /**
-     * Datenbank
-     *
-     * @var \MB\Database\NoSQL\Redis
-     */
-    protected static $redis = null;
-
     public function __construct() {
-
-        //pruefen ob APP installiert ist
-        if(!file_exists(PATH_MB .'app.json')) {
-
-            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
-        }
 
         //XML Initialisieren
         $this->initXml();
 
+        //Berechtigungen initialisieren
+        $this->initPermissions();
+
         //Basisklasse initalisieren
         parent::__construct();
 
-        //SHC Initialisieren
+        //pruefen ob App installiert ist
         if (ACCESS_METHOD_HTTP) {
 
-            //Datenbank Initalisieren
-            $this->initDatabase();
+            $found = false;
+            foreach(self::$appList as $app) {
+
+                if($app['app'] == 'mb') {
+
+                    $found = true;
+                    break;
+                }
+            }
+
+            if($found === false) {
+
+                throw new \Exception('Die App "Movie Base" ist nicht installiert', 1013);
+            }
+        }
+
+        //MB Initialisieren
+        if (ACCESS_METHOD_HTTP) {
 
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_MB . 'data/templates');
             $this->initStyle();
         }
+    }
+
+    /**
+     * initialisiert die Einstellungen
+     */
+    protected function initSettings() {
+
+        parent::initSettings();
+        $settings = self::$settings;
+
+        //Movie Base Einstellungen hinzufuegen
+        $settings->addSetting('mb.title', Settings::TYPE_STRING, 'Movie Base 2.3');
+        $settings->addSetting('mb.defaultStyle', Settings::TYPE_STRING, 'redmond');
+    }
+
+    /**
+     * initialisiert die Berechtigungen
+     */
+    protected function initPermissions() {
+
+        $userEditor = UserEditor::getInstance();
+
+        //Benutzerrechte
+        $userEditor->addPermission('mb.ucp.viewMovies', true);
+        $userEditor->addPermission('mb.ucp.viewMovieCollections', true);
+        $userEditor->addPermission('mb.ucp.viewStatistics', true);
+
+        //Admin Rechte
+        $userEditor->addPermission('mb.acp.menue', false);
     }
 
     /**
@@ -77,44 +113,19 @@ class MB extends RWF {
     }
 
     /**
-     * Datenbankverbindung Initalisieren
-     *
-     * @throws \Exception
-     */
-    protected function initDatabase() {
-
-        self::$redis = new Redis();
-        self::$redis->connect();
-    }
-
-    /**
      * initialisiert den Style
      */
     protected function initStyle() {
 
-        if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+        //Webstyle laden
+        if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
 
-            //Mobilen Style laden
-            if (self::$visitor instanceof User && self::$visitor->getMobileStyle() != '') {
+            $webStyle = self::$visitor->getWebStyle();
+        } else {
 
-                $mobileStyle = self::$visitor->getMobileStyle();
-            } else {
-
-                $mobileStyle = self::getSetting('pcc.defaultMobileStyle');
-            }
-            self::$style = StyleEditor::getInstance()->getMobileStyle($mobileStyle);
-        } elseif(defined('RWF_DEVICE') && RWF_DEVICE == 'web') {
-
-            //Webstyle laden
-            if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
-
-                $webStyle = self::$visitor->getWebStyle();
-            } else {
-
-                $webStyle = self::getSetting('pcc.defaultStyle');
-            }
-            self::$style = StyleEditor::getInstance()->getWebStyle($webStyle);
+            $webStyle = self::getSetting('mb.defaultStyle');
         }
+        self::$style = StyleEditor::getInstance()->getWebStyle($webStyle);
     }
 
     /**
@@ -125,39 +136,5 @@ class MB extends RWF {
     public static function getStyle() {
 
         return self::$style;
-    }
-
-    /**
-     * gibt das Datenbankobjekt zutueck
-     *
-     * @return \MB\Database\NoSQL\Redis
-     */
-    public static function getDatabase() {
-
-        return self::$redis;
-    }
-
-    /**
-     * beendet die Anwendung
-     */
-    public function finalize() {
-
-        //Einstellungen Speichern
-        if (self::$settings instanceof Settings) {
-
-            self::$settings->finalize();
-        }
-
-        //Sessionobjekt abschliesen
-        if (self::$session instanceof Session) {
-
-            self::$session->finalize();
-        }
-
-        //Datenbankverbindung beenden
-        if(self::$redis instanceof Redis) {
-
-            self::$redis->close();
-        }
     }
 }

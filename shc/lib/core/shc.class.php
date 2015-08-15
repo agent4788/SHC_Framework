@@ -333,22 +333,4 @@ class SHC extends RWF {
 
         return self::$redis;
     }
-
-    /**
-     * beendet die Anwendung
-     */
-    public function finalize() {
-
-        //Sessionobjekt abschliesen
-        if (self::$session instanceof Session) {
-
-            self::$session->finalize();
-        }
-
-        //Datenbankverbindung beenden
-        if(self::$redis instanceof Redis) {
-
-            self::$redis->close();
-        }
-    }
 }
