@@ -701,6 +701,62 @@ if(!$redis->hExists('apps', 'pcc')) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Movie Base installieren ////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//pruefen ob die Movie schon installiert ist
+if(!$redis->hExists('apps', 'mb')) {
+
+    //Abfragen ob die Movie installiert werden soll
+    $i = 0;
+    $valid = true;
+    $installMb = false;
+    while ($i < 5) {
+
+        $safetyRequest = $cli->input('soll die Movie Base Installiert werden? (ja|nein): ');
+
+        if (!preg_match('#^(ja)|(j)|(nein)|(n)$#i', $safetyRequest)) {
+
+            $cli->writeLnColored('ungültige Eingabe', 'red');
+            $i++;
+            $valid = false;
+            continue;
+        }
+        if ($valid === true && preg_match('#^(ja)|(j)$#i', $safetyRequest)) {
+
+            $installMb = true;
+            break;
+        } elseif ($valid === true && preg_match('#^(nein)|(n)$#i', $safetyRequest)) {
+
+            $installMb = false;
+            break;
+        }
+    }
+
+    if ($valid === false) {
+
+        $cli->writeLnColored('ungültige Eingabe', 'red');
+        exit(1);
+    }
+
+    //PCC installieren
+    if($installMb === true) {
+
+        //APP Daten Anmelden
+        $redis->hset('apps', 'mb', array(
+            'app' => 'mb',
+            'name' => 'Movie Base',
+            'icon' => './mb/inc/img/mb-icon.png',
+            'order' => 30,
+            'apLevel' => 12
+        ));
+
+        //App erfolgreich installiert
+        $cli->writeLineColored('Die Movie Base wurde erfolgreich installiert', 'green');
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // sich selbst loeschen ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
