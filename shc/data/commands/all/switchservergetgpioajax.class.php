@@ -72,6 +72,22 @@ class SwitchServerGetGpioAjax extends AjaxCommand {
 
                 $html .= '<option value="'. $i .'">'. $i .'</option>';
             }
+        } elseif($model == Arduino::ESP8266_01) {
+
+            //Pins 2 - 3
+            $html = '';
+            foreach(range(2, 3) as $i) {
+
+                $html .= '<option value="'. $i .'">'. $i .'</option>';
+            }
+        } elseif($model == Arduino::ESP8266_12) {
+
+            //Pins 0 - 15
+            $html = '';
+            foreach(range(0, 15) as $i) {
+
+                $html .= '<option value="'. $i .'">'. $i .'</option>';
+            }
         }
 
         $this->data = $html;
