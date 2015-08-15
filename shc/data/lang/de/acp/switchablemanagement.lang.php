@@ -23,6 +23,8 @@ $l['acp.switchableManagement.title.nothing'] = 'keine:';
 $l['acp.switchableManagement.message.id.error'] = 'Ungültige Raum ID';
 $l['acp.switchableManagement.title.addSwitchable'] = 'schaltbares Element hinzufügen';
 $l['acp.switchableManagement.button.switchFunctions'] = 'Schaltfunktionen';
+$l['acp.switchableManagement.switchables'] = 'Schaltbare Elemente';
+$l['acp.switchableManagement.sensors'] = 'Sensoren';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
@@ -60,7 +62,7 @@ $l['acp.switchableManagement.element.remoteShutdown'] = 'externes Gerät Herunte
 $l['acp.switchableManagement.element.script'] = 'Script';
 $l['acp.switchableManagement.element.avmSocket'] = 'AVM Steckdose';
 $l['acp.switchableManagement.element.fritzBox'] = 'Fritz!Box';
-$l['acp.switchableManagement.element.BMP'] = 'BMP 085/150';
+$l['acp.switchableManagement.element.BMP'] = 'BMP 085/180';
 $l['acp.switchableManagement.element.DHT'] = 'DHT 11/22';
 $l['acp.switchableManagement.element.DS18x20'] = 'DS18x20';
 $l['acp.switchableManagement.element.Hygrometer'] = 'Feuchtigkeits Sensor';
@@ -182,6 +184,8 @@ $l['acp.switchableManagement.form.addWol.allowedUsers.description'] = 'legt fest
 
 $l['acp.switchableManagement.form.sensorForm.name'] = 'Name';
 $l['acp.switchableManagement.form.sensorForm.name.description'] = 'Name des Sensors';
+$l['acp.switchableManagement.form.sensorForm.icon'] = 'Icon';
+$l['acp.switchableManagement.form.sensorForm.icon.description'] = 'Icon des Sensors';
 $l['acp.switchableManagement.form.sensorForm.room'] = 'Raum';
 $l['acp.switchableManagement.form.sensorForm.room.description'] = 'Raum in dem sich der Sensor befindet';
 $l['acp.switchableManagement.form.sensorForm.visibility'] = 'Sichtbarkeit';

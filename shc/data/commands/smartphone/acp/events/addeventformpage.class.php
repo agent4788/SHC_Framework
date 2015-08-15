@@ -11,13 +11,13 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use SHC\Form\FormElements\EventTypeChooser;
-use SHC\Form\Forms\HumidityEventForm;
-use SHC\Form\Forms\InputEventForm;
-use SHC\Form\Forms\LightIntensityEventForm;
-use SHC\Form\Forms\MoistureEventForm;
-use SHC\Form\Forms\SunriseEventForm;
-use SHC\Form\Forms\TemperatureEventForm;
-use SHC\Form\Forms\UserEventForm;
+use SHC\Form\Forms\Events\HumidityEventForm;
+use SHC\Form\Forms\Events\InputEventForm;
+use SHC\Form\Forms\Events\LightIntensityEventForm;
+use SHC\Form\Forms\Events\MoistureEventForm;
+use SHC\Form\Forms\Events\SunriseEventForm;
+use SHC\Form\Forms\Events\TemperatureEventForm;
+use SHC\Form\Forms\Events\UserEventForm;
 use SHC\Form\Forms\UserForm;
 
 /**

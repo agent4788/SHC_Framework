@@ -4,10 +4,8 @@ namespace SHC\Condition\Conditions;
 
 //Imports
 use SHC\Condition\AbstractCondition;
+use SHC\Sensor\Model\Temperature;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\BMP;
-use SHC\Sensor\Sensors\DHT;
-use SHC\Sensor\Sensors\DS18x20;
 
 /**
  * Bedingung Temperatur kleiner als
@@ -36,14 +34,14 @@ class TemperatureLowerThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['temperature'])) {
 
-            throw new Exception('sensors und temperature müssen angegeben werden', 1580);
+            throw new \Exception('sensors und temperature müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);
         foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
-            if ($sensor instanceof DS18x20 || $sensor instanceof DHT || $sensor instanceof BMP) {
+            if ($sensor instanceof Temperature) {
 
                 $humidity = $sensor->getTemperature();
                 if ($humidity <= (float) $this->data['temperature']) {

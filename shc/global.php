@@ -14,7 +14,6 @@ define('PATH_SHC', __DIR__ . '/');                                              
 define('PATH_SHC_CLASSES', __DIR__ . '/lib/');                                   //Pfad zum Klassenordner des SHC
 define('PATH_SHC_STORAGE', PATH_SHC . 'data/storage/');                          //Pfad zum Speicherordner des SHC
 define('PATH_SHC_LOG', PATH_SHC . 'data/log/');                                  //Pfad zum Logordner des SHC
-define('PATH_SHC_BACKUP', PATH_SHC . 'backup/');                                 //Pfad zum Backupordner des SHC
 define('COMMAND_DIRS', PATH_SHC . 'data/commands/');                             //Speicherorte der Kommando Klassen mehere Pfade durch Semikolon (;) getrennt
 
 //Namensraum SHC registrieren

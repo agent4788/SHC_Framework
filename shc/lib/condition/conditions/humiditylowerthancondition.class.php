@@ -4,8 +4,8 @@ namespace SHC\Condition\Conditions;
 
 //Imports
 use SHC\Condition\AbstractCondition;
+use SHC\Sensor\Model\Humidity;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\DHT;
 
 /**
  * Bedingung Luftfeuchte kleiner als
@@ -34,14 +34,14 @@ class HumidityLowerThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['humidity'])) {
 
-            throw new Exception('sensors und humidity müssen angegeben werden', 1580);
+            throw new \Exception('sensors und humidity müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);
         foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
-            if ($sensor instanceof DHT) {
+            if ($sensor instanceof Humidity) {
 
                 $humidity = $sensor->getHumidity();
                 if ($humidity <= (float) $this->data['humidity']) {

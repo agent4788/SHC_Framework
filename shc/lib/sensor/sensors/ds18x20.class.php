@@ -5,6 +5,8 @@ namespace SHC\Sensor\Sensors;
 //Imports
 use SHC\Sensor\AbstractSensor;
 use RWF\Date\DateTime;
+use SHC\Sensor\Model\AbstractTemperature;
+use SHC\Sensor\Model\Temperature;
 
 /**
  * DS18x20 Sensor
@@ -15,29 +17,10 @@ use RWF\Date\DateTime;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DS18x20 extends AbstractSensor {
-    
-    /**
-     * Temperatur
-     *  
-     * @var Float 
-     */
-    protected $temperature = 0.0;
-    
-    /**
-     * Temperatur Anzeigen
-     * 
-     * @var Integer
-     */
-    protected $temperatureVisibility = 1;
+class DS18x20 extends AbstractSensor implements Temperature {
 
-    /**
-     * Temperatur Offset
-     *
-     * @var Float
-     */
-    protected $temperatureOffset = 0.0;
-    
+    use AbstractTemperature;
+
     /**
      * @param Array  $values   Sensorwerte
      */
@@ -49,60 +32,6 @@ class DS18x20 extends AbstractSensor {
             $this->temperature = $values[0]['temp'];
             $this->time = $values[0]['time'];
         }
-    }
-    
-    /**
-     * gibt den Aktuellen Temperaturwert zurueck
-     * 
-     * @return Float
-     */
-    public function getTemperature() {
-        
-        return $this->temperature + $this->temperatureOffset;
-    }
-
-    /**
-     * setzt das Temperatur Offset
-     *
-     * @param  Float $temperatureOffset
-     * @return \SHC\Sensor\Sensors\DS18x20
-     */
-    public function setTemperatureOffset($temperatureOffset) {
-
-        $this->temperatureOffset = $temperatureOffset;
-        return $this;
-    }
-
-    /**
-     * gbit das Temperatur Offset zurueck
-     *
-     * @return Float
-     */
-    public function getTemperatureOffset() {
-
-        return $this->temperatureOffset;
-    }
-    
-    /**
-     * setzt die Sichtbarkeit der Temperatur
-     * 
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\DS18x20
-     */
-    public function temperatureVisibility($visibility) {
-        
-        $this->temperatureVisibility = $visibility;
-        return $this;
-    }
-    
-    /**
-     * gibt die Sichtbarkeit der Temperatur an
-     * 
-     * @return Boolean
-     */
-    public function isTemperatureVisible() {
-        
-        return ($this->temperatureVisibility == 1 ? true : false);
     }
     
     /**

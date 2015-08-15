@@ -4,7 +4,6 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
@@ -139,12 +138,7 @@ class EditBoxFormPage extends PageCommand {
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editbox.success'));
                 } catch (\Exception $e) {
 
-                    if ($e->getCode() == 1507) {
-
-                        //Raumname schon vergeben
-                        $message->setType(Message::ERROR);
-                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addbox.error.1507'));
-                    } elseif ($e->getCode() == 1102) {
+                    if ($e->getCode() == 1102) {
 
                         //fehlende Schreibrechte
                         $message->setType(Message::ERROR);

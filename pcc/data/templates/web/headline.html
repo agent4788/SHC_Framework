@@ -1,6 +1,6 @@
 <div id="pcc-headline">
     <div>
-        {premission premission='pcc.acp.menue'}
+        {premission premission='pcc.acp.menu'}
         {if $acp|isset == true}
         <a href="index.php?app=pcc&page=index" id="pcc-display-acp-menu">{lang var='index.button.ucp'}</a>
         {else}
@@ -55,7 +55,7 @@
 {if $apps|count > 1}
 <ul id="rwf-ui-appMenue" style="display: none;">
     {foreach from=$apps item='app'}
-    <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+    <li><a href="index.php?app={$app.app}"><img src="{$app.icon}" /> {#$app.name}</a></li>
     {/foreach}
 </ul>
 {/if}
@@ -166,7 +166,7 @@
             });
         {/if}
 </script>
-{premission premission='pcc.acp.menue'}
+{premission premission='pcc.acp.menu'}
 <script type="text/javascript">
     $('#pcc-display-acp-menu').button().css({
         position: 'absolute',

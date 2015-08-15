@@ -8,7 +8,6 @@ use RWF\Date\DateTime;
 use RWF\Request\Commands\SyncCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
-use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
@@ -141,37 +140,43 @@ class RoomSync extends SyncCommand {
                 $avmPowerValues = array();
                 foreach($sensors as $sensor) {
 
+                    /* @var $sensor \SHC\Sensor\Sensor */
                     if($sensor->isVisible()) {
 
                         if ($sensor instanceof DS18x20) {
 
                             $ds18x20Values[$sensor->getId()] = array(
-                                'temp' => String::formatFloat($sensor->getTemperature(), 1)
+                                'temp' => $sensor->getDisplayTemperature()
                             );
                         } elseif ($sensor instanceof DHT) {
 
                             $dhtValues[$sensor->getId()] = array(
-                                'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                                'hum' => String::formatFloat($sensor->getHumidity(), 1)
+                                'temp' => $sensor->getDisplayTemperature(),
+                                'hum' => $sensor->getDisplayHumidity()
                             );
                         } elseif ($sensor instanceof BMP) {
 
                             $bmpValues[$sensor->getId()] = array(
-                                'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                                'press' => String::formatFloat($sensor->getPressure(), 1),
-                                'alti' => String::formatFloat($sensor->getAltitude(), 1)
+                                'temp' => $sensor->getDisplayTemperature(),
+                                'press' => $sensor->getDisplayAirPressure(),
+                                'alti' => $sensor->getDisplayAltitude()
                             );
-                        } elseif ($sensor instanceof Hygrometer || $sensor instanceof RainSensor || $sensor instanceof LDR) {
+                        } elseif ($sensor instanceof Hygrometer || $sensor instanceof RainSensor) {
 
                             $analogValues[$sensor->getId()] = array(
-                                'value' => String::formatInteger($sensor->getValue() * 100 / 1023)
+                                'value' => $sensor->getDisplayMoisture()
+                            );
+                        } elseif ($sensor instanceof LDR) {
+
+                            $analogValues[$sensor->getId()] = array(
+                                'value' => $sensor->getDisplayLightIntensity()
                             );
                         } elseif ($sensor instanceof AvmMeasuringSocket) {
 
-                            $avmPowerValues[$sensor->getId()] = array(
-                                'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                                'power' => String::formatFloat(($sensor->getPower() / 1000), 2),
-                                'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh')
+                            $avmPowerValues[str_replace(' ', '-', $sensor->getId())] = array(
+                                'temp' => $sensor->getDisplayTemperature(),
+                                'power' => $sensor->getDisplayPower(),
+                                'energy' => $sensor->getDisplayEnergy()
                             );
                         }
                     }
@@ -207,7 +212,7 @@ class RoomSync extends SyncCommand {
                 if(count($avmPowerValues) > 0) {
 
                     $response->addRetry(1000);
-                    $response->addEvent('syncAvmPowerSockect');
+                    $response->addEvent('syncAvmPowerSocket');
                     $response->addArrayAsJson($avmPowerValues);
                     $response->flush();
                 }

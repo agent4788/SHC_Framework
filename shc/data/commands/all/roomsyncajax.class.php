@@ -7,8 +7,6 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
-use RWF\Util\JSON;
-use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
@@ -23,6 +21,8 @@ use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\FritzBox;
+use SHC\Switchable\Switchables\Script;
+use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
  * Daten eines Raumes Synchronisieren
@@ -119,37 +119,43 @@ class RoomSyncAjax extends AjaxCommand {
         $avmPowerValues = array();
         foreach($sensors as $sensor) {
 
+            /* @var $sensor \SHC\Sensor\Sensor */
             if($sensor->isVisible()) {
 
                 if ($sensor instanceof DS18x20) {
 
                     $ds18x20Values[$sensor->getId()] = array(
-                        'temp' => String::formatFloat($sensor->getTemperature(), 1)
+                        'temp' => $sensor->getDisplayTemperature()
                     );
                 } elseif ($sensor instanceof DHT) {
 
                     $dhtValues[$sensor->getId()] = array(
-                        'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                        'hum' => String::formatFloat($sensor->getHumidity(), 1)
+                        'temp' => $sensor->getDisplayTemperature(),
+                        'hum' => $sensor->getDisplayHumidity()
                     );
                 } elseif ($sensor instanceof BMP) {
 
                     $bmpValues[$sensor->getId()] = array(
-                        'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                        'press' => String::formatFloat($sensor->getPressure(), 1),
-                        'alti' => String::formatFloat($sensor->getAltitude(), 1)
+                        'temp' => $sensor->getDisplayTemperature(),
+                        'press' => $sensor->getDisplayAirPressure(),
+                        'alti' => $sensor->getDisplayAltitude()
                     );
-                } elseif ($sensor instanceof Hygrometer || $sensor instanceof RainSensor || $sensor instanceof LDR) {
+                } elseif ($sensor instanceof Hygrometer || $sensor instanceof RainSensor) {
 
                     $analogValues[$sensor->getId()] = array(
-                        'value' => String::formatInteger($sensor->getValue() * 100 / 1023)
+                        'value' => $sensor->getDisplayMoisture()
+                    );
+                } elseif ($sensor instanceof LDR) {
+
+                    $analogValues[$sensor->getId()] = array(
+                        'value' => $sensor->getDisplayLightIntensity()
                     );
                 } elseif ($sensor instanceof AvmMeasuringSocket) {
 
-                    $avmPowerValues[$sensor->getId()] = array(
-                        'temp' => String::formatFloat($sensor->getTemperature(), 1),
-                        'power' => String::formatFloat(($sensor->getPower() / 1000), 2),
-                        'energy' => ($sensor->getEnergy() < 1000 ? String::formatFloat($sensor->getEnergy(), 0) .' Wh' : String::formatFloat(($sensor->getEnergy() / 1000), 2) .' kWh')
+                    $avmPowerValues[str_replace(' ', '-', $sensor->getId())] = array(
+                        'temp' => $sensor->getDisplayTemperature(),
+                        'power' => $sensor->getDisplayPower(),
+                        'energy' => $sensor->getDisplayEnergy()
                     );
                 }
             }
@@ -160,7 +166,7 @@ class RoomSyncAjax extends AjaxCommand {
         $response['dht'] = $dhtValues;
         $response['bmp'] = $bmpValues;
         $response['analog'] = $analogValues;
-        $response['syncAvmPowerSockect'] = $avmPowerValues;
+        $response['syncAvmPowerSocket'] = $avmPowerValues;
 
         $this->data = $response;
     }

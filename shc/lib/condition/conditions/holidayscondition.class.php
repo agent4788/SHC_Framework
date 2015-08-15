@@ -34,7 +34,7 @@ class HolidaysCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['holidays'])) {
 
-            throw new Exception('Die Feiertage müssen angegeben werden', 1580);
+            throw new \Exception('Die Feiertage müssen angegeben werden', 1580);
         }
 
         $invert = false;

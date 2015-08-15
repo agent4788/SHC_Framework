@@ -183,7 +183,7 @@ class RaspberryPi {
     /**
      * gibt den CPU Takt in MHz zurueck
      * 
-     * @return float
+     * @return Array
      */
     public function getCpuClock() {
 
@@ -207,7 +207,7 @@ class RaspberryPi {
     /**
      * gibt die Minimale CPU Frequenz zurueck
      * 
-     * @return Float
+     * @return Array
      */
     public function getCpuMinClock() {
 
@@ -232,7 +232,7 @@ class RaspberryPi {
     /**
      * gibt die Maximale CPU Frequenz zurueck
      * 
-     * @return Float
+     * @return Array
      */
     public function getCpuMaxClock() {
 
@@ -486,6 +486,7 @@ class RaspberryPi {
 
         $rev = $this->getRpiRevision();
         $model = $this->getModel();
+        $ramTotal = 256;
 
         //Gesamten Ram Ermitteln
         if($model == self::MODEL_A || $model == self::MODEL_A_PLUS) {
@@ -593,6 +594,11 @@ class RaspberryPi {
 
         if (!isset($this->cache['memoryUsage'])) {
 
+            $total = 0;
+            $free = 0;
+            $buffers = 0;
+            $cached = 0;
+
             $matches = array();
             $this->cache['memoryUsage'] = array();
             $meminfo = file_get_contents('/proc/meminfo');
@@ -682,7 +688,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['memoryInfo'])) {
 
-            $data = '';
+            $data = array();
             exec('df -lT | grep -vE "devtmpfs|udev|none|rootfs|Filesystem|Dateisystem"', $data);
 
             $devices = array();
@@ -756,7 +762,6 @@ class RaspberryPi {
             $this->cache['wirelessDevices'] = array();
 
             $devices = $this->getNetworkDevices();
-            $wlanDevices = array();
             foreach ($devices as $device) {
 
                 //pruefen ob es sich um ein WLan Geraet handelt
@@ -858,7 +863,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['usbDevices'])) {
 
-            $data = '';
+            $data = array();
             $devices = array();
             $outputDevices = array();
 
@@ -1015,7 +1020,6 @@ class RaspberryPi {
 
         if (!isset($this->cache['mpeg2'])) {
 
-            $config = @file_get_contents('/boot/config.txt');
             if (isset($this->config['decode_MPG2']) && preg_match('#0x[0-9a-z]+#i', $this->config['decode_MPG2'])) {
 
                 $this->cache['mpeg2'] = true;

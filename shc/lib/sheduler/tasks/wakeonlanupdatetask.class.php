@@ -3,6 +3,7 @@
 namespace SHC\Sheduler\Tasks;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\WakeOnLan;
@@ -38,6 +39,26 @@ class WakeOnLanUpdateTask extends AbstractTask {
      * falls ein Intervall angegeben ist wird automatisch die Ausfuerung in den vogegebenen Zeitabstaenden verzoegert
      */
     public function executeTask() {
+
+        //Intervall festlegen
+        switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+            case 1:
+
+                //fast
+                $this->interval = 'PT30S';
+                break;
+            case 2:
+
+                //default
+                $this->interval = 'PT60S';
+                break;
+            case 3:
+
+                //slow
+                $this->interval = 'PT120S';
+                break;
+        }
 
         //Liste mit den Schaltbaren Elementen holen
         $switchables = SwitchableEditor::getInstance()->listElements();

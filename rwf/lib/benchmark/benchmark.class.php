@@ -60,7 +60,7 @@ class Benchmark {
      */
     public function getGlobalExceutionTime() {
 
-        return round(strtok(microtime(), ' ') + strtok('') - MICROTIME_NOW, 6);
+        return round(strtok(microtime(), ' ') . strtok('') - MICROTIME_NOW, 6);
     }
 
     /**
@@ -72,7 +72,7 @@ class Benchmark {
     public function startBlockBenchmark($name, $description = '') {
 
         $name = String::toLower($name);
-        $this->time[$name]         = strtok(microtime(), ' ') + strtok('');
+        $this->time[$name]         = strtok(microtime(), ' ') . strtok('');
         $this->memory[$name]       = Runtime::getInstance()->getMemorySize();
         $this->descriptions[$name] = $description;
     }
@@ -87,7 +87,7 @@ class Benchmark {
 
         $name = String::toLower($name);
         //Auswertung
-        $this->finishedBenchmarks[$name][0] = round(strtok(microtime(), ' ') + strtok('') - $this->time[$name], 6);
+        $this->finishedBenchmarks[$name][0] = round(strtok(microtime(), ' ') . strtok('') - $this->time[$name], 6);
         $this->finishedBenchmarks[$name][1] = Runtime::getInstance()->getMemorySize() - $this->memory[$name];
         $this->finishedBenchmarks[$name][2] = $this->descriptions[$name];
 

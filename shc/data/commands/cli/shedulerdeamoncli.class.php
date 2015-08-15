@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
 use RWF\Util\String;
+use SHC\Core\SHC;
 use SHC\Sheduler\Sheduler;
 
 /**
@@ -134,7 +135,6 @@ class ShedulerDeamonCli extends CliCommand {
                 continue;
             } else {
 
-                $n++;
                 $valid = true;
                 $valid_pin = $pin;
                 break;
@@ -147,6 +147,53 @@ class ShedulerDeamonCli extends CliCommand {
             exit(1);
         }
 
+        //Performance Profil
+        echo "folgende Performance Profile stehen zur verfügung\n";
+        echo "+- ID -+- Profil -+ Beschreibung -+------------------------------------------------------------------------------------------------------------------------------------------+\n";
+        echo "|   1  |    fast  | Reaktionszeiten von 1 - 3 Sekunden (dafür höhere System- und Netzwerkauslasutung)                                                                        |\n";
+        echo "|   2  | default  | Reaktionszeiten von 1 - 10 Sekunden (empfohlen)                                                                                                          |\n";
+        echo "|   3  |    slow  | Reaktionszeiten von 1 - 30 Sekunden                                                                                                          |\n";
+        echo "+------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
+
+        //Eingabe abfragen
+        $n = 0;
+        $valid = true;
+        $valid_profile = '';
+        $profile_not_change = false;
+        while (true) {
+
+            $in = intval($cli->input('wähle das Profil welches verwendet werden soll ('. SHC::getSetting('shc.shedulerDaemon.performanceProfile') .'): '));
+
+            if((int) $in == 0) {
+
+                $profile_not_change = true;
+                $valid = true;
+                break;
+            } else {
+
+                if (in_array($in, array(1, 2, 3))) {
+
+                    //Datei
+                    $valid_profile = $in;
+                    $valid = true;
+                    break;
+                } elseif($n < 5) {
+
+                    $cli->writeLineColored('ungültiges Profil gewählt', 'red');
+                    $n++;
+                } elseif ($n == 5) {
+
+                    $cli->writeLineColored('ungültiges Profil gewählt, versuche es später noch einmal', 'red');
+                    exit(1);
+                }
+            }
+        }
+        if ($valid === false) {
+
+            $cli->writeLnColored('ungültige Eingabe', 'red');
+            exit(1);
+        }
+
         //Speichern
         if($active_not_change === false) {
 
@@ -156,10 +203,14 @@ class ShedulerDeamonCli extends CliCommand {
 
             RWF::getSettings()->editSetting('shc.shedulerDaemon.blinkPin', $valid_pin);
         }
+        if($profile_not_change === false) {
+
+            RWF::getSettings()->editSetting('shc.shedulerDaemon.performanceProfile', $valid_profile);
+        }
 
         try {
 
-            RWF::getSettings()->saveAndReload();
+            RWF::getSettings()->reloadSettings();
             $response->writeLnColored(RWF::getLanguage()->get('shedulerDaemon.input.save.success'), 'green');
         } catch(\Exception $e) {
 

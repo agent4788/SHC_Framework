@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.database.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-inset="true" data-split-theme="a">
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.version'}:</span> {#$info.redis_version}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.mode'}:</span> {if $info.redis_mode|isset}{#$info.redis_mode}{elseif $info.role}{#$info.role}{/if}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.uptime'}:</span> {#$info.uptime_in_seconds|seconds:1}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.config'}:</span> {if $info.config_file|isset}{#$info.config_file}{else}unknown{/if}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.memory'}:</span> {#$info.used_memory|filesizebinary}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.memoryPeak'}:</span> {#$info.used_memory_peak|filesizebinary}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.lastSave'}:</span> {#$lastSaveDate|timeline}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.lastSaveState'}:</span> {if $info.rdb_last_bgsave_status|isset}{#$info.rdb_last_bgsave_status}{else}unknown{/if}
+                    </li>
+                    {if $info.total_net_input_bytes|isset || $info.total_net_output_bytes|isset}
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.input'}:</span> {if $info.total_net_input_bytes|isset}{#$info.total_net_input_bytes|filesizebinary}{else}unknown{/if}
+                    </li>
+                    <li>
+                        <span style="font-weight: bold;">{lang var='acp.database.output'}:</span> {if $info.total_net_output_bytes|isset}{#$info.total_net_output_bytes|filesizebinary}{else}unknown{/if}
+                    </li>
+                    {/if}
+                </ul>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="index.php?app=pcc&m&page=database" data-icon="refresh">{lang var="acpindex.reload"}</a></li>
+                        <li><a href="index.php?app=pcc&m&action=dumpdatabase" data-icon="action">{lang var="acp.database.buttons.dump"}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

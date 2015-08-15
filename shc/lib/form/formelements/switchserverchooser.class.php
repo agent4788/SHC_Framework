@@ -5,8 +5,6 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Form\FormElements\Select;
 use RWF\Runtime\RaspberryPi;
-use RWF\User\User;
-use RWF\User\UserEditor;
 use SHC\Arduino\Arduino;
 use SHC\SwitchServer\SwitchServerEditor;
 
@@ -94,6 +92,12 @@ class SwitchServerChooser extends Select {
             } elseif($switchServer->getModel() == Arduino::DUE) {
 
                 $model = ' (Arduino DUE)';
+            } elseif($switchServer->getModel() == Arduino::ESP8266_01) {
+
+                $model = ' (ESP8266-01)';
+            } elseif($switchServer->getModel() == Arduino::ESP8266_12) {
+
+                $model = ' (ESP8266-12)';
             }
             if($filter & self::FILTER_ALL) {
 

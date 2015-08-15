@@ -64,7 +64,7 @@ class SettingsFormPage extends PageCommand {
             $message = new Message();
             try {
 
-                $settings->saveAndReload();
+                $settings->reloadSettings();
                 $message->setType(Message::SUCCESSFULLY);
                 $message->setMessage(RWF::getLanguage()->get('acp.settings.form.success'));
             } catch(\Exception $e) {

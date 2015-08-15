@@ -8,8 +8,6 @@ use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Room\Room;
-use SHC\Room\RoomEditor;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Switchable\Element;

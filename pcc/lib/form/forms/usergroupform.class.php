@@ -55,11 +55,11 @@ class UserGroupForm extends TabbedHtmlForm {
         $this->addTab('adminPremissions', RWF::getLanguage()->get('acp.userManagement.form.group.tab3.title'), RWF::getLanguage()->get('acp.userManagement.form.group.tab3.description'));
 
         //Rechte Ja/Nein Auswahl erstellen
-        foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
+        foreach(UserEditor::getInstance()->getUserGroupById(1)->listPermissions() as $premissionName => $premissionValue) {
 
             if(preg_match('#^pcc\.#', $premissionName)) {
 
-                $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPremission($premissionName) : false));
+                $yesNoOption = new OnOffOption(str_replace('.', '_', $premissionName), ($group instanceof UserGroup ? $group->checkPermission($premissionName) : false));
                 $yesNoOption->setTitle(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName));
                 $yesNoOption->setDescription(RWF::getLanguage()->get('acp.userManagement.premissions.'. $premissionName .'.description'));
                 $yesNoOption->requiredField(true);

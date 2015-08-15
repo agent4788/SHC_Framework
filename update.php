@@ -9,51 +9,10 @@
  * @since      2.2.2-0
  * @version    2.2.2-0
  */
-
+exit(1); //für Version 2.2.3 gibt es kein Update
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Hilfsfunktionen /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-define('TYPE_BOOLEAN', 'bool');
-define('TYPE_STRING', 'string');
-define('TYPE_INTEGER', 'int');
-
-function addSetting($name, $value, $type) {
-
-    global $settingsXml;
-
-    //pruefen ob Einstellung schon vorhanden
-    foreach($settingsXml->setting as $setting) {
-
-        $attr = $setting->attributes();
-        if($attr->name == $name) {
-
-            return;
-        }
-    }
-
-    $setting = $settingsXml->addChild('setting');
-    $setting->addAttribute('name', $name);
-    $setting->addAttribute('value', $value);
-    $setting->addAttribute('type', $type);
-}
-
-function addPremission($xml, $name, $value) {
-
-    //pruefen ob Recht schon vorhanden
-    foreach($xml->premission as $premission) {
-
-        $attr = $premission->attributes();
-        if($attr->name == $name) {
-
-            return;
-        }
-    }
-
-    $premission = $xml->addChild('premission');
-    $premission->addAttribute('name', $name);
-    $premission->addAttribute('value', $value);
-}
 
 function randomStr($length = 10) {
 
@@ -86,7 +45,7 @@ class CliUtil {
     /**
      * STDIN Datenstrom
      *
-     * @var Recource
+     * @var recource
      */
     protected static $in = null;
 
@@ -231,7 +190,7 @@ class CliUtil {
      * gibt eine Eingabeaufforderung aus und gibt die Eingabe als String rurueck
      *
      * @param  String   $message Meldung
-     * @param  Recource $handle  Eingabestrom
+     * @param  recource $handle  Eingabestrom
      * @return String            EIngabe
      */
     public function input($message, &$handle = null) {
@@ -388,8 +347,6 @@ if($shcInstalled === true && $shcApiLevel == 10) {
 
     //Update Funktionen
 
-    //apiLevel hochzaehlen
-    $shcApiLevel++;
 }
 
 //PCC
@@ -397,8 +354,6 @@ if($pccInstalled === true && $pccApiLevel == 10) {
 
     //Update Funktionen
 
-    //apiLevel hochzaehlen
-    $pccApiLevel++;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

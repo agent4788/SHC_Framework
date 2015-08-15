@@ -37,7 +37,7 @@ interface Visitor {
     /**
      * gibt das Gruppenobjekt der Hauptgruppe zurueck
      * 
-     * @return RWF\User\User\Group
+     * @return \RWF\User\UserGroup
      */
     public function getMainGroup();
 
@@ -54,5 +54,5 @@ interface Visitor {
      * @param  String  $premission Recht
      * @return Boolean
      */
-    public function checkPremission($premission);
+    public function checkPermission($permission);
 }

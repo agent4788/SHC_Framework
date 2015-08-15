@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        <div data-role="page" id="home">
+            {include file='mobileHeadlineIndex.html'}
+            <div data-role="content">
+                <h2 style="text-align: center;">{lang var="acp.backupsManagement.title"}</h2>
+                {if $message|isset}{$message->fetchHtml()}{/if}
+                <ul data-role="listview" data-split-icon="delete" data-inset="true" data-split-theme="a">
+                    {foreach from=$backupList item='backup'}
+                    <li>
+                        <a href="index.php?app=pcc&m&action=loadbackup&id={$backup->getHash()}" rel="external">
+                            <h2>{#$backup->getFileName()}</h2>
+                            <p>{lang var="acp.backupsManagement.backupList.table.head.size"}: {$backup->getSize()|filesizebinary}</p>
+                        </a>
+                        <a href="#delete-a{$backup->getHash()}" data-rel="dialog">{lang var="acpindex.options"}</a>
+                    </li>
+                    {foreachelse}
+                    <li>
+                        <h2>{lang var='acpindex.emptyList'}</h2>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="index.php?app=pcc&m&action=makebackup" data-icon="plus">{lang var='acp.backupsManagement.button.makeBackup'}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {foreach from=$backupList item='backup'}
+        <div data-role="page" id="delete-a{$backup->getHash()}">
+            <div data-role="header" data-theme="a">
+                <h1>{lang var="acp.backupsManagement.prompt.deleteBackup.title"}</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p>{lang var="acp.backupsManagement.prompt.deleteBackup"}</p>
+                <a href="index.php?app=pcc&m&action=deleteBackup&id={$backup->getHash()}" class="ui-btn ui-corner-all ui-shadow">{lang var="global.yes"}</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow" data-transition="flow" id="delete-close-{$backup->getHash()}">{lang var="global.no"}</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('#delete-close-{$backup->getHash()}').click(function() {
+                $('.ui-dialog').dialog('close');
+            });
+        </script>
+        {/foreach}
+    </body>
+</html>

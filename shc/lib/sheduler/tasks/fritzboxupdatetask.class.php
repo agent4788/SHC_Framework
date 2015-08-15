@@ -9,6 +9,8 @@ use RWF\Util\CliUtil;
 use SHC\Core\SHC;
 use SHC\Sheduler\AbstractTask;
 use SHC\Switchable\SwitchableEditor;
+use SHC\Switchable\Switchables\AvmSocket;
+use SHC\Switchable\Switchables\FritzBox;
 
 /**
  * wenn aktiviert kann eine LED mit 0,5Hz Binktakt anzeigen ob der Sheduler läuft
@@ -44,13 +46,39 @@ class FritzBoxUpdateTask extends AbstractTask {
         //pruefen ob die FritzBox Konfiguriert ist
         if(RWF::getSetting('rwf.fritzBox.user') != '') {
 
+            //Intervall festlegen
+            switch(SHC::getSetting('shc.shedulerDaemon.performanceProfile')) {
+
+                case 1:
+
+                    //fast
+                    $this->interval = 'PT10S';
+                    break;
+                case 2:
+
+                    //default
+                    $this->interval = 'PT15S';
+                    break;
+                case 3:
+
+                    //slow
+                    $this->interval = 'PT60S';
+                    break;
+            }
+
             try {
 
                 //Fritz Box initialisieren
                 $fritzBox = FritzBoxFactory::getFritzBox();
                 $smartHome = $fritzBox->getSmartHome();
-                $deviceList = $smartHome->listDevices();
                 $wlan = $fritzBox->getWlan();
+
+                //Cache erneuern
+                $smartHome->rebuildCache();
+                $wlan->rebuildCache();
+
+                //Geräteliste abrufen
+                $deviceList = $smartHome->listDevices();
 
                 //schaltbare Elemente laden
                 SwitchableEditor::getInstance()->loadData();
@@ -62,19 +90,19 @@ class FritzBoxUpdateTask extends AbstractTask {
                     //schaltbare Elemente aktualisieren
                     foreach($switchableList as $switchable) {
 
-                        if($switchable instanceof \SHC\Switchable\Switchables\AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
+                        if($switchable instanceof AvmSocket && $switchable->getAin() == $smartHomeDevice['device']['ain'] && isset($smartHomeDevice['switch']['state'])) {
 
                             //status der Steckdose akualisieren
                             $switchable->setState(((int) $smartHomeDevice['switch']['state'] == 1 ? 1 : 0));
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 1) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 1) {
 
                             //WLan 1 Status aktualisieren
                             $switchable->setState($wlan->is2GHzWlanEnabled());
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 2) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 2) {
 
                             //WLan 2 Status aktualisieren
                             $switchable->setState($wlan->is5GHzWlanEnabled());
-                        } elseif($switchable instanceof \SHC\Switchable\Switchables\FritzBox && $switchable->getFunction() == 3) {
+                        } elseif($switchable instanceof FritzBox && $switchable->getFunction() == 3) {
 
                             //WLan 3 Status aktualisieren
                             $switchable->setState($wlan->isGuestWlanEnabled());
@@ -116,14 +144,12 @@ class FritzBoxUpdateTask extends AbstractTask {
                         ));
                         @file_get_contents('http://localhost:80/shc/index.php?app=shc&a&ajax=pushsensorvalues'. $get, false, $http_options);
                     }
-
-                    $smartHome->rebuildCache();
-                    $wlan->rebuildCache();
                 }
             } catch(\SoapFault $e) {
 
                 $cli = new CliUtil();
                 $cli->writeLineColored('Fritz!Box verbindung Fehlgeschlagen: '. $e->getMessage(), 'red');
+                FritzBoxFactory::getFritzBox()->rebuildCache();
             }
         }
     }

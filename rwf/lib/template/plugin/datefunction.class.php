@@ -3,7 +3,6 @@
 namespace RWF\Template\Plugin;
 
 //Imports
-use RWF\Core\RWF;
 use RWF\Date\LanguageDateTime;
 use RWF\Template\TemplateFunction;
 use RWF\Template\Template;

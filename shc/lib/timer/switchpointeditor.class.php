@@ -5,7 +5,6 @@ namespace SHC\Timer;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
 use SHC\Condition\ConditionEditor;
 use SHC\Condition\Condition;
@@ -61,7 +60,7 @@ class SwitchPointEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchpoints';
+    protected static $tableName = 'shc:switchpoints';
 
     protected function __construct() {
 
@@ -233,7 +232,7 @@ class SwitchPointEditor {
     /**
      * setzt die letzte ausfuehrung auf das uebergebene Datum
      * 
-     * @param  Integre $id ID
+     * @param  int                $id   ID
      * @param  \RWF\Date\DateTime $time
      * @return Boolean
      */
@@ -344,7 +343,7 @@ class SwitchPointEditor {
     /**
      * bearbeitet einen Schaltpunkt
      * 
-     * @param  Integre $id         ID
+     * @param  int     $id         ID
      * @param  String  $name       Name
      * @param  Boolean $enabled    Aktiv
      * @param  Integer $command    Befehl

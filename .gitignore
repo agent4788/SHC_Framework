@@ -1,9 +1,6 @@
-nbproject/
 .idea/
 rwf/data/storage/*.xml
 shc/data/storage/*.xml
-shc/app.json
-pcc/app.json
 mb/app.json
 errors.txt
-todo.txt
+rwf/db.config.php

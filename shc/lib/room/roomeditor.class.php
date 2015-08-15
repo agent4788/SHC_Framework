@@ -6,10 +6,8 @@ namespace SHC\Room;
 use RWF\User\UserEditor;
 use RWF\User\UserGroup;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 use RWF\Util\String;
 use SHC\Database\NoSQL\Redis;
-use SHC\View\Room\ViewHelperEditor;
 
 /**
  * Raumverwaltung
@@ -69,7 +67,7 @@ class RoomEditor {
      *
      * @var String
      */
-    protected static $tableName = 'rooms';
+    protected static $tableName = 'shc:rooms';
 
     protected function __construct() {
 

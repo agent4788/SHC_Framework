@@ -3,8 +3,17 @@
 namespace SHC\Sensor;
 
 //Imports
+use SHC\Core\SHC;
 use SHC\Room\Room;
 use RWF\Date\DateTime;
+use SHC\Room\RoomEditor;
+use SHC\Sensor\Sensors\AvmMeasuringSocket;
+use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\DHT;
+use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\Hygrometer;
+use SHC\Sensor\Sensors\LDR;
+use SHC\Sensor\Sensors\RainSensor;
 
 /**
  * Standard Sensor
@@ -30,6 +39,13 @@ abstract class AbstractSensor implements Sensor {
      * @var Integer
      */
     protected $sensorPointId = 0;
+
+    /**
+     * Icon des Sensors
+     *
+     * @var String
+     */
+    protected $icon = '';
 
     /**
      * Name
@@ -132,6 +148,28 @@ abstract class AbstractSensor implements Sensor {
     }
 
     /**
+     * setzt das Icon welches Angezeigt werden soll
+     *
+     * @param  String $path Dateiname
+     * @return \SHC\Sensor\Sensor
+     */
+    public function setIcon($path) {
+
+        $this->icon = $path;
+        return $this;
+    }
+
+    /**
+     * gibt den Dateinamen des Icons zurueck
+     *
+     * @return String
+     */
+    public function getIcon() {
+
+        return $this->icon;
+    }
+
+    /**
      * setzt den Namen des Sensors
      * 
      * @param  String $name Name des Sensors
@@ -208,6 +246,31 @@ abstract class AbstractSensor implements Sensor {
     public function getRooms() {
 
         return $this->rooms;
+    }
+
+    /**
+     * gibt eine Liste mit den Raumnamen zurueck
+     *
+     * @return Array
+     */
+    public function getNamedRoomList($commaSepareted = false) {
+
+        $rooms = $this->getRooms();
+        $roomList = array();
+        foreach($rooms as $roomId) {
+
+            $roomObject = RoomEditor::getInstance()->getRoomById($roomId);
+            if($roomObject instanceof Room) {
+
+                $roomList[] = $roomObject->getName();
+            }
+        }
+
+        if($commaSepareted == true) {
+
+            return implode(', ', $roomList);
+        }
+        return $roomList;
     }
 
     /**
@@ -342,4 +405,38 @@ abstract class AbstractSensor implements Sensor {
         return $this->isModified;
     }
 
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName() {
+
+        if($this instanceof BMP) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.BMP');
+        } elseif($this instanceof DHT) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.DHT');
+        } elseif($this instanceof DS18x20) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.DS18x20');
+        } elseif($this instanceof Hygrometer) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.Hygrometer');
+        } elseif($this instanceof LDR) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.LDR');
+        } elseif($this instanceof RainSensor) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.RainSensor');
+        } elseif($this instanceof AvmMeasuringSocket) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.avmMeasuringSocket');
+        } else {
+
+            $type = 'unknown';
+        }
+        return $type;
+    }
 }

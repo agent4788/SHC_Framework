@@ -10,22 +10,23 @@
  * @version    2.0.0-0
  */
 //Globale Konstanten
-define('PATH_BASE', dirname(__DIR__) . '/');                                     //Pfad zum Hauptordner der Anwendung
+define('PATH_BASE', dirname(__DIR__) . '/');                                    //Pfad zum Hauptordner der Anwendung
 //RWF Grundkonfiguration
-define('PATH_RWF', __DIR__ . '/');                                               //Pfad zum Hauptordner des Frameworks
-define('PATH_RWF_CLASSES', __DIR__ . '/lib/');                                   //Pfad zum Klassenordner des Frameworks
+define('PATH_RWF', __DIR__ . '/');                                              //Pfad zum Hauptordner des Frameworks
+define('PATH_RWF_CLASSES', __DIR__ . '/lib/');                                  //Pfad zum Klassenordner des Frameworks
 define('PATH_RWF_STORAGE', PATH_RWF . 'data/storage/');                         //Pfad zum Speicherordner des Frameworks
 define('PATH_RWF_CACHE', PATH_RWF . 'data/cache/');                             //Pfad zum Cacheordner des Frameworks
 define('PATH_RWF_CACHE_TEMPLATES', PATH_RWF_CACHE . 'templates/');              //Pfad zum Cacheordner der Templates des Frameworks
 define('PATH_RWF_LOG', PATH_RWF . 'data/log/');                                 //Pfad zum Logordner des Frameworks
 define('PATH_RWF_SESSION', PATH_RWF . 'data/cache/session/');                   //Pfad zum Sessionordner des Frameworks
+define('PATH_RWF_BACKUP', PATH_RWF . 'data/backup/');                          //Pfad zum Backupordner des Frameworks
 //Grundeinstellungen
 define('DEVELOPMENT_MODE', true);                                               //Aktiviert/Deaktiviert den Entwicklermodus
 define('RWF_COOKIE_PREFIX', 'rwf_');                                            //Cookie Prefix
 define('RWF_GUEST_USER_GROUP', 3);                                              //Benutzergruppe fuer Gaeste
 //Konstanten fur Laufzeitueberwachung
 define('TIME_NOW', time());
-define('MICROTIME_NOW', strtok(microtime(), ' ') + strtok(''));
+define('MICROTIME_NOW', strtok(microtime(), ' ') . strtok(''));
 //Zugriffsmethode
 if (PHP_SAPI == 'cli') {
 

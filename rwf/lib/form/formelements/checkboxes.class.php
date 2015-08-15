@@ -195,7 +195,7 @@ class CheckBoxes extends AbstractFormElement {
         $html = '<div class="rwf-ui-form-content ui-field-contain">' . "\n";
 
         //Titel
-        $html .= '<fieldset data-role="controlgroup" class="' . $class . '">' . "\n";
+        $html .= '<fieldset data-role="controlgroup" class="' . $class . '" '. $id .'>' . "\n";
         $html .= '<legend>' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</legend>\n";
 
         //Formularfeld

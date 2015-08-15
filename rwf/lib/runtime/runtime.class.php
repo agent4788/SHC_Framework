@@ -74,7 +74,7 @@ class Runtime {
      */
     public function getMicrotime() {
 
-        return round(strtok(microtime(), ' ') + strtok('') - MICROTIME_NOW, 4);
+        return round(strtok(microtime(), ' ') . strtok('') - MICROTIME_NOW, 4);
     }
 
     /**
@@ -149,6 +149,7 @@ class Runtime {
 
             return disk_total_space(getcwd());
         }
+        return 0;
     }
 
     /**

@@ -30,7 +30,9 @@
                                 <tr>
                                     <td>{#$switchServer.object->getName()}</td>
                                     <td>
-                                        {if $switchServer.state == 1}
+                                        {if $switchServer.object->isEnabled() == false}
+                                        <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-notActive"></span> {lang var='acp.daemonState.box.state.notActive'}
+                                        {elseif $switchServer.state == 1}
                                         <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-run"></span> {lang var='acp.daemonState.box.state.run'}
                                         {else}
                                         <span class="shc-view-acp-simpleIcon shc-view-acp-simpleIcon-stop"></span> {lang var='acp.daemonState.box.state.stop'}

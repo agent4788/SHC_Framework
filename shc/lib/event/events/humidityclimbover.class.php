@@ -4,8 +4,8 @@ namespace SHC\Event\Events;
 
 //Imports
 use SHC\Event\AbstractEvent;
+use SHC\Sensor\Model\Humidity;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\DHT;
 use RWF\Date\DateTime;
 
 /**
@@ -64,7 +64,7 @@ class HumidityClimbOver extends AbstractEvent {
         foreach($sensors as $sensor) {
 
             /* @var $sensor \SHC\Sensor\Sensors\DHT */
-            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof DHT) {
+            if(in_array($sensor->getId(), $this->data['sensors']) && $sensor instanceof Humidity) {
 
                 if(isset($this->state[$sensor->getId()])) {
 

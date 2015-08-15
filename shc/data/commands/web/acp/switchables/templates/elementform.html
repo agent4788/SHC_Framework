@@ -58,7 +58,7 @@
                     <script type="text/javascript">
                         $(function() {
 
-                            {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioOutputForm'}
+                            {instanceof element=$elementForm class='\SHC\Form\Forms\Elements\RpiGpioOutputForm'}
                             var value = $('select[name=gpio]').val();
                             var switchServerId = $('select[name=switchServer]').val();
                             $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {
@@ -77,7 +77,7 @@
                                 });
                             });
                             {/instanceof}
-                            {instanceof element=$elementForm class='\SHC\Form\Forms\RpiGpioInputForm'}
+                            {instanceof element=$elementForm class='\SHC\Form\Forms\Elements\RpiGpioInputForm'}
                             var value = $('select[name=gpio]').val();
                             var switchServerId = $('select[name=switchServer]').val();
                             $.get("index.php?app=shc&a&ajax=switchservergetgpio&id=" + switchServerId + "&hash=" + Math.floor(Math.random() * 11), function(data) {

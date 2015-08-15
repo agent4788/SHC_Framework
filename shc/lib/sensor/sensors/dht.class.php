@@ -5,6 +5,10 @@ namespace SHC\Sensor\Sensors;
 //Imports
 use SHC\Sensor\AbstractSensor;
 use RWF\Date\DateTime;
+use SHC\Sensor\Model\AbstractHumidity;
+use SHC\Sensor\Model\AbstractTemperature;
+use SHC\Sensor\Model\Humidity;
+use SHC\Sensor\Model\Temperature;
 
 /**
  * DHT11/22 Sensor
@@ -15,49 +19,9 @@ use RWF\Date\DateTime;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class DHT extends AbstractSensor{
-    
-    /**
-     * Temperatur
-     *  
-     * @var Float 
-     */
-    protected $temperature = 0.0;
-    
-    /**
-     * Luftfeuchtigkeit
-     * 
-     * @var Integer 
-     */
-    protected $humidity = 0;
-    
-    /**
-     * Temperatur Anzeigen
-     * 
-     * @var Integer
-     */
-    protected $temperatureVisibility = 1;
-    
-    /**
-     * Luftfeuchte Anzeigen
-     * 
-     * @var Integer
-     */
-    protected $humidityVisibility = 1;
+class DHT extends AbstractSensor implements Temperature, Humidity {
 
-    /**
-     * Temperatur Offset
-     *
-     * @var Float
-     */
-    protected $temperatureOffset = 0.0;
-
-    /**
-     * Luftfeuchte Offset
-     *
-     * @var Float
-     */
-    protected $humidityOffset = 0.0;
+    use AbstractTemperature, AbstractHumidity;
     
     /**
      * @param Array   $values   Sensorwerte
@@ -71,114 +35,6 @@ class DHT extends AbstractSensor{
             $this->humidity = $values[0]['hum'];
             $this->time = $values[0]['time'];
         }
-    }
-    
-    /**
-     * gibt den Aktuellen Temperaturwert zurueck
-     * 
-     * @return Float
-     */
-    public function getTemperature() {
-        
-        return $this->temperature + $this->temperatureOffset;
-    }
-    
-    /**
-     * gibt die Luftfeuchte zurueck
-     * 
-     * @return Integer
-     */
-    public function getHumidity() {
-        
-        return $this->humidity + $this->humidityOffset;
-    }
-
-    /**
-     * setzt das Temperatur Offset
-     *
-     * @param  Float $temperatureOffset
-     * @return \SHC\Sensor\Sensors\DHT
-     */
-    public function setTemperatureOffset($temperatureOffset) {
-
-        $this->temperatureOffset = $temperatureOffset;
-        return $this;
-    }
-
-    /**
-     * gbit das Temperatur Offset zurueck
-     *
-     * @return Float
-     */
-    public function getTemperatureOffset() {
-
-        return $this->temperatureOffset;
-    }
-
-    /**
-     * setzt das Temperatur Offset
-     *
-     * @param  Float $humidityOffset
-     * @return \SHC\Sensor\Sensors\DHT
-     */
-    public function setHumidityOffset($humidityOffset) {
-
-        $this->humidityOffset = $humidityOffset;
-        return $this;
-    }
-
-    /**
-     * gbit das Temperatur Offset zurueck
-     *
-     * @return Float
-     */
-    public function getHumidityOffset() {
-
-        return $this->humidityOffset;
-    }
-    
-    /**
-     * setzt die Sichtbarkeit der Temperatur
-     * 
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\DHT
-     */
-    public function temperatureVisibility($visibility) {
-        
-        $this->temperatureVisibility = $visibility;
-        return $this;
-    }
-    
-    /**
-     * gibt die Sichtbarkeit der Temperatur an
-     * 
-     * @return Boolean
-     */
-    public function isTemperatureVisible() {
-        
-        return ($this->temperatureVisibility == 1 ? true : false);
-    }
-    
-    /**
-     * setzt die Sichtbarkeit der Luftfeuchte
-     * 
-     * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Sensors\DHT
-     */
-    public function humidityVisibility($visibility) {
-        
-        $this->humidityVisibility = $visibility;
-        return $this;
-    }
-    
-    /**
-     * gibt die Sichtbarkeit der Luftfeuchte an
-     * 
-     * @return Boolean
-     */
-    public function isHumidityVisible() {
-        
-        return ($this->humidityVisibility == 1 ? true : false);
     }
     
     /**

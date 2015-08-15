@@ -34,7 +34,6 @@
                             <td>{if $element['object']->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element['object']->getName()}{if $element['object']->isEnabled() == false}</span>{/if}</td>
                             <td>{$element['object']->getNamedRoomList(true)}</td>
                             <td>
-                                {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\ArduinoOutput'}{lang var="acp.switchableManagement.element.arduinoOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
                                 {instanceof element=$element['object'] class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}

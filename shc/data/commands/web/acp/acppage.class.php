@@ -4,7 +4,14 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Request\Commands\PageCommand;
+use RWF\User\UserEditor;
+use SHC\Condition\ConditionEditor;
 use SHC\Core\SHC;
+use SHC\Event\EventEditor;
+use SHC\Room\RoomEditor;
+use SHC\Switchable\SwitchableEditor;
+use SHC\SwitchServer\SwitchServerEditor;
+use SHC\Timer\SwitchPointEditor;
 
 /**
  * Startseite Administration
@@ -27,7 +34,7 @@ class AcpPage extends PageCommand {
     /**
      * benoetigte Berechtigung
      *
-     * @var type
+     * @var string
      */
     protected $requiredPremission = 'shc.acp.menu';
 
@@ -43,9 +50,18 @@ class AcpPage extends PageCommand {
      */
     public function processData() {
 
-        SHC::getTemplate()->assign('apps', SHC::listApps());
-        SHC::getTemplate()->assign('acp', true);
-        SHC::getTemplate()->assign('style', SHC::getStyle());
-        SHC::getTemplate()->assign('user', SHC::getVisitor());
+        $tpl = SHC::getTemplate();
+
+        //Header Daten
+        $tpl->assign('apps', SHC::listApps());
+        $tpl->assign('acp', true);
+        $tpl->assign('style', SHC::getStyle());
+        $tpl->assign('user', SHC::getVisitor());
+
+        //Admin Uebersicht
+        $tpl->assign('ao_userCount', count(UserEditor::getInstance()->listUsers()));
+        $tpl->assign('ao_version', SHC::VERSION);
+        $tpl->assign('ao_switchableCount', count(SwitchableEditor::getInstance()->listElements()));
+        $tpl->assign('ao_switchServerCount', count(SwitchServerEditor::getInstance()->listSwitchServers()));
     }
 }

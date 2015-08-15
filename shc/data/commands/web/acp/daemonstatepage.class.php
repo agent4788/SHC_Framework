@@ -51,36 +51,46 @@ class DaemonStatePage extends PageCommand {
         foreach(SwitchServerEditor::getInstance()->listSwitchServers(SwitchServerEditor::SORT_BY_NAME) as $switchServer) {
 
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
-            $socket = $switchServer->getSocket();
-            $socket->setTimeout(1);
+            if($switchServer->isEnabled()) {
 
-            try {
+                $socket = $switchServer->getSocket();
+                $socket->setTimeout(1);
 
-                //Verbindungsversuch
-                $socket->open();
+                try {
 
-                //erfolg
-                $switchServers[] = array(
-                    'object' => $switchServer,
-                    'state' => 1
-                );
-                $foundRunningServer = true;
+                    //Verbindungsversuch
+                    $socket->open();
 
-                $socket->close();
-            } catch(\Exception $e) {
-
-                if($e->getCode() == 1150) {
-
-                    //Fehler
+                    //erfolg
                     $switchServers[] = array(
                         'object' => $switchServer,
-                        'state' => 0
+                        'state' => 1
                     );
-                } else {
+                    $foundRunningServer = true;
 
-                    //Fehler erneut werfen wenn unerwarteter Fehler aufgetreten
-                    throw $e;
+                    $socket->close();
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1150) {
+
+                        //Fehler
+                        $switchServers[] = array(
+                            'object' => $switchServer,
+                            'state' => 0
+                        );
+                    } else {
+
+                        //Fehler erneut werfen wenn unerwarteter Fehler aufgetreten
+                        throw $e;
+                    }
                 }
+            } else {
+
+                //Deaktiviert
+                $switchServers[] = array(
+                    'object' => $switchServer,
+                    'state' => 0
+                );
             }
         }
         //kein laufender Server gefunden

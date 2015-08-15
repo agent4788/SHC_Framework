@@ -32,6 +32,7 @@ class ButtonTextChooser extends Select {
             Element::BUTTONS_ON_OFF => array(RWF::getLanguage()->get('global.on') .'/'. RWF::getLanguage()->get('global.off'), ($buttonText == Element::BUTTONS_ON_OFF ? 1 : ($buttonText === null ? 1 : 0))),
             Element::BUTTONS_UP_DOWN => array(RWF::getLanguage()->get('global.up') .'/'. RWF::getLanguage()->get('global.down'), ($buttonText == Element::BUTTONS_UP_DOWN ? 1 : 0)),
             Element::BUTTONS_OPEN_CLOSED => array(RWF::getLanguage()->get('global.open') .'/'. RWF::getLanguage()->get('global.closed'), ($buttonText == Element::BUTTONS_OPEN_CLOSED ? 1 : 0)),
+            Element::BUTTONS_START_STOP => array(RWF::getLanguage()->get('global.start') .'/'. RWF::getLanguage()->get('global.stop'), ($buttonText == Element::BUTTONS_START_STOP ? 1 : 0))
         );
         $this->setValues($values);
     }

@@ -44,7 +44,8 @@
                                 {instanceof element=$sensor class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
                                 {instanceof element=$sensor class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
                                 {instanceof element=$sensor class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
-                            </td>
+                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
+                                </td>
                             <td>{$sensor->getTime()|timeline}</td>
                             <td></td>
                         </tr>

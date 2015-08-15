@@ -5,7 +5,7 @@ namespace SHC\SwitchServer;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
+
 
 /**
  * Verwaltung der Schaltserver
@@ -58,7 +58,7 @@ class SwitchServerEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchServers';
+    protected static $tableName = 'shc:switchServers';
     
     protected function __construct() {
 

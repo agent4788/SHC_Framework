@@ -2,7 +2,7 @@
     {if $device != 'smartphone'}
     <span class="shc-icon {$switchable->getIcon()}"></span>
     {/if}
-    <span>{#$switchable->getName()}:</span>
+    <span style="font-weight: bold;">{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
         {if $switchable->getOnCommand() != ''}
         <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-c ui-btn ui-shadow ui-corner-all" style="width: 6em;">
@@ -10,6 +10,8 @@
                 {lang var='global.up'}
             {elseif $switchable->getButtonText() == 4}
                 {lang var='global.open'}
+            {elseif $switchable->getButtonText() == 5}
+                {lang var='global.start'}
             {else}
                 {lang var='index.room.button.on'}
             {/if}
@@ -21,6 +23,8 @@
                 {lang var='global.down'}
             {elseif $switchable->getButtonText() == 4}
                 {lang var='global.closed'}
+            {elseif $switchable->getButtonText() == 5}
+                {lang var='global.stop'}
             {else}
                 {lang var='index.room.button.off'}
             {/if}

@@ -2,7 +2,7 @@
     {if $device != 'smartphone'}
     <span class="shc-icon {$switchable->getIcon()}"></span>
     {/if}
-    <span>{#$switchable->getName()}:</span>
+    <span style="font-weight: bold;">{#$switchable->getName()}:</span>
     <div data-role="controlgroup" data-type="horizontal">
         <a id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" class="ui-btn-inline ui-btn-b ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-check" style="width: 6em;">
             {if $switchable->getFunction() <= 3}
@@ -30,7 +30,7 @@
     $(function () {
 
         {if $switchable->getFunction() <= 3}
-        {if $switchable->getState() == 1}
+            {if $switchable->getState() == 1}
             $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
             $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
             {else}
@@ -69,6 +69,22 @@
                                     $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").removeClass("ui-icon-check ui-btn-b ui-btn-icon-left").addClass("ui-btn-c");
                                     $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").removeClass("ui-btn-c").addClass("ui-btn-b ui-icon-check ui-btn-icon-left");
                                 } else {
+
+                                    alert(data.message);
+                                }
+                            }
+                    );
+                    return false;
+                });
+                {else}
+                $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
+
+                    //An Button gedrueckt
+                    $.getJSON(
+                            "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                            function(data) {
+
+                                if (data.success == false)  {
 
                                     alert(data.message);
                                 }

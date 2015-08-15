@@ -4,8 +4,8 @@ namespace SHC\Condition\Conditions;
 
 //Imports
 use SHC\Condition\AbstractCondition;
+use SHC\Sensor\Model\LightIntensity;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Sensor\Sensors\LDR;
 
 /**
  * Bedingung Lichtstaerke groeßer als
@@ -34,16 +34,16 @@ class LightIntensityGreaterThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['lightIntensity'])) {
 
-            throw new Exception('sensors und lightIntensity müssen angegeben werden', 1580);
+            throw new \Exception('sensors und lightIntensity müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);
         foreach ($sensors as $sensorId) {
 
             $sensor = SensorPointEditor::getInstance()->getSensorById($sensorId);
-            if ($sensor instanceof LDR) {
+            if ($sensor instanceof LightIntensity) {
 
-                $humidity = $sensor->getValue();
+                $humidity = $sensor->getLightIntensity();
                 if ($humidity >= (float) $this->data['lightIntensity']) {
 
                     return true;

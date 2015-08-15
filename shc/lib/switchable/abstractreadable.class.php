@@ -3,10 +3,13 @@
 namespace SHC\Switchable;
 
 //Imports
+use RWF\Core\RWF;
 use RWF\User\Visitor;
 use SHC\Room\Room;
 use RWF\User\User;
 use RWF\User\UserGroup;
+use SHC\Room\RoomEditor;
+use SHC\Switchable\Readables\RpiGpioInput;
 
 /**
  * Basisklasse eines Lesbaren Elements
@@ -423,5 +426,22 @@ abstract class AbstractReadable implements Readable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * gibt den Typnamen zurueck
+     *
+     * @return string
+     */
+    public function getTypeName() {
+
+        if($this instanceof RpiGpioInput) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.rpiGpioInput');
+        } else {
+
+            $type = 'unknown';
+        }
+        return $type;
     }
 }

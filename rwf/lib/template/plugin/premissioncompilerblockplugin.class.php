@@ -38,7 +38,7 @@ class PremissionCompilerBlockPlugin implements TemplateCompilerBlockPlugin {
             
             $setting = '&& \\RWF\\Core\\RWF::getSetting('. $args['setting'] .') == true';
         }
-        return '<?php if(\\RWF\Core\\RWF::getVisitor()->checkPremission('. $args['premission'] .') == true '. $setting .') { ?>';
+        return '<?php if(\\RWF\Core\\RWF::getVisitor()->checkPermission('. $args['premission'] .') == true '. $setting .') { ?>';
     }
 
     /**
