@@ -66,7 +66,7 @@ class MovieCaseEditor {
         //alte Daten loeschen
         $this->cases = array();
 
-        $cases = MB::getDatabase()->hGetAll(self::$tableName);
+        $cases = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($cases as $case) {
 
             $hash = $case['hash'];
@@ -144,7 +144,7 @@ class MovieCaseEditor {
             'name' => $name
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newCase) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newCase) == 0) {
 
             return false;
         }
@@ -164,7 +164,7 @@ class MovieCaseEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $case = $db->hGet(self::$tableName, $hash);
+            $case = $db->hGetArray(self::$tableName, $hash);
 
             //Name
             if ($name !== null) {
@@ -172,7 +172,7 @@ class MovieCaseEditor {
                 $case['name'] = $name;
             }
 
-            if($db->hSet(self::$tableName, $hash, $case) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $case) == 0) {
 
                 return true;
             }

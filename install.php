@@ -742,13 +742,13 @@ if(!$redis->hExists('apps', 'mb')) {
     if($installMb === true) {
 
         //APP Daten Anmelden
-        $redis->hset('apps', 'mb', array(
+        $redis->hset('apps', 'mb', json_encode(array(
             'app' => 'mb',
             'name' => 'Movie Base',
             'icon' => './mb/inc/img/mb-icon.png',
             'order' => 30,
             'apLevel' => 12
-        ));
+        )));
 
         //App erfolgreich installiert
         $cli->writeLineColored('Die Movie Base wurde erfolgreich installiert', 'green');

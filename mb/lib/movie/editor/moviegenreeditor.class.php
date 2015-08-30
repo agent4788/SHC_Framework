@@ -66,7 +66,7 @@ class MovieGenreEditor {
         //alte Daten loeschen
         $this->genres = array();
 
-        $genres = MB::getDatabase()->hGetAll(self::$tableName);
+        $genres = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($genres as $genre) {
 
             $hash = $genre['hash'];
@@ -148,7 +148,7 @@ class MovieGenreEditor {
             'icon' => $icon
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newGenre) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newGenre) == 0) {
 
             return false;
         }
@@ -169,7 +169,7 @@ class MovieGenreEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $genre = $db->hGet(self::$tableName, $hash);
+            $genre = $db->hGetArray(self::$tableName, $hash);
 
             //Name
             if ($name !== null) {
@@ -183,7 +183,7 @@ class MovieGenreEditor {
                 $genre['name'] = $icon;
             }
 
-            if($db->hSet(self::$tableName, $hash, $genre) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $genre) == 0) {
 
                 return true;
             }

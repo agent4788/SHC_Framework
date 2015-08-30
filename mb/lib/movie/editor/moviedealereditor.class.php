@@ -73,7 +73,7 @@ class MovieDealerEditor {
         //alte Daten loeschen
         $this->dealer = array();
 
-        $dealers = MB::getDatabase()->hGetAll(self::$tableName);
+        $dealers = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($dealers as $dealer) {
 
             $hash = $dealer['hash'];
@@ -157,7 +157,7 @@ class MovieDealerEditor {
             'icon' => $icon
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newDealer) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newDealer) == 0) {
 
             return false;
         }
@@ -179,7 +179,7 @@ class MovieDealerEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $dealer = $db->hGet(self::$tableName, $hash);
+            $dealer = $db->hGetArray(self::$tableName, $hash);
 
             //Name
             if ($name !== null) {
@@ -199,7 +199,7 @@ class MovieDealerEditor {
                 $dealer['name'] = $icon;
             }
 
-            if($db->hSet(self::$tableName, $hash, $dealer) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $dealer) == 0) {
 
                 return true;
             }

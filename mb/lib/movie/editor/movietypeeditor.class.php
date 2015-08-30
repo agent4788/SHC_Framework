@@ -66,7 +66,7 @@ class MovieTypeEditor {
         //alte Daten loeschen
         $this->types = array();
 
-        $types = MB::getDatabase()->hGetAll(self::$tableName);
+        $types = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($types as $type) {
 
             $hash = $type['hash'];
@@ -148,7 +148,7 @@ class MovieTypeEditor {
             'icon' => $icon
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newType) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newType) == 0) {
 
             return false;
         }
@@ -169,7 +169,7 @@ class MovieTypeEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $type = $db->hGet(self::$tableName, $hash);
+            $type = $db->hGetArray(self::$tableName, $hash);
 
             //Name
             if ($name !== null) {
@@ -183,7 +183,7 @@ class MovieTypeEditor {
                 $type['name'] = $icon;
             }
 
-            if($db->hSet(self::$tableName, $hash, $type) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $type) == 0) {
 
                 return true;
             }

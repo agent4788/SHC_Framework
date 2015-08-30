@@ -67,7 +67,7 @@ class MovieEditor {
         //alte Daten loeschen
         $this->movies = array();
 
-        $movies = MB::getDatabase()->hGetAll(self::$tableName);
+        $movies = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($movies as $movie) {
 
             $hash = $movie['hash'];
@@ -201,7 +201,7 @@ class MovieEditor {
             'isLimitedEdition' => $isLimitedEdition
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newMovie) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newMovie) == 0) {
 
             return false;
         }
@@ -248,7 +248,7 @@ class MovieEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $movie = $db->hGet(self::$tableName, $hash);
+            $movie = $db->hGetArray(self::$tableName, $hash);
 
             //Titel
             if ($title !== null) {
@@ -328,7 +328,7 @@ class MovieEditor {
                 $movie['isLimitedEdition'] = $isLimitedEdition;
             }
 
-            if($db->hSet(self::$tableName, $hash, $movie) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $movie) == 0) {
 
                 return true;
             }

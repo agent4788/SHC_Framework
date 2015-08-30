@@ -3,6 +3,7 @@
 namespace MB\Movie\Editor;
 
 //Imports
+use MB\Core\MB;
 use MB\Movie\MovieCollection;
 
 /**
@@ -65,7 +66,7 @@ class MovieCollectionEditor {
         //alte Daten loeschen
         $this->movieCollections = array();
 
-        $movieCollections = MB::getDatabase()->hGetAll(self::$tableName);
+        $movieCollections = MB::getDatabase()->hGetAllArray(self::$tableName);
         foreach($movieCollections as $movieCollection) {
 
             $hash = $movieCollection['hash'];
@@ -152,7 +153,7 @@ class MovieCollectionEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $collectionHash)) {
 
-            $movieCollection = $db->hGet(self::$tableName, $collectionHash);
+            $movieCollection = $db->hGetArray(self::$tableName, $collectionHash);
             $movieCollection['movies'][] = $movieHash;
 
             if($db->hSet(self::$tableName, $collectionHash, $movieCollection) == 0) {
@@ -176,7 +177,7 @@ class MovieCollectionEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $collectionHash)) {
 
-            $movieCollection = $db->hGet(self::$tableName, $collectionHash);
+            $movieCollection = $db->hGetArray(self::$tableName, $collectionHash);
             $movieCollection['movies'] = array_diff($movieCollection['movies'], array($movieHash));
 
             if($db->hSet(self::$tableName, $collectionHash, $movieCollection) == 0) {
@@ -216,7 +217,7 @@ class MovieCollectionEditor {
             'isLimitedEdition' => $isLimitedEdition
         );
 
-        if($db->hSetNx(self::$tableName, $hash, $newMovieCollection) == 0) {
+        if($db->hSetNxArray(self::$tableName, $hash, $newMovieCollection) == 0) {
 
             return false;
         }
@@ -247,7 +248,7 @@ class MovieCollectionEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $hash)) {
 
-            $movieCollection = $db->hGet(self::$tableName, $hash);
+            $movieCollection = $db->hGetArray(self::$tableName, $hash);
 
             //Titel
             if ($title !== null) {
@@ -279,7 +280,7 @@ class MovieCollectionEditor {
                 $movieCollection['isLimitedEdition'] = $isLimitedEdition;
             }
 
-            if($db->hSet(self::$tableName, $hash, $movieCollection) == 0) {
+            if($db->hSetArray(self::$tableName, $hash, $movieCollection) == 0) {
 
                 return true;
             }
