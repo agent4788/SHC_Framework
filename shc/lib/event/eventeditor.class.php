@@ -178,7 +178,7 @@ class EventEditor {
         $oldEvents = $this->events;
         $this->events = array();
 
-        $events = SHC::getDatabase()->hGetAll(self::$tableName);
+        $events = SHC::getDatabase()->hGetAllArray(self::$tableName);
         //Daten einlesen
         foreach ($events as $event) {
 
@@ -351,7 +351,7 @@ class EventEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newEvent) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newEvent) == 0) {
 
             return false;
         }
@@ -375,7 +375,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $event = $db->hGet(self::$tableName, $id);
+            $event = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -413,7 +413,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $id, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $event) == 0) {
 
                 return true;
             }
@@ -435,13 +435,13 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $event = $db->hGet(self::$tableName, $id);
+            $event = $db->hGetArray(self::$tableName, $id);
 
             if(isset($event['id']) && $event['id'] == $id) {
 
                 $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $id, $event) == 0) {
+                if($db->hSetArray(self::$tableName, $id, $event) == 0) {
 
                     return true;
                 }

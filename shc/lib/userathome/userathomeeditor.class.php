@@ -79,7 +79,7 @@ class UserAtHomeEditor {
         //alte daten loeschen
         $this->usersAtHome = array();
 
-        $usersAtHome = SHC::getDatabase()->hGetAll(self::$tableName);
+        $usersAtHome = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach($usersAtHome as $userAtHome) {
             
             $this->usersAtHome[(int) $userAtHome['id']] = new UserAtHome(
@@ -199,13 +199,13 @@ class UserAtHomeEditor {
 
             if(isset($this->usersAtHome[$userAtHomeId])) {
 
-                $userAtHomeData = $db->hGet(self::$tableName, $userAtHomeId);
+                $userAtHomeData = $db->hGetArray(self::$tableName, $userAtHomeId);
 
                 if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $userAtHomeId) {
 
                     $userAtHomeData['orderId'] = $orderId;
 
-                    if($db->hSet(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
+                    if($db->hSetArray(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
 
                         return false;
                     }
@@ -235,13 +235,13 @@ class UserAtHomeEditor {
 
                 //Nach Objekt suchen
                 $id = $userAtHome->getId();
-                $userAtHomeData = $db->hGet(self::$tableName, $id);
+                $userAtHomeData = $db->hGetArray(self::$tableName, $id);
 
                 if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $id) {
 
                     $userAtHomeData['state'] = $userAtHome->getState();
 
-                    if($db->hSet(self::$tableName, $id, $userAtHomeData) != 0) {
+                    if($db->hSetArray(self::$tableName, $id, $userAtHomeData) != 0) {
 
                         return false;
                     }
@@ -286,7 +286,7 @@ class UserAtHomeEditor {
             'state' => 0
         );
 
-        if($db->hSetNx(self::$tableName, $index, $newUserAtHome) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newUserAtHome) == 0) {
 
             return false;
         }
@@ -310,7 +310,7 @@ class UserAtHomeEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $userAtHome = $db->hGet(self::$tableName, $id);
+            $userAtHome = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -342,7 +342,7 @@ class UserAtHomeEditor {
                 $userAtHome['visibility'] = ($visibility == true ? true : false);
             }
 
-            if($db->hSet(self::$tableName, $id, $userAtHome) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $userAtHome) == 0) {
 
                 return true;
             }

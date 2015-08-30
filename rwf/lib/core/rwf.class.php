@@ -110,22 +110,6 @@ class RWF {
             define('MULTIBYTE_STRING', false);
         }
 
-        //APP Liste sortieren
-        $orderFunction = function($a, $b) {
-
-            if($a->order == $b->order) {
-
-                return 0;
-            }
-
-            if($a->order < $b->order) {
-
-                return -1;
-            }
-            return 1;
-        };
-        usort(self::$appList, $orderFunction);
-
         //Anfrage/Antwort initialisieren
         if (ACCESS_METHOD_HTTP) {
             
@@ -161,11 +145,27 @@ class RWF {
     protected function loadApps() {
 
         $db = self::getDatabase();
-        $apps = $db->hGetAll('apps');
+        $apps = $db->hGetAllArray('apps');
         foreach($apps as $app) {
 
             self::$appList[] = $app;
         }
+
+        //APP Liste sortieren
+        $orderFunction = function($a, $b) {
+
+            if($a['order'] == $b['order']) {
+
+                return 0;
+            }
+
+            if($a['order'] < $b['order']) {
+
+                return -1;
+            }
+            return 1;
+        };
+        usort(self::$appList, $orderFunction);
     }
 
     /**
