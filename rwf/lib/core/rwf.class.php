@@ -145,7 +145,7 @@ class RWF {
     protected function loadApps() {
 
         $db = self::getDatabase();
-        $apps = $db->hGetAll('apps');
+        $apps = $db->hGetAllArray('apps');
         foreach($apps as $app) {
 
             self::$appList[] = $app;

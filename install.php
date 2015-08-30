@@ -583,7 +583,6 @@ if(!$redis->select($db)) {
 }
 
 //Optionen
-$redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
 $redis->setOption(\Redis::OPT_PREFIX, 'rwf:');
 
 $cli->writeLineColored('Datenbankverbindung erfolgreich hergestellt', 'green');
@@ -631,13 +630,13 @@ if(!$redis->hExists('apps', 'shc')) {
     if($installShc === true) {
 
         //APP Daten anmelden
-        $redis->hset('apps', 'shc', array(
+        $redis->hset('apps', 'shc', json_encode(array(
             'app' => 'shc',
             'name' => 'Raspberry Pi SmartHome Control',
             'icon' => './shc/inc/img/shc-icon.png',
             'order' => 10,
             'apLevel' => 12
-        ));
+        )));
 
         //App erfolgreich installiert
         $cli->writeLineColored('Das SHC wurde erfolgreich installiert', 'green');
@@ -687,13 +686,13 @@ if(!$redis->hExists('apps', 'pcc')) {
     if($installPcc === true) {
 
         //APP Daten Anmelden
-        $redis->hset('apps', 'pcc', array(
+        $redis->hset('apps', 'pcc', json_encode(array(
             'app' => 'pcc',
             'name' => 'Raspberry Pi Control Center',
             'icon' => './pcc/inc/img/pcc-icon.png',
             'order' => 20,
             'apLevel' => 12
-        ));
+        )));
 
         //App erfolgreich installiert
         $cli->writeLineColored('Das PCC wurde erfolgreich installiert', 'green');

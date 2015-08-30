@@ -203,7 +203,7 @@ class SwitchableEditor {
         //alte daten loeschen
         $this->switchables = array();
 
-        $switchables = SHC::getDatabase()->hGetAll(self::$tableName);
+        $switchables = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach ($switchables as $switchable) {
 
             //Objekte initialisiernen und Spezifische Daten setzen
@@ -560,7 +560,7 @@ class SwitchableEditor {
 
             if(isset($this->switchables[$switchableId])) {
 
-                $switchableData = $db->hGet(self::$tableName, $switchableId);
+                $switchableData = $db->hGetArray(self::$tableName, $switchableId);
                 foreach($switchableOrder as $roomId => $roomOrder) {
 
                     if($switchableData['order'][$roomId]) {
@@ -569,7 +569,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -593,7 +593,7 @@ class SwitchableEditor {
                 
                 //Nach Objekt suchen
                 $id = $switchable->getId();
-                $switchableData = $db->hGet(self::$tableName, $id);
+                $switchableData = $db->hGetArray(self::$tableName, $id);
 
                 if(isset($switchableData['id']) && $switchableData['id'] == $id) {
 
@@ -603,7 +603,7 @@ class SwitchableEditor {
                         $switchableData['switchOffTime'] = $switchable->getSwitchOffTime()->getDatabaseDateTime();
                     }
 
-                    if($db->hSet(self::$tableName, $id, $switchableData) != 0) {
+                    if($db->hSetArray(self::$tableName, $id, $switchableData) != 0) {
 
                         return false;
                     }
@@ -630,10 +630,10 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $switchableId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData = $db->hGetArray(self::$tableName, $switchableId);
             $switchableData['switchPoints'][] = $switchPointId;
 
-            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+            if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                 return false;
             }
@@ -654,10 +654,10 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $switchableId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData = $db->hGetArray(self::$tableName, $switchableId);
             $switchableData['switchPoints'] = array_diff($switchableData['switchPoints'], array($switchPointId));
 
-            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+            if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                 return false;
             }
@@ -717,7 +717,7 @@ class SwitchableEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newElement) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newElement) == 0) {
 
             return false;
         }
@@ -746,7 +746,7 @@ class SwitchableEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $switchable = $db->hGet(self::$tableName, $id);
+            $switchable = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -832,7 +832,7 @@ class SwitchableEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $id, $switchable) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $switchable) == 0) {
 
                 return true;
             }

@@ -95,7 +95,7 @@ class UserEditor {
         $db = RWF::getDatabase();
 
         //Benutzergruppen laden
-        $groups = $db->hGetAll(self::$groupsTableName);
+        $groups = $db->hGetAllArray(self::$groupsTableName);
         foreach($groups as $group) {
 
             //Gruppendaten Laden
@@ -111,7 +111,7 @@ class UserEditor {
         }
 
         //Benutzerladen
-        $users = $db->hGetAll(self::$usersTableName);
+        $users = $db->hGetAllArray(self::$usersTableName);
         foreach($users as $user) {
 
             //Gruppen vorbereiten
@@ -172,7 +172,7 @@ class UserEditor {
             'isOriginator' => 1
         );
 
-        if($db->hSetNx(self::$usersTableName, 1, $newUser) == 0) {
+        if($db->hSetNxArray(self::$usersTableName, 1, $newUser) == 0) {
 
             return false;
         }
@@ -187,7 +187,7 @@ class UserEditor {
             'permissions' => array()
         );
 
-        if($db->hSetNx(self::$groupsTableName, 1, $newGroup) == 0) {
+        if($db->hSetNxArray(self::$groupsTableName, 1, $newGroup) == 0) {
 
             return false;
         }
@@ -201,7 +201,7 @@ class UserEditor {
             'permissions' => array()
         );
 
-        if($db->hSetNx(self::$groupsTableName, 2, $newGroup) == 0) {
+        if($db->hSetNxArray(self::$groupsTableName, 2, $newGroup) == 0) {
 
             return false;
         }
@@ -215,7 +215,7 @@ class UserEditor {
             'permissions' => array()
         );
 
-        if($db->hSetNx(self::$groupsTableName, 3, $newGroup) == 0) {
+        if($db->hSetNxArray(self::$groupsTableName, 3, $newGroup) == 0) {
 
             return false;
         }
@@ -448,7 +448,7 @@ class UserEditor {
             'isOriginator' => 0
         );
 
-        if($db->hSetNx(self::$usersTableName, $id, $newUser) == 0) {
+        if($db->hSetNxArray(self::$usersTableName, $id, $newUser) == 0) {
 
             return false;
         }
@@ -475,7 +475,7 @@ class UserEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$usersTableName, $id)) {
 
-            $user = $db->hGet(self::$usersTableName, $id);
+            $user = $db->hGetArray(self::$usersTableName, $id);
 
             //Benutzername
             if ($name !== null) {
@@ -537,7 +537,7 @@ class UserEditor {
                 $user['mobileStyle'] = $mobileStyle;
             }
 
-            if($db->hSet(self::$usersTableName, $id, $user) == 0) {
+            if($db->hSetArray(self::$usersTableName, $id, $user) == 0) {
 
                 return true;
             }
@@ -686,7 +686,7 @@ class UserEditor {
             'permissions' => $permissions
         );
 
-        if($db->hSetNx(self::$groupsTableName, $id, $newGroup) == 0) {
+        if($db->hSetNxArray(self::$groupsTableName, $id, $newGroup) == 0) {
 
             return false;
         }
@@ -708,7 +708,7 @@ class UserEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$groupsTableName, $id)) {
 
-            $group = $db->hGet(self::$groupsTableName, $id);
+            $group = $db->hGetArray(self::$groupsTableName, $id);
 
             //Grupenname
             if ($name !== null) {
@@ -736,7 +736,7 @@ class UserEditor {
                 }
             }
 
-            if($db->hSet(self::$groupsTableName, $id, $group) == 0) {
+            if($db->hSetArray(self::$groupsTableName, $id, $group) == 0) {
 
                 return true;
             }

@@ -72,7 +72,7 @@ class SwitchPointEditor {
         //alte daten loeschen
         $this->switchPoints = array();
 
-        $switchpoints = SHC::getDatabase()->hGetAll(self::$tableName);
+        $switchpoints = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach($switchpoints as $switchPoint) {
 
             $sp = new SwitchPoint();
@@ -193,10 +193,10 @@ class SwitchPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $switchPointId)) {
 
-            $switchPoint = $db->hGet(self::$tableName, $switchPointId);
+            $switchPoint = $db->hGetArray(self::$tableName, $switchPointId);
             $switchPoint['conditions'][] = $conditionId;
 
-            if($db->hSet(self::$tableName, $switchPointId, $switchPoint) == 0) {
+            if($db->hSetArray(self::$tableName, $switchPointId, $switchPoint) == 0) {
 
                 return true;
             }
@@ -217,11 +217,11 @@ class SwitchPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $switchPointId)) {
 
-            $switchPoint = $db->hGet(self::$tableName, $switchPointId);
+            $switchPoint = $db->hGetArray(self::$tableName, $switchPointId);
             $switchPoint['conditions'] = array_diff($switchPoint['conditions'], array($conditionId));
 
 
-            if($db->hSet(self::$tableName, $switchPointId, $switchPoint) == 0) {
+            if($db->hSetArray(self::$tableName, $switchPointId, $switchPoint) == 0) {
 
                 return true;
             }
@@ -242,13 +242,13 @@ class SwitchPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $switchPoint = $db->hGet(self::$tableName, $id);
+            $switchPoint = $db->hGetArray(self::$tableName, $id);
 
             if(isset($switchPoint['id']) && $switchPoint['id'] == $id) {
 
                 $switchPoint['lastExecute'] = $time->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+                if($db->hSetArray(self::$tableName, $id, $switchPoint) == 0) {
 
                     return true;
                 }
@@ -273,13 +273,13 @@ class SwitchPointEditor {
             if($switchPoint->isExecuted() === true) {
 
                 $switchPoint->setLastExecute(DateTime::now(), true);
-                $switchPointData = $db->hGet(self::$tableName, $switchPoint->getId());
+                $switchPointData = $db->hGetArray(self::$tableName, $switchPoint->getId());
 
                 if(isset($switchPointData['id']) && $switchPointData['id'] == $switchPoint->getId()) {
 
                     $switchPointData['lastExecute'] = $switchPoint->getLastExecute()->getDatabaseDateTime();
 
-                    if($db->hSet(self::$tableName, $switchPoint->getId(), $switchPointData) != 0) {
+                    if($db->hSetArray(self::$tableName, $switchPoint->getId(), $switchPointData) != 0) {
 
                         return false;
                     }
@@ -333,7 +333,7 @@ class SwitchPointEditor {
             'minute' => $minute,
             'lastExecute' => '2000-01-01 00:00:00'
         );
-        if($db->hSetNx(self::$tableName, $index, $newSwitchPoint) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newSwitchPoint) == 0) {
 
             return false;
         }
@@ -362,7 +362,7 @@ class SwitchPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $switchPoint = $db->hGet(self::$tableName, $id);
+            $switchPoint = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -430,7 +430,7 @@ class SwitchPointEditor {
                 $switchPoint['minute'] = $minute;
             }
 
-            if($db->hSet(self::$tableName, $id, $switchPoint) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $switchPoint) == 0) {
 
                 return true;
             }

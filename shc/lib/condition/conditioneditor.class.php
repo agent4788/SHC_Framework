@@ -72,7 +72,7 @@ class ConditionEditor {
         //alte Daten loeschen
         $this->conditions = array();
 
-        $conditions = SHC::getDatabase()->hGetAll(self::$tableName);
+        $conditions = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach($conditions as $condition) {
 
             $class = (string) $condition['class'];
@@ -204,7 +204,7 @@ class ConditionEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newCondition) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newCondition) == 0) {
 
             return false;
         }
@@ -227,7 +227,7 @@ class ConditionEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $condition = $db->hGet(self::$tableName, $id);
+            $condition = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -260,7 +260,7 @@ class ConditionEditor {
             }
 
             //Daten Speichern
-            if($db->hSet(self::$tableName, $id, $condition) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $condition) == 0) {
 
                 return true;
             }
