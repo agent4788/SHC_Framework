@@ -711,6 +711,7 @@ if(is_array($data)) {
 
         $key = $keySet['key'];
         $value = $keySet['value'];
+        $ttl = $keySet['ttl'];
         switch($keySet['type']) {
 
             case \Redis::REDIS_STRING:
@@ -723,6 +724,7 @@ if(is_array($data)) {
 
                     $redis->set($key, $value);
                 }
+                $redis->expire($key, $ttl);
                 break;
             case \Redis::REDIS_SET:
 
@@ -730,6 +732,7 @@ if(is_array($data)) {
 
                     $redis->sAdd($key, $v);
                 }
+                $redis->expire($key, $ttl);
                 break;
             case \Redis::REDIS_LIST:
 
@@ -737,6 +740,7 @@ if(is_array($data)) {
 
                     $redis->rPush($key, $v);
                 }
+                $redis->expire($key, $ttl);
                 break;
             case \Redis::REDIS_ZSET:
 
@@ -744,6 +748,7 @@ if(is_array($data)) {
 
                     $redis->zAdd($key, $s, $v);
                 }
+                $redis->expire($key, $ttl);
                 break;
             case \Redis::REDIS_HASH:
 
@@ -751,6 +756,7 @@ if(is_array($data)) {
 
                     $redis->hSet($key, $k, $v);
                 }
+                $redis->expire($key, $ttl);
                 break;
         }
     }
