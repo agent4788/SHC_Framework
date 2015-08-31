@@ -39,7 +39,9 @@ class EventTypeChooser extends Select {
             EventEditor::EVENT_USER_COMES_HOME => RWF::getLanguage()->get('acp.eventsManagement.events.UserComesHome'),
             EventEditor::EVENT_USER_LEAVE_HOME => RWF::getLanguage()->get('acp.eventsManagement.events.UserLeavesHome'),
             EventEditor::EVENT_SUNRISE => RWF::getLanguage()->get('acp.eventsManagement.events.Sunrise'),
-            EventEditor::EVENT_SUNSET => RWF::getLanguage()->get('acp.eventsManagement.events.Sunset')
+            EventEditor::EVENT_SUNSET => RWF::getLanguage()->get('acp.eventsManagement.events.Sunset'),
+            EventEditor::EVENT_FILE_CREATE => RWF::getLanguage()->get('acp.eventsManagement.events.FileCreate'),
+            EventEditor::EVENT_FILE_DELETE => RWF::getLanguage()->get('acp.eventsManagement.events.FileDelete')
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);

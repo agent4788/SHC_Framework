@@ -123,6 +123,20 @@ class EventEditor {
     const EVENT_SUNSET = 8192;
 
     /**
+     * Ereignis Datei erstellt
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_CREATE = 16384;
+
+    /**
+     * Ereignis Datei geloescht
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_DELETE = 32768;
+
+    /**
      * nach ID sortieren
      *
      * @var String
@@ -1078,6 +1092,96 @@ class EventEditor {
 
         //Speichern
         return $this->editEvent($id, $name, array(), $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein Datei erstellt Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileCreateEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileCreate', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei erstellt Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileCreateEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein Datei geloescht Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileDeleteEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileDelete', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei geloescht Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileDeleteEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
     }
 
     /**
