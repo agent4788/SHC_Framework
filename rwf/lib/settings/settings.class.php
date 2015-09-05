@@ -84,7 +84,7 @@ class Settings {
                         break;
                     case self::TYPE_BOOL:
 
-                        $this->settings[$name]['value'] = (bool) $value;
+                        $this->settings[$name]['value'] = ($value == "1" ? true : false);
                         break;
                     case self::TYPE_INT:
 
@@ -113,7 +113,7 @@ class Settings {
                         break;
                     case self::TYPE_BOOL:
 
-                        $this->settings[$name]['value'] = (bool) $value;
+                        $this->settings[$name]['value'] = ($value == "1" ? true : false);
 
                         break;
                     case self::TYPE_INT:
@@ -199,7 +199,7 @@ class Settings {
                     break;
                 case self::TYPE_BOOL:
 
-                    $value = (bool) $value;
+                    $value = ((bool) $value == true ? 1 : 0);
                     break;
                 case self::TYPE_INT:
 
@@ -221,7 +221,7 @@ class Settings {
 
                 //APP Eisntellung
                 $db->hSet(strtolower(APP_NAME) .':settings', $settingName, $value);
-                return false;
+                return true;
             }
         }
         return false;
