@@ -773,12 +773,18 @@ class RaspberryPi {
 
                     //Daten abrufen
                     $data = '';
-                    exec('iwconfig ' . $device['name'], $data);
+                    exec('sudo iwconfig ' . $device['name'], $data);
 
                     //Wlan Standard
                     $matches = array();
                     preg_match('#IEEE (802\.11[^\s]+)#i', $data[0], $matches);
-                    $dev['standard'] = $matches[1];
+                    if(isset($matches[1])) {
+
+                        $dev['standard'] = $matches[1];
+                    } else {
+
+                        $dev['standard'] = '';
+                    }
 
                     //SSID
                     $matches = array();
@@ -805,18 +811,17 @@ class RaspberryPi {
                         $dev['accessPoint'] = $matches[1];
 
                         //Uebetragungsrate
-                        $matches = array();
-                        preg_match('#Bit\s+Rate\=([\d\.]+)\s+Mb/s#i', $data[2], $matches);
+                        preg_match('#Bit\s+Rate[:=]([\d\.]+)\s+Mb/s#i', $data[2], $matches);
                         $dev['bitRate'] = $matches[1];
 
                         //Verbindungsqualitaet
                         $matches = array();
-                        preg_match('#Link\s+Quality\=(\d+\/\d+)#i', $data[5], $matches);
+                        preg_match('#Link\s+Quality\=(\d+\/\d+)#i', $data[6], $matches);
                         $dev['quality'] = $matches[1];
 
                         //Signalstaerke
                         $matches = array();
-                        preg_match('#Signal\s+level\=(-?\d+)#i', $data[5], $matches);
+                        preg_match('#Signal\s+level\=(-?\d+)#i', $data[6], $matches);
                         $dev['signalLevel'] = $matches[1];
                     }
 
