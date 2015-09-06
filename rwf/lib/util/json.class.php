@@ -37,7 +37,7 @@ abstract class JSON {
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden
-        $return = json_encode($array, $options, $depth);
+        $return = json_encode($array, $options/*, $depth */);
         if($return === false) {
 
             throw new JsonException(json_last_error_msg(), json_last_error());
@@ -65,7 +65,7 @@ abstract class JSON {
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden
-        $return = json_encode($object, $options, $depth);
+        $return = json_encode($object, $options/*, $depth */);
         if($return === false) {
 
             throw new JsonException(json_last_error_msg(), json_last_error());
