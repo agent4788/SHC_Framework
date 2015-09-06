@@ -8,6 +8,8 @@ use SHC\Command\CommandSheduler;
 use SHC\Condition\Condition;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
+use SHC\Event\Events\FileCreate;
+use SHC\Event\Events\FileDelete;
 use SHC\Event\Events\HumidityClimbOver;
 use SHC\Event\Events\HumidityFallsBelow;
 use SHC\Event\Events\InputHigh;
@@ -462,6 +464,12 @@ abstract class AbstractEvent implements Event {
         } elseif($this instanceof Sunset) {
 
             $type = SHC::getLanguage()->get('acp.eventsManagement.events.Sunset');
+        } elseif($this instanceof FileCreate) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.FileCreate');
+        } elseif($this instanceof FileDelete) {
+
+            $type = SHC::getLanguage()->get('acp.eventsManagement.events.FileDelete');
         } else {
 
             $type = 'unknown';

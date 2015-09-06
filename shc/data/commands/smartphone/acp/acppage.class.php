@@ -27,7 +27,7 @@ class AcpPage extends PageCommand {
     /**
      * benoetigte Berechtigung
      *
-     * @var type
+     * @var string
      */
     protected $requiredPremission = 'shc.acp.menu';
 

@@ -20,10 +20,10 @@ class LanguageDateTime extends DateTime {
     /**
      * gibt das DateTime Objekt des gestrigen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\LanguageDateTime
      */
-    public static function previousDay(DateTimeZone $timezone = null) {
+    public static function previousDay(\DateTimeZone $timezone = null) {
 
         return new LanguageDateTime(self::YESTERDAY, $timezone);
     }
@@ -31,10 +31,10 @@ class LanguageDateTime extends DateTime {
     /**
      * gibt das DateTime Objekt des aktuellen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\LanguageDateTime
      */
-    public static function today(DateTimeZone $timezone = null) {
+    public static function today(\DateTimeZone $timezone = null) {
 
         return new LanguageDateTime(self::TODAY, $timezone);
     }
@@ -42,10 +42,10 @@ class LanguageDateTime extends DateTime {
     /**
      * gibt das DateTime Objekt des aktuellen Tages und Zeit zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\LanguageDateTime
      */
-    public static function now(DateTimeZone $timezone = null) {
+    public static function now(\DateTimeZone $timezone = null) {
 
         return new LanguageDateTime(self::NOW, $timezone);
     }
@@ -53,10 +53,10 @@ class LanguageDateTime extends DateTime {
     /**
      * gibt das DateTime Objekt des morgigen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\LanguageDateTime
      */
-    public static function nextDay(DateTimeZone $timezone = null) {
+    public static function nextDay(\DateTimeZone $timezone = null) {
 
         return new LanguageDateTime(self::TOMORROW, $timezone);
     }

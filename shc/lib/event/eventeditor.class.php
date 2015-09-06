@@ -5,7 +5,7 @@ namespace SHC\Event;
 //Imports
 use RWF\Date\DateTime;
 use RWF\Util\String;
-use RWF\XML\XmlFileManager;
+
 use SHC\Condition\Condition;
 use SHC\Condition\ConditionEditor;
 use SHC\Core\SHC;
@@ -123,6 +123,20 @@ class EventEditor {
     const EVENT_SUNSET = 8192;
 
     /**
+     * Ereignis Datei erstellt
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_CREATE = 16384;
+
+    /**
+     * Ereignis Datei geloescht
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_DELETE = 32768;
+
+    /**
      * nach ID sortieren
      *
      * @var String
@@ -162,7 +176,7 @@ class EventEditor {
      *
      * @var String
      */
-    protected static $tableName = 'events';
+    protected static $tableName = 'shc:events';
 
     protected function __construct() {
 
@@ -178,7 +192,7 @@ class EventEditor {
         $oldEvents = $this->events;
         $this->events = array();
 
-        $events = SHC::getDatabase()->hGetAll(self::$tableName);
+        $events = SHC::getDatabase()->hGetAllArray(self::$tableName);
         //Daten einlesen
         foreach ($events as $event) {
 
@@ -239,7 +253,7 @@ class EventEditor {
     /**
      * gibt das Ereignis mit der IOD zurueck
      *
-     * @param  Integer ID $id Ereignis ID
+     * @param  int $id Ereignis ID
      * @return \SHC\Event\Event
      */
     public function getEventById($id) {
@@ -351,7 +365,7 @@ class EventEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newEvent) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newEvent) == 0) {
 
             return false;
         }
@@ -375,7 +389,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $event = $db->hGet(self::$tableName, $id);
+            $event = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -413,7 +427,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $id, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $event) == 0) {
 
                 return true;
             }
@@ -435,13 +449,13 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $event = $db->hGet(self::$tableName, $id);
+            $event = $db->hGetArray(self::$tableName, $id);
 
             if(isset($event['id']) && $event['id'] == $id) {
 
                 $event['lastExecute'] = $lastExecute->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $id, $event) == 0) {
+                if($db->hSetArray(self::$tableName, $id, $event) == 0) {
 
                     return true;
                 }
@@ -463,7 +477,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addHumidityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -488,7 +502,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editHumidityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -512,7 +526,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addHumidityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -537,7 +551,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editHumidityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -561,7 +575,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addLightIntensityClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -586,7 +600,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editLightIntensityClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -610,7 +624,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addLightIntensityFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -635,7 +649,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editLightIntensityFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -659,7 +673,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addMoistureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -684,7 +698,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editMoistureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -708,7 +722,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addMoistureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -733,7 +747,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert (Prozent)
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editMoistureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -757,7 +771,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addTemperatureClimbOverEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -782,7 +796,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editTemperatureClimbOverEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -806,7 +820,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addTemperatureFallsBelowEvent($name, $enabled, array $sensors, $limit, $interval, array $conditions = array()) {
 
@@ -831,7 +845,7 @@ class EventEditor {
      * @param  Float   $limit      Grenzwert
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editTemperatureFallsBelowEvent($id, $name = null, $enabled = null, array $sensors = null, $limit = null, $interval = null, array $conditions = null) {
 
@@ -854,7 +868,7 @@ class EventEditor {
      * @param  Array   $inputs     Eingaenge
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addInputHighEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -877,7 +891,7 @@ class EventEditor {
      * @param  Array   $inputs     Eingaenge
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editInputHighEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -899,7 +913,7 @@ class EventEditor {
      * @param  Array   $inputs     Eingaenge
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addInputLowEvent($name, $enabled, array $inputs, $interval, array $conditions = array()) {
 
@@ -922,7 +936,7 @@ class EventEditor {
      * @param  Array   $inputs     Eingaenge
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editInputLowEvent($id, $name = null, $enabled = null, array $inputs = null, $interval = null, array $conditions = null) {
 
@@ -944,7 +958,7 @@ class EventEditor {
      * @param  Array   $users      benutzer zu Hause
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addUserComesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -967,7 +981,7 @@ class EventEditor {
      * @param  Array   $users      benutzer zu Hause
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editUserComesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -989,7 +1003,7 @@ class EventEditor {
      * @param  Array   $users      benutzer zu Hause
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function addUserLeavesHomeEvent($name, $enabled, array $users, $interval, array $conditions = array()) {
 
@@ -1012,7 +1026,7 @@ class EventEditor {
      * @param  Array   $users      benutzer zu Hause
      * @param  Integer $interval   Sperrzeit
      * @param  Array   $conditions Liste der Bedingunen
-     * @return Boolaen
+     * @return bool
      */
     public function editUserLeavesHomeEvent($id, $name = null, $enabled = null, array $users = null, $interval = null, array $conditions = null) {
 
@@ -1078,6 +1092,96 @@ class EventEditor {
 
         //Speichern
         return $this->editEvent($id, $name, array(), $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein Datei erstellt Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileCreateEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileCreate', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei erstellt Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileCreateEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein Datei geloescht Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileDeleteEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileDelete', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei geloescht Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileDeleteEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
     }
 
     /**

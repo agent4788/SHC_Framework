@@ -4,6 +4,7 @@ namespace SHC\Command\Smartphone;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
@@ -31,24 +32,24 @@ use SHC\Condition\Conditions\TimeOfDayCondition;
 use SHC\Condition\Conditions\UserAtHomeCondition;
 use SHC\Condition\Conditions\UserNotAtHomeCondition;
 use SHC\Core\SHC;
-use SHC\Form\Forms\DateConditionForm;
-use SHC\Form\Forms\DayOfWeekConditionForm;
-use SHC\Form\Forms\FileExistsConditionForm;
-use SHC\Form\Forms\FirstLoopConditionForm;
-use SHC\Form\Forms\HolidayConditionForm;
-use SHC\Form\Forms\HumidityConditionForm;
-use SHC\Form\Forms\InputHighConditionForm;
-use SHC\Form\Forms\InputLowConditionForm;
-use SHC\Form\Forms\LightIntensityConditionForm;
-use SHC\Form\Forms\MoistureConditionForm;
-use SHC\Form\Forms\NobodyAtHomeConditionForm;
-use SHC\Form\Forms\SunriseSunsetConditionForm;
-use SHC\Form\Forms\SunsetSunriseConditionForm;
-use SHC\Form\Forms\TemperatureConditionForm;
-use SHC\Form\Forms\TimeOfDayConditionForm;
-use SHC\Form\Forms\UserAtHomeConditionForm;
+use SHC\Form\Forms\Conditions\DateConditionForm;
+use SHC\Form\Forms\Conditions\DayOfWeekConditionForm;
+use SHC\Form\Forms\Conditions\FileExistsConditionForm;
+use SHC\Form\Forms\Conditions\FirstLoopConditionForm;
+use SHC\Form\Forms\Conditions\HolidayConditionForm;
+use SHC\Form\Forms\Conditions\HumidityConditionForm;
+use SHC\Form\Forms\Conditions\InputHighConditionForm;
+use SHC\Form\Forms\Conditions\InputLowConditionForm;
+use SHC\Form\Forms\Conditions\LightIntensityConditionForm;
+use SHC\Form\Forms\Conditions\MoistureConditionForm;
+use SHC\Form\Forms\Conditions\NobodyAtHomeConditionForm;
+use SHC\Form\Forms\Conditions\SunriseSunsetConditionForm;
+use SHC\Form\Forms\Conditions\SunsetSunriseConditionForm;
+use SHC\Form\Forms\Conditions\TemperatureConditionForm;
+use SHC\Form\Forms\Conditions\TimeOfDayConditionForm;
+use SHC\Form\Forms\Conditions\UserAtHomeConditionForm;
+use SHC\Form\Forms\Conditions\UserNotAtHomeConditionForm;
 use SHC\Form\Forms\UserForm;
-use SHC\Form\Forms\UserNotAtHomeConditionForm;
 
 /**
  * bearbeitet einen Schaltserver

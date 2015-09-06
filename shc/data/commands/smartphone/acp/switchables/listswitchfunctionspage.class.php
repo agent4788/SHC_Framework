@@ -7,9 +7,9 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
+use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
-use SHC\Room\RoomEditor;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
 

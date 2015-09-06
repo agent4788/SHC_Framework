@@ -90,7 +90,6 @@ class CommandSheduler {
 
             //Hilfsvariablen vorbereiten
             $radioSocketsSend = false;
-            $gpioActive = false;
             $gpioSend = false;
             $model = $switchServer->getModel();
 
@@ -126,7 +125,6 @@ class CommandSheduler {
                         //GPIO schalten
                         if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
 
-                            $gpioActive = true;
                             $request[] = $command->getCommandData();
 
                             //Kommando als aufgefuehrt markieren
@@ -223,7 +221,6 @@ class CommandSheduler {
                         //GPIO schalten
                         if ($switchServer->isWriteGpiosEnabled() && $switchServer->getId() == $command->getSwitchServer()) {
 
-                            $gpioActive = true;
                             $commandData = $command->getCommandData();
                             $data = '2:'. $commandData['pinNumber'] .':'. $commandData['command'] .' ';
 
@@ -236,7 +233,6 @@ class CommandSheduler {
                                 $socket->close();
 
                                 //Kommando als aufgefuehrt markieren
-                                $gpioSend = true;
                                 $command->executed();
                             } catch(\Exception $e) {
 

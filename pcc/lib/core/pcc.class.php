@@ -4,8 +4,10 @@ namespace PCC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Settings\Settings;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
+use RWF\User\UserEditor;
 
 /**
  * Kernklasse (initialisiert das SHC)
@@ -23,7 +25,7 @@ class PCC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.2';
+    const VERSION = '2.2.3';
 
     /**
      * Style
@@ -34,17 +36,33 @@ class PCC extends RWF {
 
     public function __construct() {
 
-        //pruefen ob APP installiert ist
-        if(!file_exists(PATH_PCC .'app.json')) {
-
-            throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
-        }
-
         //XML Initialisieren
         $this->initXml();
 
+        //Berechtigungen initialisieren
+        $this->initPermissions();
+
         //Basisklasse initalisieren
         parent::__construct();
+
+        //pruefen ob App installiert ist
+        if (ACCESS_METHOD_HTTP) {
+
+            $found = false;
+            foreach(self::$appList as $app) {
+
+                if($app['app'] == 'pcc') {
+
+                    $found = true;
+                    break;
+                }
+            }
+
+            if($found === false) {
+
+                throw new \Exception('Die App "PCC" ist nicht installiert', 1013);
+            }
+        }
 
         //SHC Initialisieren
         if (ACCESS_METHOD_HTTP) {
@@ -54,6 +72,56 @@ class PCC extends RWF {
             $this->redirection();
             $this->initStyle();
         }
+    }
+
+    /**
+     * initialisiert die Einstellungen
+     */
+    protected function initSettings() {
+
+        parent::initSettings();
+        $settings = self::$settings;
+
+        //PCC Einstellungen hinzufuegen
+        //Allgemein
+        $settings->addSetting('pcc.ui.redirectActive', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.ui.redirectPcTo', Settings::TYPE_INT, 1);
+        $settings->addSetting('pcc.ui.redirectTabletTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('pcc.ui.redirectSmartphoneTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('pcc.ui.index.showUsersAtHome', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.title', Settings::TYPE_STRING, 'PCC 2.2');
+        $settings->addSetting('pcc.defaultStyle', Settings::TYPE_STRING, 'redmond');
+        $settings->addSetting('pcc.defaultMobileStyle', Settings::TYPE_STRING, 'default');
+
+        //Fritz!Box Einstellungen
+        $settings->addSetting('pcc.fritzBox.showState', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.showSmartHomeDevices', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.showCallList', Settings::TYPE_BOOL, true);
+        $settings->addSetting('pcc.fritzBox.callListMax', Settings::TYPE_INT, 25);
+        $settings->addSetting('pcc.fritzBox.callListDays', Settings::TYPE_INT, 999);
+        $settings->addSetting('pcc.fritzBox.dslConnected', Settings::TYPE_BOOL, true);
+    }
+
+    /**
+     * initialisiert die Berechtigungen
+     */
+    protected function initPermissions() {
+
+        $userEditor = UserEditor::getInstance();
+
+        //Benutzerrechte
+        $userEditor->addPermission('pcc.ucp.viewSysState', true);
+        $userEditor->addPermission('pcc.ucp.viewSysData', true);
+        $userEditor->addPermission('pcc.ucp.fbState', true);
+        $userEditor->addPermission('pcc.ucp.fbSmartHomeDevices', true);
+        $userEditor->addPermission('pcc.ucp.fbCallList', true);
+
+        //Admin Rechte
+        $userEditor->addPermission('pcc.acp.menu', false);
+        $userEditor->addPermission('pcc.acp.userManagement', false);
+        $userEditor->addPermission('pcc.acp.settings', false);
+        $userEditor->addPermission('pcc.acp.databaseManagement', false);
+        $userEditor->addPermission('pcc.acp.backupsManagement', false);
     }
 
     /**

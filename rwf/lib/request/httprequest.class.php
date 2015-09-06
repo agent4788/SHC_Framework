@@ -39,7 +39,7 @@ class HttpRequest implements Request {
         $superglobals = array('_GET', '_POST', '_SERVER', '_COOKIE', '_FILES', '_ENV', 'GLOBALS');
         foreach ($superglobals as $var) {
             if (isset($_REQUEST[$var]) || isset($_FILES[$var])) {
-                throw new Exception('Hacking versuch entdeckt', 10000);
+                throw new \Exception('Hacking versuch entdeckt', 10000);
             }
         }
 
@@ -138,7 +138,7 @@ class HttpRequest implements Request {
 
         if ($this->issetParam($name, self::SERVER)) {
 
-            return $this->getParam($name, self::SERVER, $type);
+            return $this->getParam($name, self::SERVER, $dataType);
         }
         return null;
     }

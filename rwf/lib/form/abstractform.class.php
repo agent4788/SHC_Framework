@@ -62,7 +62,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
     /**
      * Meldungsobjekt
      * 
-     * @var Message 
+     * @var \RWF\Util\Message
      */
     protected $message = null;
 

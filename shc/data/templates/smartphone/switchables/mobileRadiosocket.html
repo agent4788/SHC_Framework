@@ -9,6 +9,8 @@
                 {lang var='global.up'}
             {elseif $switchable->getButtonText() == 4}
                 {lang var='global.open'}
+            {elseif $switchable->getButtonText() == 5}
+                {lang var='global.start'}
             {else}
                 {lang var='index.room.button.on'}
             {/if}
@@ -18,6 +20,8 @@
                 {lang var='global.down'}
             {elseif $switchable->getButtonText() == 4}
                 {lang var='global.closed'}
+            {elseif $switchable->getButtonText() == 5}
+                {lang var='global.stop'}
             {else}
                 {lang var='index.room.button.off'}
             {/if}

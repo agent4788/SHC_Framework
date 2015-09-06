@@ -5,7 +5,6 @@ namespace SHC\Condition;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 
 /**
  * Beingungen verwalten
@@ -58,7 +57,7 @@ class ConditionEditor {
      *
      * @var String
      */
-    protected static $tableName = 'conditions';
+    protected static $tableName = 'shc:conditions';
 
     protected function __construct() {
 
@@ -73,7 +72,7 @@ class ConditionEditor {
         //alte Daten loeschen
         $this->conditions = array();
 
-        $conditions = SHC::getDatabase()->hGetAll(self::$tableName);
+        $conditions = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach($conditions as $condition) {
 
             $class = (string) $condition['class'];
@@ -205,7 +204,7 @@ class ConditionEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newCondition) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newCondition) == 0) {
 
             return false;
         }
@@ -228,7 +227,7 @@ class ConditionEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $condition = $db->hGet(self::$tableName, $id);
+            $condition = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -261,7 +260,7 @@ class ConditionEditor {
             }
 
             //Daten Speichern
-            if($db->hSet(self::$tableName, $id, $condition) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $condition) == 0) {
 
                 return true;
             }
@@ -939,7 +938,7 @@ class ConditionEditor {
      * @param  Integer $wait         Wartezeit
      * @param  Boolean $delete       loeschen
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function addFileExistsCondition($name, $path, $invert, $wait, $delete, $enabled) {
@@ -966,7 +965,7 @@ class ConditionEditor {
      * @param  Integer $wait         Wartezeit
      * @param  Boolean $delete       loeschen
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function editFileExistsCondition($id, $name = null, $path = null, $invert = null, $wait = null, $delete = null, $enabled = null) {
@@ -989,7 +988,7 @@ class ConditionEditor {
      * @param  String  $name         Name
      * @param  Array   $inputs       Eingaenge
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function addInputHighCondition($name,array $inputs, $enabled) {
@@ -1009,7 +1008,7 @@ class ConditionEditor {
      * @param  Integer $id           ID
      * @param  Array   $inputs       Eingaenge
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function editInputHighCondition($id, $name = null, $inputs = null, $enabled = null) {
@@ -1029,7 +1028,7 @@ class ConditionEditor {
      * @param  String  $name         Name
      * @param  Array   $inputs       Eingaenge
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function addInputLowCondition($name,array $inputs, $enabled) {
@@ -1049,7 +1048,7 @@ class ConditionEditor {
      * @param  Integer $id           ID
      * @param  Array   $inputs       Eingaenge
      * @param  Boolean $enabled      Aktiv
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function editInputLowCondition($id, $name = null, $inputs = null, $enabled = null) {
@@ -1070,7 +1069,7 @@ class ConditionEditor {
      * @param  Integer $holidays     Feiertage
      * @param  Boolean $enabled      Aktiv
      * @param  Boolean $invert       Invertiert
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function addHolidaysCondition($name, $holidays, $enabled, $invert) {
@@ -1092,7 +1091,7 @@ class ConditionEditor {
      * @param  Integer $holidays     Feiertage
      * @param  Boolean $enabled      Aktiv
      * @param  Boolean $invert       Invertiert
-     * @return Booelan
+     * @return bool
      * @throws \Exception
      */
     public function editHolidaysCondition($id, $name = null, $holidays = null, $enabled = null, $invert = null) {

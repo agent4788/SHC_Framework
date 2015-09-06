@@ -183,7 +183,7 @@ class RaspberryPi {
     /**
      * gibt den CPU Takt in MHz zurueck
      * 
-     * @return float
+     * @return Array
      */
     public function getCpuClock() {
 
@@ -207,7 +207,7 @@ class RaspberryPi {
     /**
      * gibt die Minimale CPU Frequenz zurueck
      * 
-     * @return Float
+     * @return Array
      */
     public function getCpuMinClock() {
 
@@ -232,7 +232,7 @@ class RaspberryPi {
     /**
      * gibt die Maximale CPU Frequenz zurueck
      * 
-     * @return Float
+     * @return Array
      */
     public function getCpuMaxClock() {
 
@@ -486,6 +486,7 @@ class RaspberryPi {
 
         $rev = $this->getRpiRevision();
         $model = $this->getModel();
+        $ramTotal = 256;
 
         //Gesamten Ram Ermitteln
         if($model == self::MODEL_A || $model == self::MODEL_A_PLUS) {
@@ -593,6 +594,11 @@ class RaspberryPi {
 
         if (!isset($this->cache['memoryUsage'])) {
 
+            $total = 0;
+            $free = 0;
+            $buffers = 0;
+            $cached = 0;
+
             $matches = array();
             $this->cache['memoryUsage'] = array();
             $meminfo = file_get_contents('/proc/meminfo');
@@ -682,7 +688,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['memoryInfo'])) {
 
-            $data = '';
+            $data = array();
             exec('df -lT | grep -vE "devtmpfs|udev|none|rootfs|Filesystem|Dateisystem"', $data);
 
             $devices = array();
@@ -756,7 +762,6 @@ class RaspberryPi {
             $this->cache['wirelessDevices'] = array();
 
             $devices = $this->getNetworkDevices();
-            $wlanDevices = array();
             foreach ($devices as $device) {
 
                 //pruefen ob es sich um ein WLan Geraet handelt
@@ -768,12 +773,18 @@ class RaspberryPi {
 
                     //Daten abrufen
                     $data = '';
-                    exec('iwconfig ' . $device['name'], $data);
+                    exec('sudo iwconfig ' . $device['name'], $data);
 
                     //Wlan Standard
                     $matches = array();
                     preg_match('#IEEE (802\.11[^\s]+)#i', $data[0], $matches);
-                    $dev['standard'] = $matches[1];
+                    if(isset($matches[1])) {
+
+                        $dev['standard'] = $matches[1];
+                    } else {
+
+                        $dev['standard'] = '';
+                    }
 
                     //SSID
                     $matches = array();
@@ -800,18 +811,17 @@ class RaspberryPi {
                         $dev['accessPoint'] = $matches[1];
 
                         //Uebetragungsrate
-                        $matches = array();
-                        preg_match('#Bit\s+Rate\=([\d\.]+)\s+Mb/s#i', $data[2], $matches);
+                        preg_match('#Bit\s+Rate[:=]([\d\.]+)\s+Mb/s#i', $data[2], $matches);
                         $dev['bitRate'] = $matches[1];
 
                         //Verbindungsqualitaet
                         $matches = array();
-                        preg_match('#Link\s+Quality\=(\d+\/\d+)#i', $data[5], $matches);
+                        preg_match('#Link\s+Quality\=(\d+\/\d+)#i', $data[6], $matches);
                         $dev['quality'] = $matches[1];
 
                         //Signalstaerke
                         $matches = array();
-                        preg_match('#Signal\s+level\=(-?\d+)#i', $data[5], $matches);
+                        preg_match('#Signal\s+level\=(-?\d+)#i', $data[6], $matches);
                         $dev['signalLevel'] = $matches[1];
                     }
 
@@ -858,7 +868,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['usbDevices'])) {
 
-            $data = '';
+            $data = array();
             $devices = array();
             $outputDevices = array();
 
@@ -1015,7 +1025,6 @@ class RaspberryPi {
 
         if (!isset($this->cache['mpeg2'])) {
 
-            $config = @file_get_contents('/boot/config.txt');
             if (isset($this->config['decode_MPG2']) && preg_match('#0x[0-9a-z]+#i', $this->config['decode_MPG2'])) {
 
                 $this->cache['mpeg2'] = true;

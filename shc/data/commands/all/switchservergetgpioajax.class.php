@@ -32,10 +32,10 @@ class SwitchServerGetGpioAjax extends AjaxCommand {
         $switchServer = SwitchServerEditor::getInstance()->getSwitchServerById($switchServerId);
 
         $model = $switchServer->getModel();
+        $html = '';
         if($model == RaspberryPi::MODEL_A || $model == RaspberryPi::MODEL_B) {
 
             //Pins 0 - 20
-            $html = '';
             foreach(range(0, 20) as $i) {
 
                 $html .= '<option value="'. $i .'">'. $i .'</option>';
@@ -69,6 +69,22 @@ class SwitchServerGetGpioAjax extends AjaxCommand {
             //Pins 0 - 53
             $html = '';
             foreach(range(0, 53) as $i) {
+
+                $html .= '<option value="'. $i .'">'. $i .'</option>';
+            }
+        } elseif($model == Arduino::ESP8266_01) {
+
+            //Pins 2 - 3
+            $html = '';
+            foreach(range(2, 3) as $i) {
+
+                $html .= '<option value="'. $i .'">'. $i .'</option>';
+            }
+        } elseif($model == Arduino::ESP8266_12) {
+
+            //Pins 0 - 15
+            $html = '';
+            foreach(range(0, 15) as $i) {
 
                 $html .= '<option value="'. $i .'">'. $i .'</option>';
             }

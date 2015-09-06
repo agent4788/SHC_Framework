@@ -16,7 +16,7 @@ class Guest implements Visitor {
     /**
      * Benutzer Hauptgruppe
      * 
-     * @var RWF\User\UserGroup 
+     * @var \RWF\User\UserGroup
      */
     protected $mainGroup = null;
 
@@ -61,7 +61,7 @@ class Guest implements Visitor {
     /**
      * gibt das Gruppenobjekt der Hauptgruppe zurueck
      * 
-     * @return RWF\User\User\Group
+     * @return \RWF\User\UserGroup
      */
     public function getMainGroup() {
 
@@ -81,13 +81,13 @@ class Guest implements Visitor {
     /**
      * prueft die Berechtigung des Benutzers (die rechte ergeben sich aus den Benutzergruppen)
      * 
-     * @param  String  $premission Recht
+     * @param  String  $permission Recht
      * @return Boolean
      */
-    public function checkPremission($premission) {
+    public function checkPermission($permission) {
 
         //Hauptgruppe
-        if ($this->mainGroup instanceof UserGroup && $this->mainGroup->checkPremission($premission) === true) {
+        if ($this->mainGroup instanceof UserGroup && $this->mainGroup->checkPermission($permission) === true) {
 
             return true;
         }

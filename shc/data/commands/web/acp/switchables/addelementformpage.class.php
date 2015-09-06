@@ -4,24 +4,23 @@ namespace SHC\Command\Web;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Form\Form;
 use RWF\Request\Commands\PageCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\FormElements\ElementTypeChooser;
-use SHC\Form\Forms\ActivityForm;
-use SHC\Form\Forms\AvmSocketForm;
-use SHC\Form\Forms\CountdownForm;
-use SHC\Form\Forms\FritzBoxForm;
-use SHC\Form\Forms\RadiosocketForm;
-use SHC\Form\Forms\RebootForm;
-use SHC\Form\Forms\RpiGpioInputForm;
-use SHC\Form\Forms\RpiGpioOutputForm;
-use SHC\Form\Forms\ScriptForm;
-use SHC\Form\Forms\ShutdownForm;
-use SHC\Form\Forms\WolForm;
+use SHC\Form\Forms\Elements\ActivityForm;
+use SHC\Form\Forms\Elements\AvmSocketForm;
+use SHC\Form\Forms\Elements\CountdownForm;
+use SHC\Form\Forms\Elements\FritzBoxForm;
+use SHC\Form\Forms\Elements\RadiosocketForm;
+use SHC\Form\Forms\Elements\RebootForm;
+use SHC\Form\Forms\Elements\RpiGpioInputForm;
+use SHC\Form\Forms\Elements\RpiGpioOutputForm;
+use SHC\Form\Forms\Elements\ScriptForm;
+use SHC\Form\Forms\Elements\ShutdownForm;
+use SHC\Form\Forms\Elements\WolForm;
 use SHC\Switchable\SwitchableEditor;
 
 /**

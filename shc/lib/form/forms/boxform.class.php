@@ -7,7 +7,6 @@ use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\ElementsForBoxChooser;
-use SHC\Form\FormElements\RoomChooser;
 use SHC\Form\FormElements\SingleRoomChooser;
 use SHC\View\Room\ViewHelperBox;
 

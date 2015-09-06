@@ -63,7 +63,7 @@ class SaveSwitchableOrderAction extends ActionCommand {
         //pruefen ob der Raum existiert
         if(!$room instanceof Room) {
 
-            $message =  new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.message.id.error'));
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.switchableManagement.message.id.error')));
             return;
         }
 

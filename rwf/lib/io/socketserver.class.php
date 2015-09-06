@@ -30,7 +30,7 @@ class SocketServer {
     /**
      * Sockethandle
      * 
-     * @var Recource
+     * @var recource
      */
     protected $socket = null;
 

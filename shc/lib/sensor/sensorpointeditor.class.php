@@ -3,12 +3,9 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Util\FileUtil;
 use RWF\Util\String;
-use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
-use SHC\Room\Room;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
@@ -16,7 +13,6 @@ use SHC\Sensor\Sensors\BMP;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
-use SHC\Room\RoomEditor;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
@@ -126,7 +122,7 @@ class SensorPointEditor {
      *
      * @var String
      */
-    protected static $tableName = 'sensors';
+    protected static $tableName = 'shc:sensors';
 
     protected function __construct() {
 
@@ -145,7 +141,7 @@ class SensorPointEditor {
 
         //Sensorpunkte Lesen
         $db = SHC::getDatabase();
-        $sensorPoints = $db->hGetAll(self::$tableName . ':sensorPoints');
+        $sensorPoints = $db->hGetAllArray(self::$tableName . ':sensorPoints');
         foreach($sensorPoints as $sensorPointData) {
 
             $sensorPoint = new SensorPoint();
@@ -160,7 +156,7 @@ class SensorPointEditor {
         }
 
         //Sensoren lesen
-        $sensors = $db->hGetAll(self::$tableName .':sensors');
+        $sensors = $db->hGetAllArray(self::$tableName .':sensors');
         foreach($sensors as $sensorData) {
 
             switch ((int) $sensorData['type']) {
@@ -169,7 +165,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -186,7 +182,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -206,7 +202,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -229,7 +225,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -246,7 +242,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -263,7 +259,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -280,7 +276,7 @@ class SensorPointEditor {
 
                     //Sensorwerte lesen
                     $values = array();
-                    $list = $db->lRange(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
                     foreach($list as $dataSet) {
 
                         $values[] = array(
@@ -356,7 +352,7 @@ class SensorPointEditor {
             'lastConnection' => DateTime::now()->getDatabaseDateTime()
         );
 
-        if(SHC::getDatabase()->hSetNx(self::$tableName . ':sensorPoints', $spId, $newSensorPoint) == 0) {
+        if(SHC::getDatabase()->hSetNxArray(self::$tableName . ':sensorPoints', $spId, $newSensorPoint) == 0) {
 
             return false;
         }
@@ -376,13 +372,13 @@ class SensorPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
-            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+            $sensorPoint = $db->hGetArray(self::$tableName . ':sensorPoints', $spId);
             if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
                 $sensorPoint['voltage'] = $voltage;
                 $sensorPoint['lastConnection'] = DateTime::now()->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                if($db->hSetArray(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
 
                     return true;
                 }
@@ -404,12 +400,12 @@ class SensorPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
-            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+            $sensorPoint = $db->hGetArray(self::$tableName . ':sensorPoints', $spId);
             if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
                 $sensorPoint['lastConnection'] = $lastConnect->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                if($db->hSetArray(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
 
                     return true;
                 }
@@ -759,7 +755,7 @@ class SensorPointEditor {
                 break;
         }
 
-        if(SHC::getDatabase()->hSetNx(self::$tableName . ':sensors', $sId, $newSensor) == 0) {
+        if(SHC::getDatabase()->hSetNxArray(self::$tableName . ':sensors', $sId, $newSensor) == 0) {
 
             return false;
         }
@@ -800,6 +796,7 @@ class SensorPointEditor {
         }
 
         //Daten vorbereiten
+        $data = array();
         switch($type) {
 
             case self::SENSOR_DS18X20:
@@ -846,7 +843,7 @@ class SensorPointEditor {
                 break;
         }
 
-        if(SHC::getDatabase()->lPush(self::$tableName .':sensorData:'. $sId, $data) !== false) {
+        if(SHC::getDatabase()->lPushArray(self::$tableName .':sensorData:'. $sId, $data) !== false) {
 
             SHC::getDatabase()->lTrim(self::$tableName .':sensorData:'. $sId, 0, 24);
             $this->setSensorPointLastConnect($spId, DateTime::now());
@@ -887,12 +884,12 @@ class SensorPointEditor {
 
             if(isset($this->sensorPoints[$spId])) {
 
-                $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+                $sensorPoint = $db->hGetArray(self::$tableName . ':sensorPoints', $spId);
                 if(isset($sensorPoint['id']) && (int) $sensorPoint['id'] == $spId) {
 
                     $sensorPoint['orderId'] = $orderId;
 
-                    if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
+                    if($db->hSetArray(self::$tableName . ':sensorPoints', $spId, $sensorPoint) != 0) {
 
                         return false;
                     }
@@ -919,7 +916,7 @@ class SensorPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName . ':sensorPoints', $spId)) {
 
-            $sensorPoint = $db->hGet(self::$tableName . ':sensorPoints', $spId);
+            $sensorPoint = $db->hGetArray(self::$tableName . ':sensorPoints', $spId);
 
             //Name
             if ($name !== null) {
@@ -943,7 +940,7 @@ class SensorPointEditor {
                     $sensorPoint['warningLevel'] = $warningLevel;
                 }
 
-                if($db->hSet(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
+                if($db->hSetArray(self::$tableName . ':sensorPoints', $spId, $sensorPoint) == 0) {
 
                     return true;
                 }
@@ -989,22 +986,22 @@ class SensorPointEditor {
     public function editSensorOrder(array $order) {
 
         $db = SHC::getDatabase();
-        foreach($order as $sId => $order) {
+        foreach($order as $sId => $sOrder) {
 
             if($this->getSensorById($sId) !== null) {
 
                 $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
                 if(isset($sensorData['id']) && (int) $sensorData['id'] == $sId) {
 
-                    foreach($order as $roomId => $order) {
+                    foreach($sOrder as $roomId => $roomOrder) {
 
                         if($sensorData['order'][$roomId]) {
 
-                            $sensorData['order'][$roomId] = $order;
+                            $sensorData['order'][$roomId] = $roomOrder;
                         }
                     }
 
-                    if($db->hSet(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
+                    if($db->hSetArray(self::$tableName . ':sensors', $sId, $sensorData) != 0) {
 
                         return false;
                     }
@@ -1036,7 +1033,7 @@ class SensorPointEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName . ':sensors', $sId)) {
 
-            $sensor = $db->hGet(self::$tableName . ':sensors', $sId);
+            $sensor = $db->hGetArray(self::$tableName . ':sensors', $sId);
 
             //Name
             if ($name !== null) {
@@ -1110,7 +1107,7 @@ class SensorPointEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName . ':sensors', $sId, $sensor) == 0) {
+            if($db->hSetArray(self::$tableName . ':sensors', $sId, $sensor) == 0) {
 
                 return true;
             }

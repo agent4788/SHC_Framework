@@ -17,9 +17,17 @@
                 <li  data-role="list-divider">{lang var='acp.daemonState.box.switchServer'}</li>
                 {foreach from=$switchServers item='switchServer'}
                 <li>
-                    <img src="./shc/inc/img/buttons/{if $switchServer.state == 1}run.png{else}stop.png{/if}" class="ui-li-icon">
+                    {if $switchServer.object->isEnabled() == false}
+                    <img src="./shc/inc/img/buttons/not_active.png" class="ui-li-icon">
+                    {elseif $switchServer.state == 1}
+                    <img src="./shc/inc/img/buttons/run.png" class="ui-li-icon">
+                    {else}
+                    <img src="./shc/inc/img/buttons/stop.png" class="ui-li-icon">
+                    {/if}
                     <span style="font-weight: bold;">{#$switchServer.object->getName()}</span>:
-                    {if $switchServer.state == 1}
+                    {if $switchServer.object->isEnabled() == false}
+                        {lang var='acp.daemonState.box.state.notActive'}
+                    {elseif $switchServer.state == 1}
                         {lang var='acp.daemonState.box.state.run'}
                     {else}
                         {lang var='acp.daemonState.box.state.stop'}

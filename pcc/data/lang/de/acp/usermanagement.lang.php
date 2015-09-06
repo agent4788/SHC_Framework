@@ -111,4 +111,8 @@ $l['acp.userManagement.premissions.pcc.acp.userManagement'] =  'Benutzerverwaltu
 $l['acp.userManagement.premissions.pcc.acp.userManagement.description'] =  'Benutzer und Gruppen erstellen, bearbeiten und löschen';
 $l['acp.userManagement.premissions.pcc.acp.settings'] =  'Einstellungen';
 $l['acp.userManagement.premissions.pcc.acp.settings.description'] =  'Der Benutzer kann die Einstellungen des SHC bearbeiten';
+$l['acp.userManagement.premissions.pcc.acp.backupsManagement'] =  'Backups';
+$l['acp.userManagement.premissions.pcc.acp.backupsManagement.description'] =  'Backups erstellen, löschen und herunterladen';
+$l['acp.userManagement.premissions.pcc.acp.databaseManagement'] = 'Datenbank';
+$l['acp.userManagement.premissions.pcc.acp.databaseManagement.description'] =  'Datenbank überwachen';
 

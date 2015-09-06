@@ -8,7 +8,6 @@ use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use SHC\Core\SHC;
 use SHC\Sensor\SensorPointEditor;
-use SHC\Timer\SwitchPointEditor;
 
 /**
  * Sensordaten Empfangen

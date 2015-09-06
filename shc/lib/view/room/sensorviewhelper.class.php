@@ -37,7 +37,7 @@ abstract class SensorViewHelper {
      *
      * @param  Integer             $roomId     Raum ID
      * @param  \SHC\Sensor\Sensor  $sensor     Sensor
-     * @param  Booelan             $ignoreShow Sensoren Anzeigen trotz abgewahlt
+     * @param  bool                $ignoreShow Sensoren Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showSensor($roomId, Sensor $sensor, $ignoreShow = false) {

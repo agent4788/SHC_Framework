@@ -2,7 +2,6 @@
 namespace RWF\AVM;
 
 //Imports
-use RWF\XML\XmlEditor;
 
 /**
  * Auslesen der Fritz Box Netzwerk Geraeteliste

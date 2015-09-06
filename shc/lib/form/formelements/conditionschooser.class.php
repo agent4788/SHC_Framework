@@ -5,7 +5,7 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Form\FormElements\SelectMultipleWithEmptyElement;
 use SHC\Condition\ConditionEditor;
-use SHC\Timer\SwitchPointEditor;
+
 
 /**
  * Auswahl fuer Schaltpunkte

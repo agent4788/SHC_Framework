@@ -5,7 +5,6 @@ namespace SHC\UserAtHome;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 
 /**
  * Benutzer zu Hause Editor
@@ -65,7 +64,7 @@ class UserAtHomeEditor {
      *
      * @var String
      */
-    protected static $tableName = 'usersrathome';
+    protected static $tableName = 'shc:usersrathome';
     
     protected function __construct() {
 
@@ -80,17 +79,17 @@ class UserAtHomeEditor {
         //alte daten loeschen
         $this->usersAtHome = array();
 
-        $usersAtHome = SHC::getDatabase()->hGetAll(self::$tableName);
-        foreach($usersAtHome as $usersAtHome) {
+        $usersAtHome = SHC::getDatabase()->hGetAllArray(self::$tableName);
+        foreach($usersAtHome as $userAtHome) {
             
-            $this->usersAtHome[(int) $usersAtHome['id']] = new UserAtHome(
-                    (int) $usersAtHome['id'],
-                    (string) $usersAtHome['name'],
-                    (string) $usersAtHome['ipAddress'],
-                    (int) $usersAtHome['orderId'],
-                    ((int) $usersAtHome['enabled'] == true ? true : false),
-                    (int) $usersAtHome['visibility'],
-                    (int) $usersAtHome['state']
+            $this->usersAtHome[(int) $userAtHome['id']] = new UserAtHome(
+                    (int) $userAtHome['id'],
+                    (string) $userAtHome['name'],
+                    (string) $userAtHome['ipAddress'],
+                    (int) $userAtHome['orderId'],
+                    ((int) $userAtHome['enabled'] == true ? true : false),
+                    (int) $userAtHome['visibility'],
+                    (int) $userAtHome['state']
             );
         }
         
@@ -200,13 +199,13 @@ class UserAtHomeEditor {
 
             if(isset($this->usersAtHome[$userAtHomeId])) {
 
-                $userAtHomeData = $db->hGet(self::$tableName, $userAtHomeId);
+                $userAtHomeData = $db->hGetArray(self::$tableName, $userAtHomeId);
 
                 if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $userAtHomeId) {
 
                     $userAtHomeData['orderId'] = $orderId;
 
-                    if($db->hSet(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
+                    if($db->hSetArray(self::$tableName, $userAtHomeId, $userAtHomeData) != 0) {
 
                         return false;
                     }
@@ -236,13 +235,13 @@ class UserAtHomeEditor {
 
                 //Nach Objekt suchen
                 $id = $userAtHome->getId();
-                $userAtHomeData = $db->hGet(self::$tableName, $id);
+                $userAtHomeData = $db->hGetArray(self::$tableName, $id);
 
                 if(isset($userAtHomeData['id']) && $userAtHomeData['id'] == $id) {
 
                     $userAtHomeData['state'] = $userAtHome->getState();
 
-                    if($db->hSet(self::$tableName, $id, $userAtHomeData) != 0) {
+                    if($db->hSetArray(self::$tableName, $id, $userAtHomeData) != 0) {
 
                         return false;
                     }
@@ -287,7 +286,7 @@ class UserAtHomeEditor {
             'state' => 0
         );
 
-        if($db->hSetNx(self::$tableName, $index, $newUserAtHome) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newUserAtHome) == 0) {
 
             return false;
         }
@@ -299,7 +298,7 @@ class UserAtHomeEditor {
      * 
      * @param  Integer $id         Benutzer ID
      * @param  String  $name       Name
-     * @param  Strung  $ipAddress  IP Adresse
+     * @param  String  $ipAddress  IP Adresse
      * @param  Boolean $enabled    Aktiv
      * @param  Boolean $visibility Sichtbarkeit
      * @return Boolean
@@ -311,7 +310,7 @@ class UserAtHomeEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $userAtHome = $db->hGet(self::$tableName, $id);
+            $userAtHome = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -343,7 +342,7 @@ class UserAtHomeEditor {
                 $userAtHome['visibility'] = ($visibility == true ? true : false);
             }
 
-            if($db->hSet(self::$tableName, $id, $userAtHome) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $userAtHome) == 0) {
 
                 return true;
             }

@@ -161,6 +161,7 @@ class Message {
      */
     public function fetchHtml() {
 
+        $type = 'rwf-ui-message-info';
         switch ($this->getType()) {
 
             case self::ERROR;

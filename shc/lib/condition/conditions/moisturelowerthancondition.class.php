@@ -34,7 +34,7 @@ class MoistureLowerThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['moisture'])) {
 
-            throw new Exception('sensors und moisture müssen angegeben werden', 1580);
+            throw new \Exception('sensors und moisture müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);

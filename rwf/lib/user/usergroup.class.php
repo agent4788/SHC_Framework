@@ -46,22 +46,22 @@ class UserGroup {
      * 
      * @var Array 
      */
-    protected $premissions = array();
+    protected $permissions = array();
 
     /**
      * @param Integer $id            Gruppen ID
      * @param String  $name          Gruppen Name
      * @param String  $description   Beschreibung
-     * @param Array   $premissions   Berechtigungen
+     * @param Array   $permissions   Berechtigungen
      * @param Boolean $isSystemGroup ist Systemgruppe?
      */
-    public function __construct($id, $name, $description, array $premissions, $isSystemGroup = false) {
+    public function __construct($id, $name, $description, array $permissions, $isSystemGroup = false) {
 
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->isSystemGroup = $isSystemGroup;
-        $this->premissions = $premissions;
+        $this->permissions = $permissions;
     }
 
     /**
@@ -107,12 +107,12 @@ class UserGroup {
     /**
      * prueft die Berechtigung der Gruppe
      * 
-     * @param  String  $premission Recht
+     * @param  String  $permissions Recht
      * @return Boolean
      */
-    public function checkPremission($premission) {
+    public function checkPermission($permissions) {
 
-        if (isset($this->premissions[$premission]) && $this->premissions[$premission] == true) {
+        if (isset($this->permissions[$permissions]) && $this->permissions[$permissions] == true) {
 
             return true;
         }
@@ -124,9 +124,9 @@ class UserGroup {
      *
      * @return Array
      */
-    public function listPremissions() {
+    public function listPermissions() {
 
-        return $this->premissions;
+        return $this->permissions;
     }
     
     /**

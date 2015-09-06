@@ -10,7 +10,6 @@ use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\Forms\SwitchServerForm;
-use SHC\Form\Forms\UserForm;
 use SHC\SwitchServer\SwitchServer;
 use SHC\SwitchServer\SwitchServerEditor;
 

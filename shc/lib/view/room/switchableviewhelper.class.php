@@ -7,7 +7,6 @@ use RWF\Core\RWF;
 use SHC\Core\SHC;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
-use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\FritzBox;
@@ -41,7 +40,7 @@ class SwitchableViewHelper {
      *
      * @param  Integer                     $roomId     Raum ID
      * @param  \SHC\Switchable\Switchable  $switchable schaltbares Element
-     * @param  Booelan                     $ignoreShow Anzeigen trotz abgewahlt
+     * @param  bool                        $ignoreShow Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showSwitchable($roomId, Switchable $switchable, $ignoreShow = false) {

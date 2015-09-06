@@ -15,7 +15,7 @@ use RWF\Exception\JsonException;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class JSON {
+abstract class JSON {
 
     /**
      * sendet ein Array als JSON Object an den Browser
@@ -28,13 +28,21 @@ class JSON {
 
         //JSON Optionen
         $options = JSON_HEX_TAG | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+        if(DEVELOPMENT_MODE) {
+            $options |= JSON_PRETTY_PRINT;
+        }
         
         //Mimetype und Header schicken
         $response->setContentType('application/json');
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden
-        $response->setBody(json_encode($array, $options));
+        $return = json_encode($array, $options/*, $depth */);
+        if($return === false) {
+
+            throw new JsonException(json_last_error_msg(), json_last_error());
+        }
+        $response->setBody($return);
     }
     
     /**
@@ -57,7 +65,12 @@ class JSON {
         $response->addHeader('X-APPLICATION', 'RWF');
         
         //Daten senden
-        $response->setBody(json_encode($object, $options));
+        $return = json_encode($object, $options/*, $depth */);
+        if($return === false) {
+
+            throw new JsonException(json_last_error_msg(), json_last_error());
+        }
+        $response->setBody($return);
     }
 
     /**
@@ -67,11 +80,45 @@ class JSON {
      * @return Array
      * @throws \RWF\Exception\JsonException
      */
-    public function reciveJSON($jsonString) {
+    public static function reciveJSON($jsonString) {
         
         $return = json_encode($jsonString);
         if($return === false) {
             
+            throw new JsonException(json_last_error_msg(), json_last_error());
+        }
+        return $return;
+    }
+
+    /**
+     * encodiert ein Array in ein JSON String
+     *
+     * @param  array $value Werte
+     * @return string
+     * @throws JsonException
+     */
+    public static function encode($value) {
+
+        $return = json_encode($value);
+        if($return === false) {
+
+            throw new JsonException(json_last_error_msg(), json_last_error());
+        }
+        return $return;
+    }
+
+    /**
+     * decodiert einen JSON String in ein Array
+     *
+     * @param $string
+     * @return mixed
+     * @throws JsonException
+     */
+    public static function decode($string) {
+
+        $return = json_decode($string, true);
+        if($return === false) {
+
             throw new JsonException(json_last_error_msg(), json_last_error());
         }
         return $return;

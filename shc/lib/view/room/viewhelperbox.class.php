@@ -343,9 +343,9 @@ class ViewHelperBox {
     public function toArray() {
 
         $data = array(
-            'id' => $this->id,
+            'id' => $this->boxId,
             'name' => $this->name,
-            'orderId' => $this->orderId,
+            'orderId' => $this->boxOrderId,
             'roomId' => $this->roomId,
         );
 

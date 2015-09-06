@@ -8,8 +8,6 @@ use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Room\Room;
-use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPoint;
 use SHC\Sensor\SensorPointEditor;
 
@@ -57,7 +55,7 @@ class DeleteSensorPointAction extends ActionCommand {
         //pruefen ob der Sensorpunkt existiert
         if(!$sensorPoint instanceof SensorPoint) {
 
-            RWF::getSession()->setMessage(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id'));
+            RWF::getSession()->setMessage(new Message(Message::ERROR, RWF::getLanguage()->get('acp.sensorpointsManagement.form.error.id')));
             return;
         }
 

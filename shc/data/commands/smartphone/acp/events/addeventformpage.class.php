@@ -11,13 +11,14 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use SHC\Form\FormElements\EventTypeChooser;
-use SHC\Form\Forms\HumidityEventForm;
-use SHC\Form\Forms\InputEventForm;
-use SHC\Form\Forms\LightIntensityEventForm;
-use SHC\Form\Forms\MoistureEventForm;
-use SHC\Form\Forms\SunriseEventForm;
-use SHC\Form\Forms\TemperatureEventForm;
-use SHC\Form\Forms\UserEventForm;
+use SHC\Form\Forms\Events\FileEventForm;
+use SHC\Form\Forms\Events\HumidityEventForm;
+use SHC\Form\Forms\Events\InputEventForm;
+use SHC\Form\Forms\Events\LightIntensityEventForm;
+use SHC\Form\Forms\Events\MoistureEventForm;
+use SHC\Form\Forms\Events\SunriseEventForm;
+use SHC\Form\Forms\Events\TemperatureEventForm;
+use SHC\Form\Forms\Events\UserEventForm;
 use SHC\Form\Forms\UserForm;
 
 /**
@@ -498,6 +499,72 @@ class AddEventFormPage extends PageCommand {
                             } elseif ($type == EventEditor::EVENT_SUNSET) {
 
                                 EventEditor::getInstance()->addSunsetEvent($name, $enabled, array());
+                            } else {
+
+                                //Typfehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.addEvent'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&m&page=listevents');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('eventForm', $eventForm);
+                    }
+                    break;;
+                case EventEditor::EVENT_FILE_CREATE:
+                case EventEditor::EVENT_FILE_DELETE:
+
+                    //Benutzer Formular
+                    $eventForm = new FileEventForm();
+                    $eventForm->setAction('index.php?app=shc&m&page=addeventform');
+                    $eventForm->setView(UserForm::SMARTPHONE_VIEW);
+                    $eventForm->addId('shc-view-form-addEvent');
+
+                    if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $eventForm->getElementByName('name')->getValue();
+                        $enabled = $eventForm->getElementByName('enabled')->getValue();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
+                        $file = $eventForm->getElementByName('file')->getValue();
+                        $interval = $eventForm->getElementByName('interval')->getValue();
+
+                        //speichern
+                        $message = new Message();
+                        try {
+
+                            if ($type == EventEditor::EVENT_FILE_CREATE) {
+
+                                EventEditor::getInstance()->addFileCreateEvent($name, $enabled, $file, $interval);
+                            } elseif ($type == EventEditor::EVENT_FILE_DELETE) {
+
+                                EventEditor::getInstance()->addFileDeleteEvent($name, $enabled, $file, $interval);
                             } else {
 
                                 //Typfehler

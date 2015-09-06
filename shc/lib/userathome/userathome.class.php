@@ -205,7 +205,7 @@ class UserAtHome {
      */
     public function getOrderId() {
         
-        return $this->orderId;;
+        return $this->orderId;
     }
 
     /**

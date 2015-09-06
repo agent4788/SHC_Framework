@@ -8,7 +8,6 @@ use RWF\Date\DateTime;
 use RWF\Request\Commands\SyncCommand;
 use RWF\Request\Request;
 use RWF\Util\DataTypeUtil;
-use RWF\Util\String;
 use SHC\Room\Room;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;

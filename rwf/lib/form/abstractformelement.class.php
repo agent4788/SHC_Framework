@@ -6,7 +6,6 @@ namespace RWF\Form;
 use RWF\Html\AbstractHtmlElement;
 use RWF\Core\RWF;
 use RWF\Request\Request;
-use RWF\Form\Form;
 use RWF\Util\String;
 
 /**

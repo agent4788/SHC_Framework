@@ -6,10 +6,8 @@ namespace SHC\Room;
 use RWF\User\UserEditor;
 use RWF\User\UserGroup;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 use RWF\Util\String;
 use SHC\Database\NoSQL\Redis;
-use SHC\View\Room\ViewHelperEditor;
 
 /**
  * Raumverwaltung
@@ -69,7 +67,7 @@ class RoomEditor {
      *
      * @var String
      */
-    protected static $tableName = 'rooms';
+    protected static $tableName = 'shc:rooms';
 
     protected function __construct() {
 
@@ -84,7 +82,7 @@ class RoomEditor {
         //alte Daten loeschen
         $this->rooms = array();
 
-        $rooms = SHC::getDatabase()->hGetAll(self::$tableName);
+        $rooms = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach($rooms as $room) {
 
             $id = $room['id'];
@@ -201,7 +199,7 @@ class RoomEditor {
      */
     public function editRoomOrder(array $order) {
 
-        $pipeline = SHC::getDatabase()->multi(Redis::PIPELINE);
+        $db = SHC::getDatabase();
         foreach($order as $roomId => $orderId) {
 
             if(isset($this->rooms[$roomId])) {
@@ -209,10 +207,10 @@ class RoomEditor {
                 /* @var $room \SHC\Room\Room */
                 $room = $this->rooms[$roomId];
                 $room->setOrderId($orderId);
-                $pipeline->hset(self::$tableName, $roomId, $room->toArray());
+                $db->hSetArray(self::$tableName, $roomId, $room->toArray());
             }
         }
-        $pipeline->exec();
+        $db->exec();
         return true;
     }
 
@@ -243,7 +241,7 @@ class RoomEditor {
             'allowedUserGroups' => $allowedUserGroups
         );
 
-        if($db->hSetNx(self::$tableName, $index, $newRoom) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newRoom) == 0) {
 
             return false;
         }
@@ -266,7 +264,7 @@ class RoomEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $room = $db->hGet(self::$tableName, $id);
+            $room = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -292,7 +290,7 @@ class RoomEditor {
                 $room['allowedUserGroups'] = $allowedUserGroups;
             }
 
-            if($db->hSet(self::$tableName, $id, $room) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $room) == 0) {
 
                 return true;
             }

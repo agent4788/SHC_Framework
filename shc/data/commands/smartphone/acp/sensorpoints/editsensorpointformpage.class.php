@@ -10,7 +10,6 @@ use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\Forms\SensorPointForm;
-use SHC\Form\Forms\UserGroupForm;
 use SHC\Sensor\SensorPoint;
 use SHC\Sensor\SensorPointEditor;
 

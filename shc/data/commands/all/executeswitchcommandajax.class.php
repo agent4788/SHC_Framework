@@ -89,6 +89,9 @@ class ExecuteSwitchCommandAjax extends AjaxCommand {
             } elseif($command == 1) {
 
                 $switchable->switchOn();
+            } elseif($command == 2) {
+
+                $switchable->toggle();
             } else {
 
                 //Fehler ungueltiger Befehl

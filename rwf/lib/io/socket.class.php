@@ -51,7 +51,7 @@ class Socket {
     /**
      * Socketsocket
      * 
-     * @var Recource
+     * @var recource
      */
     protected $socket = null;
 
