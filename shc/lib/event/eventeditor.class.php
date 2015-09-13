@@ -354,7 +354,8 @@ class EventEditor {
             'name' => $name,
             'enabled' => ($enabled == true ? true : false),
             'conditions' => $conditions,
-            'lastExecute' => '2000-01-01 00:00:00'
+            'lastExecute' => '2000-01-01 00:00:00',
+            'switchable' => array()
         );
 
         foreach ($data as $tag => $value) {
@@ -1217,10 +1218,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['conditions'][] = $conditionId;
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1241,10 +1242,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['conditions'] = array_diff($event['conditions'], array($conditionId));
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1266,10 +1267,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1291,7 +1292,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             foreach($event['switchable'] as $index => $switchable) {
 
                 if($switchable['id'] == $switchableId) {
@@ -1301,7 +1302,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1322,7 +1323,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             foreach($event['switchable'] as $index => $switchable) {
 
                 if($switchable['id'] == $switchableId) {
@@ -1332,7 +1333,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }

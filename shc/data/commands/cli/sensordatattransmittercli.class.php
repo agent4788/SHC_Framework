@@ -654,7 +654,7 @@ class SensorDatatTransmitterCli extends CliCommand {
      */
     protected function saveSettings() {
 
-        if ($this->xml->save(true)) {
+        if ($this->xml->save(false)) {
 
             return true;
         }

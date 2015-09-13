@@ -619,7 +619,7 @@ class SwitchServerCli extends CliCommand {
      */
     protected function saveSettings() {
 
-        if ($this->xml->save(true)) {
+        if ($this->xml->save(false)) {
 
             $this->settings = array();
             return true;
