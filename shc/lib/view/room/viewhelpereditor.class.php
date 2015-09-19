@@ -102,7 +102,7 @@ class ViewHelperEditor {
      */
     public function loadData() {
 
-        $bexes = SHC::getDatabase()->hGetAll(self::$tableName);
+        $bexes = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach ($bexes as $box) {
 
             $boxRoomId = (int) $box['roomId'];
@@ -357,7 +357,7 @@ class ViewHelperEditor {
             'orderId' => $orderId,
             'elements' => array()
         );
-        if($db->hSetNx(self::$tableName, $index, $newBox) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newBox) == 0) {
 
             return false;
         }
@@ -380,7 +380,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $box = $db->hGet(self::$tableName, $id);
+            $box = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -404,7 +404,7 @@ class ViewHelperEditor {
                 $box['roomId'] = $roomId;
             }
 
-            if($db->hSet(self::$tableName, $id, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $box) == 0) {
 
                 return true;
             }
@@ -426,7 +426,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             foreach($box['elements'] as $index => $element) {
 
                 if($element['id'] == $elementId && $element['type'] == $type) {
@@ -440,7 +440,7 @@ class ViewHelperEditor {
                 'id' => $elementId
             );
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
@@ -462,7 +462,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             foreach($box['elements'] as $index => $element) {
 
                 if($element['id'] == $elementId && $element['type'] == $type) {
@@ -471,7 +471,7 @@ class ViewHelperEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
@@ -492,10 +492,10 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             $box['elements'] = array();
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
