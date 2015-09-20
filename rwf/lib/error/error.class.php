@@ -96,7 +96,6 @@ class Error {
         }
 
         //Typ ermitteln
-        $errorName = '';
         switch ($type) {
 
             case E_NOTICE:
@@ -230,7 +229,7 @@ class Error {
     /**
      * Ausnahmen behandeln
      * 
-     * @param Exception $e
+     * @param \Exception $e
      * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
     public function handleException(\Exception $e, $logFile = 'exception.log') {
@@ -349,9 +348,9 @@ class Error {
     /**
      * Ausnahmen behandeln
      * 
-     * @param Exception $e
-     * @param Boolean   $logOnly nur Log Eintrag erzeugen
-     * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
+     * @param \Exception $e
+     * @param Boolean    $logOnly nur Log Eintrag erzeugen
+     * @param String     $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
     public function handleXMLException(XMLException $e, $logOnly = false, $logFile = 'xml.log') {
 
@@ -492,7 +491,7 @@ class Error {
             $data = '';
             foreach ($e->getXmlErrors() as $error) {
 
-                if ($error instanceof libXMLError) {
+                if ($error instanceof \libXMLError) {
 
                     if ($first === true) {
 

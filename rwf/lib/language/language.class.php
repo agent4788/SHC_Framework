@@ -278,7 +278,6 @@ class Language {
      */
     protected function parse($id, $type, $default = '', $decimals = '') {
 
-        $return = '';
         $i = intval($id);
         $type = String::toLower(String::trim($type));
         switch ($type) {

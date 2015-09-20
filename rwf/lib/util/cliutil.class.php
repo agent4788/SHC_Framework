@@ -16,7 +16,7 @@ class CliUtil {
     /**
      * STDIN Datenstrom
      * 
-     * @var Recource
+     * @var recource
      */
     protected static $in = null;
 
@@ -161,7 +161,7 @@ class CliUtil {
      * gibt eine Eingabeaufforderung aus und gibt die Eingabe als String rurueck
      * 
      * @param  String   $message Meldung
-     * @param  Recource $handle  Eingabestrom
+     * @param  recource $handle  Eingabestrom
      * @return String            EIngabe
      */
     public function input($message, &$handle = null) {

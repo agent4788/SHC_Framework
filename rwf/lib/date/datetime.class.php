@@ -48,7 +48,7 @@ class DateTime extends \DateTime {
     /**
      * gibt das DateTime Objekt des gestrigen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\DateTime
      */
     public static function previousDay(\DateTimeZone $timezone = null) {
@@ -59,7 +59,7 @@ class DateTime extends \DateTime {
     /**
      * gibt das DateTime Objekt des aktuellen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\DateTime
      */
     public static function today(\DateTimeZone $timezone = null) {
@@ -70,7 +70,7 @@ class DateTime extends \DateTime {
     /**
      * gibt das DateTime Objekt des aktuellen Tages und Zeit zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\DateTime
      */
     public static function now(\DateTimeZone $timezone = null) {
@@ -81,7 +81,7 @@ class DateTime extends \DateTime {
     /**
      * gibt das DateTime Objekt des morgigen Tages zurueck
      *
-     * @param  DateTimeZone $timezone Zeitzone
+     * @param  \DateTimeZone $timezone Zeitzone
      * @return \RWF\Date\DateTime
      */
     public static function nextDay(\DateTimeZone $timezone = null) {

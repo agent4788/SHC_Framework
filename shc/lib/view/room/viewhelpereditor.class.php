@@ -5,8 +5,6 @@ namespace SHC\View\Room;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
-use SHC\Room\Room;
 use SHC\Sensor\Sensor;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
@@ -92,7 +90,7 @@ class ViewHelperEditor {
      *
      * @var String
      */
-    protected static $tableName = 'roomView';
+    protected static $tableName = 'shc:roomView';
 
     protected function __construct() {
 
@@ -104,7 +102,7 @@ class ViewHelperEditor {
      */
     public function loadData() {
 
-        $bexes = SHC::getDatabase()->hGetAll(self::$tableName);
+        $bexes = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach ($bexes as $box) {
 
             $boxRoomId = (int) $box['roomId'];
@@ -177,9 +175,11 @@ class ViewHelperEditor {
 
                 if ($element instanceof Readable) {
 
+                    /* @var $element \SHC\Switchable\Readable */
                     $viewHelper->addReadable($element);
                 } elseif ($element instanceof Switchable) {
 
+                    /* @var $element \SHC\Switchable\Switchable */
                     $viewHelper->addSwitchable($element);
                 }
             }
@@ -208,12 +208,15 @@ class ViewHelperEditor {
 
                     if ($element instanceof Readable) {
 
+                        /* @var $element \SHC\Switchable\Readable */
                         $viewHelper->removeReadable($element);
                     } elseif ($element instanceof Switchable) {
 
+                        /* @var $element \SHC\Switchable\Switchable */
                         $viewHelper->removeSwitchable($element);
-                    } elseif ($element instanceof \SHC\Sensor\Sensor) {
+                    } elseif ($element instanceof Sensor) {
 
+                        /* @var $element \SHC\Sensor\Sensor */
                         $viewHelper->removeSensor($element);
                     }
                 }
@@ -354,7 +357,7 @@ class ViewHelperEditor {
             'orderId' => $orderId,
             'elements' => array()
         );
-        if($db->hSetNx(self::$tableName, $index, $newBox) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newBox) == 0) {
 
             return false;
         }
@@ -377,7 +380,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $box = $db->hGet(self::$tableName, $id);
+            $box = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -401,7 +404,7 @@ class ViewHelperEditor {
                 $box['roomId'] = $roomId;
             }
 
-            if($db->hSet(self::$tableName, $id, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $box) == 0) {
 
                 return true;
             }
@@ -423,7 +426,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             foreach($box['elements'] as $index => $element) {
 
                 if($element['id'] == $elementId && $element['type'] == $type) {
@@ -437,7 +440,7 @@ class ViewHelperEditor {
                 'id' => $elementId
             );
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
@@ -459,7 +462,7 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             foreach($box['elements'] as $index => $element) {
 
                 if($element['id'] == $elementId && $element['type'] == $type) {
@@ -468,7 +471,7 @@ class ViewHelperEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
@@ -489,10 +492,10 @@ class ViewHelperEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $boxId)) {
 
-            $box = $db->hGet(self::$tableName, $boxId);
+            $box = $db->hGetArray(self::$tableName, $boxId);
             $box['elements'] = array();
 
-            if($db->hSet(self::$tableName, $boxId, $box) == 0) {
+            if($db->hSetArray(self::$tableName, $boxId, $box) == 0) {
 
                 return true;
             }
@@ -517,7 +520,7 @@ class ViewHelperEditor {
                 return true;
             }
         }
-        return false;;
+        return false;
     }
 
     /**

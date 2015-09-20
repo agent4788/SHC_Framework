@@ -1,7 +1,7 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          shcd
-# Required-Start:
+# Required-Start:    $all
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:

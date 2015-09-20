@@ -309,7 +309,6 @@ class GermanHolidays {
 
         $nov23 = new DateTime(null, $this->timeZone);
         $nov23->setDate($this->year, 11, 23);
-        $day = $nov23->format('w');
 
         $days = array(3 => 7, 2 => 6, 1 => 5, 0 => 4, 6 => 3, 5 => 2, 4 => 1);
 

@@ -24,6 +24,8 @@ $l['global.up'] = 'auf';
 $l['global.down'] = 'ab';
 $l['global.open'] = 'auf';
 $l['global.closed'] = 'zu';
+$l['global.start'] = 'start';
+$l['global.stop'] = 'stop';
 $l['global.toggle'] = 'umschalten';
 
 //Datum

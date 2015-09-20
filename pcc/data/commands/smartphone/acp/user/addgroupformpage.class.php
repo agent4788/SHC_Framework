@@ -62,7 +62,7 @@ class AddGroupFormPage extends PageCommand {
             $name = $groupForm->getElementByName('name')->getValue();
             $description = $groupForm->getElementByName('description')->getValue();
             $premissions = array();
-            foreach(UserEditor::getInstance()->getUserGroupById(1)->listPremissions() as $premissionName => $premissionValue) {
+            foreach(UserEditor::getInstance()->getUserGroupById(1)->listPermissions() as $premissionName => $premissionValue) {
 
                 if(preg_match('#^pcc\.#', $premissionName)) {
 

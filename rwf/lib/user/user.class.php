@@ -30,7 +30,7 @@ class User implements Visitor {
     /**
      * Benutzername
      * 
-     * @var Atring 
+     * @var string
      */
     protected $name = '';
 
@@ -79,7 +79,7 @@ class User implements Visitor {
     /**
      * Benutzer Hauptgruppe
      * 
-     * @var RWF\User\UserGroup 
+     * @var \RWF\User\UserGroup
      */
     protected $mainGroup = null;
 
@@ -211,7 +211,7 @@ class User implements Visitor {
     /**
      * gibt das Gruppenobjekt der Hauptgruppe zurueck
      * 
-     * @return RWF\User\User\Group
+     * @return \RWF\User\UserGroup
      */
     public function getMainGroup() {
 
@@ -248,10 +248,10 @@ class User implements Visitor {
     /**
      * prueft die Berechtigung des Benutzers (die rechte ergeben sich aus den Benutzergruppen)
      * 
-     * @param  String  $premission Recht
+     * @param  String  $permissions Recht
      * @return Boolean
      */
-    public function checkPremission($premission) {
+    public function checkPermission($permissions) {
 
         //Gruender?
         if ($this->isOriginator() === true) {
@@ -260,7 +260,7 @@ class User implements Visitor {
         }
 
         //Hauptgruppe
-        if ($this->mainGroup instanceof UserGroup && $this->mainGroup->checkPremission($premission) === true) {
+        if ($this->mainGroup instanceof UserGroup && $this->mainGroup->checkPermission($permissions) === true) {
 
             return true;
         }
@@ -268,7 +268,7 @@ class User implements Visitor {
         //alle anderen Gruppen
         foreach ($this->userGroups as $group) {
 
-            if ($group instanceof UserGroup && $group->checkPremission($premission) === true) {
+            if ($group instanceof UserGroup && $group->checkPermission($permissions) === true) {
 
                 return true;
             }

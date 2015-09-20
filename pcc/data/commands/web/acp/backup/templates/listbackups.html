@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='pcc.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="pcc-content">
+            {contentbox name="acp.backupsManagement.title" id='pcc-view-acp-contentBox'}
+                {if $message|isset}
+                    {$message->fetchHtml()}
+                {/if}
+                <div>
+                    <div class="pcc-view-content">
+                        <div class="pcc-view-content" id="pcc-view-backupContent">
+                            <table class="pcc-view-contentTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:890%;">{lang var="acp.backupsManagement.backupList.table.head.name"}</th>
+                                        <th style="width: 10%;">{lang var="acp.backupsManagement.backupList.table.head.size"}</th>
+                                        <th style="width: 10%;">{lang var="acpindex.options"}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {foreach from=$backupList item='backup'}
+                                    <tr>
+                                        <td><a href="index.php?app=pcc&action=loadbackup&id={$backup->getHash()}">{#$backup->getFileName()}</a></td>
+                                        <td>{$backup->getSize()|filesizebinary}</td>
+                                        <td>
+                                            {deletelink link='index.php?app=pcc&action=deletebackup&id=' id=$backup->getHash() prompt='acp.backupsManagement.prompt.deleteBackup' title='acp.backupsManagement.prompt.deleteBackup.title'}
+                                        </td>
+                                    </tr>
+                                    {foreachelse}
+                                    <tr>
+                                        <td colspan="3">{lang var='acpindex.emptyList'}</td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="pcc-view-buttons">
+                    <div class="pcc-view-buttonSet">
+                        <a href="index.php?app=pcc&page=acp">{lang var='global.button.back'}</a>
+                        <a href="index.php?app=pcc&action=makebackup">{lang var="acp.backupsManagement.button.makeBackup"}</a>
+                    </div>
+                </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.pcc-view-buttonSet').buttonset();
+                });
+            </script>
+        </div>
+    </body>
+</html>

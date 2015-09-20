@@ -55,7 +55,7 @@
 {if $apps|count > 1}
 <ul id="rwf-ui-appMenue" style="display: none;">
     {foreach from=$apps item='app'}
-        <li><a href="index.php?app={$app->app}"><img src="{$app->icon}" /> {#$app->name}</a></li>
+        <li><a href="index.php?app={$app.app}"><img src="{$app.icon}" /> {#$app.name}</a></li>
     {/foreach}
 </ul>
 {/if}

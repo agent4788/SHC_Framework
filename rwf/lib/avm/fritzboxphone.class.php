@@ -149,8 +149,8 @@ class FritzBoxPhone extends FritzBox {
     /**
      * gibt die EIntraege des Telefonbuches zurueck
      *
-     * @param  $id        Telefonbuch ID
-     * @param  $maxEntrys Anzahl der Eintraege
+     * @param  int $id        Telefonbuch ID
+     * @param  int $maxEntrys Anzahl der Eintraege
      * @return \RWF\XML\XmlEditor
      * @throws \RWF\XML\Exception\XmlException
      */

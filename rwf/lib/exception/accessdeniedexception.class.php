@@ -31,7 +31,7 @@ class AccessDeniedException extends \Exception {
     /**
      * gibt den Namen der Berchtigung die benoetigt werden wuerde zurueck
      * 
-     * @return type
+     * @return string
      */
     public function getPremission() {
         

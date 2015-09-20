@@ -134,7 +134,7 @@ class String {
     /**
      * Formatiert eine Zahl zur ausgabe
      *
-     * @param  numeric $number
+     * @param  number $number
      * @return String
      */
     public static function numberFormat($number) {
@@ -145,7 +145,7 @@ class String {
             return self::formatFloat($number);
         }
 
-        if (floatval($numeric) - (float) Integerval($numeric)) {
+        if (floatval($number) - (float) intval($number)) {
             return self::formatFloat($number);
         } else {
             return self::formatInteger($number);
@@ -434,11 +434,11 @@ class String {
         var_dump($array);
         $String = ob_get_contents();
         ob_end_clean();
-        $String = StringUtil::convertEncoding('ISO-8859-1', 'UTF-8', $String);
+        $String = String::convertEncoding('ISO-8859-1', 'UTF-8', $String);
 
         if ($html === true) {
-            $String = StringUtil::encodeHTML($String);
-            $String = StringUtil::replace(' ', '&nbsp;', $String);
+            $String = String::encodeHTML($String);
+            $String = String::replace(' ', '&nbsp;', $String);
             $String = nl2br($String);
         }
         return $String;
@@ -478,7 +478,7 @@ class String {
         $blocks = explode('-', $str);
         $out = array();
         foreach ($blocks as $block) {
-            $ord = (Integerval($block) - mt_rand(350, 16000)) / 3;
+            $ord = (intval($block) - mt_rand(350, 16000)) / 3;
             $out[] = chr($ord);
         }
 

@@ -3,10 +3,10 @@
 namespace SHC\Command\Smartphone;
 
 //Imports
+use RWF\Backup\BackupEditor;
 use RWF\Core\RWF;
 use RWF\Request\Commands\ActionCommand;
 use RWF\Util\Message;
-use SHC\Backup\BackupEditor;
 
 /**
  * erstellt ein neues Backup
@@ -46,7 +46,7 @@ class MakeBackupAction extends ActionCommand {
     public function executeAction() {
 
         $message = new Message();
-        if(BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP)->makeBackup(true)) {
+        if(BackupEditor::getInstance()->setPath(PATH_RWF_BACKUP)->makeBackup(true)) {
 
             $message->setType(Message::SUCCESSFULLY);
             $message->setMessage(RWF::getLanguage()->get('acp.backupsManagement.success.makeBackup'));

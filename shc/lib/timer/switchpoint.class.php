@@ -500,7 +500,6 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.year') . '</span>:';
         $html .= '<span>';
-        $comma = ' ';
         if (isset($this->year[0]) && $this->year[0] != '*') {
 
             $html .= ' '. implode(', ', $this->year);
@@ -515,7 +514,6 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.month') . '</span>:';
         $html .= '<span>';
-        $comma = ' ';
         if (isset($this->month[0]) && $this->month[0] != '*') {
 
             $str = implode(', ', $this->month);
@@ -560,7 +558,6 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.day') . '</span>:';
         $html .= '<span>';
-        $comma = ' ';
         if (isset($this->day[0]) && $this->day[0] != '*') {
 
             $str = implode(', ', $this->day);
@@ -595,7 +592,6 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.hour') . '</span>:';
         $html .= '<span>';
-        $comma = ' ';
         if (isset($this->hour[0]) && $this->hour[0] != '*') {
 
             $html .= ' '. implode(', ', $this->hour);
@@ -610,7 +606,6 @@ class SwitchPoint {
         $html .= '<div class="tootlip_row">';
         $html .= '<span class="tooltip_strong">' . RWF::getLanguage()->get('acp.switchpointsManagment.tooltip.minute') . '</span>:';
         $html .= '<span>';
-        $comma = ' ';
         if (isset($this->minute[0]) && $this->minute[0] != '*') {
 
             $html .= ' '. implode(', ', $this->minute);

@@ -107,7 +107,7 @@
                                         });
 
                                         //AVM Power Sensoren
-                                        $.each(data.syncAvmPowerSockect, function (index, value) {
+                                        $.each(data.syncAvmPowerSocket, function (index, value) {
 
                                             $('#shc-view-sensor-avmPowerSensor-{$room->getId()}-'+ index +'-temp').text(value.temp);
                                             $('#shc-view-sensor-avmPowerSensor-{$room->getId()}-'+ index +'-power').text(value.power);

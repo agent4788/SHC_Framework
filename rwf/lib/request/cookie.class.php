@@ -106,7 +106,7 @@ class Cookie {
      * 
      * @param Integer $dataType Datentyp
      */
-    public function getValue($dataType = Request::PLAIN) {
+    public function getValue($dataType = DataTypeUtil::PLAIN) {
 
         return DataTypeUtil::checkAndConvert($this->value, $dataType);
     }

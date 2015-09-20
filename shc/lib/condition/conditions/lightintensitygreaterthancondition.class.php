@@ -34,7 +34,7 @@ class LightIntensityGreaterThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['lightIntensity'])) {
 
-            throw new Exception('sensors und lightIntensity müssen angegeben werden', 1580);
+            throw new \Exception('sensors und lightIntensity müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);

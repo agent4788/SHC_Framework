@@ -20,7 +20,7 @@ class Activity extends AbstractSwitchable {
     /**
      * liste mit den zu schaltenden Elementen
      * 
-     * @var type 
+     * @var Array
      */
     protected $switchables = array();
 
@@ -28,7 +28,7 @@ class Activity extends AbstractSwitchable {
      * registriet ein Schaltbares Objekt
      * 
      * @param  \SHC\Switchable\Switchable $switchable Objekt
-     * @param  Integre                    $command    Befehl
+     * @param  int                        $command    Befehl
      * @return \SHC\Switchable\Switchables\Countdown
      * @throws \Exception
      */

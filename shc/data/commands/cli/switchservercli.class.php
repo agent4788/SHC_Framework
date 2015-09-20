@@ -7,6 +7,8 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
 use RWF\Util\String;
+use RWF\XML\XmlFileManager;
+use SHC\Core\SHC;
 use SHC\SwitchServer\SwitchServerSocket;
 use RWF\IO\Socket;
 
@@ -41,6 +43,25 @@ class SwitchServerCli extends CliCommand {
      * @var Boolean 
      */
     protected $debug = false;
+
+    /**
+     * XML Objekt
+     *
+     * @var \RWF\Xml\XmlEditor
+     */
+    protected $xml = null;
+
+    /**
+     * Einstellungen
+     *
+     * @var array
+     */
+    protected $settings = array();
+
+    public function __construct() {
+
+        $this->xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SWITCHSERVER_SETTINGS);
+    }
 
     /**
      * fuehrt das Kommando aus
@@ -127,7 +148,7 @@ class SwitchServerCli extends CliCommand {
         $active_not_change = false;
         while ($n < 5) {
 
-            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.active', (RWF::getSetting('shc.switchServer.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.active', ($this->getSetting('shc.switchServer.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
             if (String::length($sender) == 0) {
@@ -169,7 +190,7 @@ class SwitchServerCli extends CliCommand {
         $address_not_change = false;
         while ($n < 5) {
 
-            $address = $cli->input(RWF::getLanguage()->get('switchServer.input.ip', RWF::getSetting('shc.switchServer.ip')));
+            $address = $cli->input(RWF::getLanguage()->get('switchServer.input.ip', $this->getSetting('shc.switchServer.ip')));
 
             //Adresse nicht aendern
             if (String::length($address) == 0) {
@@ -214,7 +235,7 @@ class SwitchServerCli extends CliCommand {
         $port_not_change = false;
         while ($n < 5) {
 
-            $port = $cli->input(RWF::getLanguage()->get('switchServer.input.port', RWF::getSetting('shc.switchServer.port')));
+            $port = $cli->input(RWF::getLanguage()->get('switchServer.input.port', $this->getSetting('shc.switchServer.port')));
 
             //Port nicht aendern
             if (String::length($port) == 0) {
@@ -253,7 +274,7 @@ class SwitchServerCli extends CliCommand {
         while ($n < 5) {
 
             $response->writeLnColored(RWF::getLanguage()->get('switchServer.input.ledPin.inactive'), 'yellow');
-            $pin = $cli->input(RWF::getLanguage()->get('switchServer.input.ledPin', RWF::getSetting('shc.switchServer.sendLedPin')));
+            $pin = $cli->input(RWF::getLanguage()->get('switchServer.input.ledPin', $this->getSetting('shc.switchServer.sendLedPin')));
 
             //Port nicht aendern
             if (String::length($pin) == 0) {
@@ -291,7 +312,7 @@ class SwitchServerCli extends CliCommand {
         $sender_not_change = false;
         while ($n < 5) {
 
-            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.senderActive', (RWF::getSetting('shc.switchServer.senderActive') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.senderActive', ($this->getSetting('shc.switchServer.senderActive') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
             if (String::length($sender) == 0) {
@@ -333,7 +354,7 @@ class SwitchServerCli extends CliCommand {
         $gpio_read_not_change = false;
         while ($n < 5) {
 
-            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioRead', (RWF::getSetting('shc.switchServer.readGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioRead', ($this->getSetting('shc.switchServer.readGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
             if (String::length($sender) == 0) {
@@ -375,7 +396,7 @@ class SwitchServerCli extends CliCommand {
         $gpio_write_not_change = false;
         while ($n < 5) {
 
-            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioWrite', (RWF::getSetting('shc.switchServer.writeGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+            $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioWrite', ($this->getSetting('shc.switchServer.writeGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
             if (String::length($sender) == 0) {
@@ -413,36 +434,36 @@ class SwitchServerCli extends CliCommand {
         //Speichern
         if($active_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.active', $valid_active);
+            $this->editSetting('shc.switchServer.active', $valid_active);
         }
         if($address_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.ip', $valid_address);
+            $this->editSetting('shc.switchServer.ip', $valid_address);
         }
         if($port_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.port', $valid_port);
+            $this->editSetting('shc.switchServer.port', $valid_port);
         }
         if($ledpin_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.sendLedPin', $valid_ledpin);
+            $this->editSetting('shc.switchServer.sendLedPin', $valid_ledpin);
         }
         if($sender_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.senderActive', $valid_sender);
+            $this->editSetting('shc.switchServer.senderActive', $valid_sender);
         }
         if($gpio_read_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.readGpio', $valid_gpio_read);
+            $this->editSetting('shc.switchServer.readGpio', $valid_gpio_read);
         }
         if($gpio_write_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.switchServer.writeGpio', $valid_gpio_write);
+            $this->editSetting('shc.switchServer.writeGpio', $valid_gpio_write);
         }
 
         try {
 
-            RWF::getSettings()->saveAndReload();
+            $this->saveSettings();
             $response->writeLnColored(RWF::getLanguage()->get('switchServer.input.save.success'), 'green');
         } catch(\Exception $e) {
 
@@ -455,7 +476,7 @@ class SwitchServerCli extends CliCommand {
      */
     protected function stop() {
 
-        $socket = new Socket(RWF::getSetting('shc.switchServer.ip'), RWF::getSetting('shc.switchServer.port'), 2);
+        $socket = new Socket($this->getSetting('shc.switchServer.ip'), $this->getSetting('shc.switchServer.port'), 2);
         $socket->open();
         $socket->write(base64_encode(json_encode(array(array('stop' => 1)))));
         $socket->close();
@@ -467,13 +488,142 @@ class SwitchServerCli extends CliCommand {
     protected function executeCliCommand() {
 
         //pruefen on Server aktiviert
-        if (!RWF::getSetting('shc.switchServer.active')) {
+        if (!$this->getSetting('shc.switchServer.active')) {
 
             throw new \Exception('Der Schaltserver wurde deaktiviert', 1600);
         }
 
-        $switchServer = new SwitchServerSocket();
+        $switchServer = new SwitchServerSocket($this);
         $switchServer->run($this->response, $this->debug);
     }
 
+    /**
+     * gibt den Wert einer Einstellung zurueck
+     *
+     * @param  string $name Name der Einstellung
+     * @return mixed
+     */
+    public function getSetting($name) {
+
+        if(count($this->settings) == 0) {
+
+            foreach ($this->xml->setting as $setting) {
+
+                $attributes = $setting->attributes();
+                switch ($attributes->type) {
+
+                    case 'string':
+
+                        $this->settings[(string) $attributes->name] = rawurldecode((string) $attributes->value);
+
+                        break;
+                    case 'bool':
+
+                        $this->settings[(string) $attributes->name] = ((string) $attributes->value === 'true' ? true : false);
+
+                        break;
+                    case 'int':
+
+                        $this->settings[(string) $attributes->name] = (int) $attributes->value;
+
+                        break;
+                    default:
+
+                        $this->settings[(string) $attributes->name] = (string) $attributes->value;
+                }
+            }
+        }
+
+        if (isset($this->settings[$name])) {
+
+            return $this->settings[$name];
+        }
+        return null;
+    }
+
+    /**
+     * setzt den Wert einer Einstellung
+     *
+     * @param  string $settingName Name der Einstellung
+     * @param  mixed  $value       Wert
+     * @return bool
+     * @throws \Exception
+     */
+    protected function editSetting($settingName, $value) {
+
+        foreach ($this->xml->setting as $setting) {
+
+            $attributes = $setting->attributes();
+
+            if ($attributes->name == $settingName) {
+
+                switch ($attributes->type) {
+
+                    case 'string':
+
+                        $attributes->value = rawurlencode($value);
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'bool':
+
+                        if ($value === true || $value === false || $value === 1 || $value === 0 || $value === '1' || $value === '0') {
+
+                            $attributes->value = (($value === true || $value === 1 || $value === '1') ? 'true' : 'false');
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'int':
+
+                        if ((int) $value == $value) {
+
+                            $attributes->value = (int) $value;
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'float':
+
+                        if ((float) $value == $value) {
+
+                            $attributes->value = (float) $value;
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Speichert die EInstellungen
+     *
+     * @return bool
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    protected function saveSettings() {
+
+        if ($this->xml->save(false)) {
+
+            $this->settings = array();
+            return true;
+        }
+        return false;
+    }
 }

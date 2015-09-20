@@ -3,13 +3,9 @@
 namespace SHC\Switchable;
 
 //Imports
-use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
 use RWF\Date\DateTime;
-use SHC\Room\Room;
 use SHC\Switchable\Switchables\Activity;
-use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\FritzBox;
@@ -22,9 +18,7 @@ use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
 use SHC\Switchable\Switchables\WakeOnLan;
-use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
-use SHC\Room\RoomEditor;
 use SHC\Timer\SwitchPointEditor;
 use SHC\Timer\SwitchPoint;
 use RWF\User\UserEditor;
@@ -194,7 +188,7 @@ class SwitchableEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchables';
+    protected static $tableName = 'shc:switchables';
 
     protected function __construct() {
 
@@ -209,7 +203,7 @@ class SwitchableEditor {
         //alte daten loeschen
         $this->switchables = array();
 
-        $switchables = SHC::getDatabase()->hGetAll(self::$tableName);
+        $switchables = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach ($switchables as $switchable) {
 
             //Objekte initialisiernen und Spezifische Daten setzen
@@ -316,7 +310,7 @@ class SwitchableEditor {
                     break;
                 default:
 
-                    throw new Exception('Unbekannter Typ', 1506);
+                    throw new \Exception('Unbekannter Typ', 1506);
             }
 
             //Allgemeine Daten setzen
@@ -562,20 +556,20 @@ class SwitchableEditor {
     public function editOrder(array $order) {
 
         $db = SHC::getDatabase();
-        foreach($order as $switchableId => $order) {
+        foreach($order as $switchableId => $switchableOrder) {
 
             if(isset($this->switchables[$switchableId])) {
 
-                $switchableData = $db->hGet(self::$tableName, $switchableId);
-                foreach($order as $roomId => $order) {
+                $switchableData = $db->hGetArray(self::$tableName, $switchableId);
+                foreach($switchableOrder as $roomId => $roomOrder) {
 
                     if($switchableData['order'][$roomId]) {
 
-                        $switchableData['order'][$roomId] = $order;
+                        $switchableData['order'][$roomId] = $roomOrder;
                     }
                 }
 
-                if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -599,7 +593,7 @@ class SwitchableEditor {
                 
                 //Nach Objekt suchen
                 $id = $switchable->getId();
-                $switchableData = $db->hGet(self::$tableName, $id);
+                $switchableData = $db->hGetArray(self::$tableName, $id);
 
                 if(isset($switchableData['id']) && $switchableData['id'] == $id) {
 
@@ -609,7 +603,7 @@ class SwitchableEditor {
                         $switchableData['switchOffTime'] = $switchable->getSwitchOffTime()->getDatabaseDateTime();
                     }
 
-                    if($db->hSet(self::$tableName, $id, $switchableData) != 0) {
+                    if($db->hSetArray(self::$tableName, $id, $switchableData) != 0) {
 
                         return false;
                     }
@@ -636,10 +630,10 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $switchableId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData = $db->hGetArray(self::$tableName, $switchableId);
             $switchableData['switchPoints'][] = $switchPointId;
 
-            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+            if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                 return false;
             }
@@ -660,10 +654,10 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $switchableId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $switchableId);
+            $switchableData = $db->hGetArray(self::$tableName, $switchableId);
             $switchableData['switchPoints'] = array_diff($switchableData['switchPoints'], array($switchPointId));
 
-            if($db->hSet(self::$tableName, $switchableId, $switchableData) != 0) {
+            if($db->hSetArray(self::$tableName, $switchableId, $switchableData) != 0) {
 
                 return false;
             }
@@ -723,7 +717,7 @@ class SwitchableEditor {
             }
         }
 
-        if($db->hSetNx(self::$tableName, $index, $newElement) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newElement) == 0) {
 
             return false;
         }
@@ -752,7 +746,7 @@ class SwitchableEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $switchable = $db->hGet(self::$tableName, $id);
+            $switchable = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -838,7 +832,7 @@ class SwitchableEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $id, $switchable) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $switchable) == 0) {
 
                 return true;
             }
@@ -864,8 +858,8 @@ class SwitchableEditor {
     public function addActivity($name, $enabled, $visibility, $icon, $rooms, array $order, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
 
         $data = array(
-                'switchable' => array(),
-                'buttonText' => $buttonText
+            'switchable' => array(),
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -913,13 +907,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
                 $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -943,7 +937,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
@@ -955,7 +949,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -978,7 +972,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
@@ -990,7 +984,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1071,13 +1065,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
                 $switchableData['switchOffTime'] = $time->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1101,13 +1095,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
                 $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1131,7 +1125,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
@@ -1143,7 +1137,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1166,7 +1160,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
@@ -1178,7 +1172,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1369,63 +1363,6 @@ class SwitchableEditor {
         $data = array(
             'mac' => $mac,
             'ipAddress' => $ipAddress
-        );
-
-        //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-    
-    /**
-     * erstellt einen neuen Arduino Eingang
-     * 
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function addArduinoInput($name, $enabled, $visibility, $icon, $rooms, array $order, $deviceId, $pinNumber, array $switchPoints = array(), array $allowedUserGroups = array()) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
-        );
-
-        //Datensatz erstellen
-        return $this->addElement(self::TYPE_ARDUINO_INPUT, $name, $enabled, $visibility, $icon, $rooms, $order, $switchPoints, $allowedUserGroups, $data);
-    }
-
-    /**
-     * bearbeitet einen Arduino Eingang
-     * 
-     * @param  Integer $id                ID
-     * @param  String  $name              Name
-     * @param  Boolean $enabled           Aktiv
-     * @param  Boolean $visibility        Sichtbarkeit
-     * @param  String  $icon              Icon
-     * @param  Array   $rooms             Raeume
-     * @param  Array   $order             Sortierung
-     * @param  String  $deviceId          Geraete ID
-     * @param  Integer $pinNumber         Pin Nummer
-     * @param  Array   $switchPoints      Liste der Schaltpunkte
-     * @param  Array   $allowedUserGroups Liste erlaubter Benutzergruppen
-     * @return Boolean
-     * @throws \Exception, \RWF\Xml\Exception\XmlException
-     */
-    public function editArduinoInput($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $deviceId = null, $pinNumber = null, array $switchPoints = null, array $allowedUserGroups = null) {
-
-        //Daten Vorbereiten
-        $data = array(
-            'deviceId' => $deviceId,
-            'pinNumber' => $pinNumber
         );
 
         //Datensatz bearbeiten

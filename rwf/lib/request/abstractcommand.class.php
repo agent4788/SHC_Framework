@@ -20,7 +20,7 @@ abstract class AbstractCommand implements Command {
     /**
      * benoetigte Berechtigung
      * 
-     * @var type 
+     * @var string
      */
     protected $requiredPremission = '';
     
@@ -41,7 +41,7 @@ abstract class AbstractCommand implements Command {
     /**
      * Anfrageobjekt
      * 
-     * @var \RWF\Request\Response
+     * @var \RWF\Request\CliResponse
      */
     protected $response = null;
     
@@ -59,7 +59,7 @@ abstract class AbstractCommand implements Command {
         $this->response = $response;
         
         //rechte Pruefen
-        if($this->requiredPremission != '' && RWF::getVisitor()->checkPremission($this->requiredPremission) === false) {
+        if($this->requiredPremission != '' && RWF::getVisitor()->checkPermission($this->requiredPremission) === false) {
             
             throw new AccessDeniedException($this->requiredPremission);
         }

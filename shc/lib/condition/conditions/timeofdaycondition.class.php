@@ -33,7 +33,7 @@ class TimeOfDayCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['start']) || !isset($this->data['end'])) {
 
-            throw new Exception('Start und End Zeit müssen angegeben werden', 1580);
+            throw new \Exception('Start und End Zeit müssen angegeben werden', 1580);
         }
 
         //Aktuelle Zeit

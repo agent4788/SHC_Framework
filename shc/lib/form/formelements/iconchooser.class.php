@@ -4,7 +4,6 @@ namespace SHC\Form\FormElements;
 
 //Imports
 use RWF\Form\FormElements\Select;
-use RWF\Util\FileUtil;
 use SHC\Core\SHC;
 
 /**
@@ -45,7 +44,9 @@ class IconChooser extends Select {
                 'shc-icon-candles' => array('shc-icon-candles', ($icon == 'shc-icon-candles' ? 1 : 0)),
                 'shc-icon-christmasLights' => array('shc-icon-christmasLights', ($icon == 'shc-icon-christmasLights' ? 1 : 0)),
                 'shc-icon-star' => array('shc-icon-star', ($icon == 'shc-icon-star' ? 1 : 0)),
-                'shc-icon-rollo' => array('shc-icon-rollo', ($icon == 'shc-icon-rollo' ? 1 : 0))
+                'shc-icon-rollo' => array('shc-icon-rollo', ($icon == 'shc-icon-rollo' ? 1 : 0)),
+                'shc-icon-camera' => array('shc-icon-camera', ($icon == 'shc-icon-camera' ? 1 : 0)),
+                'shc-icon-camera2' => array('shc-icon-camera2', ($icon == 'shc-icon-camera2' ? 1 : 0))
             ),
             SHC::getLanguage()->get('acp.switchableManagement.sensors') => array(
                 'shc-icon-ds18x20' => array('shc-icon-ds18x20', ($icon == 'shc-icon-ds18x20' ? 1 : 0)),

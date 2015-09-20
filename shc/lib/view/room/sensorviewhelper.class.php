@@ -37,7 +37,7 @@ abstract class SensorViewHelper {
      *
      * @param  Integer             $roomId     Raum ID
      * @param  \SHC\Sensor\Sensor  $sensor     Sensor
-     * @param  Booelan             $ignoreShow Sensoren Anzeigen trotz abgewahlt
+     * @param  bool                $ignoreShow Sensoren Anzeigen trotz abgewahlt
      * @return String
      */
     public static function showSensor($roomId, Sensor $sensor, $ignoreShow = false) {
@@ -391,6 +391,7 @@ abstract class SensorViewHelper {
         $i = 0;
         if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && ($sensor->isTemperatureVisible() || $sensor->isPowerVisible() || $sensor->isEnergyVisible()))) {
 
+            $sensorId = str_replace(' ', '-', $sensor->getId());
             if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
                 //Mobile Ansicht
@@ -403,21 +404,21 @@ abstract class SensorViewHelper {
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                 }
                 $html .= '</li>';
             } else {
@@ -429,21 +430,21 @@ abstract class SensorViewHelper {
                 $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensor->getId() . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';

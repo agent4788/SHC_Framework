@@ -94,6 +94,14 @@ span#pcc-view-acp-menu-settings {
     background-image: url(../../../img/acpmenue/settings.png);
 }
 
+span#pcc-view-acp-menu-backup {
+    background-image: url(../../../img/acpmenue/backup.png);
+}
+
+span#pcc-view-acp-menu-database {
+    background-image: url(../../../img/acpmenue/database.png);
+}
+
 span#pcc-view-acp-menu-info {
     background-image: url(../../../img/acpmenue/info.png);
 }

@@ -3,7 +3,7 @@
 namespace RWF\Settings;
 
 //Imports
-use RWF\XML\XmlFileManager;
+use RWF\Core\RWF;
 
 /**
  * Einstellungen
@@ -15,7 +15,17 @@ use RWF\XML\XmlFileManager;
  * @version    2.0.0-0
  */
 class Settings {
-    
+
+    /**
+     * Typkonstanten
+     *
+     * @var int
+     */
+    const TYPE_BOOL = 1;
+    const TYPE_INT = 2;
+    const TYPE_FLOAT = 3;
+    const TYPE_STRING = 4;
+
     /**
      * Einstellungen
      * 
@@ -24,63 +34,99 @@ class Settings {
     protected $settings = array();
 
     /**
-     * XML Objekt
-     * 
-     * @var \RWF\Xml\XmlEditor 
+     * gibt an ob die EInstellungen geladen wurden
+     *
+     * @var bool
      */
-    protected $xml = null;
-    
-    /**
-     * gibt an ob die XML Datei verändert wurde
-     * 
-     * @var Boolean
-     */
-    protected $chanched = false;
+    protected $init = false;
 
     /**
-     * gibt an ob die XML Datei schon gespeichert wurde
-     * 
-     * @var Boolean
+     * erstellt eine neue Einstellung
+     *
+     * @param  string $name         Name der Einstellung
+     * @param  int    $type         Datentyp
+     * @param  mixed  $defaultValue Default Wert
+     * @return bool
      */
-    protected $saved = false;
-    
-    /**
-     * intialisiert die Einstellungen
-     */
-    public function __construct() {
-        
-        $this->xml = XmlFileManager::getInstance()->getXmlObject(XmlFileManager::XML_SETTINGS);
-        $this->readXMLData();
+    public function addSetting($name, $type, $defaultValue) {
+
+        if(!isset($this->settings[$name])) {
+
+            $this->settings[$name] = array(
+                'name' => $name,
+                'type' => $type,
+                'defaultValue' => $defaultValue,
+                'value' => null
+            );
+            return true;
+        }
+        return false;
     }
 
     /**
      * liest die Daten aus der XML Datei
      */
-    protected function readXMLData() {
+    protected function readData() {
 
-        foreach ($this->xml->setting as $setting) {
+        $db = RWF::getDatabase();
 
-            $attributes = $setting->attributes();
-            switch ($attributes->type) {
+        //RWF Eisntellungen laden
+        $rwfSettings = $db->hGetAll('settings');
+        foreach($rwfSettings as $name => $value) {
 
-                case 'string':
+            if(isset($this->settings[$name])) {
 
-                    $this->settings[(string) $attributes->name] = rawurldecode((string) $attributes->value);
+                switch ($this->settings[$name]['type']) {
 
-                    break;
-                case 'bool':
+                    case self::TYPE_STRING:
 
-                    $this->settings[(string) $attributes->name] = ((string) $attributes->value === 'true' ? true : false);
+                        $this->settings[$name]['value'] = (string) $value;
+                        break;
+                    case self::TYPE_BOOL:
 
-                    break;
-                case 'int':
+                        $this->settings[$name]['value'] = ($value == "1" ? true : false);
+                        break;
+                    case self::TYPE_INT:
 
-                    $this->settings[(string) $attributes->name] = (int) $attributes->value;
+                        $this->settings[$name]['value'] = (int) $value;
+                        break;
+                    case self::TYPE_FLOAT:
 
-                    break;
-                default:
+                        $this->settings[$name]['value'] = (float) $value;
+                        break;
+                }
+            }
+        }
 
-                    $this->settings[(string) $attributes->name] = (string) $attributes->value;
+        //APP Einstellungen laden
+        $appSettings = $db->hGetAll(strtolower(APP_NAME) .':settings');
+        foreach($appSettings as $name => $value) {
+
+            if(isset($this->settings[$name])) {
+
+                switch ($this->settings[$name]['type']) {
+
+                    case self::TYPE_STRING:
+
+                        $this->settings[$name]['value'] = (string) $value;
+
+                        break;
+                    case self::TYPE_BOOL:
+
+                        $this->settings[$name]['value'] = ($value == "1" ? true : false);
+
+                        break;
+                    case self::TYPE_INT:
+
+                        $this->settings[$name]['value'] = (int) $value;
+
+                        break;
+                    case self::TYPE_FLOAT:
+
+                        $this->settings[$name]['value'] = (float) $value;
+
+                        break;
+                }
             }
         }
     }
@@ -93,11 +139,24 @@ class Settings {
      */
     public function getValue($name) {
 
-        if (isset($this->settings[$name])) {
+        //Initialisieren
+        if($this->init == false) {
 
-            return $this->settings[$name];
+            $this->readData();
+            $this->init = true;
         }
 
+        //Einstellung laden
+        if (isset($this->settings[$name])) {
+
+            if($this->settings[$name]['value'] !== null) {
+
+                return $this->settings[$name]['value'];
+            } else {
+
+                return $this->settings[$name]['defaultValue'];
+            }
+        }
         return null;
     }
     
@@ -117,7 +176,7 @@ class Settings {
      */
     public function reloadSettings() {
 
-        $this->readXMLData();
+        $this->readData();
     }
 
     /**
@@ -126,102 +185,45 @@ class Settings {
      * @param  String  $setting Einstellung
      * @param  Mixed   $value   Wert
      * @return Boolean
-     * @throws Exception
      */
     public function editSetting($settingName, $value) {
 
-        foreach ($this->xml->setting as $setting) {
+        $db = RWF::getDatabase();
+        if(isset($this->settings[$settingName])) {
 
-            $attributes = $setting->attributes();
+            switch ($this->settings[$settingName]['type']) {
 
-            if ($attributes->name == $settingName) {
+                case self::TYPE_STRING:
 
-                switch ($attributes->type) {
+                    $value = (string) $value;
+                    break;
+                case self::TYPE_BOOL:
 
-                    case 'string':
+                    $value = ((bool) $value == true ? 1 : 0);
+                    break;
+                case self::TYPE_INT:
 
-                        $attributes->value = rawurlencode($value);
+                    $value = (int) $value;
+                    break;
+                case self::TYPE_FLOAT:
 
-                        $this->chanched = true;
-                        $this->saved = false;
-                        return true;
-                    case 'bool':
+                    $value = (float) $value;
+                    break;
+            }
 
-                        if ($value === true || $value === false || $value === 1 || $value === 0 || $value === '1' || $value === '0') {
+            //in der Datenbank speichern
+            if(preg_match('#^rwf\.#i', $settingName)) {
 
-                            $attributes->value = (($value === true || $value === 1 || $value === '1') ? 'true' : 'false');
-                        } else {
+                //RWF Einstellung
+                $db->hSet('settings', $settingName, $value);
+                return true;
+            } elseif(preg_match('#^'. APP_NAME .'\.#i', $settingName)) {
 
-                            throw new \Exception('Ungültiger Wert', 1120);
-                        }
-
-                        $this->chanched = true;
-                        $this->saved = false;
-                        return true;
-                    case 'int':
-
-                        if ((int) $value == $value) {
-
-                            $attributes->value = (int) $value;
-                        } else {
-
-                            throw new \Exception('Ungültiger Wert', 1120);
-                        }
-
-                        $this->chanched = true;
-                        $this->saved = false;
-                        return true;
-                    case 'float':
-
-                        if ((float) $value == $value) {
-
-                            $attributes->value = (float) $value;
-                        } else {
-
-                            throw new \Exception('Ungültiger Wert', 1120);
-                        }
-
-                        $this->chanched = true;
-                        $this->saved = false;
-                        return true;
-                }
+                //APP Eisntellung
+                $db->hSet(strtolower(APP_NAME) .':settings', $settingName, $value);
+                return true;
             }
         }
-
         return false;
-    }
-
-    /**
-     * speichert alle Einstellungen und laedt sie Neu
-     * 
-     * @return Boolean
-     * @throws \RWF\Xml\Exception\XmlException
-     */
-    public function saveAndReload() {
-
-        if ($this->xml->save(true)) {
-
-            $this->readXMLData();
-            $this->chanched = false;
-            $this->saved = true;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * speichert die XML Datei wenn Einstellungen verändert wurden
-     * 
-     * @throws \RWF\Xml\Exception\XmlException
-     */
-    public function finalize() {
-
-        if ($this->chanched === true && $this->saved === false) {
-
-            if ($this->xml->save(true)) {
-
-                $this->saved = true;
-            }
-        }
     }
 }

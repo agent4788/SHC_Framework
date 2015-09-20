@@ -5,7 +5,7 @@ namespace SHC\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\FormElements\SelectMultiple;
-use SHC\Room\Room;
+
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
@@ -14,11 +14,9 @@ use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
-use SHC\Switchable\Readables\ArduinoInput;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
-use SHC\Switchable\Switchables\ArduinoOutput;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
 use SHC\Switchable\Switchables\FritzBox;
@@ -59,13 +57,7 @@ class ElementsForBoxChooser extends SelectMultiple {
             if($element instanceof Activity) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.activity');
-            } elseif($element instanceof ArduinoInput) {
-
-                $type = RWF::getLanguage()->get('acp.switchableManagement.element.arduinoInput');
-            } elseif($element instanceof ArduinoOutput) {
-
-                $type = RWF::getLanguage()->get('acp.switchableManagement.element.arduinoOutput');
-            } elseif($element instanceof Countdown) {
+            }elseif($element instanceof Countdown) {
 
                 $type = RWF::getLanguage()->get('acp.switchableManagement.element.countdown');
             } elseif($element instanceof RadioSocket) {

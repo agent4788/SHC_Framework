@@ -6,6 +6,8 @@ namespace SHC\Command\CLI;
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
 use RWF\Util\String;
+use RWF\XML\XmlFileManager;
+use SHC\Core\SHC;
 use SHC\Sensor\SensorDataTransmitter;
 use RWF\Core\RWF;
 use SHC\Sensor\SensorEditor;
@@ -41,6 +43,25 @@ class SensorDatatTransmitterCli extends CliCommand {
      * @var Boolean 
      */
     protected $debug = false;
+
+    /**
+     * XML Objekt
+     *
+     * @var \RWF\Xml\XmlEditor
+     */
+    protected $xml = null;
+
+    /**
+     * Einstellungen
+     *
+     * @var array
+     */
+    protected $settings = array();
+
+    public function __construct() {
+
+        $this->xml = XmlFileManager::getInstance()->getXmlObject(SHC::XML_SENSOR_TRANSMITTER);
+    }
 
     /**
      * fuehrt das Kommando aus
@@ -266,7 +287,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $active_not_change = false;
         while ($n < 5) {
 
-            $sender = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.active', (RWF::getSetting('shc.sensorTransmitter.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
+            $sender = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.active', ($this->getSetting('shc.sensorTransmitter.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
             if (String::length($sender) == 0) {
@@ -308,7 +329,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $address_not_change = false;
         while ($n < 5) {
 
-            $address = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.ip', RWF::getSetting('shc.sensorTransmitter.ip')));
+            $address = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.ip', $this->getSetting('shc.sensorTransmitter.ip')));
 
             //Adresse nicht aendern
             if (String::length($address) == 0) {
@@ -353,7 +374,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $port_not_change = false;
         while ($n < 5) {
 
-            $port = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.port', RWF::getSetting('shc.sensorTransmitter.port')));
+            $port = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.port', $this->getSetting('shc.sensorTransmitter.port')));
 
             //Port nicht aendern
             if (String::length($port) == 0) {
@@ -392,7 +413,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         while ($n < 5) {
 
             $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId.info'), 'yellow');
-            $id = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId', RWF::getSetting('shc.sensorTransmitter.pointId')));
+            $id = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId', $this->getSetting('shc.sensorTransmitter.pointId')));
 
             //Port nicht aendern
             if (String::length($id) == 0) {
@@ -434,7 +455,7 @@ class SensorDatatTransmitterCli extends CliCommand {
         $pin_not_change = false;
         while ($n < 5) {
 
-            $pin = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin', RWF::getSetting('shc.sensorTransmitter.blinkPin')));
+            $pin = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin', $this->getSetting('shc.sensorTransmitter.blinkPin')));
 
             //Pin nicht aendern
             if (String::length($pin) == 0) {
@@ -452,7 +473,6 @@ class SensorDatatTransmitterCli extends CliCommand {
                 continue;
             } else {
 
-                $n++;
                 $valid = true;
                 $valid_pin = $pin;
                 break;
@@ -468,28 +488,28 @@ class SensorDatatTransmitterCli extends CliCommand {
         //Speichern
         if($active_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.sensorTransmitter.active', $valid_active);
+            $this->editSetting('shc.sensorTransmitter.active', $valid_active);
         }
         if($address_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.sensorTransmitter.ip', $valid_address);
+            $this->editSetting('shc.sensorTransmitter.ip', $valid_address);
         }
         if($port_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.sensorTransmitter.port', $valid_port);
+            $this->editSetting('shc.sensorTransmitter.port', $valid_port);
         }
         if($sp_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.sensorTransmitter.pointId', $valid_sp);
+            $this->editSetting('shc.sensorTransmitter.pointId', $valid_sp);
         }
         if($pin_not_change === false) {
 
-            RWF::getSettings()->editSetting('shc.sensorTransmitter.blinkPin', $valid_pin);
+            $this->editSetting('shc.sensorTransmitter.blinkPin', $valid_pin);
         }
 
         try {
 
-            RWF::getSettings()->saveAndReload();
+            $this->saveSettings();
             $response->writeLnColored(RWF::getLanguage()->get('sensorTransmitter.input.save.success'), 'green');
         } catch(\Exception $e) {
 
@@ -503,12 +523,141 @@ class SensorDatatTransmitterCli extends CliCommand {
     protected function executeCliCommand() {
 
         //pruefen on Server aktiviert
-        if (!RWF::getSetting('shc.sensorTransmitter.active')) {
+        if (!$this->getSetting('shc.sensorTransmitter.active')) {
 
             throw new \Exception('Der Sensor Transmitter wurde deaktiviert', 1600);
         }
         
-        $sensorTransmitter = new SensorDataTransmitter();
+        $sensorTransmitter = new SensorDataTransmitter($this);
         $sensorTransmitter->transmitSensorData($this->debug);
+    }
+
+    /**
+     * gibt den Wert einer Einstellung zurueck
+     *
+     * @param  string $name Name der Einstellung
+     * @return mixed
+     */
+    public function getSetting($name) {
+
+        if(count($this->settings) == 0) {
+
+            foreach ($this->xml->settings->setting as $setting) {
+
+                $attributes = $setting->attributes();
+                switch ($attributes->type) {
+
+                    case 'string':
+
+                        $this->settings[(string) $attributes->name] = rawurldecode((string) $attributes->value);
+
+                        break;
+                    case 'bool':
+
+                        $this->settings[(string) $attributes->name] = ((string) $attributes->value === 'true' ? true : false);
+
+                        break;
+                    case 'int':
+
+                        $this->settings[(string) $attributes->name] = (int) $attributes->value;
+
+                        break;
+                    default:
+
+                        $this->settings[(string) $attributes->name] = (string) $attributes->value;
+                }
+            }
+        }
+
+        if (isset($this->settings[$name])) {
+
+            return $this->settings[$name];
+        }
+        return null;
+    }
+
+    /**
+     * setzt den Wert einer Einstellung
+     *
+     * @param  string $settingName Name der Einstellung
+     * @param  mixed  $value       Wert
+     * @return bool
+     * @throws \Exception
+     */
+    protected function editSetting($settingName, $value) {
+
+        foreach ($this->xml->settings->setting as $setting) {
+
+            $attributes = $setting->attributes();
+
+            if ($attributes->name == $settingName) {
+
+                switch ($attributes->type) {
+
+                    case 'string':
+
+                        $attributes->value = rawurlencode($value);
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'bool':
+
+                        if ($value === true || $value === false || $value === 1 || $value === 0 || $value === '1' || $value === '0') {
+
+                            $attributes->value = (($value === true || $value === 1 || $value === '1') ? 'true' : 'false');
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'int':
+
+                        if ((int) $value == $value) {
+
+                            $attributes->value = (int) $value;
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                    case 'float':
+
+                        if ((float) $value == $value) {
+
+                            $attributes->value = (float) $value;
+                        } else {
+
+                            throw new \Exception('Ungültiger Wert', 1120);
+                        }
+
+                        $this->chanched = true;
+                        $this->saved = false;
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Speichert die EInstellungen
+     *
+     * @return bool
+     * @throws \RWF\XML\Exception\XmlException
+     */
+    protected function saveSettings() {
+
+        if ($this->xml->save(false)) {
+
+            return true;
+        }
+        return false;
     }
 }

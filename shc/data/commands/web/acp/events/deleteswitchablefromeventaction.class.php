@@ -82,7 +82,6 @@ class DeleteSwitchableFromEventAction extends ActionCommand {
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.addElement.removeSuccesss'));
                     EventEditor::getInstance()->loadData();
-                    $event = EventEditor::getInstance()->getEventById($eventId);
                 } catch (\Exception $e) {
 
                     if($e->getCode() == 1102) {

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sensorTransmitter>
-
+    <settings>
+        <setting name="shc.sensorTransmitter.active" value="true" type="bool"/>         <!-- 2.2.0 Sensor Transmitter Aktiviert -->
+        <setting name="shc.sensorTransmitter.ip" value="127.0.0.1" type="string"/> <!-- 2.2.0 Sensor Transmitter IP Adresse -->
+        <setting name="shc.sensorTransmitter.port" value="80" type="string"/>           <!-- 2.2.0 Sensor Transmitter Port -->
+        <setting name="shc.sensorTransmitter.pointId" value="99" type="int"/>           <!-- 2.2.0 Sensor Punkt ID -->
+        <setting name="shc.sensorTransmitter.blinkPin" value="-1" type="int"/>          <!-- 2.2.0 wenn >= 0 wird der GPIO mit 0,5Hz Blinktakt angesteiert-->
+    </settings>
 </sensorTransmitter>

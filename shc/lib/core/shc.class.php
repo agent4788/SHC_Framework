@@ -4,9 +4,10 @@ namespace SHC\Core;
 
 //Imports
 use RWF\Core\RWF;
+use RWF\Language\Language;
 use RWF\Session\Session;
 use RWF\Settings\Settings;
-use RWF\Util\CliUtil;
+use RWF\User\UserEditor;
 use RWF\XML\XmlFileManager;
 use RWF\Style\StyleEditor;
 use RWF\User\User;
@@ -28,7 +29,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.2';
+    const VERSION = '2.2.3';
 
     /**
      * Sensor Transmitter
@@ -36,6 +37,13 @@ class SHC extends RWF {
      * @var String
      */
     const XML_SENSOR_TRANSMITTER = 'sensortransmitter';
+
+    /**
+     * Schaltserver Einstellungen
+     *
+     * @var String
+     */
+    const XML_SWITCHSERVER_SETTINGS = 'switchserversettings';
     
     /**
      * Style
@@ -43,56 +51,61 @@ class SHC extends RWF {
      * @var \RWF\Style\Style 
      */
     protected static $style = null;
-
-    /**
-     * Datenbank
-     *
-     * @var \SHC\Database\NoSQL\Redis
-     */
-    protected static $redis = null;
     
     public function __construct() {
 
         global $argv;
 
-        //pruefen ob APP installiert ist
-        if(!file_exists(PATH_SHC .'app.json')) {
-
-            throw new \Exception('Die App "SHC" ist nicht installiert', 1013);
-        }
-
         //XML Initialisieren
         $this->initXml();
+
+        //Berechtigungen initialisieren
+        $this->initPermissions();
 
         //Basisklasse initalisieren
         parent::__construct();
 
-        //SHC Initialisieren
+        //pruefen ob App installiert ist
         if (ACCESS_METHOD_HTTP) {
 
-            //Datenbank Initalisieren
-            $this->initDatabase();
+            $found = false;
+            foreach (self::$appList as $app) {
+
+                if ($app['app'] == 'shc') {
+
+                    $found = true;
+                    break;
+                }
+            }
+
+            if ($found === false) {
+
+                throw new \Exception('Die App "SHC" ist nicht installiert', 1013);
+            }
+        }
+
+        //SHC Initialisieren
+        if (ACCESS_METHOD_HTTP) {
 
             //Template Ordner anmelden
             self::$template->addTemplateDir(PATH_SHC . 'data/templates');
             $this->redirection();
             $this->initStyle();
-        } elseif((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv)))) {
+        } else {
 
-            //Sheduler initalisieren
+            //CLI Anfrage
+            if((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
 
-            //Datenbank Initalisieren
-            $this->initDatabase();
+                $this->initDatabase();
+                $this->initCliLanguage();
+                $this->initSettings();
+            } elseif((ACCESS_METHOD_CLI && (in_array('-ss', $argv) || in_array('--switchserver', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv)))) {
+
+                $this->initCliLanguage();
+            }
         }
-    }
-
-    /**
-     * XML Verwaltung initialisieren
-     */
-    protected function initXml() {
-        
-        $fileManager = XmlFileManager::getInstance();
-        $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
 
     /**
@@ -103,37 +116,68 @@ class SHC extends RWF {
     protected function initDatabase() {
 
         self::$redis = new Redis();
+        self::$redis->connect();
+    }
 
-        if(ACCESS_METHOD_CLI) {
+    /**
+     * initialisiert die Einstellungen
+     */
+    protected function initSettings() {
 
-            //Zugriff ueber Kommandozeile
-            $cli = new CliUtil();
-            $error = 0;
-            while(true) {
+        parent::initSettings();
+        $settings = self::$settings;
 
-                try {
+        //SHC Einstellungen hinzufuegen
+        //Allgemein
+        $settings->addSetting('shc.ui.redirectActive', Settings::TYPE_BOOL, true);
+        $settings->addSetting('shc.ui.redirectPcTo', Settings::TYPE_INT, 1);
+        $settings->addSetting('shc.ui.redirectTabletTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('shc.ui.redirectSmartphoneTo', Settings::TYPE_INT, 3);
+        $settings->addSetting('shc.ui.index.showUsersAtHome', Settings::TYPE_BOOL, true);
+        $settings->addSetting('shc.title', Settings::TYPE_STRING, 'SHC 2.2');
+        $settings->addSetting('shc.defaultStyle', Settings::TYPE_STRING, 'redmond');
+        $settings->addSetting('shc.defaultMobileStyle', Settings::TYPE_STRING, 'default');
 
-                    self::$redis->connect();
-                    break;
-                } catch(\Exception $e) {
+        //Sheduler
+        $settings->addSetting('shc.shedulerDaemon.active', Settings::TYPE_BOOL, false);
+        $settings->addSetting('shc.shedulerDaemon.blinkPin', Settings::TYPE_INT, -1);
+        $settings->addSetting('shc.shedulerDaemon.performanceProfile', Settings::TYPE_INT, 2);
+    }
 
-                    if($error < 6) {
+    /**
+     * initialisiert die Berechtigungen
+     */
+    protected function initPermissions() {
 
-                        $cli->writeLineColored('Verbindung zur Datenbank Fehlgeschlagen, erneuter Versuch in 10 Sekunden', 'yellow');
-                        $error++;
-                        sleep(10);
-                    } else {
+        $userEditor = UserEditor::getInstance();
 
-                        $cli->writeLineColored('verbindungsaufbau zur Datenbank Fehlgeschlagen', 'red');
-                        throw $e;
-                    }
-                }
-            }
-        } else {
+        //Benutzerrechte
+        $userEditor->addPermission('shc.ucp.viewUserAtHome', true);
+        $userEditor->addPermission('shc.ucp.warnings', true);
 
-            //Webzugriff
-            self::$redis->connect();
-        }
+        //Adminrechte
+        $userEditor->addPermission('shc.acp.menu', false);
+        $userEditor->addPermission('shc.acp.userManagement', false);
+        $userEditor->addPermission('shc.acp.settings', false);
+        $userEditor->addPermission('shc.acp.databaseManagement', false);
+        $userEditor->addPermission('shc.acp.backupsManagement', false);
+        $userEditor->addPermission('shc.acp.switchableManagement', false);
+        $userEditor->addPermission('shc.acp.sensorpointsManagement', false);
+        $userEditor->addPermission('shc.acp.usersathomeManagement', false);
+        $userEditor->addPermission('shc.acp.conditionsManagement', false);
+        $userEditor->addPermission('shc.acp.switchpointsManagement', false);
+        $userEditor->addPermission('shc.acp.eventsManagement', false);
+        $userEditor->addPermission('shc.acp.switchserverManagement', false);
+    }
+
+    /**
+     * XML Verwaltung initialisieren
+     */
+    protected function initXml() {
+        
+        $fileManager = XmlFileManager::getInstance();
+        $fileManager->registerXmlFile(self::XML_SWITCHSERVER_SETTINGS, PATH_SHC_STORAGE . 'switchserversettings.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserversettings.xml');
+        $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');
     }
     
     /**
@@ -144,7 +188,6 @@ class SHC extends RWF {
         if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
             //Mobilen Style laden
-            $mobileStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getMobileStyle() != '') {
 
                 $mobileStyle = self::$visitor->getMobileStyle();
@@ -156,7 +199,6 @@ class SHC extends RWF {
         } elseif(defined('RWF_DEVICE') && RWF_DEVICE == 'web') {
 
             //Webstyle laden
-            $webStyle = '';
             if (self::$visitor instanceof User && self::$visitor->getWebStyle() != '') {
 
                 $webStyle = self::$visitor->getWebStyle();
@@ -263,6 +305,14 @@ class SHC extends RWF {
             exit(0);
         }
     }
+
+    /**
+     * initalisiert die Sprachpakete fuer die Kommandozeile
+     */
+    protected function initCliLanguage() {
+
+        self::$language = new Language('de');
+    }
     
     /**
      * gibt den Style zurueck
@@ -288,12 +338,6 @@ class SHC extends RWF {
      * beendet die Anwendung
      */
     public function finalize() {
-
-        //Einstellungen Speichern
-        if (self::$settings instanceof Settings) {
-
-            self::$settings->finalize();
-        }
 
         //Sessionobjekt abschliesen
         if (self::$session instanceof Session) {

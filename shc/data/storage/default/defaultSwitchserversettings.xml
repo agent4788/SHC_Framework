@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <setting name="shc.switchServer.active" value="true" type="bool"/>                                  <!-- 2.2.0 Schaltserver Aktiviert -->
+    <setting name="shc.switchServer.ip" value="127.0.0.1" type="string"/>                          <!-- 2.2.0 Schaltserver IP Adresse -->
+    <setting name="shc.switchServer.port" value="9274" type="string"/>                                  <!-- 2.2.0 Schaltserver Port -->
+    <setting name="shc.switchServer.senderActive" value="true" type="bool"/>                            <!-- 2.2.0 433MHz sender aktiv -->
+    <setting name="shc.switchServer.sendCommand" value="/usr/local/bin/pilight-send" type="string"/>    <!-- 2.2.0 Pfad zum Send Befehl -->
+    <setting name="shc.switchServer.gpioCommand" value="/usr/local/bin/gpio" type="string"/>            <!-- 2.2.0 Pfad zum GPIO Befehl -->
+    <setting name="shc.switchServer.rcswitchPiCommand" value="/opt/rcswitch-pi/send" type="string"/>    <!-- 2.2.0 Pfad zum GPIO Befehl -->
+    <setting name="shc.switchServer.sendLedPin" value="-1" type="int"/>                                 <!-- 2.2.0 GPIO Pin fuer die Sende LED -1 = deaktiviert -->
+    <setting name="shc.switchServer.writeGpio" value="true" type="bool"/>                               <!-- 2.2.0 GPIOs koennen geschaltet werden -->
+    <setting name="shc.switchServer.readGpio" value="true" type="bool"/>                                <!-- 2.2.0 GPIOs koennen abgefragt werden -->
+</settings>

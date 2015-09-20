@@ -111,7 +111,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
         $size = '';
         if (isset($this->options['size'])) {
 
-            $size = ' size="' . StringUtil::encodeHTML($this->options['size']) . '" ';
+            $size = ' size="' . String::encodeHTML($this->options['size']) . '" ';
         }
 
         //HTML Code
@@ -224,7 +224,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
         $size = '';
         if (isset($this->options['size'])) {
 
-            $size = ' size="' . StringUtil::encodeHTML($this->options['size']) . '" ';
+            $size = ' size="' . String::encodeHTML($this->options['size']) . '" ';
         }
 
         //HTML Code

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{setting name='shc.title' encodeHtml=1}</title>
+        <title>{setting name='pcc.title' encodeHtml=1}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {$style->fetchHtmlHeaderTags()}
         <style type="text/css">
@@ -30,7 +30,7 @@
                             {premission premission='pcc.acp.userManagement'}
                             <li>
                                 <a href="index.php?app=pcc&page=listusers&m">
-                                    <img src="./shc/inc/img/acpmenue/usermanagement.png" class="ui-li-icon" />
+                                    <img src="./pcc/inc/img/acpmenue/usermanagement.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.users'}
                                 </a>
                             </li>
@@ -38,8 +38,24 @@
                             {premission premission='pcc.acp.settings'}
                             <li>
                                 <a href="index.php?app=pcc&page=settingsform&m">
-                                    <img src="./shc/inc/img/acpmenue/settings.png" class="ui-li-icon" />
+                                    <img src="./pcc/inc/img/acpmenue/settings.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.settings'}
+                                </a>
+                            </li>
+                            {/premission}
+                            {premission premission='pcc.acp.databaseManagement'}
+                            <li>
+                                <a href="index.php?app=pcc&page=database&m">
+                                    <img src="./pcc/inc/img/acpmenue/database.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.database'}
+                                </a>
+                            </li>
+                            {/premission}
+                            {premission premission='pcc.acp.backupsManagement'}
+                            <li>
+                                <a href="index.php?app=pcc&page=listbackups&m">
+                                    <img src="./pcc/inc/img/acpmenue/backup.png" class="ui-li-icon" />
+                                    {lang var='acpindex.menu.backup'}
                                 </a>
                             </li>
                             {/premission}
@@ -51,7 +67,7 @@
                             {premission premission='pcc.acp.menu'}
                             <li>
                                 <a href="index.php?app=pcc&page=info&m">
-                                    <img src="./shc/inc/img/acpmenue/info.png" class="ui-li-icon" />
+                                    <img src="./pcc/inc/img/acpmenue/info.png" class="ui-li-icon" />
                                     {lang var='acpindex.menu.info'}
                                 </a>
                             </li>

@@ -22,14 +22,14 @@ class Countdown extends AbstractSwitchable {
     /**
      * liste mit den zu schaltenden Elementen
      * 
-     * @var type 
+     * @var Array
      */
     protected $switchables = array();
 
     /**
      * Zeitintervall
      * 
-     * @var \DateIntervall 
+     * @var int
      */
     protected $intervall = null;
 
@@ -44,7 +44,7 @@ class Countdown extends AbstractSwitchable {
      * registriet ein Schaltbares Objekt
      * 
      * @param  \SHC\Switchable\Switchable $switchable Objekt
-     * @param  Integre                    $command    Befehl
+     * @param  int                        $command    Befehl
      * @return \SHC\Switchable\Switchables\Countdown
      * @throws \Exception
      */
@@ -101,7 +101,7 @@ class Countdown extends AbstractSwitchable {
     /**
      * setzt den Zeitintervall fuer das ausschalten
      * 
-     * @param  $interval Zeitintervall
+     * @param  int $interval Zeitintervall
      * @return \SHC\Switchable\Switchables\Countdown
      */
     public function setInterval($interval) {

@@ -58,7 +58,7 @@ abstract class Calendar {
      * gibt das Datum des Ostersonntags zurueck
      * 
      * @param  Integer $year Jahr
-     * @return hf\date\DateTime
+     * @return \DateTime
      */
     public static function getEasterDate($year) {
 

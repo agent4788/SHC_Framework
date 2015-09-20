@@ -47,7 +47,7 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
         $premission = '';
         if(isset($args['premission'])) {
 
-            $premission = '\\RWF\Core\\RWF::getVisitor()->checkPremission('. $args['premission'] .')';
+            $premission = '\\RWF\Core\\RWF::getVisitor()->checkPermission('. $args['premission'] .')';
         }
 
         $setting = '';

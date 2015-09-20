@@ -196,5 +196,6 @@ class FritzBox {
     public function rebuildCache() {
 
         $this->cache['sid'] = array();
+        $this->cache['object'] = array();
     }
 }

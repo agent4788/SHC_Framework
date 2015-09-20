@@ -28,7 +28,7 @@ class CliUtil {
     /**
      * STDIN Datenstrom
      *
-     * @var Recource
+     * @var recource
      */
     protected static $in = null;
 
@@ -101,6 +101,7 @@ class CliUtil {
      * @param  String $str Text
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function write($str) {
 
         if (!$this->print) {
@@ -116,6 +117,7 @@ class CliUtil {
      * @param  String $str Text
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeLine($str) {
 
         if (!$this->print) {
@@ -133,6 +135,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeColored($str, $color, $backgroundColor = null) {
 
         if (!$this->print) {
@@ -155,6 +158,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function writeLineColored($str, $color, $backgroundColor = null) {
 
         if (!$this->print) {
@@ -173,7 +177,7 @@ class CliUtil {
      * gibt eine Eingabeaufforderung aus und gibt die Eingabe als String rurueck
      *
      * @param  String   $message Meldung
-     * @param  Recource $handle  Eingabestrom
+     * @param  recource $handle  Eingabestrom
      * @return String            EIngabe
      */
     public function input($message, &$handle = null) {
@@ -205,6 +209,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function colorStart($color, $backgroundColor) {
 
         $return = '';
@@ -242,6 +247,7 @@ class CliUtil {
      * @param  String $backgroundColor Hintergrundfarbe
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function colorNext($color) {
 
         if (!$this->print) {
@@ -256,6 +262,7 @@ class CliUtil {
      *
      * @return String
      */
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     public function reset() {
 
         if (!$this->print) {
@@ -304,11 +311,11 @@ if(PHP_SAPI != 'cli') {
 $cli = new CliUtil();
 
 //Dateien einlesen
-$dir = opendir('./shc/backup/');
+$dir = opendir('./rwf/data/backup/');
 $files = array();
 while($file = readdir($dir)) {
 
-    if(is_file('./shc/backup/'. $file) && preg_match('#\.zip$#i', $file)) {
+    if(is_file('./rwf/data/backup/'. $file) && preg_match('#\.zip$#i', $file)) {
 
         $files[] = $file;
     }
@@ -389,7 +396,7 @@ if ($valid === false) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $zip = new ZipArchive();
-if($zip->open('./shc/backup/'. $restoreFile) === true) {
+if($zip->open('./rwf/data/backup/'. $restoreFile) === true) {
 
     //Temp Ordner
     if(!is_dir('/tmp/shcBackupRestore')) {
@@ -407,10 +414,12 @@ if($zip->open('./shc/backup/'. $restoreFile) === true) {
     } else {
 
         $cli->writeLineColored('Die Datei "'. $restoreFile .'" konnte nicht entpackt werden', 'red');
+        exit(1);
     }
 } else {
 
     $cli->writeLineColored('Die Datei "'. $restoreFile .'" konnte nicht geladen werden', 'red');
+    exit(1);
 }
 
 $cli->writeLineColored('Daten erfolgreich entpackt', 'green');
@@ -505,7 +514,7 @@ if ($valid === false) {
 //Timeout
 $n = 0;
 $valid = true;
-$valid_timeout = '6379';
+$valid_timeout = '1';
 $timeout_not_change = false;
 while ($n < 5) {
 
@@ -617,6 +626,39 @@ if ($valid === false) {
     exit(1);
 }
 
+//alte BD.Config loeschen
+if(file_exists('./rwf/db.config.php')) {
+
+    @unlink('./rwf/db.config.php');
+}
+
+//DB Config erstellen
+$dbConfig =
+    "<?php
+
+/**
+ * Redis NoSQL Dantenbank Konfiguration
+ *
+ * @created ". (new DateTime())->format('H:i d.m.Y') ."
+ */
+
+\$dbConfig = array(
+    'host' => '$valid_address',
+    'port' => $valid_port,
+    'timeout' => $valid_timeout,
+    'pass' => '$valid_password',
+    'db' => $valid_db
+);
+";
+if(@file_put_contents('./rwf/db.config.php', $dbConfig)) {
+
+    $cli->writeLineColored('Die Datenbankkonfiguration wurde erfolgreich erstellt', 'green');
+} else {
+
+    $cli->writeLineColored('Die Datenbankkonfiguration konnte nicht erstellt werden', 'red');
+    exit(1);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // mit Redis verbinden /////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -649,7 +691,7 @@ if (!$redis->select($valid_db)) {
 
 //Optionen setzen
 $redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
-$redis->setOption(\Redis::OPT_PREFIX, 'shc:');
+$redis->setOption(\Redis::OPT_PREFIX, 'rwf:');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Redis Datenbank leeren //////////////////////////////////////////////////////////////////////////////////////////////
@@ -665,131 +707,58 @@ $data = json_decode(file_get_contents('/tmp/shcBackupRestore/database_dump.json'
 
 if(is_array($data)) {
 
-    //AutoIncrements
-    $redis->incrBy('autoIncrement:conditions', $data['autoIncrement:conditions']);
-    $redis->incrBy('autoIncrement:events', $data['autoIncrement:events']);
-    $redis->incrBy('autoIncrement:roomView', $data['autoIncrement:roomView']);
-    $redis->incrBy('autoIncrement:roomView_order', $data['autoIncrement:roomView_order']);
-    $redis->incrBy('autoIncrement:rooms', $data['autoIncrement:rooms']);
-    $redis->incrBy('autoIncrement:switchServers', $data['autoIncrement:switchServers']);
-    $redis->incrBy('autoIncrement:switchables', $data['autoIncrement:switchables']);
-    $redis->incrBy('autoIncrement:switchpoints', $data['autoIncrement:switchpoints']);
-    $redis->incrBy('autoIncrement:usersrathome', $data['autoIncrement:usersrathome']);
+    foreach($data as $keySet) {
 
-    $cli->writeLineColored('Auto Increment Daten erfolgreich wiederhergestellt', 'green');
+        $key = $keySet['key'];
+        $value = $keySet['value'];
+        $ttl = $keySet['ttl'];
+        switch($keySet['type']) {
 
-    //Bedingungen
-    if(isset($data['conditions'])) {
+            case \Redis::REDIS_STRING:
 
-        foreach($data['conditions'] as $key => $dataSet) {
+                //Sonderfall Zahlen
+                if(preg_match("#^\d+$#", $value)) {
 
-            $redis->hSet('conditions', $key, $dataSet);
+                    $redis->incrBy($key, $value);
+                } else {
+
+                    $redis->set($key, $value);
+                }
+                $redis->expire($key, $ttl);
+                break;
+            case \Redis::REDIS_SET:
+
+                foreach($value as $v) {
+
+                    $redis->sAdd($key, $v);
+                }
+                $redis->expire($key, $ttl);
+                break;
+            case \Redis::REDIS_LIST:
+
+                foreach($value as $v) {
+
+                    $redis->rPush($key, $v);
+                }
+                $redis->expire($key, $ttl);
+                break;
+            case \Redis::REDIS_ZSET:
+
+                foreach($value as $v => $s) {
+
+                    $redis->zAdd($key, $s, $v);
+                }
+                $redis->expire($key, $ttl);
+                break;
+            case \Redis::REDIS_HASH:
+
+                foreach($value as $k => $v) {
+
+                    $redis->hSet($key, $k, $v);
+                }
+                $redis->expire($key, $ttl);
+                break;
         }
-        $cli->writeLineColored('Bedingungen erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Ereignisse
-    if(isset($data['events'])) {
-
-        foreach($data['events'] as $key => $dataSet) {
-
-            $redis->hSet('events', $key, $dataSet);
-        }
-        $cli->writeLineColored('Ereignisse erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Raum uebersicht
-    if(isset($data['roomView'])) {
-
-        foreach($data['roomView'] as $key => $dataSet) {
-
-            $redis->hSet('roomView', $key, $dataSet);
-        }
-        $cli->writeLineColored('Raum Übersicht erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Raeume
-    if(isset($data['rooms'])) {
-
-        foreach($data['rooms'] as $key => $dataSet) {
-
-            $redis->hSet('rooms', $key, $dataSet);
-        }
-        $cli->writeLineColored('Räume erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Sensorpunkte
-    if(isset($data['sensors:sensorPoints'])) {
-
-        foreach($data['sensors:sensorPoints'] as $key => $dataSet) {
-
-            $redis->hSet('sensors:sensorPoints', $key, $dataSet);
-        }
-        $cli->writeLineColored('Sensorpunkte erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Sensoren
-    if(isset($data['sensors:sensors'])) {
-
-        foreach($data['sensors:sensors'] as $key => $dataSet) {
-
-            $redis->hSet('sensors:sensors', $key, $dataSet);
-        }
-        $cli->writeLineColored('Sensoren erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Sensor Daten
-    if(isset($data['sensors:sensorData'])) {
-
-        foreach($data['sensors:sensorData'] as $key => $dataSet) {
-
-            ksort($dataSet, SORT_NUMERIC | SORT_ASC);
-            foreach($dataSet as $index => $value) {
-
-                $redis->lPush('sensors:sensorData:'. $key, $value);
-            }
-        }
-        $cli->writeLineColored('Sensor Daten erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Schaltserver
-    if(isset($data['switchServers'])) {
-
-        foreach($data['switchServers'] as $key => $dataSet) {
-
-            $redis->hSet('switchServers', $key, $dataSet);
-        }
-        $cli->writeLineColored('Schaltserver erfolgreich wiederhergestellt', 'green');
-    }
-
-    //schaltbare Elemente
-    if(isset($data['switchables'])) {
-
-        foreach($data['switchables'] as $key => $dataSet) {
-
-            $redis->hSet('switchables', $key, $dataSet);
-        }
-        $cli->writeLineColored('schaltbare Elemente erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Schaltpunkte
-    if(isset($data['switchpoints'])) {
-
-        foreach($data['switchpoints'] as $key => $dataSet) {
-
-            $redis->hSet('switchpoints', $key, $dataSet);
-        }
-        $cli->writeLineColored('Schaltpunkte erfolgreich wiederhergestellt', 'green');
-    }
-
-    //Benutzer zu Hause
-    if(isset($data['usersrathome'])) {
-
-        foreach($data['usersrathome'] as $key => $dataSet) {
-
-            $redis->hSet('usersrathome', $key, $dataSet);
-        }
-        $cli->writeLineColored('Benutzer zu Hause erfolgreich wiederhergestellt', 'green');
     }
 
 } else {
@@ -801,70 +770,9 @@ if(is_array($data)) {
 $redis->close();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// XML Dateien kopieren ////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//SensorTransmitter
-if(file_exists('/tmp/shcBackupRestore/sensortransmitter.xml')) {
-
-    //alte Datei loeschen falls sie existiert
-    if(file_exists('/var/www/shc/shc/data/storage/sensortransmitter.xml')) {
-
-        @unlink('/var/www/shc/shc/data/storage/sensortransmitter.xml');
-    }
-
-    if(!copy('/tmp/shcBackupRestore/sensortransmitter.xml', '/var/www/shc/shc/data/storage/sensortransmitter.xml')) {
-
-        $cli->writeLineColored('die sensortransmitter.xml Datei konnte nicht kopiert werden', 'red');
-    }
-    @chmod('/var/www/shc/shc/data/storage/sensortransmitter.xml', 0777);
-    @clearstatcache();
-    $cli->writeLineColored('die sensortransmitter.xml Datei wurde erfolgreich wiederhergestellt', 'green');
-}
-
-//Settings
-if(file_exists('/tmp/shcBackupRestore/settings.xml')) {
-
-    //alte Datei loeschen falls sie existiert
-    if(file_exists('/var/www/shc/rwf/data/storage/settings.xml')) {
-
-        @unlink('/var/www/shc/rwf/data/storage/settings.xml');
-    }
-
-    if(!copy('/tmp/shcBackupRestore/settings.xml', '/var/www/shc/rwf/data/storage/settings.xml')) {
-
-        $cli->writeLineColored('die settings.xml Datei konnte nicht kopiert werden', 'red');
-    }
-    @chmod('/var/www/shc/rwf/data/storage/settings.xml', 0777);
-    @clearstatcache();
-    $cli->writeLineColored('die settings.xml Datei wurde erfolgreich wiederhergestellt', 'green');
-}
-
-//Users
-if(file_exists('/tmp/shcBackupRestore/users.xml')) {
-
-    //alte Datei loeschen falls sie existiert
-    if(file_exists('/var/www/shc/rwf/data/storage/users.xml')) {
-
-        @unlink('/var/www/shc/rwf/data/storage/users.xml');
-    }
-
-    if(!copy('/tmp/shcBackupRestore/users.xml', '/var/www/shc/rwf/data/storage/users.xml')) {
-
-        $cli->writeLineColored('die users.xml Datei konnte nicht kopiert werden', 'red');
-    }
-    @chmod('/var/www/shc/rwf/data/storage/users.xml', 0777);
-    @clearstatcache();
-    $cli->writeLineColored('die users.xml Datei wurde erfolgreich wiederhergestellt', 'green');
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Aufräumen ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@unlink('/tmp/shcBackupRestore/sensortransmitter.xml');
-@unlink('/tmp/shcBackupRestore/settings.xml');
-@unlink('/tmp/shcBackupRestore/users.xml');
 @unlink('/tmp/shcBackupRestore/database_dump.json');
 @rmdir('/tmp/shcBackupRestore');
 

@@ -10,6 +10,8 @@ use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
+use SHC\Event\Events\FileCreate;
+use SHC\Event\Events\FileDelete;
 use SHC\Event\Events\HumidityClimbOver;
 use SHC\Event\Events\HumidityFallsBelow;
 use SHC\Event\Events\InputHigh;
@@ -24,14 +26,14 @@ use SHC\Event\Events\TemperatureClimbOver;
 use SHC\Event\Events\TemperatureFallsBelow;
 use SHC\Event\Events\UserComesHome;
 use SHC\Event\Events\UserLeavesHome;
-use SHC\Form\Forms\HumidityEventForm;
-use SHC\Form\Forms\InputEventForm;
-use SHC\Form\Forms\LightIntensityEventForm;
-use SHC\Form\Forms\MoistureEventForm;
-use SHC\Form\Forms\SunriseEventForm;
-use SHC\Form\Forms\TemperatureEventForm;
-use SHC\Form\Forms\UserEventForm;
-use SHC\Form\Forms\UserForm;
+use SHC\Form\Forms\Events\FileEventForm;
+use SHC\Form\Forms\Events\HumidityEventForm;
+use SHC\Form\Forms\Events\InputEventForm;
+use SHC\Form\Forms\Events\LightIntensityEventForm;
+use SHC\Form\Forms\Events\MoistureEventForm;
+use SHC\Form\Forms\Events\SunriseEventForm;
+use SHC\Form\Forms\Events\TemperatureEventForm;
+use SHC\Form\Forms\Events\UserEventForm;
 
 /**
  * bearbeitet einen Schaltserver
@@ -773,6 +775,108 @@ class EditEventFormPage extends PageCommand {
                 try {
 
                     EventEditor::getInstance()->editSunsetEvent($eventId, $name, $enabled, null);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('eventForm', $eventForm);
+            }
+        } elseif($event instanceof FileCreate) {
+
+            //Datei erstellt
+            $eventForm = new FileEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
+            $eventForm->addId('shc-view-form-editEvent');
+
+            if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $eventForm->getElementByName('name')->getValue();
+                $file = $eventForm->getElementByName('file')->getValue();
+                $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $interval = $eventForm->getElementByName('interval')->getValue();
+
+                //speichern
+                $message = new Message();
+                try {
+
+                    EventEditor::getInstance()->editFileCreateEvent($eventId, $name, $enabled, $file, $interval);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1502) {
+
+                        //Name schon vergeben
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                    } elseif($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('eventForm', $eventForm);
+            }
+        }  elseif($event instanceof FileDelete) {
+
+            //Datei geloescht
+            $eventForm = new FileEventForm($event);
+            $eventForm->setAction('index.php?app=shc&page=editeventform&id='. $event->getId());
+            $eventForm->addId('shc-view-form-editEvent');
+
+            if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                //Werte vorbereiten
+                $name = $eventForm->getElementByName('name')->getValue();
+                $file = $eventForm->getElementByName('file')->getValue();
+                $enabled = $eventForm->getElementByName('enabled')->getValue();
+                $interval = $eventForm->getElementByName('interval')->getValue();
+
+                //speichern
+                $message = new Message();
+                try {
+
+                    EventEditor::getInstance()->editFileDeleteEvent($eventId, $name, $enabled, $file, $interval);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.editEvent'));
                 } catch(\Exception $e) {

@@ -34,7 +34,7 @@ class UserNotAtHomeCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['users'])) {
 
-            throw new Exception('Eine Liste mit den Benutzern zu Hause muss angegeben werden', 1580);
+            throw new \Exception('Eine Liste mit den Benutzern zu Hause muss angegeben werden', 1580);
         }
 
         //Liste mit den Benutzern zu Hause holen

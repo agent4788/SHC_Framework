@@ -32,7 +32,7 @@ class FileExistsCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['path'])) {
 
-            throw new Exception('Dateiname wurde nicht angegeben', 1580);
+            throw new \Exception('Dateiname wurde nicht angegeben', 1580);
         }
 
         //Daten vorbereiten

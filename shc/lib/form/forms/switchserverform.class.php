@@ -78,7 +78,9 @@ class SwitchServerForm extends DefaultHtmlForm {
             Arduino::NANO => array('Arduino Nano', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::NANO ? 1 : 0)),
             Arduino::UNO => array('Arduino Uno', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::UNO ? 1 : 0)),
             Arduino::MEGA => array('Arduino Mega', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::MEGA ? 1 : 0)),
-            Arduino::DUE => array('Arduino Due', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::DUE ? 1 : 0))
+            Arduino::DUE => array('Arduino Due', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::DUE ? 1 : 0)),
+            Arduino::ESP8266_01 => array('ESP8266-01', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::ESP8266_01 ? 1 : 0)),
+            Arduino::ESP8266_12 => array('ESP8266-12', ($switchServer instanceof SwitchServer && $switchServer->getModel() == Arduino::ESP8266_12 ? 1 : 0))
         ));
         $model->setTitle(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.model'));
         $model->setDescription(RWF::getLanguage()->get('acp.switchserverManagement.form.switchServer.model.description'));

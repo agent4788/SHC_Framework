@@ -11,7 +11,6 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\Forms\ExtendetSwitchPointForm;
 use SHC\Form\Forms\SimpleSwitchPointForm;
-use SHC\Form\Forms\UserForm;
 use SHC\Timer\SwitchPointEditor;
 
 /**
@@ -75,6 +74,7 @@ class AddSwitchPointFormPage extends PageCommand {
 
                 //Einfaches Formular speichern
                 $dayOfWeek = $switchPointForm->getElementByName('daysOfWeek')->getValue();
+                $dayOfWeekValue = array();
                 if ($dayOfWeek == 1) {
                     $dayOfWeekValue = array('*');
                 } elseif ($dayOfWeek == 2) {

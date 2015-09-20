@@ -3,6 +3,8 @@
 namespace SHC\Command\Smartphone;
 
 //Imports
+use RWF\Backup\Backup;
+use RWF\Backup\BackupEditor;
 use RWF\Core\RWF;
 use RWF\Request\Commands\ActionCommand;
 use RWF\Request\Request;
@@ -10,8 +12,6 @@ use RWF\Session\Session;
 use RWF\Settings\Settings;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\Message;
-use SHC\Backup\Backup;
-use SHC\Backup\BackupEditor;
 
 /**
  * download eines Backups
@@ -44,7 +44,7 @@ class LoadBackupAction extends ActionCommand {
     public function executeAction() {
 
         //Backuppfad setzen
-        BackupEditor::getInstance()->setPath(PATH_SHC_BACKUP);
+        BackupEditor::getInstance()->setPath(PATH_RWF_BACKUP);
 
         //Backup Objekt laden
         $hash = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::MD5);

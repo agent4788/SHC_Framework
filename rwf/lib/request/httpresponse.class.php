@@ -290,7 +290,7 @@ class HttpResponse implements Response {
         }
 
         //Header
-        @header('HTTP/1.0 ' . $this->httpStatusCode, true);
+        @header('HTTP/1.0 ' . $this->httpState, true);
         @header('Content-type: ' . $this->httpContentType . '; charset=utf-8', true);
 
         foreach ($this->httpHeader as $header) {
@@ -321,7 +321,7 @@ class HttpResponse implements Response {
 
         //Objekt zuruecksetzen
         $this->httpHeader = array();
-        $this->httpStatusCode = self::STATE_OK;
+        $this->httpState = self::STATE_OK;
         $this->httpContentType = 'text/html';
         $this->httpBody = '';
         $this->cookies = array();

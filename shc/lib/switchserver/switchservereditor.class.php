@@ -5,7 +5,7 @@ namespace SHC\SwitchServer;
 //Imports
 use RWF\Util\String;
 use SHC\Core\SHC;
-use RWF\XML\XmlFileManager;
+
 
 /**
  * Verwaltung der Schaltserver
@@ -58,11 +58,11 @@ class SwitchServerEditor {
      *
      * @var String
      */
-    protected static $tableName = 'switchServers';
+    protected static $tableName = 'shc:switchServers';
     
     protected function __construct() {
 
-        $switchServers = SHC::getDatabase()->hGetAll(self::$tableName);
+        $switchServers = SHC::getDatabase()->hGetAllArray(self::$tableName);
         foreach ($switchServers as $switchserver) {
 
             $this->switchServers[(int) $switchserver['id']] = new SwitchServer(
@@ -196,7 +196,7 @@ class SwitchServerEditor {
             'enabled' => ($enabled == true ? true : false)
         );
 
-        if($db->hSetNx(self::$tableName, $index, $newSwitchServer) == 0) {
+        if($db->hSetNxArray(self::$tableName, $index, $newSwitchServer) == 0) {
 
             return false;
         }
@@ -225,7 +225,7 @@ class SwitchServerEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $id)) {
 
-            $switchServer = $db->hGet(self::$tableName, $id);
+            $switchServer = $db->hGetArray(self::$tableName, $id);
 
             //Name
             if ($name !== null) {
@@ -287,7 +287,7 @@ class SwitchServerEditor {
                 $switchServer['enabled'] = ($enabled == true ? true : false);
             }
 
-            if($db->hSet(self::$tableName, $id, $switchServer) == 0) {
+            if($db->hSetArray(self::$tableName, $id, $switchServer) == 0) {
 
                 return true;
             }

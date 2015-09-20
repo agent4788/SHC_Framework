@@ -5,8 +5,6 @@ namespace SHC\Command\Smartphone;
 //Imports
 use RWF\Date\DateTime;
 use RWF\Request\Commands\PageCommand;
-use RWF\Request\Request;
-use RWF\Util\Message;
 use SHC\Core\SHC;
 
 /**
@@ -49,13 +47,6 @@ class DatabasePage extends PageCommand {
         if(SHC::getSession()->getMessage() != null) {
             $tpl->assign('message', SHC::getSession()->getMessage());
             SHC::getSession()->removeMessage();
-        }
-
-        //Datenbank Dump
-        if($this->request->issetParam('dump', Request::GET)) {
-
-
-            $tpl->assign('message', $message);
         }
 
         //Daten

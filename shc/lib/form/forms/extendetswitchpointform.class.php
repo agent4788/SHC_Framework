@@ -35,7 +35,7 @@ class ExtendetSwitchPointForm extends DefaultHtmlForm {
         RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Name der Aktivitaet
-        $name = new TextField('name', ($switchPoint instanceof SwitchPoint ? $switchPoint->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
+        $name = new TextField('name', ($switchPoint instanceof SwitchPoint ? $switchPoint->getName() : ''), array('minlength' => 3, 'maxlength' => 35));
         $name->setTitle(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.name'));
         $name->setDescription(RWF::getLanguage()->get('acp.switchpointsManagment.form.switchPoint.name.decription'));
         $name->requiredField(true);

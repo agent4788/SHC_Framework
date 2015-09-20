@@ -43,7 +43,7 @@ abstract class RadioSocketsUtil {
         for($j = 0; $j < strlen($systemCode); $j++) {
 
             $bin_tmp = substr($systemCode, $j, 1);
-            $return += $bin_tmp * (pow(2, $j));
+            $return .= $bin_tmp * (pow(2, $j));
         }
         return $return;
     }

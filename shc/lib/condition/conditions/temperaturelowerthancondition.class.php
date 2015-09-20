@@ -34,7 +34,7 @@ class TemperatureLowerThanCondition extends AbstractCondition {
         //noetige Parameter pruefen
         if (!isset($this->data['sensors']) || !isset($this->data['temperature'])) {
 
-            throw new Exception('sensors und temperature müssen angegeben werden', 1580);
+            throw new \Exception('sensors und temperature müssen angegeben werden', 1580);
         }
 
         $sensors = explode(',', $this->data['sensors']);
