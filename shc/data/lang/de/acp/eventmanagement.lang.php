@@ -50,6 +50,8 @@ $l['acp.eventsManagement.events.UserComesHome'] = 'Benutzer kommt nach Hause';
 $l['acp.eventsManagement.events.UserLeavesHome'] = 'Benutzer verlässt das Haus';
 $l['acp.eventsManagement.events.Sunrise'] = 'Sonnenaufgang';
 $l['acp.eventsManagement.events.Sunset'] = 'Sonnenuntergang';
+$l['acp.eventsManagement.events.FileCreate'] = 'Datei erstellt';
+$l['acp.eventsManagement.events.FileDelete'] = 'Datei gelöscht';
 
 //Formulare
 $l['acp.eventsManagement.form.event.name'] = 'Name';
@@ -58,6 +60,8 @@ $l['acp.eventsManagement.form.event.condition'] = 'Bedingungen';
 $l['acp.eventsManagement.form.event.condition.decription'] = 'Bedingungen die erfüllt sein müssen damit das Ereigniss ausgeführt wird';
 $l['acp.eventsManagement.form.event.sensors'] = 'Sensoren';
 $l['acp.eventsManagement.form.event.sensors.description'] = 'Sensoren welche vom Ereignis überwacht werden sollen';
+$l['acp.eventsManagement.form.event.file'] = 'Datei';
+$l['acp.eventsManagement.form.event.file.description'] = 'Datei welche vom Ereignis überwacht werden sollen';
 $l['acp.eventsManagement.form.event.limit'] = 'Grenzwert';
 $l['acp.eventsManagement.form.event.humidityLimit.description'] = 'steigt oder fällt die Luftfeuchte über/unter diesen Wert wird das Ereignis ausgelöst (Wert in %)';
 $l['acp.eventsManagement.form.event.lightIntensityLimit.description'] = 'steigt oder fällt die Lichstärke über/unter diesen Wert wird das Ereignis ausgelöst (Wert in %)';

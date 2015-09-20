@@ -858,8 +858,8 @@ class SwitchableEditor {
     public function addActivity($name, $enabled, $visibility, $icon, $rooms, array $order, array $switchPoints = array(), array $allowedUserGroups = array(), $buttonText = Element::BUTTONS_ON_OFF) {
 
         $data = array(
-                'switchable' => array(),
-                'buttonText' => $buttonText
+            'switchable' => array(),
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -907,13 +907,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
                 $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -937,7 +937,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
@@ -949,7 +949,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -972,7 +972,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $activityId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $activityId);
+            $switchableData = $db->hGetArray(self::$tableName, $activityId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $activityId) {
 
@@ -984,7 +984,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $activityId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $activityId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1065,13 +1065,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
                 $switchableData['switchOffTime'] = $time->getDatabaseDateTime();
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1095,13 +1095,13 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
                 $switchableData['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1125,7 +1125,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
@@ -1137,7 +1137,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }
@@ -1160,7 +1160,7 @@ class SwitchableEditor {
         $db = SHC::getDatabase();
         if($db->hExists(self::$tableName, $countdownId)) {
 
-            $switchableData = $db->hGet(self::$tableName, $countdownId);
+            $switchableData = $db->hGetArray(self::$tableName, $countdownId);
 
             if(isset($switchableData['id']) && $switchableData['id'] == $countdownId) {
 
@@ -1172,7 +1172,7 @@ class SwitchableEditor {
                     }
                 }
 
-                if($db->hSet(self::$tableName, $countdownId, $switchableData) != 0) {
+                if($db->hSetArray(self::$tableName, $countdownId, $switchableData) != 0) {
 
                     return false;
                 }

@@ -202,7 +202,8 @@ class BackupEditor {
                         $data[] = array(
                             'type' => \Redis::REDIS_STRING,
                             'key' => $key,
-                            'value' => $db->get($key)
+                            'value' => $db->get($key),
+                            'ttl' => $db->ttl($key)
                         );
                         break;
                     case \Redis::REDIS_SET:
@@ -210,7 +211,8 @@ class BackupEditor {
                         $data[] = array(
                             'type' => \Redis::REDIS_SET,
                             'key' => $key,
-                            'value' => $db->sMembers($key)
+                            'value' => $db->sMembers($key),
+                            'ttl' => $db->ttl($key)
                         );
                         break;
                     case \Redis::REDIS_LIST:
@@ -224,7 +226,8 @@ class BackupEditor {
                         $data[] = array(
                             'type' => \Redis::REDIS_LIST,
                             'key' => $key,
-                            'value' => $values
+                            'value' => $values,
+                            'ttl' => $db->ttl($key)
                         );
                         break;
                     case \Redis::REDIS_ZSET:
@@ -232,7 +235,8 @@ class BackupEditor {
                         $data[] = array(
                             'type' => \Redis::REDIS_ZSET,
                             'key' => $key,
-                            'value' => $db->zRange($key, 0, -1, true)
+                            'value' => $db->zRange($key, 0, -1, true),
+                            'ttl' => $db->ttl($key)
                         );
                         break;
                     case \Redis::REDIS_HASH:
@@ -240,7 +244,8 @@ class BackupEditor {
                         $data[] = array(
                             'type' => \Redis::REDIS_HASH,
                             'key' => $key,
-                            'value' => $db->hGetAll($key)
+                            'value' => $db->hGetAll($key),
+                            'ttl' => $db->ttl($key)
                         );
                         break;
                 }

@@ -11,6 +11,7 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Event\EventEditor;
 use SHC\Form\FormElements\EventTypeChooser;
+use SHC\Form\Forms\Events\FileEventForm;
 use SHC\Form\Forms\Events\HumidityEventForm;
 use SHC\Form\Forms\Events\InputEventForm;
 use SHC\Form\Forms\Events\LightIntensityEventForm;
@@ -488,6 +489,71 @@ class AddEventFormPage extends PageCommand {
                             } elseif ($type == EventEditor::EVENT_SUNSET) {
 
                                 EventEditor::getInstance()->addSunsetEvent($name, $enabled, array());
+                            } else {
+
+                                //Typfehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.success.addEvent'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.eventsManagement.form.event.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listevents');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('eventForm', $eventForm);
+                    }
+                    break;
+                case EventEditor::EVENT_FILE_CREATE:
+                case EventEditor::EVENT_FILE_DELETE:
+
+                    //Sonnenauf- und -ntergang
+                    $eventForm = new FileEventForm();
+                    $eventForm->setAction('index.php?app=shc&page=addeventform');
+                    $eventForm->addId('shc-view-form-addEvent');
+
+                    if($eventForm->isSubmitted() && $eventForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $eventForm->getElementByName('name')->getValue();
+                        $file = $eventForm->getElementByName('file')->getValue();
+                        $enabled = $eventForm->getElementByName('enabled')->getValue();
+                        $interval = $eventForm->getElementByName('interval')->getValue();
+                        //$conditions = $eventForm->getElementByName('conditions')->getValues();
+
+                        //speichern
+                        $message = new Message();
+                        try {
+
+                            if ($type == EventEditor::EVENT_FILE_CREATE) {
+
+                                EventEditor::getInstance()->addFileCreateEvent($name, $enabled, $file, $interval);
+                            } elseif ($type == EventEditor::EVENT_FILE_DELETE) {
+
+                                EventEditor::getInstance()->addFileDeleteEvent($name, $enabled, $file, $interval);
                             } else {
 
                                 //Typfehler

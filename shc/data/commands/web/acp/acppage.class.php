@@ -57,11 +57,5 @@ class AcpPage extends PageCommand {
         $tpl->assign('acp', true);
         $tpl->assign('style', SHC::getStyle());
         $tpl->assign('user', SHC::getVisitor());
-
-        //Admin Uebersicht
-        $tpl->assign('ao_userCount', count(UserEditor::getInstance()->listUsers()));
-        $tpl->assign('ao_version', SHC::VERSION);
-        $tpl->assign('ao_switchableCount', count(SwitchableEditor::getInstance()->listElements()));
-        $tpl->assign('ao_switchServerCount', count(SwitchServerEditor::getInstance()->listSwitchServers()));
     }
 }

@@ -123,6 +123,20 @@ class EventEditor {
     const EVENT_SUNSET = 8192;
 
     /**
+     * Ereignis Datei erstellt
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_CREATE = 16384;
+
+    /**
+     * Ereignis Datei geloescht
+     *
+     * @var Integer
+     */
+    const EVENT_FILE_DELETE = 32768;
+
+    /**
      * nach ID sortieren
      *
      * @var String
@@ -340,7 +354,8 @@ class EventEditor {
             'name' => $name,
             'enabled' => ($enabled == true ? true : false),
             'conditions' => $conditions,
-            'lastExecute' => '2000-01-01 00:00:00'
+            'lastExecute' => '2000-01-01 00:00:00',
+            'switchable' => array()
         );
 
         foreach ($data as $tag => $value) {
@@ -1081,6 +1096,96 @@ class EventEditor {
     }
 
     /**
+     * erstellt ein Datei erstellt Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileCreateEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileCreate', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei erstellt Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileCreateEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * erstellt ein Datei geloescht Event
+     *
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function addFileDeleteEvent($name, $enabled, $file, $interval, array $conditions = array()) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->addEvent('\SHC\Event\Events\FileDelete', $name, $data, $enabled, $conditions);
+    }
+
+    /**
+     * bearbeitet ein Datei geloescht Event
+     *
+     * @param  Integer $id         ID
+     * @param  String  $name       Name
+     * @param  Boolean $enabled    Aktiviert
+     * @param  String  $file       Datei
+     * @param  Integer $interval   Sperrzeit
+     * @param  Array   $conditions Liste der Bedingunen
+     * @return bool
+     */
+    public function editFileDeleteEvent($id, $name = null, $enabled = null, $file = null, $interval = null, array $conditions = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'file' => $file,
+            'interval' => $interval
+        );
+
+        //Speichern
+        return $this->editEvent($id, $name, $data, $enabled, $conditions);
+    }
+
+    /**
      * loascht ein Event
      *
      * @param  Integer $id ID
@@ -1113,10 +1218,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['conditions'][] = $conditionId;
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1137,10 +1242,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['conditions'] = array_diff($event['conditions'], array($conditionId));
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1162,10 +1267,10 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             $event['switchable'][] = array('id' => $switchableId, 'command' => $command);
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1187,7 +1292,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             foreach($event['switchable'] as $index => $switchable) {
 
                 if($switchable['id'] == $switchableId) {
@@ -1197,7 +1302,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }
@@ -1218,7 +1323,7 @@ class EventEditor {
         //pruefen ob Datensatz existiert
         if($db->hExists(self::$tableName, $eventId)) {
 
-            $event = $db->hGet(self::$tableName, $eventId);
+            $event = $db->hGetArray(self::$tableName, $eventId);
             foreach($event['switchable'] as $index => $switchable) {
 
                 if($switchable['id'] == $switchableId) {
@@ -1228,7 +1333,7 @@ class EventEditor {
                 }
             }
 
-            if($db->hSet(self::$tableName, $eventId, $event) == 0) {
+            if($db->hSetArray(self::$tableName, $eventId, $event) == 0) {
 
                 return true;
             }

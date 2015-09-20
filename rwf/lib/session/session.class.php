@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Request\Cookie;
 use RWF\Util\FileUtil;
 use RWF\Util\DataTypeUtil;
+use RWF\Util\JSON;
 use RWF\Util\Message;
 use RWF\Util\String;
 
@@ -43,6 +44,13 @@ class Session {
     protected $newSession = false;
 
     /**
+     * name der HashMap
+     *
+     * @var String
+     */
+    protected static $tableName = 'sessions';
+
+    /**
      * initialisiert die Session
      */
     public function __construct() {
@@ -51,11 +59,8 @@ class Session {
         $request = RWF::getRequest();
         $response = RWF::getResponse();
 
-        //Session Ordner erstellen falls nicht vorhanden
-        if (!is_dir(PATH_RWF_SESSION)) {
-
-            FileUtil::createDirectory(PATH_RWF_SESSION);
-        }
+        //Datenbank
+        $db = RWF::getDatabase();
 
         //Dauerhafte Anmeldung
         $authCodeCookie = $request->getCookie('authCode');
@@ -76,9 +81,9 @@ class Session {
         }
 
         //Session Daten Laden
-        if (file_exists(PATH_RWF_SESSION . $this->sid . '.session.dat')) {
+        if($db->exists(self::$tableName .':'. $this->sid)) {
 
-            $this->sessionVars = unserialize(file_get_contents(PATH_RWF_SESSION . $this->sid . '.session.dat'));
+            $this->sessionVars = $db->getArray(self::$tableName .':'. $this->sid);
         } else {
 
             $this->newSession = true;
@@ -92,25 +97,6 @@ class Session {
             $response->addCookie($sessionCookie);
         }
         $sessionCookie->setTimeByInterval(0, 0, 0, 0, 0, 15, 0);
-
-        //Alte Sessions Loeschen
-        $dir = opendir(PATH_RWF_SESSION);
-        while ($file = readdir($dir)) {
-
-            if (preg_match('#^(\.|\.\.)$#', $file)) {
-
-                continue;
-            }
-
-            $now = new \DateTime('now');
-            $now->sub(new \DateInterval('PT15M'));
-            $time = new \DateTime();
-            $time->setTimestamp(@filemtime(PATH_RWF_SESSION . $file));
-            if ($time < $now) {
-
-                @unlink(PATH_RWF_SESSION . $file);
-            }
-        }
     }
 
     /**
@@ -136,7 +122,11 @@ class Session {
         $sessionCookie->setTimeByInterval(0, 0, 0, 0, 0, 15);
         RWF::getResponse()->addCookie($sessionCookie);
 
-        @rename(PATH_RWF_SESSION . $oldSid . '.session.dat', PATH_RWF_SESSION . $this->sid . '.session.dat');
+        $db = RWF::getDatabase();
+        $data = $db->getArray(self::$tableName .':'. $oldSid);
+        $db->setArray(self::$tableName .':'. $this->sid, $data);
+        $db->expire(self::$tableName .':'. $this->sid, 900);
+        $db->delete(self::$tableName .':'. $oldSid);
 
         return true;
     }
@@ -245,9 +235,9 @@ class Session {
      */
     public function finalize() {
 
-        $data = serialize($this->sessionVars);
-        //Daten Schreiben
-        @file_put_contents(PATH_RWF_SESSION . $this->sid . '.session.dat', $data);
+        $db = RWF::getDatabase();
+        $db->setArray(self::$tableName .':'. $this->sid, $this->sessionVars);
+        $db->expire(self::$tableName .':'. $this->sid, 900);
     }
 
 }
