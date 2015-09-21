@@ -7,6 +7,7 @@ use RWF\Core\RWF;
 use RWF\Date\DateTime;
 use RWF\Request\Commands\PageCommand;
 use RWF\Util\Message;
+use RWF\XML\XmlEditor;
 use SHC\Core\SHC;
 use SHC\SwitchServer\SwitchServerEditor;
 
