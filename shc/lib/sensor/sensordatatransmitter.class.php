@@ -3,7 +3,7 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Date\DateTime;
+use DateTime;
 use RWF\Util\CliUtil;
 use RWF\Util\FileUtil;
 use SHC\Command\CLI\SensorDatatTransmitterCli;
@@ -125,8 +125,8 @@ class SensorDataTransmitter {
     public function transmitSensorData($debug = false) {
 
         //Wartezeit vorbereiten
-        $nextRuntime = DateTime::now();
-        $LEDnextRuntime = DateTime::now();
+        $nextRuntime = new DateTime('now');
+        $LEDnextRuntime = new DateTime('now');
 
         //GPIO Vorbereiten
         $pin = $this->command->getSetting('shc.sensorTransmitter.blinkPin');
@@ -141,7 +141,7 @@ class SensorDataTransmitter {
 
         while (true) {
 
-            if($nextRuntime  <= DateTime::now()) {
+            if($nextRuntime  <= new DateTime('now')) {
 
                 //DS18x20 einlesen und an den Server senden
                 if (file_exists('/sys/bus/w1/devices/')) {
@@ -249,24 +249,24 @@ class SensorDataTransmitter {
                 //Run Flag alle 60 Sekunden setzen
                 if(!isset($time)) {
 
-                    $time = DateTime::now();
+                    $time = new DateTime('now');
                 }
-                if($time <= DateTime::now()) {
+                if($time <= new DateTime('now')) {
 
                     if(!file_exists(PATH_RWF_CACHE . 'sensorDataTransmitter.flag')) {
 
                         FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
                     }
-                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', DateTime::now()->getDatabaseDateTime());
+                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', (new DateTime('now'))->format('d.m.Y H:i:s'));
                     $time->add(new \DateInterval('PT1M'));
                 }
 
                 //Wartezeit setzen
-                $nextRuntime = DateTime::now()->add(new \DateInterval('PT30S'));
+                $nextRuntime = (new DateTime('now'))->add(new \DateInterval('PT30S'));
             }
 
             //Status LED
-            if($pin >= 0 && $LEDnextRuntime <= DateTime::now()) {
+            if($pin >= 0 && $LEDnextRuntime <= new DateTime('now')) {
 
                 if($state === 0) {
 
@@ -279,7 +279,7 @@ class SensorDataTransmitter {
                 }
 
                 //Wartezeit setzen
-                $LEDnextRuntime = DateTime::now()->add(new \DateInterval('PT1S'));
+                $LEDnextRuntime = (new DateTime('now'))->add(new \DateInterval('PT1S'));
             }
         }
     }
