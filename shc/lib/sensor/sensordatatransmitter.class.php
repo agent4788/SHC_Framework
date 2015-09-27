@@ -257,7 +257,7 @@ class SensorDataTransmitter {
 
                         FileUtil::createFile(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', 0777, true);
                     }
-                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', (new DateTime('now'))->format('d.m.Y H:i:s'));
+                    file_put_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag', (new DateTime('now'))->format('Y-m-d H:i:s'));
                     $time->add(new \DateInterval('PT1M'));
                 }
 

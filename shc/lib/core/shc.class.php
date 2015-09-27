@@ -95,7 +95,8 @@ class SHC extends RWF {
 
             //CLI Anfrage
             if((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) ||
-                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
+                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-ds', $argv) || in_array('--daemonstate', $argv)) && file_exists(PATH_RWF . 'db.config.php'))) {
 
                 $this->initDatabase();
                 $this->initCliLanguage();
