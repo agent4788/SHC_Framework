@@ -102,7 +102,8 @@ class SHC extends RWF {
                 $this->initCliLanguage();
                 $this->initSettings();
             } elseif((ACCESS_METHOD_CLI && (in_array('-ss', $argv) || in_array('--switchserver', $argv))) ||
-                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv)))) {
+                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-h', $argv) || in_array('--help', $argv)))) {
 
                 $this->initCliLanguage();
             }
