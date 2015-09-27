@@ -95,13 +95,15 @@ class SHC extends RWF {
 
             //CLI Anfrage
             if((ACCESS_METHOD_CLI && (in_array('-sh', $argv) || in_array('--sheduler', $argv))) ||
-                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv)))) {
+                (ACCESS_METHOD_CLI && (in_array('-sw', $argv) || in_array('--switch', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-ds', $argv) || in_array('--daemonstate', $argv)) && file_exists(PATH_RWF . 'db.config.php'))) {
 
                 $this->initDatabase();
                 $this->initCliLanguage();
                 $this->initSettings();
             } elseif((ACCESS_METHOD_CLI && (in_array('-ss', $argv) || in_array('--switchserver', $argv))) ||
-                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv)))) {
+                (ACCESS_METHOD_CLI && (in_array('-st', $argv) || in_array('--sensortransmitter', $argv))) ||
+                (ACCESS_METHOD_CLI && (in_array('-h', $argv) || in_array('--help', $argv)))) {
 
                 $this->initCliLanguage();
             }

@@ -364,7 +364,7 @@ if(!file_exists('./rwf/db.config.php')) {
     $port_not_change = false;
     while ($n < 5) {
 
-        $port = $cli->input('Redis Port (6379)');
+        $port = $cli->input('Redis Port (6379): ');
 
         //Port nicht aendern
         if (strlen($port) == 0) {
