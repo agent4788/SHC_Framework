@@ -364,7 +364,7 @@ if(!file_exists('./rwf/db.config.php')) {
     $port_not_change = false;
     while ($n < 5) {
 
-        $port = $cli->input('Redis Port (6379)');
+        $port = $cli->input('Redis Port (6379): ');
 
         //Port nicht aendern
         if (strlen($port) == 0) {
@@ -635,7 +635,7 @@ if(!$redis->hExists('apps', 'shc')) {
             'name' => 'Raspberry Pi SmartHome Control',
             'icon' => './shc/inc/img/shc-icon.png',
             'order' => 10,
-            'apLevel' => 12
+            'apLevel' => 13
         )));
 
         //App erfolgreich installiert
@@ -691,7 +691,7 @@ if(!$redis->hExists('apps', 'pcc')) {
             'name' => 'Raspberry Pi Control Center',
             'icon' => './pcc/inc/img/pcc-icon.png',
             'order' => 20,
-            'apLevel' => 12
+            'apLevel' => 13
         )));
 
         //App erfolgreich installiert
