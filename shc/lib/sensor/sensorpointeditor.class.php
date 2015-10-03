@@ -990,7 +990,7 @@ class SensorPointEditor {
 
             if($this->getSensorById($sId) !== null) {
 
-                $sensorData = $db->hGet(self::$tableName . ':sensors', $sId);
+                $sensorData = $db->hGetArray(self::$tableName . ':sensors', $sId);
                 if(isset($sensorData['id']) && (int) $sensorData['id'] == $sId) {
 
                     foreach($sOrder as $roomId => $roomOrder) {
