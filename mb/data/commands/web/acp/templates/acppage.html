@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='mb.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="mb-content">
+            {contentbox name="acpindex.box.acpMenue" id='mb-view-acp-contentBox'}
+            <div class="mb-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.main'}</h2>
+                <hr/>
+                <div class="mb-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.users' icon='mb-view-acp-menu-usermanagement' link='index.php?app=mb&page=listusers' premission='mb.acp.userManagement'}
+                    {acpmenuitem text='acpindex.menu.settings' icon='mb-view-acp-menu-settings' link='index.php?app=mb&page=settingsform' premission='mb.acp.settings'}
+                    {acpmenuitem text='acpindex.menu.database' icon='mb-view-acp-menu-database' link='index.php?app=mb&page=database' premission='mb.acp.databaseManagement'}
+                    {acpmenuitem text='acpindex.menu.backup' icon='mb-view-acp-menu-backup' link='index.php?app=mb&page=listbackups' premission='mb.acp.backupsManagement'}
+                </div>
+            </div>
+            <div class="mb-view-acp-menuGroup">
+                <h2>{lang var='acpindex.menu.group.other'}</h2>
+                <hr/>
+                <div class="mb-view-acp-menuGroup-body">
+                    {acpmenuitem text='acpindex.menu.info' icon='mb-view-acp-menu-info' link='index.php?app=mb&page=info' premission='mb.acp.menu'}
+                </div>
+            </div>
+            {/contentbox}
+        </div>
+    </body>
+</html>

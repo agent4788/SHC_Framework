@@ -1,0 +1,20 @@
+/* ACP Menue */
+span#mb-view-acp-menu-usermanagement {
+    background-image: url(../../../img/acpmenue/usermanagement.png);
+}
+
+span#mb-view-acp-menu-settings {
+    background-image: url(../../../img/acpmenue/settings.png);
+}
+
+span#mb-view-acp-menu-backup {
+    background-image: url(../../../img/acpmenue/backup.png);
+}
+
+span#mb-view-acp-menu-database {
+    background-image: url(../../../img/acpmenue/database.png);
+}
+
+span#mb-view-acp-menu-info {
+    background-image: url(../../../img/acpmenue/info.png);
+}
