@@ -429,7 +429,7 @@ class UserEditor {
             /** @var $group \RWF\User\UserGroup */
             if($group !== null) {
 
-                $groups[] = $group->getId();
+                $groups[] = (int) $group;
             }
         }
 
@@ -513,7 +513,7 @@ class UserEditor {
                     /** @var $group \RWF\User\UserGroup */
                     if($group !== null) {
 
-                        $groups[] = $group->getId();
+                        $groups[] = (int) $group;
                     }
                 }
                 $user['userGroups'] = $groups;

@@ -314,10 +314,10 @@ class ViewHelperEditor {
 
             if(isset($this->boxes[$boxId])) {
 
-                $boxData = $db->hGet(self::$tableName, $boxId);
+                $boxData = $db->hGetArray(self::$tableName, $boxId);
                 $boxData['orderId'] = $orderId;
 
-                if($db->hSet(self::$tableName, $boxId, $boxData) != 0) {
+                if($db->hSetArray(self::$tableName, $boxId, $boxData) != 0) {
 
                     return false;
                 }

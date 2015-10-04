@@ -4,8 +4,8 @@ namespace SHC\Command\CLI;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Date\DateTime;
 use RWF\Request\Commands\CliCommand;
+use RWF\XML\XmlEditor;
 
 /**
  * Dienste Status
@@ -66,12 +66,12 @@ class DaemonStateCli extends CliCommand {
 
         //lokaler Schaltserver
         $switchServerState = 0;
-        if(RWF::getSetting('shc.switchServer.active')) {
+        if(file_exists(PATH_RWF . 'db.config.php') && RWF::getSetting('shc.switchServer.active')) {
             $data = trim(@file_get_contents(PATH_RWF_CACHE . 'switchServer.flag'));
             if ($data != '') {
 
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT1H'));
+                $date = \DateTime::createFromFormat('Y-m-d H:i:s', $data);
+                $compareDate = (new \DateTime('now'))->sub(new \DateInterval('PT1H'));
                 if ($date >= $compareDate) {
 
                     $switchServerState = 1;
@@ -84,12 +84,12 @@ class DaemonStateCli extends CliCommand {
 
         //Sheduler
         $shedulerState = 0;
-        if(RWF::getSetting('shc.shedulerDaemon.active')) {
+        if((file_exists(PATH_RWF . 'db.config.php') && RWF::getSetting('shc.shedulerDaemon.active')) || !file_exists(PATH_RWF . 'db.config.php')) {
             $data = trim(@file_get_contents(PATH_RWF_CACHE . 'shedulerRun.flag'));
             if ($data != '') {
 
-                $date = DateTime::createFromDatabaseDateTime($data);
-                $compareDate = DateTime::now()->sub(new \DateInterval('PT3M'));
+                $date = \DateTime::createFromFormat('Y-m-d H:i:s', $data);
+                $compareDate = (new \DateTime('now'))->sub(new \DateInterval('PT3M'));
                 if ($date >= $compareDate) {
 
                     $shedulerState = 1;
@@ -101,7 +101,7 @@ class DaemonStateCli extends CliCommand {
         }
 
         //Sensordata Transmitter
-        $sensorDataTransmitterState = 3;
+        $sensorDataTransmitterState = 0;
         if(file_exists(PATH_SHC_STORAGE .'sensortransmitter.xml')) {
 
             $xml = XmlEditor::createFromFile(PATH_SHC_STORAGE .'sensortransmitter.xml');
@@ -115,8 +115,8 @@ class DaemonStateCli extends CliCommand {
                         $data = trim(@file_get_contents(PATH_RWF_CACHE . 'sensorDataTransmitter.flag'));
                         if ($data != '') {
 
-                            $date = DateTime::createFromDatabaseDateTime($data);
-                            $compareDate = DateTime::now()->sub(new \DateInterval('PT3M'));
+                            $date = \DateTime::createFromFormat('Y-m-d H:i:s', $data);
+                            $compareDate = (new \DateTime('now'))->sub(new \DateInterval('PT3M'));
                             if ($date >= $compareDate) {
 
                                 $sensorDataTransmitterState = 1;
@@ -148,17 +148,20 @@ class DaemonStateCli extends CliCommand {
             $r->writeLnColored('deaktiviert', 'yellow');
         }
 
-        //Sheduler
-        $r->write('Scheduler: ');
-        if($shedulerState === 0) {
+        //Sheduler (nur bei Hauptinstallation anzeigen)
+        if(file_exists(PATH_RWF . 'db.config.php')) {
 
-            $r->writeLnColored('läuft nicht', 'red');
-        } elseif($shedulerState === 1) {
+            $r->write('Scheduler: ');
+            if($shedulerState === 0) {
 
-            $r->writeLnColored('läuft', 'green');
-        } elseif($shedulerState === 2) {
+                $r->writeLnColored('läuft nicht', 'red');
+            } elseif($shedulerState === 1) {
 
-            $r->writeLnColored('deaktiviert', 'yellow');
+                $r->writeLnColored('läuft', 'green');
+            } elseif($shedulerState === 2) {
+
+                $r->writeLnColored('deaktiviert', 'yellow');
+            }
         }
 
         //Sensor Transmitter

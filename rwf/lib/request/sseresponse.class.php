@@ -216,7 +216,7 @@ class SSEResponse implements Response {
      *
      * @param int $interval Warteizeit in Milisekunden
      */
-    public function InaddRetry($interval) {
+    public function addRetry($interval) {
 
         $this->writeLn('retry: ' . str_replace(array("\n", "\r"), '', $interval));
     }
