@@ -92,6 +92,17 @@ class SettingsForm extends TabbedHtmlForm {
         $timeFormat->requiredField(true);
         $this->addFormElementToTab('dateTime', $timeFormat);
 
+        //Timeline
+        $useTimeline = new Select('rwf_date_useTimeline');
+        $useTimeline->setValues(array(
+            1 => array(RWF::getLanguage()->get('acp.settings.tabs.timeline.true'), (RWF::getSetting('rwf.date.useTimeline') == 1 ? 1 : 0)),
+            0 => array(RWF::getLanguage()->get('acp.settings.tabs.timeline.false'), (RWF::getSetting('rwf.date.useTimeline') == 0 ? 1 : 0))
+        ));
+        $useTimeline->setTitle(RWF::getLanguage()->get('acp.settings.form.useTimeline'));
+        $useTimeline->setDescription(RWF::getLanguage()->get('acp.settings.form.useTimeline.decription'));
+        $useTimeline->requiredField(true);
+        $this->addFormElementToTab('dateTime', $useTimeline);
+
         //Offset Sunenaufgang
         $sunriseOffset = new IntegerInputField('rwf_date_sunriseOffset',RWF::getSetting('rwf.date.sunriseOffset'), array('min' => -90, 'max' => 90));
         $sunriseOffset->setTitle(RWF::getLanguage()->get('acp.settings.form.sunriseOffset'));
