@@ -102,6 +102,10 @@ class MB extends RWF {
 
         //Admin Rechte
         $userEditor->addPermission('mb.acp.menue', false);
+        $userEditor->addPermission('mb.acp.userManagement', false);
+        $userEditor->addPermission('mb.acp.settings', false);
+        $userEditor->addPermission('mb.acp.databaseManagement', false);
+        $userEditor->addPermission('mb.acp.backupsManagement', false);
     }
 
     /**
