@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{setting name='mb.title' encodeHtml=1} - {lang var='acpindex.text.acp'}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {$style->fetchHtmlHeaderTags()}
+    </head>
+    <body>
+        {include file='headline.html'}
+        <div id="mb-content">
+            {contentbox name="acp.acpinfo.title" id='mb-view-acp-contentBox'}
+            <div class="mb-view-content">
+                {contentbox name='acp.acpinfo.box.mbVersion'}
+                <table class="mb-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{lang var='acp.acpinfo.box.mbVersion.rwf'}</td>
+                        <td style="width: 50%;">{#$rwfVersion}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.mbVersion.mb'}</td>
+                        <td>{#$mbVersion}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.mbVersion.size'}</td>
+                        <td>{$size}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.version'}
+                <table class="mb-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{lang var='acp.acpinfo.box.version.php'}</td>
+                        <td style="width: 50%;">{#$php}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQuery'}</td>
+                        <td><span id="jqueryVersion"></span></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQueryUi'}</td>
+                        <td><span id="jqueryUiVersion"></span></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jQueryCookie'}</td>
+                        <td>1.4.1</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.version.jTable'}</td>
+                        <td>2.4.0</td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.writePremissions'}
+                <table class="mb-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%;">{#$cache}</td>
+                        <td style="width: 50%;">
+                        <span class="{if $writeCache == true}green{else}red{/if}">
+                            {if $writeCache == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$rwfLog}</td>
+                        <td>
+                        <span class="{if $writeRwfLog == true}green{else}red{/if}">
+                            {if $writeRwfLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$rwfStorage}</td>
+                        <td>
+                        <span class="{if $writeRwfStorage == true}green{else}red{/if}">
+                            {if $writeRwfStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$mbLog}</td>
+                        <td>
+                        <span class="{if $writeMbLog == true}green{else}red{/if}">
+                            {if $writeMbLog == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{#$mbStorage}</td>
+                        <td>
+                        <span class="{if $writeMbStorage == true}green{else}red{/if}">
+                            {if $writeMbStorage == true}{lang var='acp.acpinfo.box.writePremissions.allowed'}{else}{lang var='acp.acpinfo.box.writePremissions.denied'}{/if}
+                        </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+                {contentbox name='acp.acpinfo.box.credits'}
+                <table class="mb-view-contentTable">
+                    <tbody>
+                    <tr>
+                        <td width="50%">{lang var='acp.acpinfo.box.credits.engineer'}</td>
+                        <td width="50%">Oliver Kleditzsch</td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.credits.projectPage'}</td>
+                        <td><a href="http://agent4788.github.io/SHC_Framework/">{lang var='acp.acpinfo.box.credits.page'}</a></td>
+                    </tr>
+                    <tr>
+                        <td>{lang var='acp.acpinfo.box.credits.licence'}</td>
+                        <td><a href="http://opensource.org/licenses/gpl-license.php">GNU Public License</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                {/contentbox}
+            </div>
+            <div class="mb-view-buttons">
+                <div class="mb-view-buttonSet">
+                    <a href="index.php?app=mb&page=acp">{lang var='global.button.back'}</a>
+                </div>
+            </div>
+            {/contentbox}
+            <script type="text/javascript">
+                $(function() {
+
+                    $('.mb-view-buttonSet').buttonset();
+                    $('#jqueryVersion').text($.fn.jquery);
+                    $('#jqueryUiVersion').text(jQuery.ui.version);
+                });
+            </script>
+        </div>
+    </body>
+</html>
