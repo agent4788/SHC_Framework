@@ -6,6 +6,7 @@ namespace SHC\Command\All;
 use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
+use RWF\User\UserEditor;
 use RWF\Util\DataTypeUtil;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
@@ -46,8 +47,7 @@ class RoomElementsJsonAjax extends AjaxCommand
     /**
      * Daten verarbeiten
      */
-    public function processData()
-    {
+    public function processData() {
 
         //Raum ID einlesen
         $roomId = RWF::getRequest()->getParam('id', Request::GET, DataTypeUtil::INTEGER);
@@ -58,14 +58,28 @@ class RoomElementsJsonAjax extends AjaxCommand
         //Elemente laden
         $roomElements = ViewHelperEditor::getInstance()->getViewHelperForRoom($roomId)->listElementsOrdered();
 
+        //Benutzeranmeldung
+        $rwfUser = UserEditor::getInstance()->getGuest();
+        if(RWF::getRequest()->issetParam('user', Request::GET) && RWF::getRequest()->issetParam('password', Request::GET)) {
+
+            $userName = RWF::getRequest()->getParam('user', Request::GET, DataTypeUtil::PLAIN);
+            $password = RWF::getRequest()->getParam('password', Request::GET, DataTypeUtil::PLAIN);
+
+            $user = UserEditor::getInstance()->getUserByName($userName);
+            if($user != null && $user->checkPasswordHash($password)) {
+
+                $rwfUser = $user;
+            }
+        }
+
         //alle Elemente durchlaufen
         foreach ($roomElements as $element) {
 
             //TODO Benutzer über URL Parameter erkennen
-            if ($element instanceof Switchable && $element->isEnabled() && $element->isVisible() && $element->isUserEntitled(RWF::getVisitor())) {
+            if ($element instanceof Switchable && $element->isEnabled() && $element->isVisible() && $element->isUserEntitled($rwfUser)) {
 
                 $data[] = $this->serializeSwitchable($element);
-            } elseif ($element instanceof Readable && $element->isEnabled() && $element->isVisible() && $element->isUserEntitled(RWF::getVisitor())) {
+            } elseif ($element instanceof Readable && $element->isEnabled() && $element->isVisible() && $element->isUserEntitled($rwfUser)) {
 
                 $data[] = $this->serializeReadable($element);
             } elseif ($element instanceof Sensor && $element->isVisible()) {
@@ -80,10 +94,10 @@ class RoomElementsJsonAjax extends AjaxCommand
                 $boxElements = $element->listElementsOrdered();
                 foreach($boxElements as $boxElement) {
 
-                    if ($boxElement instanceof Switchable && $boxElement->isEnabled() && $boxElement->isVisible() && $boxElement->isUserEntitled(RWF::getVisitor())) {
+                    if ($boxElement instanceof Switchable && $boxElement->isEnabled() && $boxElement->isVisible() && $boxElement->isUserEntitled($rwfUser)) {
 
                         $tmp['elements'][] = $this->serializeSwitchable($boxElement);
-                    } elseif ($boxElement instanceof Readable && $boxElement->isEnabled() && $boxElement->isVisible() && $boxElement->isUserEntitled(RWF::getVisitor())) {
+                    } elseif ($boxElement instanceof Readable && $boxElement->isEnabled() && $boxElement->isVisible() && $boxElement->isUserEntitled($rwfUser)) {
 
                         $tmp['elements'][] = $this->serializeReadable($boxElement);
                     } elseif ($boxElement instanceof Sensor && $boxElement->isVisible()) {
