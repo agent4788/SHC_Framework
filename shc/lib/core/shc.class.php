@@ -222,6 +222,13 @@ class SHC extends RWF {
 
         $mobilDetect = new \Mobile_Detect();
 
+        //pruefen ob der Zugriff von der Android App kommt
+        if($mobilDetect->getUserAgent() == "SHC Android App") {
+
+            //nicht umleiten (unabhaenig von den Einstellungen)
+            return;
+        }
+
         //Umleitung fuer PC/Tablet/Smartphone
 
         /**
