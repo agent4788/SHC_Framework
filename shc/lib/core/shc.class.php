@@ -163,6 +163,7 @@ class SHC extends RWF {
         $userEditor->addPermission('shc.acp.settings', false);
         $userEditor->addPermission('shc.acp.databaseManagement', false);
         $userEditor->addPermission('shc.acp.backupsManagement', false);
+        $userEditor->addPermission('shc.acp.roomManagement', false);
         $userEditor->addPermission('shc.acp.switchableManagement', false);
         $userEditor->addPermission('shc.acp.sensorpointsManagement', false);
         $userEditor->addPermission('shc.acp.usersathomeManagement', false);
