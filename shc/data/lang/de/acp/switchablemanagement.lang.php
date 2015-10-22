@@ -41,6 +41,7 @@ $l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Raumlose Elemen
 $l['acp.switchableManagement.button.toggleCommand'] = 'Befehl umkehren';
 $l['acp.switchableManagement.button.deleteFormContainer'] = 'entfernen';
 $l['acp.switchableManagement.button.assignment'] = 'Belegung';
+$l['acp.switchableManagement.button.assignment.switchserverDeleted'] = 'gelöscht';
 $l['acp.switchableManagement.button.addElement'] = 'Element erstellen';
 $l['acp.switchableManagement.button.addBox'] = 'Box erstellen';
 $l['acp.switchableManagement.button.next'] = 'weiter';
