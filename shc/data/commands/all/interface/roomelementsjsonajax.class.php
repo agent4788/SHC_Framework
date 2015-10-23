@@ -75,7 +75,6 @@ class RoomElementsJsonAjax extends AjaxCommand
         //alle Elemente durchlaufen
         foreach ($roomElements as $element) {
 
-            //TODO Benutzer über URL Parameter erkennen
             if ($element instanceof Switchable && $element->isEnabled() && $element->isVisible() && $element->isUserEntitled($rwfUser)) {
 
                 $data[] = $this->serializeSwitchable($element);
