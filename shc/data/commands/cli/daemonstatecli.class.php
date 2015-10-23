@@ -66,6 +66,37 @@ class DaemonStateCli extends CliCommand {
 
         //lokaler Schaltserver
         $switchServerState = 0;
+        if(file_exists(PATH_SHC_STORAGE .'switchserversettings.xml')) {
+
+            $xml = XmlEditor::createFromFile(PATH_SHC_STORAGE .'switchserversettings.xml');
+            if($xml != null && isset($xml->setting)) {
+
+                foreach($xml->setting as $setting) {
+
+                    $attr = $setting->attributes();
+                    if((string) $attr->name == 'shc.switchServer.active' && $attr->value == 'true') {
+
+                        $data = trim(@file_get_contents(PATH_RWF_CACHE . 'switchServer.flag'));
+                        if ($data != '') {
+
+                            $date = \DateTime::createFromFormat('Y-m-d H:i:s', $data);
+                            $compareDate = (new \DateTime('now'))->sub(new \DateInterval('PT3M'));
+                            if ($date >= $compareDate) {
+
+                                $switchServerState = 1;
+                            }
+                        }
+                        break;
+                    } elseif((string) $attr->name == 'shc.switchServer.active') {
+
+                        $switchServerState = 2;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /*
         if(file_exists(PATH_RWF . 'db.config.php') && RWF::getSetting('shc.switchServer.active')) {
             $data = trim(@file_get_contents(PATH_RWF_CACHE . 'switchServer.flag'));
             if ($data != '') {
@@ -80,7 +111,7 @@ class DaemonStateCli extends CliCommand {
         } else {
 
             $switchServerState = 2;
-        }
+        }*/
 
         //Sheduler
         $shedulerState = 0;

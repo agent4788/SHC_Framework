@@ -690,7 +690,6 @@ if (!$redis->select($valid_db)) {
 }
 
 //Optionen setzen
-$redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
 $redis->setOption(\Redis::OPT_PREFIX, 'rwf:');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
