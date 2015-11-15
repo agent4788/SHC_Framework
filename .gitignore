@@ -1,6 +1,5 @@
+/rwf/db.config.json
 .idea/
 rwf/data/storage/*.xml
 shc/data/storage/*.xml
-mb/app.json
 errors.txt
-rwf/db.config.php
