@@ -37,7 +37,7 @@ class RpiGpioOutputForm extends DefaultHtmlForm {
         RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Name des GPIO
-        $name = new TextField('name', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
+        $name = new TextField('name', ($rpiGpioOutput instanceof RpiGpioOutput ? $rpiGpioOutput->getName() : ''), array('minlength' => 3, 'maxlength' => 40));
         $name->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.name'));
         $name->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addGpioOutput.name.description'));
         $name->requiredField(true);
