@@ -158,72 +158,72 @@ $l['acp.switchableManagement.prompt.error.notSwitchable'] = 'The display of the 
 //Formularelemente
 //Form elements
 
-//
+//$l['acp.switchableManagement.form.addActivity.name'] = 'Name';
 $l['acp.switchableManagement.form.addActivity.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addActivity.name.description'] = 'Name der Aktivität';
-//
+//$l['acp.switchableManagement.form.addActivity.name.description'] = 'Name der Aktivität';
+$l['acp.switchableManagement.form.addActivity.name.description'] = 'Name of activity';
+//$l['acp.switchableManagement.form.addActivity.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addActivity.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addActivity.icon.description'] = 'Icon der Aktivität';
-//
+//$l['acp.switchableManagement.form.addActivity.icon.description'] = 'Icon der Aktivität';
+$l['acp.switchableManagement.form.addActivity.icon.description'] = 'Icon of activity';
+//$l['acp.switchableManagement.form.addActivity.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addActivity.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addActivity.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
-$l['acp.switchableManagement.form.addActivity.room'] = 'Raum';
-//
+//$l['acp.switchableManagement.form.addActivity.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addActivity.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addActivity.room'] = 'Raum';
+$l['acp.switchableManagement.form.addActivity.room'] = 'Room';
+//$l['acp.switchableManagement.form.addActivity.room.description'] = 'Raum dem die Aktivität zugeordnet ist';
 $l['acp.switchableManagement.form.addActivity.room.description'] = 'Raum dem die Aktivität zugeordnet ist';
-//
-$l['acp.switchableManagement.form.addActivity.switchPoints'] = 'Schaltpunkte';
-//
-$l['acp.switchableManagement.form.addActivity.switchPoints.description'] = 'Schaltpunkte der Aktivität';
-//
-$l['acp.switchableManagement.form.addActivity.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addActivity.active.description'] = 'Aktiviert/Deaktiviert die Aktivität';
-//
-$l['acp.switchableManagement.form.addActivity.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addActivity.visibility.description'] = 'Sichtbarkeit der Aktivität';
-//
-$l['acp.switchableManagement.form.addActivity.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addActivity.allowedUsers.description'] = 'legt fest welche Benutzer die Aktivität verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addActivity.switchPoints'] = 'Schaltpunkte';
+$l['acp.switchableManagement.form.addActivity.switchPoints'] = 'Switchpoints';
+//$l['acp.switchableManagement.form.addActivity.switchPoints.description'] = 'Schaltpunkte der Aktivität';
+$l['acp.switchableManagement.form.addActivity.switchPoints.description'] = 'Switchpoints of activity';
+//$l['acp.switchableManagement.form.addActivity.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addActivity.active'] = 'Activ';
+//$l['acp.switchableManagement.form.addActivity.active.description'] = 'Aktiviert/Deaktiviert die Aktivität';
+$l['acp.switchableManagement.form.addActivity.active.description'] = 'Enables / Disables the activity';
+//$l['acp.switchableManagement.form.addActivity.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addActivity.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addActivity.visibility.description'] = 'Sichtbarkeit der Aktivität';
+$l['acp.switchableManagement.form.addActivity.visibility.description'] = 'Visibility of activity';
+//$l['acp.switchableManagement.form.addActivity.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addActivity.allowedUsers'] = 'permitted user';
+//$l['acp.switchableManagement.form.addActivity.allowedUsers.description'] = 'legt fest welche Benutzer die Aktivität verwenden dürfen';
+$l['acp.switchableManagement.form.addActivity.allowedUsers.description'] = 'specifies which users may use the activity';
+//$l['acp.switchableManagement.form.addCountdown.name'] = 'Name';
 $l['acp.switchableManagement.form.addCountdown.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addCountdown.name.description'] = 'Name des Countdowns';
-//
+//$l['acp.switchableManagement.form.addCountdown.name.description'] = 'Name des Countdowns';
+$l['acp.switchableManagement.form.addCountdown.name.description'] = 'Name of Countdown';
+//$l['acp.switchableManagement.form.addCountdown.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addCountdown.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addCountdown.icon.description'] = 'Icon des Countdowns';
-//
+//$l['acp.switchableManagement.form.addCountdown.icon.description'] = 'Icon des Countdowns';
+$l['acp.switchableManagement.form.addCountdown.icon.description'] = 'Icon of Countdown';
+//$l['acp.switchableManagement.form.addCountdown.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addCountdown.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addCountdown.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
-$l['acp.switchableManagement.form.addCountdown.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addCountdown.room.description'] = 'Raum dem der Countdown zugeordnet ist';
-//
-$l['acp.switchableManagement.form.addCountdown.interval'] = 'Intervall';
-//
-$l['acp.switchableManagement.form.addCountdown.interval.description'] = 'Wartezeit in Sekunden bis zum automatischen umschalten der Befehle';
-//
-$l['acp.switchableManagement.form.addCountdown.switchPoints'] = 'Schaltpunkte';
-//
-$l['acp.switchableManagement.form.addCountdown.switchPoints.description'] = 'Schaltpunkte des Countdowns';
-//
-$l['acp.switchableManagement.form.addCountdown.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addCountdown.active.description'] = 'Aktiviert/Deaktiviert den Countdown';
-//
-$l['acp.switchableManagement.form.addCountdown.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addCountdown.visibility.description'] = 'Sichtbarkeit des Countdowns';
-//
-$l['acp.switchableManagement.form.addCountdown.allowedUsers'] = 'erlaubte Benutzer';
+//$l['acp.switchableManagement.form.addCountdown.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addCountdown.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addCountdown.room'] = 'Raum';
+$l['acp.switchableManagement.form.addCountdown.room'] = 'Room';
+//$l['acp.switchableManagement.form.addCountdown.room.description'] = 'Raum dem der Countdown zugeordnet ist';
+$l['acp.switchableManagement.form.addCountdown.room.description'] = 'Room where the countdown is assigned';
+//$l['acp.switchableManagement.form.addCountdown.interval'] = 'Intervall';
+$l['acp.switchableManagement.form.addCountdown.interval'] = 'Interval';
+//$l['acp.switchableManagement.form.addCountdown.interval.description'] = 'Wartezeit in Sekunden bis zum automatischen umschalten der Befehle';
+$l['acp.switchableManagement.form.addCountdown.interval.description'] = 'Waiting time in seconds until automatic switch commands';
+//$l['acp.switchableManagement.form.addCountdown.switchPoints'] = 'Schaltpunkte';
+$l['acp.switchableManagement.form.addCountdown.switchPoints'] = 'Switchpoints';
+//$l['acp.switchableManagement.form.addCountdown.switchPoints.description'] = 'Schaltpunkte des Countdowns';
+$l['acp.switchableManagement.form.addCountdown.switchPoints.description'] = 'Switchpoint of Countdown';
+//$l['acp.switchableManagement.form.addCountdown.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addCountdown.active'] = 'Activ';
+//$l['acp.switchableManagement.form.addCountdown.active.description'] = 'Aktiviert/Deaktiviert den Countdown';
+$l['acp.switchableManagement.form.addCountdown.active.description'] = 'Enable/Disable the Countdown';
+//$l['acp.switchableManagement.form.addCountdown.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addCountdown.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addCountdown.visibility.description'] = 'Sichtbarkeit des Countdowns';
+$l['acp.switchableManagement.form.addCountdown.visibility.description'] = 'Visibility of Countdowns';
+//$l['acp.switchableManagement.form.addCountdown.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addCountdown.allowedUsers'] = 'permitted users';
 //
 $l['acp.switchableManagement.form.addCountdown.allowedUsers.description'] = 'legt fest welche Benutzer den Countdown verwenden dürfen';
 //
