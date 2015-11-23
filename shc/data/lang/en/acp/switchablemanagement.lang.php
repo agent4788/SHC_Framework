@@ -48,112 +48,112 @@ $l['acp.switchableManagement.sensors'] = 'Sensors';
 
 //$l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
-//$l['acp.switchableManagement.elementTable.table.head.rooms'] = 'Rooms';
-$l['acp.switchableManagement.elementTable.table.head.rooms'] = 'Räume';
-//
-$l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
-//
-$l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
-//
-$l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Gerätecode/ID';
-//
+//$l['acp.switchableManagement.elementTable.table.head.rooms'] = 'Räume';
+$l['acp.switchableManagement.elementTable.table.head.rooms'] = 'Rooms';
+//$l['acp.switchableManagement.elementTable.table.head.command'] = 'Befehl';
+$l['acp.switchableManagement.elementTable.table.head.command'] = 'Command';
+//$l['acp.switchableManagement.elementTable.table.head.type'] = 'Typ';
+$l['acp.switchableManagement.elementTable.table.head.type'] = 'Type';
+//$l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Gerätecode/ID';
+$l['acp.switchableManagement.elementTable.table.head.devCode'] = 'Device code/ID';
+//$l['acp.switchableManagement.elementTable.table.head.pin'] = 'Pin';
 $l['acp.switchableManagement.elementTable.table.head.pin'] = 'Pin';
-//
-$l['acp.switchableManagement.elementTable.table.head.protocol'] = 'Protokoll';
+//$l['acp.switchableManagement.elementTable.table.head.protocol'] = 'Protokoll';
+$l['acp.switchableManagement.elementTable.table.head.protocol'] = 'Protocol';
 
 //Buttons
 //Knopfe
 
-//
-$l['acp.switchableManagement.button.listBoxes'] = 'Boxen verwalten';
-//
-$l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Raumlose Elemente';
-//
-$l['acp.switchableManagement.button.toggleCommand'] = 'Befehl umkehren';
-//
-$l['acp.switchableManagement.button.deleteFormContainer'] = 'entfernen';
-//
-$l['acp.switchableManagement.button.assignment'] = 'Belegung';
-//
-$l['acp.switchableManagement.button.addElement'] = 'Element erstellen';
-//
-$l['acp.switchableManagement.button.addBox'] = 'Box erstellen';
-//
-$l['acp.switchableManagement.button.next'] = 'weiter';
-//
-$l['acp.switchableManagement.button.addToBox'] = 'Element hinzufügen';
-//
-$l['acp.switchableManagement.button.addToSwitchableContainer'] = 'hinzufügen';
+//$l['acp.switchableManagement.button.listBoxes'] = 'Boxen verwalten';
+$l['acp.switchableManagement.button.listBoxes'] = 'Manage Boxes';
+//$l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Raumlose Elemente';
+$l['acp.switchableManagement.button.listElementsWithoutRoom'] = 'Spaceless elements';
+//$l['acp.switchableManagement.button.toggleCommand'] = 'Befehl umkehren';
+$l['acp.switchableManagement.button.toggleCommand'] = 'Reverse command';
+//$l['acp.switchableManagement.button.deleteFormContainer'] = 'entfernen';
+$l['acp.switchableManagement.button.deleteFormContainer'] = 'Delete';
+//$l['acp.switchableManagement.button.assignment'] = 'Belegung';
+$l['acp.switchableManagement.button.assignment'] = 'Configuration';
+//$l['acp.switchableManagement.button.addElement'] = 'Element erstellen';
+$l['acp.switchableManagement.button.addElement'] = 'Create item';
+//$l['acp.switchableManagement.button.addBox'] = 'Box erstellen';
+$l['acp.switchableManagement.button.addBox'] = 'Create box';
+//$l['acp.switchableManagement.button.next'] = 'weiter';
+$l['acp.switchableManagement.button.next'] = 'next';
+//$l['acp.switchableManagement.button.addToBox'] = 'Element hinzufügen';
+$l['acp.switchableManagement.button.addToBox'] = 'Add item';
+//$l['acp.switchableManagement.button.addToSwitchableContainer'] = 'hinzufügen';
+$l['acp.switchableManagement.button.addToSwitchableContainer'] = 'Add';
 
 //Typen
 //Types
 
-//
-$l['acp.switchableManagement.element.activity'] = 'Aktivität';
-//
+//$l['acp.switchableManagement.element.activity'] = 'Aktivität';
+$l['acp.switchableManagement.element.activity'] = 'Activity';
+//$l['acp.switchableManagement.element.countdown'] = 'Countdown';
 $l['acp.switchableManagement.element.countdown'] = 'Countdown';
-//
-$l['acp.switchableManagement.element.radiosocket'] = 'Funksteckdose';
-//
-$l['acp.switchableManagement.element.rpiGpioOutput'] = 'Ausgang';
-//
+//$l['acp.switchableManagement.element.radiosocket'] = 'Funksteckdose';
+$l['acp.switchableManagement.element.radiosocket'] = 'Radio controlled sockets';
+//$l['acp.switchableManagement.element.rpiGpioOutput'] = 'Ausgang';
+$l['acp.switchableManagement.element.rpiGpioOutput'] = 'Output';
+//$l['acp.switchableManagement.element.wakeOnLan'] = 'Wake On Lan';
 $l['acp.switchableManagement.element.wakeOnLan'] = 'Wake On Lan';
-//
-$l['acp.switchableManagement.element.rpiGpioInput'] = 'Eingang';
-//
-$l['acp.switchableManagement.element.radioScketDimmer'] = 'Funkdimmer';
-//
-$l['acp.switchableManagement.element.reboot'] = 'Neustart';
-//
-$l['acp.switchableManagement.element.shutdown'] = 'Herunterfahren';
-//
-$l['acp.switchableManagement.element.remoteReboot'] = 'externes Gerät Neustarten';
-//
-$l['acp.switchableManagement.element.remoteShutdown'] = 'externes Gerät Herunterfahren';
-//
+//$l['acp.switchableManagement.element.rpiGpioInput'] = 'Eingang';
+$l['acp.switchableManagement.element.rpiGpioInput'] = 'Input';
+//$l['acp.switchableManagement.element.radioScketDimmer'] = 'Funkdimmer';
+$l['acp.switchableManagement.element.radioScketDimmer'] = 'Remote dimmer';
+//$l['acp.switchableManagement.element.reboot'] = 'Neustart';
+$l['acp.switchableManagement.element.reboot'] = 'Reboot';
+//$l['acp.switchableManagement.element.shutdown'] = 'Herunterfahren';
+$l['acp.switchableManagement.element.shutdown'] = 'Shutdown';
+//$l['acp.switchableManagement.element.remoteReboot'] = 'externes Gerät Neustarten';
+$l['acp.switchableManagement.element.remoteReboot'] = 'Reboot external device';
+//$l['acp.switchableManagement.element.remoteShutdown'] = 'externes Gerät herunterfahren';
+$l['acp.switchableManagement.element.remoteShutdown'] = 'Shutdown external device';
+//$l['acp.switchableManagement.element.script'] = 'Script';
 $l['acp.switchableManagement.element.script'] = 'Script';
-//
-$l['acp.switchableManagement.element.avmSocket'] = 'AVM Steckdose';
-//
+//$l['acp.switchableManagement.element.avmSocket'] = 'AVM Steckdose';
+$l['acp.switchableManagement.element.avmSocket'] = 'AVM Socket';
+//$l['acp.switchableManagement.element.fritzBox'] = 'Fritz!Box';
 $l['acp.switchableManagement.element.fritzBox'] = 'Fritz!Box';
-//
+//$l['acp.switchableManagement.element.BMP'] = 'BMP 085/150';
 $l['acp.switchableManagement.element.BMP'] = 'BMP 085/150';
-//
+//$l['acp.switchableManagement.element.DHT'] = 'DHT 11/22';
 $l['acp.switchableManagement.element.DHT'] = 'DHT 11/22';
-//
+//$l['acp.switchableManagement.element.DS18x20'] = 'DS18x20';
 $l['acp.switchableManagement.element.DS18x20'] = 'DS18x20';
-//
-$l['acp.switchableManagement.element.Hygrometer'] = 'Feuchtigkeits Sensor';
-//
-$l['acp.switchableManagement.element.LDR'] = 'Lichtstärke Sensor';
-//
-$l['acp.switchableManagement.element.RainSensor'] = 'Regen Sensor';
-//
-$l['acp.switchableManagement.element.avmMeasuringSocket'] = 'AVM Steckdosen Sensor';
-//
+//$l['acp.switchableManagement.element.Hygrometer'] = 'Feuchtigkeits Sensor';
+$l['acp.switchableManagement.element.Hygrometer'] = 'Humidity sensor';
+//$l['acp.switchableManagement.element.LDR'] = 'Lichtstärke Sensor';
+$l['acp.switchableManagement.element.LDR'] = 'Light intensity sensor';
+//$l['acp.switchableManagement.element.RainSensor'] = 'Regen Sensor';
+$l['acp.switchableManagement.element.RainSensor'] = 'Rain Sensor';
+//$l['acp.switchableManagement.element.avmMeasuringSocket'] = 'AVM Steckdosen Sensor';
+$l['acp.switchableManagement.element.avmMeasuringSocket'] = 'AVM socket Sensor';
+//$l['acp.switchableManagement.element.box'] = 'Box';
 $l['acp.switchableManagement.element.box'] = 'Box';
 
 //Prompts
 //Prompts
 
-//
-$l['acp.switchableManagement.prompt.deleteSwitchable.title'] = 'Schaltbares Element löschen';
-//
-$l['acp.switchableManagement.prompt.deleteSwitchable'] = 'Willst du das schaltbare Element wirklich löschen?';
-//
-$l['acp.switchableManagement.prompt.deleteReadable.title'] = 'Lesbares Element löschen';
-//
-$l['acp.switchableManagement.prompt.deleteReadable'] = 'Willst du das lesbare Element wirklich löschen?';
-//
-$l['acp.switchableManagement.prompt.deleteSensor.title'] = 'Sensor löschen';
-//
-$l['acp.switchableManagement.prompt.deleteSensor'] = 'Willst du den Sensor wirklich löschen?';
-//
-$l['acp.switchableManagement.prompt.deleteBox.title'] = 'Box löschen';
-//
-$l['acp.switchableManagement.prompt.deleteBox'] = 'Willst du die Box wirklich löschen?';
-//
-$l['acp.switchableManagement.prompt.error.notSwitchable'] = 'Die Anzeige der Schaltpunkte und Ereignise geht nur fuer schaltbare Elemente';
+//$l['acp.switchableManagement.prompt.deleteSwitchable.title'] = 'Schaltbares Element löschen';
+$l['acp.switchableManagement.prompt.deleteSwitchable.title'] = 'Delete switchable item';
+//$l['acp.switchableManagement.prompt.deleteSwitchable'] = 'Willst du das schaltbare Element wirklich löschen?';
+$l['acp.switchableManagement.prompt.deleteSwitchable'] = 'Are you sure to delete the switchable item?';
+//$l['acp.switchableManagement.prompt.deleteReadable.title'] = 'Lesbares Element löschen';
+$l['acp.switchableManagement.prompt.deleteReadable.title'] = 'Delete readable item';
+//$l['acp.switchableManagement.prompt.deleteReadable'] = 'Willst du das lesbare Element wirklich löschen?';
+$l['acp.switchableManagement.prompt.deleteReadable'] = 'Are you sure to delete the readable item?';
+//$l['acp.switchableManagement.prompt.deleteSensor.title'] = 'Sensor löschen';
+$l['acp.switchableManagement.prompt.deleteSensor.title'] = 'Delete sensor';
+//$l['acp.switchableManagement.prompt.deleteSensor'] = 'Willst du den Sensor wirklich löschen?';
+$l['acp.switchableManagement.prompt.deleteSensor'] = 'Are you sure to delete the sensor?';
+//$l['acp.switchableManagement.prompt.deleteBox.title'] = 'Box löschen';
+$l['acp.switchableManagement.prompt.deleteBox.title'] = 'Delete box';
+//$l['acp.switchableManagement.prompt.deleteBox'] = 'Willst du die Box wirklich löschen?';
+$l['acp.switchableManagement.prompt.deleteBox'] = 'Are you sure to delete the box?';
+//$l['acp.switchableManagement.prompt.error.notSwitchable'] = 'Die Anzeige der Schaltpunkte und Ereignisse geht nur fuer schaltbare Elemente';
+$l['acp.switchableManagement.prompt.error.notSwitchable'] = 'The display of the switch points and events is only for switchable items';
 
 //Formularelemente
 //Form elements
