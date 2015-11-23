@@ -173,7 +173,7 @@ $l['acp.switchableManagement.form.addActivity.buttonText.description'] = 'specif
 //$l['acp.switchableManagement.form.addActivity.room'] = 'Raum';
 $l['acp.switchableManagement.form.addActivity.room'] = 'Room';
 //$l['acp.switchableManagement.form.addActivity.room.description'] = 'Raum dem die Aktivität zugeordnet ist';
-$l['acp.switchableManagement.form.addActivity.room.description'] = 'Raum dem die Aktivität zugeordnet ist';
+$l['acp.switchableManagement.form.addActivity.room.description'] = 'Room which is associated with the activity';
 //$l['acp.switchableManagement.form.addActivity.switchPoints'] = 'Schaltpunkte';
 $l['acp.switchableManagement.form.addActivity.switchPoints'] = 'Switchpoints';
 //$l['acp.switchableManagement.form.addActivity.switchPoints.description'] = 'Schaltpunkte der Aktivität';
@@ -224,70 +224,70 @@ $l['acp.switchableManagement.form.addCountdown.visibility'] = 'Visibility';
 $l['acp.switchableManagement.form.addCountdown.visibility.description'] = 'Visibility of Countdowns';
 //$l['acp.switchableManagement.form.addCountdown.allowedUsers'] = 'erlaubte Benutzer';
 $l['acp.switchableManagement.form.addCountdown.allowedUsers'] = 'permitted users';
-//
-$l['acp.switchableManagement.form.addCountdown.allowedUsers.description'] = 'legt fest welche Benutzer den Countdown verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addCountdown.allowedUsers.description'] = 'legt fest welche Benutzer den Countdown verwenden dürfen';
+$l['acp.switchableManagement.form.addCountdown.allowedUsers.description'] = 'specifies which users may use the activity';
+//$l['acp.switchableManagement.form.addRadioSocket.name'] = 'Name';
 $l['acp.switchableManagement.form.addRadioSocket.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addRadioSocket.name.description'] = 'Name der Funksteckdose';
-//
+//$l['acp.switchableManagement.form.addRadioSocket.name.description'] = 'Name der Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.name.description'] = 'Name of radio socket';
+//$l['acp.switchableManagement.form.addRadioSocket.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addRadioSocket.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addRadioSocket.icon.description'] = 'Icon der Funsteckdose';
-//
+//$l['acp.switchableManagement.form.addRadioSocket.icon.description'] = 'Icon der Funsteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.icon.description'] = 'Icon of radio socket';
+//$l['acp.switchableManagement.form.addRadioSocket.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addRadioSocket.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addRadioSocket.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
-$l['acp.switchableManagement.form.addRadioSocket.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addRadioSocket.room.description'] = 'Raum in dem sich die Funksteckdose befindet';
-//
-$l['acp.switchableManagement.form.addRadioSocket.protocol'] = 'Protokoll';
-//
-$l['acp.switchableManagement.form.addRadioSocket.protocol.description'] = 'Protokoll der Funksteckdose';
-//
+//$l['acp.switchableManagement.form.addRadioSocket.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addRadioSocket.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addRadioSocket.room'] = 'Raum';
+$l['acp.switchableManagement.form.addRadioSocket.room'] = 'Room';
+//$l['acp.switchableManagement.form.addRadioSocket.room.description'] = 'Raum in dem sich die Funksteckdose befindet';
+$l['acp.switchableManagement.form.addRadioSocket.room.description'] = 'Room in which the radio-controlled socket is';
+//$l['acp.switchableManagement.form.addRadioSocket.protocol'] = 'Protokoll';
+$l['acp.switchableManagement.form.addRadioSocket.protocol'] = 'Protocol';
+//$l['acp.switchableManagement.form.addRadioSocket.protocol.description'] = 'Protokoll der Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.protocol.description'] = 'Protocol of radio-controlled socket';
+//$l['acp.switchableManagement.form.addRadioSocket.systemCode'] = 'System Code';
 $l['acp.switchableManagement.form.addRadioSocket.systemCode'] = 'System Code';
-//
-$l['acp.switchableManagement.form.addRadioSocket.systemCode.description'] = 'System Code der Funksteckdose';
-//
-$l['acp.switchableManagement.form.addRadioSocket.deviceCode'] = 'Geräte Code';
-//
-$l['acp.switchableManagement.form.addRadioSocket.deviceCode.description'] = 'Geräte Code der Funksteckdose';
-//
-$l['acp.switchableManagement.form.addRadioSocket.continuous'] = 'Sendevorgänge';
-//
-$l['acp.switchableManagement.form.addRadioSocket.continuous.description'] = 'Hier kannst du einstellen wie oft der Schaltbefehl gesendet werden soll (dadurch lassen sich manche Steckdosen zuverlässiger steuern)';
-//
-$l['acp.switchableManagement.form.addRadioSocket.switchPoints'] = 'Schaltpunkte';
-//
-$l['acp.switchableManagement.form.addRadioSocket.switchPoints.description'] = 'Schaltpunkte der Funksteckdose';
-//
-$l['acp.switchableManagement.form.addRadioSocket.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addRadioSocket.active.description'] = 'Aktiviert/Deaktiviert die Funksteckdose';
-//
-$l['acp.switchableManagement.form.addRadioSocket.visibility'] = 'Sichtbarkeit';
-//
+//$l['acp.switchableManagement.form.addRadioSocket.systemCode.description'] = 'System Code der Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.systemCode.description'] = 'System Code of radio-controlled socket';
+//$l['acp.switchableManagement.form.addRadioSocket.deviceCode'] = 'Geräte Code';
+$l['acp.switchableManagement.form.addRadioSocket.deviceCode'] = 'Device Code';
+//$l['acp.switchableManagement.form.addRadioSocket.deviceCode.description'] = 'Geräte Code der Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.deviceCode.description'] = 'Device Code of radio-controlled socket';
+//$l['acp.switchableManagement.form.addRadioSocket.continuous'] = 'Sendevorgänge';
+$l['acp.switchableManagement.form.addRadioSocket.continuous'] = 'Transmissions';
+//['acp.switchableManagement.form.addRadioSocket.continuous.description'] = 'Hier kannst du einstellen wie oft der Schaltbefehl gesendet werden soll (dadurch lassen sich manche Steckdosen zuverlässiger steuern)';
+$l['acp.switchableManagement.form.addRadioSocket.continuous.description'] = 'Here you can set how often the switching command is to be sent (this can be some sockets reliable control)';
+//$l['acp.switchableManagement.form.addRadioSocket.switchPoints'] = 'Schaltpunkte';
+$l['acp.switchableManagement.form.addRadioSocket.switchPoints'] = 'Switchpoints';
+//$l['acp.switchableManagement.form.addRadioSocket.switchPoints.description'] = 'Schaltpunkte der Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.switchPoints.description'] = 'Switchpoints of radio-controlled socket';
+//$l['acp.switchableManagement.form.addRadioSocket.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addRadioSocket.active'] = 'Activ';
+//$l['acp.switchableManagement.form.addRadioSocket.active.description'] = 'Aktiviert/Deaktiviert die Funksteckdose';
+$l['acp.switchableManagement.form.addRadioSocket.active.description'] = 'Enable/Disable the radio-controlled socket';
+//$l['acp.switchableManagement.form.addRadioSocket.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addRadioSocket.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addRadioSocket.visibility.description'] = 'Sichtbarkeit der Funksteckdose';
 $l['acp.switchableManagement.form.addRadioSocket.visibility.description'] = 'Sichtbarkeit der Funksteckdose';
-//
-$l['acp.switchableManagement.form.addRadioSocket.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addRadioSocket.allowedUsers.description'] = 'legt fest welche Benutzer die Funksteckdose verwenden dürfen';
-//
-$l['acp.switchableManagement.form.addGpioOutput.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addGpioOutput.name.description'] = 'Name des GPIO`s';
-//
+//$l['acp.switchableManagement.form.addRadioSocket.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addRadioSocket.allowedUsers'] = 'permitted users';
+//$l['acp.switchableManagement.form.addRadioSocket.allowedUsers.description'] = 'legt fest welche Benutzer die Funksteckdose verwenden dürfen';
+$l['acp.switchableManagement.form.addRadioSocket.allowedUsers.description'] = 'specifies which users may use the radio-controlled socket';
+//$l['acp.switchableManagement.form.addGpioOutput.name'] = 'Name';
+$l['acp.switchableManagement.form.addGpioOutput.name.description'] = 'Name';
+//$l['acp.switchableManagement.form.addGpioOutput.name.description'] = 'Name des GPIO`s';
+$l['acp.switchableManagement.form.addGpioOutput.name.description'] = 'Name of GPIO';
+//$l['acp.switchableManagement.form.addGpioOutput.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addGpioOutput.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addGpioOutput.icon.description'] = 'Icon des GPIO`s';
-//
+//$l['acp.switchableManagement.form.addGpioOutput.icon.description'] = 'Icon des GPIO`s';
+$l['acp.switchableManagement.form.addGpioOutput.icon.description'] = 'Icon of GPIO';
+//$l['acp.switchableManagement.form.addGpioOutput.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addGpioOutput.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addGpioOutput.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
-$l['acp.switchableManagement.form.addGpioOutput.room'] = 'Raum';
+//$l['acp.switchableManagement.form.addGpioOutput.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addGpioOutput.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addGpioOutput.room'] = 'Raum';
+$l['acp.switchableManagement.form.addGpioOutput.room'] = 'Room';
 //
 $l['acp.switchableManagement.form.addGpioOutput.room.description'] = 'Raum in dem sich der GPIO befindet';
 //
