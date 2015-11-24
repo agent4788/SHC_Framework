@@ -14,51 +14,51 @@ $l = array();
 //Allgemeine
 //General
 
-//
+//$l['global.tousandsSeparator'] = '.';
 $l['global.tousandsSeparator'] = '.';
-//
+//$l['global.decimalSeparator'] = ',';
 $l['global.decimalSeparator'] = ',';
-//
-$l['global.yes'] = 'ja';
-//
-$l['global.no'] = 'nein';
-//
-$l['global.yes.short'] = 'j';
-//
+//$l['global.yes'] = 'ja';
+$l['global.yes'] = 'yes';
+//$l['global.no'] = 'nein';
+$l['global.no'] = 'no';
+//$l['global.yes.short'] = 'j';
+$l['global.yes.short'] = 'y';
+//$l['global.no.short'] = 'n';
 $l['global.no.short'] = 'n';
-//
-$l['global.on'] = 'an';
-//
-$l['global.off'] = 'aus';
-//
-$l['global.up'] = 'auf';
-//
-$l['global.down'] = 'ab';
-//
-$l['global.open'] = 'auf';
-//
-$l['global.closed'] = 'zu';
-//
+//$l['global.on'] = 'an';
+$l['global.on'] = 'on';
+//$l['global.off'] = 'aus';
+$l['global.off'] = 'off';
+//$l['global.up'] = 'auf';
+$l['global.up'] = 'up';
+//$l['global.down'] = 'ab';
+$l['global.down'] = 'down';
+//$l['global.open'] = 'auf';
+$l['global.open'] = 'open';
+//$l['global.closed'] = 'zu';
+$l['global.closed'] = 'close';
+//$l['global.start'] = 'start';
 $l['global.start'] = 'start';
-//
+//$l['global.stop'] = 'stop';
 $l['global.stop'] = 'stop';
-//
-$l['global.toggle'] = 'umschalten';
-//
+//$l['global.toggle'] = 'umschalten';
+$l['global.toggle'] = 'toggle';
+//$l['global.accessDenied'] = 'Zugriff verweigert';
 $l['global.accessDenied'] = 'Zugriff verweigert';
 
 //Datum
 //Date
 
-//
-$l['global.date.tomorrow'] = 'morgen';
-//
-$l['global.date.totay'] = 'heute';
-//
-$l['global.date.now'] = 'gerade eben';
-//
-$l['global.date.yesterday'] = 'gestern';
-//
+//$l['global.date.tomorrow'] = 'morgen';
+$l['global.date.tomorrow'] = 'tomorrow';
+//$l['global.date.totay'] = 'heute';
+$l['global.date.totay'] = 'today';
+//$l['global.date.now'] = 'gerade eben';
+$l['global.date.now'] = 'just now';
+//$l['global.date.yesterday'] = 'gestern';
+$l['global.date.yesterday'] = 'yesterday';
+//$l['global.date.previousDays'] = 'vor {1:i} Tagen';
 $l['global.date.previousDays'] = 'vor {1:i} Tagen';
 //
 $l['global.date.nextDaysAgo'] = 'in {1:i} Tagen';
