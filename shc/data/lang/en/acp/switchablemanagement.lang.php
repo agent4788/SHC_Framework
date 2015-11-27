@@ -288,122 +288,122 @@ $l['acp.switchableManagement.form.addGpioOutput.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addGpioOutput.buttonText.description'] = 'specifies which button names to be used';
 //$l['acp.switchableManagement.form.addGpioOutput.room'] = 'Raum';
 $l['acp.switchableManagement.form.addGpioOutput.room'] = 'Room';
-//
-$l['acp.switchableManagement.form.addGpioOutput.room.description'] = 'Raum in dem sich der GPIO befindet';
-//
-$l['acp.switchableManagement.form.addGpioOutput.switchServer'] = 'Schaltserver';
-//
-$l['acp.switchableManagement.form.addGpioOutput.switchServer.description'] = 'Schaltserver zu dem der GPIO gehört';
-//
+//$l['acp.switchableManagement.form.addGpioOutput.room.description'] = 'Raum in dem sich der GPIO befindet';
+$l['acp.switchableManagement.form.addGpioOutput.room.description'] = 'Room in which the GPIO is';
+//$l['acp.switchableManagement.form.addGpioOutput.switchServer'] = 'Schaltserver';
+$l['acp.switchableManagement.form.addGpioOutput.switchServer'] = 'Switching server';
+//$l['acp.switchableManagement.form.addGpioOutput.switchServer.description'] = 'Schaltserver zu dem der GPIO gehört';
+$l['acp.switchableManagement.form.addGpioOutput.switchServer.description'] = 'Switching server to which the GPIO belongs';
+//$l['acp.switchableManagement.form.addGpioOutput.gpioPin'] = 'GPIO Pin';
 $l['acp.switchableManagement.form.addGpioOutput.gpioPin'] = 'GPIO Pin';
-//
-$l['acp.switchableManagement.form.addGpioOutput.gpioPin.description'] = 'wiringPi Pin Nummer des GPIO`s';
-//
-$l['acp.switchableManagement.form.addGpioOutput.switchPoints'] = 'Schaltpunkte';
-//
-$l['acp.switchableManagement.form.addGpioOutput.switchPoints.description'] = 'Schaltpunkte des GPIO`s';
-//
-$l['acp.switchableManagement.form.addGpioOutput.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addGpioOutput.active.description'] = 'Aktiviert/Deaktiviert den GPIO';
-//
-$l['acp.switchableManagement.form.addGpioOutput.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addGpioOutput.visibility.description'] = 'Sichtbarkeit des GPIO';
-//
-$l['acp.switchableManagement.form.addGpioOutput.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addGpioOutput.allowedUsers.description'] = 'legt fest welche Benutzer den GPIO verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addGpioOutput.gpioPin.description'] = 'wiringPi Pin Nummer des GPIO`s';
+$l['acp.switchableManagement.form.addGpioOutput.gpioPin.description'] = 'wiringPi Pin nummber of GPIO';
+//$l['acp.switchableManagement.form.addGpioOutput.switchPoints'] = 'Schaltpunkte';
+$l['acp.switchableManagement.form.addGpioOutput.switchPoints'] = 'switching points';
+//$l['acp.switchableManagement.form.addGpioOutput.switchPoints.description'] = 'Schaltpunkte des GPIO`s';
+$l['acp.switchableManagement.form.addGpioOutput.switchPoints.description'] = 'Switching points of GPIO`s';
+//$l['acp.switchableManagement.form.addGpioOutput.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addGpioOutput.active'] = 'Enabled';
+//$l['acp.switchableManagement.form.addGpioOutput.active.description'] = 'Aktviert/Deaktiviert den GPIO';
+$l['acp.switchableManagement.form.addGpioOutput.active.description'] = 'Enables / Disables the GPIO';
+//$l['acp.switchableManagement.form.addGpioOutput.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addGpioOutput.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addGpioOutput.visibility.description'] = 'Sichtbarkeit des GPIO';
+$l['acp.switchableManagement.form.addGpioOutput.visibility.description'] = 'Visibility of GPIO';
+//$l['acp.switchableManagement.form.addGpioOutput.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addGpioOutput.allowedUsers'] = 'permitted user';
+//$l['acp.switchableManagement.form.addGpioOutput.allowedUsers.description'] = 'legt fest welche Benutzer den GPIO verwenden dürfen';
+$l['acp.switchableManagement.form.addGpioOutput.allowedUsers.description'] = 'specifies which users may use the GPIO';
+//$l['acp.switchableManagement.form.addWol.name'] = 'Name';
 $l['acp.switchableManagement.form.addWol.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addWol.name.description'] = 'Name des WOL Gerätes';
-//
-$l['acp.switchableManagement.form.addWol.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addWol.room.description'] = 'Raum in dem sich das WOL Gerät befindet';
-//
-$l['acp.switchableManagement.form.addWol.mac'] = 'MAC Adresse';
-//
-$l['acp.switchableManagement.form.addWol.mac.description'] = 'MAC Adresse der Wak On Lan fähigem Netzwerkchips';
-//
-$l['acp.switchableManagement.form.addWol.ip'] = 'IP Adresse';
-//
+//$l['acp.switchableManagement.form.addWol.name.description'] = 'Name des WOL Gerätes';
+$l['acp.switchableManagement.form.addWol.name.description'] = 'Name of WOL device';
+//$l['acp.switchableManagement.form.addWol.room'] = 'Raum';
+$l['acp.switchableManagement.form.addWol.room'] = 'Room';
+//$l['acp.switchableManagement.form.addWol.room.description'] = 'Raum in dem sich das WOL Gerät befindet';
+$l['acp.switchableManagement.form.addWol.room.description'] = 'Room in which the WOL device is';
+//$l['acp.switchableManagement.form.addWol.mac'] = 'MAC Adresse';
+$l['acp.switchableManagement.form.addWol.mac'] = 'MAC Adress';
+//$l['acp.switchableManagement.form.addWol.mac.description'] = 'MAC Adresse des Wake On Lan fähigen Netzwerkchips';
+$l['acp.switchableManagement.form.addWol.mac.description'] = 'MAC address of the Wake On LAN enabled network chips';
+//$l['acp.switchableManagement.form.addWol.ip'] = 'IP Adresse';
+$l['acp.switchableManagement.form.addWol.ip'] = 'IP Adress';
+//$l['acp.switchableManagement.form.addWol.ip.description'] = 'IP address of the Wake On LAN enabled network chips';
 $l['acp.switchableManagement.form.addWol.ip.description'] = 'IP Adresse der Wak On Lan fähigem Netzwerkchips';
-//
-$l['acp.switchableManagement.form.addWol.switchPoints'] = 'Schaltpunkte';
-//
-$l['acp.switchableManagement.form.addWol.switchPoints.description'] = 'Schaltpunkte des WOL Gerätes';
-//
-$l['acp.switchableManagement.form.addWol.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addWol.active.description'] = 'Aktiviert/Deaktiviert das WOL Gerät';
-//
-$l['acp.switchableManagement.form.addWol.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addWol.visibility.description'] = 'Sichtbarkeit des WOL Gerätes';
-//
-$l['acp.switchableManagement.form.addWol.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addWol.allowedUsers.description'] = 'legt fest welche Benutzer das WOL Gerät einschalten dürfen';
-//
+//$l['acp.switchableManagement.form.addWol.switchPoints'] = 'Schaltpunkte';
+$l['acp.switchableManagement.form.addWol.switchPoints'] = 'Switching points';
+//$l['acp.switchableManagement.form.addWol.switchPoints.description'] = 'Schaltpunkte des WOL Gerätes';
+$l['acp.switchableManagement.form.addWol.switchPoints.description'] = 'Switching points of WOL device';
+//$l['acp.switchableManagement.form.addWol.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addWol.active'] = 'Enabled';
+//$l['acp.switchableManagement.form.addWol.active.description'] = 'Aktiviert/Deaktiviert das WOL Gerät';
+$l['acp.switchableManagement.form.addWol.active.description'] = 'Enables / Disables WOL device';
+//$l['acp.switchableManagement.form.addWol.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addWol.visibility'] = 'Visibility ';
+//$l['acp.switchableManagement.form.addWol.visibility.description'] = 'Sichtbarkeit des WOL Gerätes';
+$l['acp.switchableManagement.form.addWol.visibility.description'] = 'Visibility of WOL device';
+//$l['acp.switchableManagement.form.addWol.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addWol.allowedUsers'] = 'permitted user';
+//$l['acp.switchableManagement.form.addWol.allowedUsers.description'] = 'legt fest welche Benutzer das WOL Gerät einschalten dürfen';
+$l['acp.switchableManagement.form.addWol.allowedUsers.description'] = 'specifies which users can turn on the device WOL';
+//$l['acp.switchableManagement.form.sensorForm.name'] = 'Name';
 $l['acp.switchableManagement.form.sensorForm.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.sensorForm.name.description'] = 'Name des Sensors';
-//
+//$l['acp.switchableManagement.form.sensorForm.name.description'] = 'Name des Sensors';
+$l['acp.switchableManagement.form.sensorForm.name.description'] = 'Name of Sensor';
+//$l['acp.switchableManagement.form.sensorForm.icon'] = 'Icon';
 $l['acp.switchableManagement.form.sensorForm.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.sensorForm.icon.description'] = 'Icon des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.sensorForm.room.description'] = 'Raum in dem sich der Sensor befindet';
-//
-$l['acp.switchableManagement.form.sensorForm.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.sensorForm.visibility.description'] = 'Sichtbarkeit des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.temperatureVisibility'] = 'Temperatur Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.temperatureVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Temperatur des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.temperatureOffset'] = 'Temperatur Offset';
-//
-$l['acp.switchableManagement.form.sensorForm.pressureOffset'] = 'Luftdruck Offset';
-//
-$l['acp.switchableManagement.form.sensorForm.altitudeOffset'] = 'Höhen Offset';
-//
-$l['acp.switchableManagement.form.sensorForm.humidityOffset'] = 'Luftfeuchte Offset';
-//
+//$l['acp.switchableManagement.form.sensorForm.icon.description'] = 'Icon des Sensors';
+$l['acp.switchableManagement.form.sensorForm.icon.description'] = 'Icon of Sensor';
+//$l['acp.switchableManagement.form.sensorForm.room'] = 'Raum';
+$l['acp.switchableManagement.form.sensorForm.room'] = 'Room';
+//$l['acp.switchableManagement.form.sensorForm.room.description'] = 'Raum in dem sich der Sensor befindet';
+$l['acp.switchableManagement.form.sensorForm.room.description'] = 'Room where the sensor is located';
+//$l['acp.switchableManagement.form.sensorForm.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.sensorForm.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.sensorForm.visibility.description'] = 'Sichtbarkeit des Sensors';
+$l['acp.switchableManagement.form.sensorForm.visibility.description'] = 'Visibility of sensor';
+//$l['acp.switchableManagement.form.sensorForm.temperatureVisibility'] = 'Temperatur Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.temperatureVisibility'] = 'Show temperature';
+//$l['acp.switchableManagement.form.sensorForm.temperatureVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Temperatur des Sensors';
+$l['acp.switchableManagement.form.sensorForm.temperatureVisibility.description'] = 'Enables / Disables the visibility of the temperature of the sensor';
+//$l['acp.switchableManagement.form.sensorForm.temperatureOffset'] = 'Temperatur Offset';
+$l['acp.switchableManagement.form.sensorForm.temperatureOffset'] = 'Temperature offset';
+//$l['acp.switchableManagement.form.sensorForm.pressureOffset'] = 'Luftdruck Offset';
+$l['acp.switchableManagement.form.sensorForm.pressureOffset'] = 'Pressure Offset';
+//$l['acp.switchableManagement.form.sensorForm.altitudeOffset'] = 'Höhen Offset';
+$l['acp.switchableManagement.form.sensorForm.altitudeOffset'] = 'Altitude offset';
+//$l['acp.switchableManagement.form.sensorForm.humidityOffset'] = 'Luftfeuchte Offset';
+$l['acp.switchableManagement.form.sensorForm.humidityOffset'] = 'humidity offset';
+//$l['acp.switchableManagement.form.sensorForm.valueOffset'] = 'Offset';
 $l['acp.switchableManagement.form.sensorForm.valueOffset'] = 'Offset';
-//
-$l['acp.switchableManagement.form.sensorForm.offset.description'] = 'Addiert den eingegbenen Wert zum Messwert des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.humidityVisibility'] = 'Luftfeuchte Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.humidityVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Luftfeuchte des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.pressureVisibility'] = 'Luftdruck Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.pressureVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des Luftdruckes des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.altitudeVisibility'] = 'Standorthöhe Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.altitudeVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Standorthöhe des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.valueVisibility'] = 'Wert Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.valueVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des Wertes des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.powerVisibility'] = 'Leistung Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.powerVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der aktuell entnommene Leistung des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Arbeit Anzeigen';
-//
-$l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des der elektrischen Arbeit seit Inbetriebnahme des Sensors';
-//
-$l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
+//$l['acp.switchableManagement.form.sensorForm.offset.description'] = 'Addiert den eingegbenen Wert zum Messwert des Sensors';
+$l['acp.switchableManagement.form.sensorForm.offset.description'] = 'Adds the specified value to the measured value of the sensor';
+//$l['acp.switchableManagement.form.sensorForm.humidityVisibility'] = 'Luftfeuchte Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.humidityVisibility'] = 'Show humidity';
+//$l['acp.switchableManagement.form.sensorForm.humidityVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Luftfeuchte des Sensors';
+$l['acp.switchableManagement.form.sensorForm.humidityVisibility.description'] = 'Enables / Disables the visibility of the humidity sensor';
+//$l['acp.switchableManagement.form.sensorForm.pressureVisibility'] = 'Luftdruck Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.pressureVisibility'] = 'Show pressure';
+//$l['acp.switchableManagement.form.sensorForm.pressureVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des Luftdruckes des Sensors';
+$l['acp.switchableManagement.form.sensorForm.pressureVisibility.description'] = 'Enables / Disables the visibility of the air pressure sensor';
+//$l['acp.switchableManagement.form.sensorForm.altitudeVisibility'] = 'Standorthöhe Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.altitudeVisibility'] = 'Show location height';
+//$l['acp.switchableManagement.form.sensorForm.altitudeVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Standorthöhe des Sensors';
+$l['acp.switchableManagement.form.sensorForm.altitudeVisibility.description'] = 'Enables / Disables the visibility of the location height of sensor';
+//$l['acp.switchableManagement.form.sensorForm.valueVisibility'] = 'Wert Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.valueVisibility'] = 'Show value';
+//$l['acp.switchableManagement.form.sensorForm.valueVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des Wertes des Sensors';
+$l['acp.switchableManagement.form.sensorForm.valueVisibility.description'] = 'Enables / Disables the visibility of the value of sensor';
+//['acp.switchableManagement.form.sensorForm.powerVisibility'] = 'Leistung Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.powerVisibility'] = 'Show power';
+//$l['acp.switchableManagement.form.sensorForm.powerVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der aktuell entnommene Leistung des Sensors';
+$l['acp.switchableManagement.form.sensorForm.powerVisibility.description'] = 'Enables / Disables the visibility of the current power draw of the sensor';
+//$l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Arbeit Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Show energy';
+//$l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der elektrischen Arbeit seit Inbetriebnahme des Sensors';
+$l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Enables / Disables the visibility of the electrical work since commissioning of the sensor';
+//$l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
+$l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Data recording';
 //
 $l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
 //
