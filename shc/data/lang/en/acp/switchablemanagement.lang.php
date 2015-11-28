@@ -22,9 +22,11 @@ $l = array();
 $l['acp.switchableManagement.title'] = 'Manage switchable elements';
 //$l['acp.switchableManagement.radioSockets'] = 'Funksteckdosen';
 $l['acp.switchableManagement.radioSockets'] = 'Radio controlled sockets';
+//$l['acp.switchableManagement.gpios'] = 'GPIO\'s';
 $l['acp.switchableManagement.gpios'] = 'GPIO\'s';
 //$l['acp.switchableManagement.gpios.switchserver'] = 'Schaltserver:';
 $l['acp.switchableManagement.gpios.switchserver'] = 'Switching server:';
+//$l['acp.switchableManagement.radioSockets.sysCode'] = 'Systemcode/Unit ID:';
 $l['acp.switchableManagement.radioSockets.sysCode'] = 'Systemcode/Unit ID:';
 //$l['acp.switchableManagement.title.switchPoints'] = 'Schaltpunkte:';
 $l['acp.switchableManagement.title.switchPoints'] = 'Switch points:';
@@ -404,94 +406,94 @@ $l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Show energy';
 $l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Enables / Disables the visibility of the electrical work since commissioning of the sensor';
 //$l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
 $l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Data recording';
-//
-$l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
-//
+//$l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
+$l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Should the sensor data be recorded?';
+//$l['acp.switchableManagement.form.box.name'] = 'Name';
 $l['acp.switchableManagement.form.box.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.box.name.description'] = 'Name der Box';
-//
+//$l['acp.switchableManagement.form.box.name.description'] = 'Name der Box';
+$l['acp.switchableManagement.form.box.name.description'] = 'Name of Box';
+//$l['acp.switchableManagement.form.box.room'] = 'Raum';
 $l['acp.switchableManagement.form.box.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.box.room.description'] = 'Raum in dem sich die Box befindet';
-//
-$l['acp.switchableManagement.form.box.elements'] = 'Elemente';
-//
-$l['acp.switchableManagement.form.box.elements.description'] = 'Elemente der Box';
-//
+//$l['acp.switchableManagement.form.box.room.description'] = 'Raum in dem sich die Box befindet';
+$l['acp.switchableManagement.form.box.room.description'] = 'Room where the box is located';
+//$l['acp.switchableManagement.form.box.elements'] = 'Elemente';
+$l['acp.switchableManagement.form.box.elements'] = 'Elements';
+//$l['acp.switchableManagement.form.box.elements.description'] = 'Elemente der Box';
+$l['acp.switchableManagement.form.box.elements.description'] = 'Elements of Box';
+//$l['acp.switchableManagement.form.addReboot.name'] = 'Name';
 $l['acp.switchableManagement.form.addReboot.name'] = 'Name';
-//
+//$l['acp.switchableManagement.form.addReboot.name.description'] = 'Name';
 $l['acp.switchableManagement.form.addReboot.name.description'] = 'Name';
-//
-$l['acp.switchableManagement.form.addReboot.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addReboot.room.description'] = 'Raum';
-//
+//$l['acp.switchableManagement.form.addReboot.room'] = 'Raum';
+$l['acp.switchableManagement.form.addReboot.room'] = 'Room';
+//$l['acp.switchableManagement.form.addReboot.room.description'] = 'Raum';
+$l['acp.switchableManagement.form.addReboot.room.description'] = 'Room';
+//$l['acp.switchableManagement.form.addReboot.active'] = 'Aktiv';
 $l['acp.switchableManagement.form.addReboot.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addReboot.active.description'] = 'Aktiviert/Deaktiviert den Neustart';
-//
-$l['acp.switchableManagement.form.addReboot.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addReboot.visibility.description'] = 'Sichtbarkeit des Neustarts';
-//
-$l['acp.switchableManagement.form.addReboot.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addReboot.allowedUsers.description'] = 'legt fest welche Benutzer den Neustart verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addReboot.active.description'] = 'Aktiviert/Deaktiviert den Neustart';
+$l['acp.switchableManagement.form.addReboot.active.description'] = 'Enables / Disables reboot';
+//$l['acp.switchableManagement.form.addReboot.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addReboot.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addReboot.visibility.description'] = 'Sichtbarkeit des Neustarts';
+$l['acp.switchableManagement.form.addReboot.visibility.description'] = 'Visibility of reboot';
+//$l['acp.switchableManagement.form.addReboot.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addReboot.allowedUsers'] = 'permitted users';
+//$l['acp.switchableManagement.form.addReboot.allowedUsers.description'] = 'legt fest welche Benutzer den Neustart verwenden dürfen';
+$l['acp.switchableManagement.form.addReboot.allowedUsers.description'] = 'specifies which users can use the reboot';
+//$l['acp.switchableManagement.form.addShutdown.name'] = 'Name';
 $l['acp.switchableManagement.form.addShutdown.name'] = 'Name';
-//
+//$l['acp.switchableManagement.form.addShutdown.name.description'] = 'Name';
 $l['acp.switchableManagement.form.addShutdown.name.description'] = 'Name';
-//
-$l['acp.switchableManagement.form.addShutdown.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addShutdown.room.description'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addShutdown.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addShutdown.active.description'] = 'Aktiviert/Deaktiviert den Shutdown';
-//
-$l['acp.switchableManagement.form.addShutdown.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addShutdown.visibility.description'] = 'Sichtbarkeit des Shutdown';
-//
-$l['acp.switchableManagement.form.addShutdown.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addShutdown.allowedUsers.description'] = 'legt fest welche Benutzer den Shutdown verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addShutdown.room'] = 'Raum';
+$l['acp.switchableManagement.form.addShutdown.room'] = 'Room';
+//$l['acp.switchableManagement.form.addShutdown.room.description'] = 'Raum';
+$l['acp.switchableManagement.form.addShutdown.room.description'] = 'Room';
+//$l['acp.switchableManagement.form.addShutdown.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addShutdown.active'] = 'Enabled';
+//$l['acp.switchableManagement.form.addShutdown.active.description'] = 'Aktiviert/Deaktiviert den Shutdown';
+$l['acp.switchableManagement.form.addShutdown.active.description'] = 'Enable / Disable the Shutdown';
+//$l['acp.switchableManagement.form.addShutdown.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addShutdown.visibility'] = 'Visibility ';
+//$l['acp.switchableManagement.form.addShutdown.visibility.description'] = 'Sichtbarkeit des Shutdown';
+$l['acp.switchableManagement.form.addShutdown.visibility.description'] = 'Visibility of shutdown';
+//$l['acp.switchableManagement.form.addShutdown.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addShutdown.allowedUsers'] = 'permitted users';
+//$l['acp.switchableManagement.form.addShutdown.allowedUsers.description'] = 'legt fest welche Benutzer den Shutdown verwenden dürfen';
+$l['acp.switchableManagement.form.addShutdown.allowedUsers.description'] = 'specifies which users may use the shutdown';
+//$l['acp.switchableManagement.form.addScript.name'] = 'Name';
 $l['acp.switchableManagement.form.addScript.name'] = 'Name';
-//
+//$l['acp.switchableManagement.form.addScript.name.description'] = 'Name';
 $l['acp.switchableManagement.form.addScript.name.description'] = 'Name';
-//
-$l['acp.switchableManagement.form.addScript.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addScript.room.description'] = 'Raum';
-//
+//$l['acp.switchableManagement.form.addScript.room'] = 'Raum';
+$l['acp.switchableManagement.form.addScript.room'] = 'Room';
+//$l['acp.switchableManagement.form.addScript.room.description'] = 'Raum';
+$l['acp.switchableManagement.form.addScript.room.description'] = 'Room';
+//$l['acp.switchableManagement.form.addScript.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addScript.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addScript.icon.description'] = 'Icon des Scripts';
-//
+//$l['acp.switchableManagement.form.addScript.icon.description'] = 'Icon des Scripts';
+$l['acp.switchableManagement.form.addScript.icon.description'] = 'Icon of Scripts';
+//$l['acp.switchableManagement.form.addScript.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addScript.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addScript.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
-$l['acp.switchableManagement.form.addScript.onCommand'] = 'an Kommando';
-//
-$l['acp.switchableManagement.form.addScript.onCommand.description'] = 'Kommando das beim drücken/aufrufen des an Kommandos ausgeführt wird';
-//
-$l['acp.switchableManagement.form.addScript.offCommand'] = 'aus Kommando';
-//
-$l['acp.switchableManagement.form.addScript.offCommand.description'] = 'Kommando das beim drücken/aufrufen des aus Kommandos ausgeführt wird';
-//
-$l['acp.switchableManagement.form.addScript.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addScript.active.description'] = 'Aktiviert/Deaktiviert das Script';
-//
-$l['acp.switchableManagement.form.addScript.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addScript.visibility.description'] = 'Sichtbarkeit des Scriptes';
-//
-$l['acp.switchableManagement.form.addScript.allowedUsers'] = 'erlaubte Benutzer';
+//$l['acp.switchableManagement.form.addScript.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addScript.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addScript.onCommand'] = 'an Kommando';
+$l['acp.switchableManagement.form.addScript.onCommand'] = 'On command';
+//$l['acp.switchableManagement.form.addScript.onCommand.description'] = 'Kommando das beim drücken/aufrufen ausgeführt wird';
+$l['acp.switchableManagement.form.addScript.onCommand.description'] = 'Command that is executed when press / call';
+//$l['acp.switchableManagement.form.addScript.offCommand'] = 'aus Kommando';
+$l['acp.switchableManagement.form.addScript.offCommand'] = 'Off command';
+//$l['acp.switchableManagement.form.addScript.offCommand.description'] = 'Kommando das beim drücken/aufrufen ausgeführt wird';
+$l['acp.switchableManagement.form.addScript.offCommand.description'] = 'Command that is executed when press / call';
+//$l['acp.switchableManagement.form.addScript.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addScript.active'] = 'Enabled';
+//$l['acp.switchableManagement.form.addScript.active.description'] = 'Aktiviert/Deaktiviert das Script';
+$l['acp.switchableManagement.form.addScript.active.description'] = 'Enables / Disables the Script';
+//$l['acp.switchableManagement.form.addScript.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addScript.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addScript.visibility.description'] = 'Sichtbarkeit des Scriptes';
+$l['acp.switchableManagement.form.addScript.visibility.description'] = 'Visibility of the script';
+//$l['acp.switchableManagement.form.addScript.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addScript.allowedUsers'] = 'permitted user';
 //
 $l['acp.switchableManagement.form.addScript.allowedUsers.description'] = 'legt fest welche Benutzer das Script verwenden dürfen';
 //
