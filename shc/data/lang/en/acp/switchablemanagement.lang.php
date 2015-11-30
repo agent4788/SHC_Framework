@@ -494,84 +494,84 @@ $l['acp.switchableManagement.form.addScript.visibility'] = 'Visibility';
 $l['acp.switchableManagement.form.addScript.visibility.description'] = 'Visibility of the script';
 //$l['acp.switchableManagement.form.addScript.allowedUsers'] = 'erlaubte Benutzer';
 $l['acp.switchableManagement.form.addScript.allowedUsers'] = 'permitted user';
-//
-$l['acp.switchableManagement.form.addScript.allowedUsers.description'] = 'legt fest welche Benutzer das Script verwenden dürfen';
-//
+//$l['acp.switchableManagement.form.addScript.allowedUsers.description'] = 'legt fest welche Benutzer das Script verwenden dürfen';
+$l['acp.switchableManagement.form.addScript.allowedUsers.description'] = 'specifies which users may use the script';
+//$l['acp.switchableManagement.form.addAvmSocket.name'] = 'Name';
 $l['acp.switchableManagement.form.addAvmSocket.name'] = 'Name';
-//
-$l['acp.switchableManagement.form.addAvmSocket.name.description'] = 'Name der Steckdose';
-//
+//$l['acp.switchableManagement.form.addAvmSocket.name.description'] = 'Name der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.name.description'] = 'Name of socket';
+//$l['acp.switchableManagement.form.addAvmSocket.icon'] = 'Icon';
 $l['acp.switchableManagement.form.addAvmSocket.icon'] = 'Icon';
-//
-$l['acp.switchableManagement.form.addAvmSocket.icon.description'] = 'Icon der Steckdose';
-//
+//$l['acp.switchableManagement.form.addAvmSocket.icon.description'] = 'Icon der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.icon.description'] = 'Icon of socket';
+//$l['acp.switchableManagement.form.addAvmSocket.buttonText'] = 'Button Label';
 $l['acp.switchableManagement.form.addAvmSocket.buttonText'] = 'Button Label';
-//
-$l['acp.switchableManagement.form.addAvmSocket.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
-//
+//$l['acp.switchableManagement.form.addAvmSocket.buttonText.description'] = 'legt fest welche Button Namen verwendet werden sollen';
+$l['acp.switchableManagement.form.addAvmSocket.buttonText.description'] = 'specifies which button names to be used';
+//$l['acp.switchableManagement.form.addAvmSocket.room'] = 'Raum';
 $l['acp.switchableManagement.form.addAvmSocket.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addAvmSocket.room.description'] = 'Raum dem die Steckdose zugeordnet ist';
-//
-$l['acp.switchableManagement.form.addAvmSocket.ain'] = 'Indentifizierer';
-//
-$l['acp.switchableManagement.form.addAvmSocket.ain.description'] = 'entweder die AIN Nummer (steht auf dem Gerät) oder die IP';
-//
+//$l['acp.switchableManagement.form.addAvmSocket.room.description'] = 'Raum dem die Steckdose zugeordnet ist';
+$l['acp.switchableManagement.form.addAvmSocket.room.description'] = 'room in which the socket is assigned';
+//$l['acp.switchableManagement.form.addAvmSocket.ain'] = 'Indentifizierer';
+$l['acp.switchableManagement.form.addAvmSocket.ain'] = 'Identifier';
+//$l['acp.switchableManagement.form.addAvmSocket.ain.description'] = 'entweder die AIN Nummer (steht auf dem Gerät) oder die IP';
+$l['acp.switchableManagement.form.addAvmSocket.ain.description'] = 'either AIN number (available on the device) or IP';
+//$l['acp.switchableManagement.form.addAvmSocket.active'] = 'Aktiv';
 $l['acp.switchableManagement.form.addAvmSocket.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addAvmSocket.active.description'] = 'Aktiviert/Deaktiviert die Steckdose';
-//
-$l['acp.switchableManagement.form.addAvmSocket.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addAvmSocket.visibility.description'] = 'Sichtbarkeit der Steckdose';
-//
-$l['acp.switchableManagement.form.addAvmSocket.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addAvmSocket.allowedUsers.description'] = 'legt fest welche Benutzer die Steckdose verwenden dürfen';
-//
-$l['acp.switchableManagement.form.addFritzBox.function'] = 'Funktion';
-//
-$l['acp.switchableManagement.form.addFritzBox.function.description'] = 'währle die Funktion des Elements aus';
-//
+//$l['acp.switchableManagement.form.addAvmSocket.active.description'] = 'Aktiviert/Deaktiviert die Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.active.description'] = 'Enables / Disables the socket';
+//$l['acp.switchableManagement.form.addAvmSocket.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addAvmSocket.visibility'] = 'Visibility';
+//$l['acp.switchableManagement.form.addAvmSocket.visibility.description'] = 'Sichtbarkeit der Steckdose';
+$l['acp.switchableManagement.form.addAvmSocket.visibility.description'] = 'Visibility of the socket';
+//$l['acp.switchableManagement.form.addAvmSocket.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addAvmSocket.allowedUsers'] = 'permitted users';
+//$l['acp.switchableManagement.form.addAvmSocket.allowedUsers.description'] = 'legt fest welche Benutzer die Steckdose verwenden dürfen';
+$l['acp.switchableManagement.form.addAvmSocket.allowedUsers.description'] = 'specifies which users are allowed to use the socket';
+//$l['acp.switchableManagement.form.addFritzBox.function'] = 'Funktion';
+$l['acp.switchableManagement.form.addFritzBox.function'] = 'Function';
+//$l['acp.switchableManagement.form.addFritzBox.function.description'] = 'wähle die Funktion des Elements aus';
+$l['acp.switchableManagement.form.addFritzBox.function.description'] = 'Choose the function of the element';
+//$l['acp.switchableManagement.form.addFritzBox.function.wlan1'] = '2,4GHz WLan';
 $l['acp.switchableManagement.form.addFritzBox.function.wlan1'] = '2,4GHz WLan';
-//
+//$l['acp.switchableManagement.form.addFritzBox.function.wlan2'] = '5GHz WLan';
 $l['acp.switchableManagement.form.addFritzBox.function.wlan2'] = '5GHz WLan';
-//
-$l['acp.switchableManagement.form.addFritzBox.function.wlan3'] = 'Gäste WLan';
-//
-$l['acp.switchableManagement.form.addFritzBox.function.reconnect'] = 'Internet neu Verbinden';
-//
-$l['acp.switchableManagement.form.addFritzBox.function.reboot'] = 'Fritz!Box Neustart';
-//
-$l['acp.switchableManagement.form.addFritzBox.room'] = 'Raum';
-//
-$l['acp.switchableManagement.form.addFritzBox.room.description'] = 'Raum dem die Fritz!Box zugeordnet ist';
-//
-$l['acp.switchableManagement.form.addFritzBox.active'] = 'Aktiv';
-//
-$l['acp.switchableManagement.form.addFritzBox.active.description'] = 'Aktiviert/Deaktiviert die Fritz!Box';
-//
-$l['acp.switchableManagement.form.addFritzBox.visibility'] = 'Sichtbarkeit';
-//
-$l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Sichtbarkeit der Fritz!Box';
-//
-$l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'erlaubte Benutzer';
-//
-$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'legt fest welche Benutzer die Fritz!Box verwenden dürfen';
+//$l['acp.switchableManagement.form.addFritzBox.function.wlan3'] = 'Gäste WLan';
+$l['acp.switchableManagement.form.addFritzBox.function.wlan3'] = 'Guest WLan';
+//$l['acp.switchableManagement.form.addFritzBox.function.reconnect'] = 'Internet neu Verbinden';
+$l['acp.switchableManagement.form.addFritzBox.function.reconnect'] = 'Reconnect Internet';
+//$l['acp.switchableManagement.form.addFritzBox.function.reboot'] = 'Fritz!Box Neustart';
+$l['acp.switchableManagement.form.addFritzBox.function.reboot'] = 'Fritz!Box reboot';
+//$l['acp.switchableManagement.form.addFritzBox.room'] = 'Raum';
+$l['acp.switchableManagement.form.addFritzBox.room'] = 'Room';
+//$l['acp.switchableManagement.form.addFritzBox.room.description'] = 'Raum dem die Fritz!Box zugeordnet ist';
+$l['acp.switchableManagement.form.addFritzBox.room.description'] = 'Room in which the Fritz! Box is assigned';
+//$l['acp.switchableManagement.form.addFritzBox.active'] = 'Aktiv';
+$l['acp.switchableManagement.form.addFritzBox.active'] = 'Activ';
+//$l['acp.switchableManagement.form.addFritzBox.active.description'] = 'Aktiviert/Deaktiviert die Fritz!Box';
+$l['acp.switchableManagement.form.addFritzBox.active.description'] = 'Enables / Disables the Fritz!Box';
+//$l['acp.switchableManagement.form.addFritzBox.visibility'] = 'Sichtbarkeit';
+$l['acp.switchableManagement.form.addFritzBox.visibility'] = 'Visibility ';
+//$l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Sichtbarkeit der Fritz!Box';
+$l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Visibility of the Fritz! Box';
+//$l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'erlaubte Benutzer';
+$l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'permitted users';
+//$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'legt fest welche Benutzer die Fritz!Box verwenden dürfen';
+$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'specifies which users may use the Fritz! Box';
 
 //Meldungen
 //Messages
 
-//
-$l['acp.switchableManagement.form.addActivity.success'] =  'Die Aktivität wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.addElementToActivity.success'] =  'Das Element wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.deleteElementFromActivity.success'] =  'Das Element wurde erfolgreich entfernt';
-//
-$l['acp.switchableManagement.form.editActivity.success'] =  'Die Aktivität wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addCountdown.success'] =  'Der Countdown wurde erfolgreich erstellt';
+//$l['acp.switchableManagement.form.addActivity.success'] =  'Die Aktivität wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addActivity.success'] =  'The activity was successfully created';
+//$l['acp.switchableManagement.form.addElementToActivity.success'] =  'Das Element wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.addElementToActivity.success'] =  'The item has been saved successfully';
+//$l['acp.switchableManagement.form.deleteElementFromActivity.success'] =  'Das Element wurde erfolgreich entfernt';
+$l['acp.switchableManagement.form.deleteElementFromActivity.success'] =  'The item has been successfully removed';
+//$l['acp.switchableManagement.form.editActivity.success'] =  'Die Aktivität wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editActivity.success'] =  'The activity has been saved successfully';
+//$l['acp.switchableManagement.form.addCountdown.success'] =  'Der Countdown wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addCountdown.success'] =  'The countdown has been created successfully';
 //
 $l['acp.switchableManagement.form.editCountdown.success'] =  'Der Countdown wurde erfolgreich gespeichert';
 //
