@@ -558,7 +558,7 @@ $l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Visibi
 $l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'permitted users';
 //$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'legt fest welche Benutzer die Fritz!Box verwenden dürfen';
 $l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'specifies which users may use the Fritz! Box';
-
+8
 //Meldungen
 //Messages
 
@@ -572,44 +572,44 @@ $l['acp.switchableManagement.form.deleteElementFromActivity.success'] =  'The it
 $l['acp.switchableManagement.form.editActivity.success'] =  'The activity has been saved successfully';
 //$l['acp.switchableManagement.form.addCountdown.success'] =  'Der Countdown wurde erfolgreich erstellt';
 $l['acp.switchableManagement.form.addCountdown.success'] =  'The countdown has been created successfully';
-//
-$l['acp.switchableManagement.form.editCountdown.success'] =  'Der Countdown wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addRadioSocket.success'] =  'Die Funksteckdose wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editRadioSocket.success'] =  'Die Funksteckdose wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addGpioOutput.success'] =  'Der GPIO wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editGpioOutput.success'] =  'Der GPIO wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addWol.success'] =  'Das Wake On Lan Gerät wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editWol.success'] =  'Das Wake On Lan Gerät wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addReboot.success'] =  'Der Neustart wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editReboot.success'] =  'Der Neustart wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addShutdown.success'] =  'Der Shutdown wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editShutdown.success'] =  'Der Shutdown wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addScript.success'] =  'Das Script wurde erfolgreich erstellt';
-//
+//$l['acp.switchableManagement.form.editCountdown.success'] =  'Der Countdown wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editCountdown.success'] =  'The countdown has been saved successfully';
+//$l['acp.switchableManagement.form.addRadioSocket.success'] =  'Die Funksteckdose wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addRadioSocket.success'] =  'The radio controlled socket has been created successfully';
+//$l['acp.switchableManagement.form.editRadioSocket.success'] =  'Die Funksteckdose wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editRadioSocket.success'] =  'The radio controlled socket has been saved successfully';
+//$l['acp.switchableManagement.form.addGpioOutput.success'] =  'Der GPIO wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addGpioOutput.success'] =  'The GPIO has been created successfully';
+//$l['acp.switchableManagement.form.editGpioOutput.success'] =  'Der GPIO wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editGpioOutput.success'] =  'The GPIO has been saved successfully';
+//$l['acp.switchableManagement.form.addWol.success'] =  'Das Wake On Lan Gerät wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addWol.success'] =  'The Wake On Lan device has been created successfully';
+//$l['acp.switchableManagement.form.editWol.success'] =  'Das Wake On Lan Gerät wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editWol.success'] =  'The Wake On Lan device has been csaved successfully';
+//$l['acp.switchableManagement.form.addReboot.success'] =  'Der Neustart wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addReboot.success'] =  'The reboot has been successfully created';
+//$l['acp.switchableManagement.form.editReboot.success'] =  'Der Neustart wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editReboot.success'] =  'The reboot has been successfully saved';
+//$l['acp.switchableManagement.form.addShutdown.success'] =  'Der Shutdown wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addShutdown.success'] =  'The shutdown has been successfully created';
+//$l['acp.switchableManagement.form.editShutdown.success'] =  'Der Shutdown wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editShutdown.success'] =  'The shutdown has been successfully saved';
+//$l['acp.switchableManagement.form.addScript.success'] =  'Das Script wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addScript.success'] =  'The script has been created successfully';
+//$l['acp.switchableManagement.form.editScript.success'] =  'The script has been saved successfully';
 $l['acp.switchableManagement.form.editScript.success'] =  'Das Script wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.addbox.success'] =  'Die Box wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.editbox.success'] =  'Die Box wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.delete.success'] =  'Das Element wurde erfolgreich gelöscht';
-//
-$l['acp.switchableManagement.form.editSensor.success'] =  'Der Sensor wurde erfolgreich gespeichert';
-//
-$l['acp.switchableManagement.form.editSensor.delete.success'] =  'Der Sensor wurde erfolgreich gelöscht';
-//
-$l['acp.switchableManagement.form.deleteSensor.success'] =  'Der Sensor wurde erfolgreich gelöscht';
+//$l['acp.switchableManagement.form.addbox.success'] =  'Die Box wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addbox.success'] =  'The box has been created successfully';
+//$l['acp.switchableManagement.form.editbox.success'] =  'Die Box wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editbox.success'] =  'The box has been saved successfully';
+//$l['acp.switchableManagement.form.delete.success'] =  'Das Element wurde erfolgreich gelöscht';
+$l['acp.switchableManagement.form.delete.success'] =  'The item has been deleted successfully';
+//$l['acp.switchableManagement.form.editSensor.success'] =  'Der Sensor wurde erfolgreich gespeichert';
+$l['acp.switchableManagement.form.editSensor.success'] =  'The sensor has been saved successfully';
+//$l['acp.switchableManagement.form.editSensor.delete.success'] =  'Der Sensor wurde erfolgreich gelöscht';
+$l['acp.switchableManagement.form.editSensor.delete.success'] =  'The sensor has been deleted successfully';
+//$l['acp.switchableManagement.form.deleteSensor.success'] =  'Der Sensor wurde erfolgreich gelöscht';
+$l['acp.switchableManagement.form.deleteSensor.success'] =  'The sensor has been deleted successfully';
 //
 $l['acp.switchableManagement.form.deleteBox.success'] =  'Die Box wurde erfolgreich gelöscht';
 //
