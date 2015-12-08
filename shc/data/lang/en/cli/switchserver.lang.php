@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Sprachvariablen fuer den Schaltserver
- * 
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * ACP Info Sprachvariablen
+ *
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
  
 $l = array();
