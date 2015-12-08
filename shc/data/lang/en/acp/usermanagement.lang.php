@@ -1,14 +1,17 @@
 <?php
 
 /**
- * Benutzerverwaltung Sprachvariablen
+ * ACP Info Sprachvariablen
  *
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
+ 
  
 $l = array();
 
@@ -51,7 +54,7 @@ $l['acp.userManagement.prompt.deleteUser.title'] = 'Delete user';
 $l['acp.userManagement.prompt.deleteUser'] = 'Are you sure to delete the user?';
 //$l['acp.userManagement.prompt.deleteGroup.title'] = 'Benutzergruppe löschen';
 $l['acp.userManagement.prompt.deleteGroup.title'] = 'Delete usergroup';
-//
+//$l['acp.userManagement.prompt.deleteGroup'] = 'Willst du die Benutzergruppe wirklich löschen?';
 $l['acp.userManagement.prompt.deleteGroup'] = 'Are you sure to delete the usergroup?';
 
 //Formulate
@@ -95,7 +98,7 @@ $l['acp.userManagement.form.group.tab1.title'] = 'General data';
 $l['acp.userManagement.form.group.tab1.description'] = 'General data of the group';
 //$l['acp.userManagement.form.group.tab2.title'] = 'Benutzer Rechte';
 $l['acp.userManagement.form.group.tab2.title'] = 'User rights';
-$l['acp.userManagement.form.group.tab2.description'] = 'Benutzer Rechte der Gruppe';
+///$l['acp.userManagement.form.group.tab2.description'] = 'Benutzer Rechte der Gruppe';
 $l['acp.userManagement.form.group.tab2.description'] = 'User rights of the group';
 //$l['acp.userManagement.form.group.tab3.title'] = 'Administrator Rechte';
 $l['acp.userManagement.form.group.tab3.title'] = 'Administrator rights';
