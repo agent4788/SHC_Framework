@@ -15,6 +15,7 @@
 $l = array();
 
 //Titel
+//Title
 
 //$l['acp.database.title'] = 'Datenbank';
 $l['acp.database.title'] = 'Database';
@@ -23,7 +24,7 @@ $l['acp.database.title'] = 'Database';
 //Button
 
 //$l['acp.database.buttons.dump'] = 'Datenbank speichern';
-$l['acp.database.buttons.dump'] = Save database';
+$l['acp.database.buttons.dump'] = 'Save database';
 
 //Tabelle
 //Table
@@ -38,7 +39,7 @@ $l['acp.database.config'] = 'Config. file';
 //$l['acp.database.memory'] = 'Speicherbedarf';
 $l['acp.database.memory'] = 'Memory requirements';
 //$l['acp.database.memoryPeak'] = 'Speicherbedarf spitze';
-$l['acp.database.memoryPeak'] = 'Memory requirements top;
+$l['acp.database.memoryPeak'] = 'Memory requirements top';
 //$l['acp.database.lastSave'] = 'letzte Speicherung';
 $l['acp.database.lastSave'] = 'last storage';
 //$l['acp.database.lastSaveState'] = 'Speicherstatus';
