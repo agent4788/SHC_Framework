@@ -1,14 +1,17 @@
 <?php
 
 /**
- * Startseite Sprachvariablen
- * 
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * ACP Info Sprachvariablen
+ *
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
+
 $l = array();
 
 //$l['index.button.acpMenu'] = 'Administration';
@@ -61,7 +64,7 @@ $l['index.login.error'] = 'Username or password invalid';
 //Warnungen
 //Warnings
 
-//$l['index.warnings'] = 'folgende Fehler sind aufgetreten:';
+//$l['index.warnings'] = 'Folgende Fehler sind aufgetreten:';
 $l['index.warnings'] = 'The following errors occurred:';
 //$l['index.warnings.noRunningServer'] = 'Kein laufender Schaltserver gefunden. Für die Funktion des SHC muss mindestens ein Schaltserver erreichbar sein!';
 $l['index.warnings.noRunningServer'] = 'No current switching server found. For the function of SHC at least one switching server must be accessible!';
