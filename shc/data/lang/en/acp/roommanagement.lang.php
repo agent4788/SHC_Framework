@@ -1,26 +1,29 @@
 <?php
 
 /**
- * Raeumeverwaltung Sprachvariablen
+ * ACP Info Sprachvariablen
  *
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
  
 $l = array();
 
 //Allgemein
+//General
 
-
-
-$l['acp.roomManagement.title'] = 'Raumverwaltung';
+//$l['acp.roomManagement.title'] = 'Raumverwaltung';
+$l['acp.roomManagement.title'] = 'Room management';
 
 //Raumuebersicht
 //Room overview
 
+//$l['acp.roomManagement.roomList.table.head.name'] = 'Name';
 $l['acp.roomManagement.roomList.table.head.name'] = 'Name';
 
 //Buttons
@@ -39,7 +42,7 @@ $l['acp.roomManagement.prompt.deleteRoom'] = 'Willst du den Raum wirklich lösch
 //Formulare
 //Forms
 
-
+//$l['acp.roomManagement.form.room.name'] = 'Name';
 $l['acp.roomManagement.form.room.name'] = 'Name';
 //$l['acp.roomManagement.form.room.name.description'] = 'Name des Raumes';
 $l['acp.roomManagement.form.room.name.description'] = 'Name of room';
