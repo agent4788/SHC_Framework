@@ -25,15 +25,16 @@ $l['acp.sensorpointsManagement.title.sensors'] = 'Sensors';
 //Raumuebersicht
 //Room overview
 
+//$l['acp.sensorpointsManagement.roomList.table.head.name'] = 'Name';
 $l['acp.sensorpointsManagement.roomList.table.head.name'] = 'Name';
 //$l['acp.sensorpointsManagement.roomList.table.head.lastConnect'] = 'letzter Kontakt';
 $l['acp.sensorpointsManagement.roomList.table.head.lastConnect'] = 'Last contact';
-//
+//$l['acp.sensorpointsManagement.roomList.table.head.voltage'] = 'Spannung';
 $l['acp.sensorpointsManagement.roomList.table.head.voltage'] = 'Voltage';
 
 //Prompts
 
-//$l['acp.sensorpointsManagement.prompt.deleteSensorPoint.title'] = 'Snesorpunkt löschen';
+//$l['acp.sensorpointsManagement.prompt.deleteSensorPoint.title'] = 'Sensorpunkt löschen';
 $l['acp.sensorpointsManagement.prompt.deleteSensorPoint.title'] = 'Delete sensor point';
 //$l['acp.sensorpointsManagement.prompt.deleteSensorPoint'] = 'Willst du den Sensorpunkt wirklich löschen? Dabei werden auch alle zum Sensorpunkt gehörenden Sensoren gelöscht!';
 $l['acp.sensorpointsManagement.prompt.deleteSensorPoint'] = 'Want to delete the sensor point really? Here also all the sensor point belonging sensors are deleted!';
@@ -41,6 +42,7 @@ $l['acp.sensorpointsManagement.prompt.deleteSensorPoint'] = 'Want to delete the 
 //Formulare
 //Forms
 
+//$l['acp.sensorpointsManagement.form.sensorPoint.name'] = 'Name';
 $l['acp.sensorpointsManagement.form.sensorPoint.name'] = 'Name';
 //$l['acp.sensorpointsManagement.form.sensorPoint.name.description'] = 'Name des Sensorpunktes';
 $l['acp.sensorpointsManagement.form.sensorPoint.name.description'] = 'Name of the sensor point';
