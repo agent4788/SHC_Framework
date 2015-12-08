@@ -1,18 +1,21 @@
 <?php
 
 /**
- * Sprachvariablen fuer den Sensor Transmitter
+ * ACP Info Sprachvariablen
  *
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
+ 
 $l = array();
 
 //Eingaben
-
+//Input
 
 //$l['sensorTransmitter.input.active'] = 'Sensor Transmitter Dienst aktiviert ({1:s}): ';
 $l['sensorTransmitter.input.active'] = 'Sensor transmitter server enabled ({1:s}): ';
