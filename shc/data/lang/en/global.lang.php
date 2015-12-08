@@ -1,14 +1,17 @@
 <?php
 
 /**
- * Globale Sprachvariablen
- * 
- * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @since      2.0.0-0
- * @version    2.0.0-0
+ * ACP Info Sprachvariablen
+ *
+ * @author       Oliver Kleditzsch
+ * @copyright    Copyright (c) 2014, Oliver Kleditzsch
+ * @license      http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @since        2.0.0-0
+ * @version      2.0.0-0
+ * @translation  Dietmar Franken
+ * @SHC Forum    http://rpi-controlcenter.de/member.php?action=profile&uid=173
  */
+ 
 $l = array();
 
 //Allgemeine
@@ -114,12 +117,12 @@ $l['global.button.shutdown'] = 'Shutdown';
 
 //$l['global.prompt.reboot.title'] = 'Neustart';
 $l['global.prompt.reboot.title'] = 'Reboot';
-//$l['global.prompt.reboot.text'] = 'willst du den Raspberry Pi wirklich neu starten?'
-$l['global.prompt.reboot.text'] = 'do you really want to restart the Raspberry Pi?';
+//$l['global.prompt.reboot.text'] = 'Willst du den Raspberry Pi wirklich neu starten?'
+$l['global.prompt.reboot.text'] = 'Do you really want to restart the Raspberry Pi?';
 //$l['global.prompt.shutdown.title'] = 'Herunterfahren';
 $l['global.prompt.shutdown.title'] = 'Shutdown';
-//$l['global.prompt.shutdown.text'] = 'willst du den Raspberry Pi wirklich Herunterfahren?';
-$l['global.prompt.shutdown.text'] = 'do you really want to shutdown the Raspberry Pi?';
+//$l['global.prompt.shutdown.text'] = Willst du den Raspberry Pi wirklich herunterfahren?';
+$l['global.prompt.shutdown.text'] = Do you really want to shutdown the Raspberry Pi?';
 
 //Datum
 //Date
