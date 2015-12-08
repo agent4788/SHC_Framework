@@ -16,15 +16,16 @@ $l = array();
 //Allgemein
 //General
 
+//$l['acp.conditionManagement.title'] = 'Bedingungen verwalten';
 $l['acp.conditionManagement.title'] = 'Manage conditions';
-//
 
 //Bedingungen liste
 //Conditions list
 
+//$l['acp.conditionManagement.conditionList.table.head.name'] = 'Name';
 $l['acp.conditionManagement.conditionList.table.head.name'] = 'Name';
-$l['acp.conditionManagement.conditionList.table.head.type'] = 'Typ';
 //$l['acp.conditionManagement.conditionList.table.head.type'] = 'Type';
+$l['acp.conditionManagement.conditionList.table.head.type'] = 'Typ';
 
 //Buttons
 //Button
@@ -83,55 +84,58 @@ $l['acp.conditionManagement.condition.HolidaysCondition'] = 'Holidays';
 //$l['acp.conditionManagement.condition.InputHighCondition'] = 'Eingang "1"';
 $l['acp.conditionManagement.condition.InputHighCondition'] = 'Inbput "1"';
 //$l['acp.conditionManagement.condition.InputLowCondition'] = 'Eingang "0"';
-$l['acp.conditionManagement.condition.InputLowCondition'] = 'Input "0"';
-$l['acp.conditionManagement.condition.FirstLoopCondition'] = 'Sheduler start';
+$l['acp.conditionManagement.condition.InputLowCondition'] = 'Input "0';
+//$l['acp.conditionManagement.condition.FirstLoopCondition'] = 'SCheduler start';
+$l['acp.conditionManagement.condition.FirstLoopCondition'] = 'SCheduler start';
 
 //Formularfelder
 //Form fields
 
-$l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'Neujahr';
-
-$l['acp.conditionManagement.form.holiday.EPIPHANY'] = 'Heilige Drei Könige';
-
-$l['acp.conditionManagement.form.holiday.MAUNDY_THURSDAY'] = 'Gründonnerstag';
-
-$l['acp.conditionManagement.form.holiday.GOOD_FRIDAY'] = 'Karfreitag';
-
-$l['acp.conditionManagement.form.holiday.EASTER_DAY'] = 'Ostersonntag';
-
-$l['acp.conditionManagement.form.holiday.EASTER_MONDAY'] = 'Ostermontag';
-
-$l['acp.conditionManagement.form.holiday.DAY_OF_WORK'] = 'Tag der Arbeit';
-
-$l['acp.conditionManagement.form.holiday.ASCENSION_DAY'] = 'Christi Himmelfahrt';
-
-$l['acp.conditionManagement.form.holiday.WHIT_SUN'] = 'Pfingstsonntag';
-
-$l['acp.conditionManagement.form.holiday.WHIT_MONDAY'] = 'Pfingstmontag';
-
-$l['acp.conditionManagement.form.holiday.CORPUS_CHRISTI'] = 'Fronleichnam';
-
-$l['acp.conditionManagement.form.holiday.ASSUMPTION'] = 'Mariä Himmelfahrt';
-
-$l['acp.conditionManagement.form.holiday.GERMAN_UNIFICATION_DAY'] = 'Tag der Deutschen Einheit';
-
-$l['acp.conditionManagement.form.holiday.REFOMATION_DAY'] = 'Reformationstag';
-
-$l['acp.conditionManagement.form.holiday.ALL_SAINTS_DAY'] = 'Allerheiligen';
-
-$l['acp.conditionManagement.form.holiday.DAY_OF_REPENTANCE'] = 'Buss- und Bettag';
-
-$l['acp.conditionManagement.form.holiday.CHRISTMAS_DAY'] = 'Heiligabend';
-
-$l['acp.conditionManagement.form.holiday.XMAS_DAY'] = '1. Weihnachtstag';
-
-$l['acp.conditionManagement.form.holiday.BOXING_DAY'] = '2. Weihnachtstag';
-
-$l['acp.conditionManagement.form.holiday.NEW_YEARS_EVE'] = 'Silvester';
+//$l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'Neujahr';
+$l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'New Year';
+//$l['acp.conditionManagement.form.holiday.EPIPHANY'] = 'Heilige Drei Könige';
+$l['acp.conditionManagement.form.holiday.EPIPHANY'] = 'Epiphany';
+//$l['acp.conditionManagement.form.holiday.MAUNDY_THURSDAY'] = 'Gründonnerstag';
+$l['acp.conditionManagement.form.holiday.MAUNDY_THURSDAY'] = 'Maundy Thursday';
+//$l['acp.conditionManagement.form.holiday.GOOD_FRIDAY'] = 'Karfreitag';
+$l['acp.conditionManagement.form.holiday.GOOD_FRIDAY'] = 'Good Friday';
+//$l['acp.conditionManagement.form.holiday.EASTER_DAY'] = 'Ostersonntag';
+$l['acp.conditionManagement.form.holiday.EASTER_DAY'] = 'Easter Sunday';
+//$l['acp.conditionManagement.form.holiday.EASTER_MONDAY'] = 'Ostermontag';
+$l['acp.conditionManagement.form.holiday.EASTER_MONDAY'] = 'Easter Monday';
+//$l['acp.conditionManagement.form.holiday.DAY_OF_WORK'] = 'Tag der Arbeit';
+$l['acp.conditionManagement.form.holiday.DAY_OF_WORK'] = 'May Day';
+//$l['acp.conditionManagement.form.holiday.ASCENSION_DAY'] = 'Christi Himmelfahrt';
+$l['acp.conditionManagement.form.holiday.ASCENSION_DAY'] = 'Ascension of Christ';
+//$l['acp.conditionManagement.form.holiday.WHIT_SUN'] = 'Pfingstsonntag';
+$l['acp.conditionManagement.form.holiday.WHIT_SUN'] = 'Whitsunday';
+//$l['acp.conditionManagement.form.holiday.WHIT_MONDAY'] = 'Pfingstmontag';
+$l['acp.conditionManagement.form.holiday.WHIT_MONDAY'] = 'Whitmonday';
+//$l['acp.conditionManagement.form.holiday.CORPUS_CHRISTI'] = 'Fronleichnam';
+$l['acp.conditionManagement.form.holiday.CORPUS_CHRISTI'] = 'Corpus Christi';
+//$l['acp.conditionManagement.form.holiday.ASSUMPTION'] = 'Maria Himmelfahrt';
+$l['acp.conditionManagement.form.holiday.ASSUMPTION'] = 'Assumption Day';
+//$l['acp.conditionManagement.form.holiday.GERMAN_UNIFICATION_DAY'] = 'Tag der Deutschen Einheit';
+$l['acp.conditionManagement.form.holiday.GERMAN_UNIFICATION_DAY'] = 'Day of German Unity';
+//$l['acp.conditionManagement.form.holiday.REFOMATION_DAY'] = 'Reformationstag';
+$l['acp.conditionManagement.form.holiday.REFOMATION_DAY'] = 'Reformation Day';
+//$l['acp.conditionManagement.form.holiday.ALL_SAINTS_DAY'] = 'Allerheiligen';
+$l['acp.conditionManagement.form.holiday.ALL_SAINTS_DAY'] = 'All Hallows Day';
+//$l['acp.conditionManagement.form.holiday.DAY_OF_REPENTANCE'] = 'Buss- und Bettag';
+$l['acp.conditionManagement.form.holiday.DAY_OF_REPENTANCE'] = 'Day of Prayer and Repentance';
+//$l['acp.conditionManagement.form.holiday.CHRISTMAS_DAY'] = 'Heiligabend';
+$l['acp.conditionManagement.form.holiday.CHRISTMAS_DAY'] = 'Christmas Eve';
+//$l['acp.conditionManagement.form.holiday.XMAS_DAY'] = '1. Weihnachtstag';
+$l['acp.conditionManagement.form.holiday.XMAS_DAY'] = 'Christmas Day';
+//$l['acp.conditionManagement.form.holiday.BOXING_DAY'] = '2. Weihnachtstag';
+$l['acp.conditionManagement.form.holiday.BOXING_DAY'] = 'Boxing day';
+//$l['acp.conditionManagement.form.holiday.NEW_YEARS_EVE'] = 'Silvester';
+$l['acp.conditionManagement.form.holiday.NEW_YEARS_EVE'] = 'New Years Eve';
 
 //Formulare
 //Forms
 
+//$l['acp.conditionManagement.form.condition.name'] = 'Name';
 $l['acp.conditionManagement.form.condition.name'] = 'Name';
 //$l['acp.conditionManagement.form.condition.name.description'] = 'Name der Bedingung';
 $l['acp.conditionManagement.form.condition.name.description'] = 'Name of condition';
@@ -160,7 +164,7 @@ $l['acp.conditionManagement.form.condition.temperature'] = 'Temperature';
 //$l['acp.conditionManagement.form.condition.temperature.description'] = 'wähle die Temperatur (-30 - 120°C) über/unter der die Bedingung zutreffen soll';
 $l['acp.conditionManagement.form.condition.temperature.description'] = 'Choose the Temperatur2 (-30 - 120°C) over/under it is to match the condition';
 //$l['acp.conditionManagement.form.condition.userAtHome'] = 'Benutzer';
-$l['acp.conditionManagement.form.condition.userAtHome'] = 'User;
+$l['acp.conditionManagement.form.condition.userAtHome'] = 'User';
 //$l['acp.conditionManagement.form.condition.userAtHome.description'] = 'wähle die Benutzer von denen mindestens einer anwesend sein muss damit die Bedingung zutrifft';
 $l['acp.conditionManagement.form.condition.userAtHome.description'] = 'select the users of which at least one present so that the condition is true';
 //$l['acp.conditionManagement.form.condition.userNotAtHome'] = 'Benutzer';
@@ -200,7 +204,7 @@ $l['acp.conditionManagement.form.condition.endMinute'] = 'End minute';
 //$l['acp.conditionManagement.form.condition.endMinute.description'] = 'Endminute des Zeitbereiches';
 $l['acp.conditionManagement.form.condition.endMinute.description'] = 'End minute of the time range';
 //$l['acp.conditionManagement.form.condition.path'] = 'Pfad';
-$l['acp.conditionManagement.form.condition.path'] = 'Path;
+$l['acp.conditionManagement.form.condition.path'] = 'Path';
 //$l['acp.conditionManagement.form.condition.path.description'] = 'Absoluter Pfad zu Datei';
 $l['acp.conditionManagement.form.condition.path.description'] = 'Absolute path to file';
 //$l['acp.conditionManagement.form.condition.wait'] = 'Verzögerungszeit';
@@ -236,7 +240,7 @@ $l['acp.conditionManagement.form.condition.success'] = 'The condition has been s
 //$l['acp.conditionManagement.form.condition.formError'] = 'Falscher Formulartyp';
 $l['acp.conditionManagement.form.condition.formError'] = 'Wrong type of form';
 //$l['acp.conditionManagement.form.condition.error.1502'] = 'Der Name ist schon vergeben';
-$l['acp.conditionManagement.form.condition.error.1502'] = 'The name is already taken;
+$l['acp.conditionManagement.form.condition.error.1502'] = 'The name is already taken';
 //$l['acp.conditionManagement.form.condition.error.1102'] = 'Die Bedingung konnte wegen fehlender Schreibrechte nicht gespeichert werden';
 $l['acp.conditionManagement.form.condition.error.1102'] = 'The condition could not be saved due to lack of write permissions';
 //$l['acp.conditionManagement.form.condition.error.invalidDate'] = 'Ungültigs Datum im Feld "{1:s}"';
