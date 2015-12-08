@@ -610,78 +610,78 @@ $l['acp.switchableManagement.form.editSensor.success'] =  'The sensor has been s
 $l['acp.switchableManagement.form.editSensor.delete.success'] =  'The sensor has been deleted successfully';
 //$l['acp.switchableManagement.form.deleteSensor.success'] =  'Der Sensor wurde erfolgreich gelöscht';
 $l['acp.switchableManagement.form.deleteSensor.success'] =  'The sensor has been deleted successfully';
-//
-$l['acp.switchableManagement.form.deleteBox.success'] =  'Die Box wurde erfolgreich gelöscht';
-//
-$l['acp.switchableManagement.form.addAvmSocket.success'] =  'Die AVM Steckdose wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.addFritzBox.success'] =  'Die Fritz!Box wurde erfolgreich erstellt';
-//
-$l['acp.switchableManagement.form.error.id'] =  'Ungültige ID';
-//
+//$l['acp.switchableManagement.form.deleteBox.success'] =  'Die Box wurde erfolgreich gelöscht';
+$l['acp.switchableManagement.form.deleteBox.success'] =  'The box has been deleted successfully';
+//$l['acp.switchableManagement.form.addAvmSocket.success'] =  'Die AVM Steckdose wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addAvmSocket.success'] =  'The AVM socket has been created successfully';
+//$l['acp.switchableManagement.form.addFritzBox.success'] =  'Die Fritz!Box wurde erfolgreich erstellt';
+$l['acp.switchableManagement.form.addFritzBox.success'] =  'The Fritz!Box has been created successfully';
+//$l['acp.switchableManagement.form.error.id'] =  'Ungültige ID';
+$l['acp.switchableManagement.form.error.id'] =  'Invalid ID';
+//$l['acp.switchableManagement.form.error.command'] =  'Ungültiger Befehl';
 $l['acp.switchableManagement.form.error.command'] =  'Ungültiger Befehl';
-//
-$l['acp.switchableManagement.form.addActivity.error.1102'] =  'Die Aktivität konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addActivity.error'] =  'Die Aktivität konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addElementToActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addElementToActivity.error'] =  'Das Element konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addCountdown.error.1102'] =  'Der Countdown konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addCountdown.error'] =  'Der Countdown konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addRadioSocket.error.1102'] =  'Die Funksteckdose konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addRadioSocket.error'] =  'Die Funksteckdose konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addGpioOutput.error.1102'] =  'Der GPIO konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addGpioOutput.error'] =  'Der GPIO konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addWol.error.1102'] =  'Das WOL Gerät konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addWol.error'] =  'Das WOL Gerät konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addbox.error.1102'] =  'Die Box konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addbox.error'] =  'Die Box konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addReboot.error.1102'] =  'Der Neustart konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addReboot.error'] =  'Der Neustart konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addShutdown.error.1102'] =  'Der Shutdown konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addShutdown.error'] =  'Der Shutdown konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addScript.error.1102'] =  'Das Script konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.addScript.error'] =  'Das Script konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.delete.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.delete.error'] =  'Das Element konnte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.editSensor.error.1102'] =  'Der Sensor konnte wegen fehlender Schreibrechte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.editSensor.error'] =  'Der Sensor konnte nicht gespeichert werden';
-//
-$l['acp.switchableManagement.form.deleteSensor.error.1102'] =  'Der Sensor konnte wegen fehlender Schreibrechte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.deleteSensor.error'] =  'Der Sensor konnte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.deleteBox.error.1102'] =  'Die Box konnte wegen fehlender Schreibrechte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.deleteBox.error'] =  'Die Box konnte nicht gelöscht werden';
-//
-$l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht entfernt werden';
-//
-$l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'Das Element konnte nicht entfernt werden';
-//
-$l['acp.switchableManagement.form.addAvmSocket.error.1102'] =  'Die AVM Steckdose konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+//$l['acp.switchableManagement.form.addActivity.error.1102'] =  'Die Aktivität konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addActivity.error.1102'] =  'The activity could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addActivity.error'] =  'Die Aktivität konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addActivity.error'] =  'The activity could not be saved';
+//$l['acp.switchableManagement.form.addElementToActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addElementToActivity.error.1102'] =  'The item could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addElementToActivity.error'] =  'Das Element konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addElementToActivity.error'] =  'The item could not be saved ';
+//$l['acp.switchableManagement.form.addCountdown.error.1102'] =  'Der Countdown konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addCountdown.error.1102'] =  'The countdown could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addCountdown.error'] =  'Der Countdown konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addCountdown.error'] =  'The countdown could not be saved';
+//$l['acp.switchableManagement.form.addRadioSocket.error.1102'] =  'Die Funksteckdose konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addRadioSocket.error.1102'] =  'The radio controlled socket could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addRadioSocket.error'] =  'Die Funksteckdose konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addRadioSocket.error'] =  'The radio controlled socket could not be saved';
+//$l['acp.switchableManagement.form.addGpioOutput.error.1102'] =  'Der GPIO konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addGpioOutput.error.1102'] =  'The GPIO could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addGpioOutput.error'] =  'Der GPIO konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addGpioOutput.error'] =  'The GPIO could not be saved';
+//$l['acp.switchableManagement.form.addWol.error.1102'] =  'Das WOL Gerät konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addWol.error.1102'] =  'The WOL device could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addWol.error'] =  'Das WOL Gerät konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addWol.error'] =  'The WOL device could not be saved';
+//$l['acp.switchableManagement.form.addbox.error.1102'] =  'Die Box konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addbox.error.1102'] =  'The box could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addbox.error'] =  'Die Box konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addbox.error'] =  'The box could not be saved';
+//$l['acp.switchableManagement.form.addReboot.error.1102'] =  'Der Neustart konnte wegen fehlender Schreibrechte nicht gespeichert werden'
+$l['acp.switchableManagement.form.addReboot.error.1102'] =  'The reboot could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addReboot.error'] =  'Der Neustart konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addReboot.error'] =  'The reboot could not be saved';
+//$l['acp.switchableManagement.form.addShutdown.error.1102'] =  'Der Shutdown konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addShutdown.error.1102'] =  'The shutdown could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addShutdown.error'] =  'Der Shutdown konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addShutdown.error'] =  'The shutdown could not be saved';
+//$l['acp.switchableManagement.form.addScript.error.1102'] =  'Das Script konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addScript.error.1102'] =  'The script could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.addScript.error'] =  'Das Script konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addScript.error'] =  'The script could not be saved';
+//$l['acp.switchableManagement.form.delete.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.switchableManagement.form.delete.error.1102'] =  'The item could not be deleted due to lack of write access';
+//$l['acp.switchableManagement.form.delete.error'] =  'Das Element konnte nicht gelöscht werden';
+$l['acp.switchableManagement.form.delete.error'] =  'The item could not be deleted ';
+//$l['acp.switchableManagement.form.editSensor.error.1102'] =  'Der Sensor konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.editSensor.error.1102'] =  'The sensor could not be saved due to lack of write access';
+//$l['acp.switchableManagement.form.editSensor.error'] =  'Der Sensor konnte nicht gespeichert werden';
+$l['acp.switchableManagement.form.editSensor.error'] =  'The sensor could not be saved';
+//$l['acp.switchableManagement.form.deleteSensor.error.1102'] =  'Der Sensor konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.switchableManagement.form.deleteSensor.error.1102'] =  'The sensor could not be deleted due to lack of write access';
+//$l['acp.switchableManagement.form.deleteSensor.error'] =  'Der Sensor konnte nicht gelöscht werden';
+$l['acp.switchableManagement.form.deleteSensor.error'] =  'The sensor could not be deleted';
+//$l['acp.switchableManagement.form.deleteBox.error.1102'] =  'Die Box konnte wegen fehlender Schreibrechte nicht gelöscht werden';
+$l['acp.switchableManagement.form.deleteBox.error.1102'] =  'The box could not be deleted due to lack of write access';
+//$l['acp.switchableManagement.form.deleteBox.error'] =  'Die Box konnte nicht gelöscht werden';
+$l['acp.switchableManagement.form.deleteBox.error'] =  'The box could not be deleted';
+//$l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  'Das Element konnte wegen fehlender Schreibrechte nicht entfernt werden';
+$l['acp.switchableManagement.form.deleteElementFromActivity.error.1102'] =  ' The item could not be removed due to lack of write access';
+//$l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'Das Element konnte nicht entfernt werden';
+$l['acp.switchableManagement.form.deleteElementFromActivity.error'] =  'The item could not be removedDas Element konnte nicht entfernt werden';
+//$l['acp.switchableManagement.form.addAvmSocket.error.1102'] =  'Die AVM Steckdose konnte wegen fehlender Schreibrechte nicht gespeichert werden';
+$l['acp.switchableManagement.form.addAvmSocket.error.1102'] =  'The AVM socket could not be saved due to lack of write access';
 //$l['acp.switchableManagement.form.addAvmSocket.error'] =  'Die AVM Steckdose konnte nicht gespeichert werden';
 $l['acp.switchableManagement.form.addAvmSocket.error'] =  'The AVM socket could not be saved';
 //$l['acp.switchableManagement.form.addFritzBox.error.1102'] =  'Die Fritz!Box konnte wegen fehlender Schreibrechte nicht gespeichert werden';
