@@ -122,7 +122,7 @@ $l['global.prompt.reboot.text'] = 'Do you really want to restart the Raspberry P
 //$l['global.prompt.shutdown.title'] = 'Herunterfahren';
 $l['global.prompt.shutdown.title'] = 'Shutdown';
 //$l['global.prompt.shutdown.text'] = Willst du den Raspberry Pi wirklich herunterfahren?';
-$l['global.prompt.shutdown.text'] = Do you really want to shutdown the Raspberry Pi?';
+$l['global.prompt.shutdown.text'] = 'Do you really want to shutdown the Raspberry Pi?';
 
 //Datum
 //Date
