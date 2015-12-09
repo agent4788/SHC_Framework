@@ -39,7 +39,7 @@ $l['acpindex.roomLess'] = 'no room';
 //$l['acpindex.box.overview'] = 'Übersicht';
 $l['acpindex.box.overview'] = 'Overview';
 //$l['acpindex.box.acpMenue'] = 'Administrationsmenü';
-$l['acpindex.box.acpMenue'] = 'Administrationsmenue';
+$l['acpindex.box.acpMenue'] = 'Administrationsmenu';
 
 //Button Hauptmenü
 //Button mainmnue
@@ -53,7 +53,7 @@ $l['acpindex.menu.settings'] = 'Settings';
 //$l['acpindex.menu.backup'] = 'Backup';
 $l['acpindex.menu.backup'] = 'Backup';
 //$l['acpindex.menu.database'] = 'Datenbank';
-$l['acpindex.menu.database'] = 'Datenbase';
+$l['acpindex.menu.database'] = 'Database';
 //$l['acpindex.menu.group.smartHome'] = 'Smart Home';
 $l['acpindex.menu.group.smartHome'] = 'Smart Home';
 //$l['acpindex.menu.rooms'] = 'Räume';
