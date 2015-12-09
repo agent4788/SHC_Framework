@@ -558,7 +558,7 @@ $l['acp.switchableManagement.form.addFritzBox.visibility.description'] = 'Visibi
 $l['acp.switchableManagement.form.addFritzBox.allowedUsers'] = 'permitted users';
 //$l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'legt fest welche Benutzer die Fritz!Box verwenden dürfen';
 $l['acp.switchableManagement.form.addFritzBox.allowedUsers.description'] = 'specifies which users may use the Fritz! Box';
-8
+
 //Meldungen
 //Messages
 
