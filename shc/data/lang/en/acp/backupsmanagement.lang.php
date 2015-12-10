@@ -23,8 +23,8 @@ $l['acp.backupsManagement.title'] = 'Manage backups';
 //Room overview
 
 $l['acp.backupsManagement.backupList.table.head.name'] = 'Name';
-$l['acp.backupsManagement.backupList.table.head.size'] = 'Dateigröße';
-//$l['acp.backupsManagement.backupList.table.head.size'] = 'Filesize';
+//$l['acp.backupsManagement.backupList.table.head.size'] = 'Dateigröße';
+$l['acp.backupsManagement.backupList.table.head.size'] = 'Filesize';
 
 //Buttons
 //Button
@@ -34,21 +34,21 @@ $l['acp.backupsManagement.button.makeBackup'] = 'Create backup';
 
 //Prompts
 
-$l['acp.backupsManagement.prompt.deleteBackup.title'] = 'Backup löschen';
-//$l['acp.backupsManagement.prompt.deleteBackup.title'] = 'Delete backup';
-$l['acp.backupsManagement.prompt.deleteBackup'] = 'Willst du das Backup wirklich löschen?';
-//$l['acp.backupsManagement.prompt.deleteBackup'] = 'Are you sure to delete the backup?';
+//$l['acp.backupsManagement.prompt.deleteBackup.title'] = 'Backup löschen';
+$l['acp.backupsManagement.prompt.deleteBackup.title'] = 'Delete backup';
+//$l['acp.backupsManagement.prompt.deleteBackup'] = 'Willst du das Backup wirklich löschen?';
+$l['acp.backupsManagement.prompt.deleteBackup'] = 'Are you sure to delete the backup?';
 
 //Meldungen
 //Messages
 
-$l['acp.backupsManagement.success.makeBackup'] =  'Das Backup wurde erfolgreich erstellt';
-//$l['acp.backupsManagement.success.makeBackup'] =  'The backup has been successfully created';
-$l['acp.backupsManagement.error.makeBackup'] =  'Das Backup konnte nicht erstellt werden';
+//$l['acp.backupsManagement.success.makeBackup'] =  'Das Backup wurde erfolgreich erstellt';
+$l['acp.backupsManagement.success.makeBackup'] =  'The backup has been successfully created';
 //$l['acp.backupsManagement.error.makeBackup'] =  'Das Backup konnte nicht erstellt werden';
-$l['acp.backupsManagement.success.deleteBackup'] =  'The backup could not be created';
+$l['acp.backupsManagement.error.makeBackup'] =  'The backup could not be created';
+$l['acp.backupsManagement.success.deleteBackup'] =  'The backup has been deleted successfully';
 //
-$l['acp.backupsManagement.error.deleteBackup'] =  'Das Backup konnte nicht gelöscht werden';
-//$l['acp.backupsManagement.error.deleteBackup'] =  'The backup could not be deleted';
-$l['acp.backupsManagement.error.hash'] =  'Ungültiger Hash';
-//$l['acp.backupsManagement.error.hash'] =  'Invalid hash';
+//$l['acp.backupsManagement.error.deleteBackup'] =  'Das Backup konnte nicht gelöscht werden';
+$l['acp.backupsManagement.error.deleteBackup'] =  'The backup could not be deleted';
+//$l['acp.backupsManagement.error.hash'] =  'Ungültiger Hash';
+$l['acp.backupsManagement.error.hash'] =  'Invalid hash';
