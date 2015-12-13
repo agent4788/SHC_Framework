@@ -26,7 +26,7 @@ class Redis extends RedisCore {
 
         if(file_exists(PATH_RWF .'db.config.json')) {
 
-            $dbConfig = json_decode(file_get_contents('./rwf/db.config.json'), true);
+            $dbConfig = json_decode(file_get_contents(PATH_RWF .'db.config.json'), true);
         } else {
 
             throw new \Exception('Die Datenbankkonfiguration fehlt (db.config.json)', 1015);
