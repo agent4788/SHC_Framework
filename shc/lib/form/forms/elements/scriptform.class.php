@@ -6,6 +6,7 @@ namespace SHC\Form\Forms\Elements;
 use RWF\Core\RWF;
 use RWF\Form\DefaultHtmlForm;
 use RWF\Form\FormElements\OnOffOption;
+use RWF\Form\FormElements\TextArea;
 use RWF\Form\FormElements\TextField;
 use SHC\Form\FormElements\ButtonTextChooser;
 use SHC\Form\FormElements\GroupPremissonChooser;
@@ -63,13 +64,13 @@ class ScriptForm extends DefaultHtmlForm {
         $this->addFormElement($rooms);
 
         //An Kommando
-        $onCommand = new TextField('onCommand', ($script instanceof Script ? $script->getOnCommand() : ''), array('maxlength' => 255));
+        $onCommand = new TextArea('onCommand', ($script instanceof Script ? $script->getOnCommand() : ''), array('maxlength' => 1000));
         $onCommand->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.onCommand'));
         $onCommand->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.onCommand.description'));
         $this->addFormElement($onCommand);
 
         //Aus Kommando
-        $offCommand = new TextField('offCommand', ($script instanceof Script ? $script->getOffCommand() : ''), array('maxlength' => 255));
+        $offCommand = new TextArea('offCommand', ($script instanceof Script ? $script->getOffCommand() : ''), array('maxlength' => 1000));
         $offCommand->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.offCommand'));
         $offCommand->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addScript.offCommand.description'));
         $this->addFormElement($offCommand);
