@@ -23,9 +23,18 @@ class LanguageChooser extends Select {
         //Allgemeine Daten
         $this->setName($name);
 
+        if($user !== null) {
+
+            $lang = ($user->getLanguage() !== null ? $user->getLanguage() : RWF::getSetting('rwf.language.defaultLanguage'));
+        } else {
+
+            $lang = RWF::getSetting('rwf.language.defaultLanguage');
+        }
+
         //Sprachen anmelden
         $this->setValues(array(
-            'de' => array('Deutsch', 1)
+            'de' => array('Deutsch', ($lang == 'de' ? 1 : 0)),
+            'en' => array('Englisch', ($lang == 'en' ? 1 : 0))
         ));
     }
 }
