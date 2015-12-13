@@ -69,7 +69,7 @@ class BlinkTask extends AbstractTask {
 
             //GPIO Vorbereiten
             $this->pin = RWF::getSetting('shc.shedulerDaemon.blinkPin');
-            $this->gpioPath = RWF::getSetting('shc.switchServer.gpioCommand');
+            $this->gpioPath = '/usr/local/bin/gpio';
 
             if($this->pin >= 0) {
 
