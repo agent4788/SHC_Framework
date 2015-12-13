@@ -81,7 +81,8 @@ class SwitchServerSocket {
         'beamish_switch',
         'rc101',
         'rc102',
-        'techlico_switch'
+        'techlico_switch',
+        'duwi'
     );
 
     /**

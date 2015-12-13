@@ -24,7 +24,7 @@ class ProtocolChooser extends Select {
 
         //Gruppen anmelden
         $values = array(
-            'rcswitch-pi' => array(
+                'rcswitch-pi' => array(
                 'elro_rc' => array('Elro', ($protocol == 'elro_rc' ? 1 : 0)),
             ),
             'pilight' => array(
@@ -59,8 +59,12 @@ class ProtocolChooser extends Select {
                 'unitech' => array('Silvercrest Switches (unitech)', ($protocol == 'unitech' ? 1 : 0)),
                 'silvercrest' => array('Silvercrest Switches oder Unitech Switches  (silvercrest)', ($protocol == 'silvercrest' ? 1 : 0)),
                 'eHome' => array('eHome (eHome)', ($protocol == 'eHome' ? 1 : 0)),
+                'rsl366' => array('RSL366 (rsl366)', ($protocol == 'rsl366' ? 1 : 0)),
+                'promax' => array('PROmax (promax)', ($protocol == 'promax' ? 1 : 0)),
                 'rc101' => array('RC101 (rc101)', ($protocol == 'rc101' ? 1 : 0)),
                 'rc102' => array('RC102 (rc102)', ($protocol == 'rc102' ? 1 : 0)),
+                'duwi' => array('Düwi Terminal (duwi)', ($protocol == 'duwi' ? 1 : 0)),
+                'logilink-switch' => array('Logilink EC0002, EC0004, EC0005 and EC0006 (logilink-switch)', ($protocol == 'logilink-switch' ? 1 : 0)),
                 'techlico_switch' => array('TechLiCo (techlico_switch)', ($protocol == 'techlico_switch' ? 1 : 0))
             )
 
