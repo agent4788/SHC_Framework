@@ -315,6 +315,9 @@ $dbConfig = array();
 if(file_exists(__DIR__ .'/rwf/db.config.php')) {
 
     require_once(__DIR__ .'/rwf/db.config.php');
+} elseif(file_exists(__DIR__ .'/rwf/db.config.json')) {
+
+    $dbConfig = json_decode(file_get_contents('./rwf/db.config.json'), true);
 } else {
 
     $cli->writeColored("Das RWF ist nicht installiert, installier das RWF und ab der nächsten Version kannst du dann das Update durchführen!", "red");
@@ -427,6 +430,44 @@ if($pccInstalled === true && $pccApiLevel == 13) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Update v2.2.5 auf v2.2.6  (API Level 14 auf 15) /////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//SHC
+if($shcInstalled === true && $shcApiLevel == 14) {
+
+    //Update Funktionen
+
+    //DB Konfiguration in JSON Datei umwandeln
+    if(file_exists(__DIR__ .'/rwf/db.config.php')) {
+
+        $dbConfig = array();
+        require(__DIR__ .'/rwf/db.config.php');
+        file_put_contents(__DIR__ .'/rwf/db.config.json', json_encode($dbConfig));
+        @unlink(__DIR__ .'/rwf/db.config.php');
+    }
+
+    $shcApiLevel = 15;
+}
+
+//PCC
+if($pccInstalled === true && $pccApiLevel == 14) {
+
+    //Update Funktionen
+
+    //DB Konfiguration in JSON Datei umwandeln
+    if(file_exists(__DIR__ .'/rwf/db.config.php')) {
+
+        $dbConfig = array();
+        require(__DIR__ .'/rwf/db.config.php');
+        file_put_contents(__DIR__ .'/rwf/db.config.json', json_encode($dbConfig));
+        @unlink(__DIR__ .'/rwf/db.config.php');
+    }
+
+    $pccApiLevel = 15;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // neue app.json Dateien schreiben /////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -460,4 +501,4 @@ $cli->writeLineColored('Update erfolgreich', 'green');
 // sich selbst loeschen ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@unlink(__FILE__);
+//@unlink(__FILE__);

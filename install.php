@@ -510,25 +510,16 @@ if(!file_exists('./rwf/db.config.php')) {
         exit(1);
     }
 
-//DB Config erstellen
-    $dbConfig =
-        "<?php
+    //DB Config erstellen
+    $dbConfig = array(
+        'host' => $valid_address,
+        'port' => $valid_port,
+        'timeout' => $valid_timeout,
+        'pass' => $valid_password,
+        'db' => $valid_db
+    );
 
-/**
- * Redis NoSQL Dantenbank Konfiguration
- *
- * @created ". (new DateTime())->format('H:i d.m.Y') ."
- */
-
-\$dbConfig = array(
-    'host' => '$valid_address',
-    'port' => $valid_port,
-    'timeout' => $valid_timeout,
-    'pass' => '$valid_password',
-    'db' => $valid_db
-);
-";
-    if(@file_put_contents('./rwf/db.config.php', $dbConfig)) {
+    if(@file_put_contents('./rwf/db.config.json', json_encode($dbConfig))) {
 
         $cli->writeLineColored('Die Datenbankkonfiguration wurde erfolgreich erstellt', 'green');
     } else {
@@ -543,12 +534,12 @@ if(!file_exists('./rwf/db.config.php')) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $dbConfig = array();
-if(file_exists('./rwf/db.config.php')) {
+if(file_exists('./rwf/db.config.json')) {
 
-    require_once('./rwf/db.config.php');
+    $dbConfig = json_decode(file_get_contents('./rwf/db.config'), true);
 } else {
 
-    $cli->writeLineColored('Die Datenbankkonfiguration fehlt (db.config.php)', 'red');
+    $cli->writeLineColored('Die Datenbankkonfiguration fehlt (db.config.json)', 'red');
     exit(1);
 }
 

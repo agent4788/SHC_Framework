@@ -24,13 +24,12 @@ class Redis extends RedisCore {
      */
     public function connect() {
 
-        $dbConfig = array();
-        if(file_exists(PATH_RWF .'db.config.php')) {
+        if(file_exists(PATH_RWF .'db.config.json')) {
 
-            require_once(PATH_RWF .'db.config.php');
+            $dbConfig = json_decode(file_get_contents('./rwf/db.config.json'), true);
         } else {
 
-            throw new \Exception('Die Datenbankkonfiguration fehlt (db.config.php)', 1015);
+            throw new \Exception('Die Datenbankkonfiguration fehlt (db.config.json)', 1015);
         }
 
 

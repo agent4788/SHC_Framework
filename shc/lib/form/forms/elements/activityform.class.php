@@ -35,7 +35,7 @@ class ActivityForm extends DefaultHtmlForm {
         RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Name der Aktivitaet
-        $name = new TextField('name', ($activity instanceof Activity ? $activity->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
+        $name = new TextField('name', ($activity instanceof Activity ? $activity->getName() : ''), array('minlength' => 3, 'maxlength' => 40));
         $name->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.name'));
         $name->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addActivity.name.description'));
         $name->requiredField(true);
