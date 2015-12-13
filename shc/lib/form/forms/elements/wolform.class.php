@@ -35,7 +35,7 @@ class WolForm extends DefaultHtmlForm {
         RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Name des GPIO
-        $name = new TextField('name', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
+        $name = new TextField('name', ($wakeOnLan instanceof WakeOnLan ? $wakeOnLan->getName() : ''), array('minlength' => 3, 'maxlength' => 40));
         $name->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.name'));
         $name->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addWol.name.description'));
         $name->requiredField(true);

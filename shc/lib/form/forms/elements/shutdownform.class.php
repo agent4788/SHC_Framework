@@ -33,7 +33,7 @@ class ShutdownForm extends DefaultHtmlForm {
         RWF::getLanguage()->disableAutoHtmlEndocde();
 
         //Name der Funksteckdose
-        $name = new TextField('name', ($shutdown instanceof Shutdown ? $shutdown->getName() : ''), array('minlength' => 3, 'maxlength' => 25));
+        $name = new TextField('name', ($shutdown instanceof Shutdown ? $shutdown->getName() : ''), array('minlength' => 3, 'maxlength' => 40));
         $name->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.name'));
         $name->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.addShutdown.name.description'));
         $name->requiredField(true);

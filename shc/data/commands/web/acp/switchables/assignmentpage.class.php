@@ -101,15 +101,17 @@ class AssignmentPage extends PageCommand {
                 }
 
                 //GPIO
+                RWF::getLanguage()->disableAutoHtmlEndocde();
                 $switchServer = SwitchServerEditor::getInstance()->getSwitchServerById($switchable->getSwitchServer());
                 $gpios[$switchable->getSwitchServer()][$switchable->getPinNumber()] = array(
-                    'switchServer' => $switchServer->getName(),
-                    'model' => $switchServer->getModel(),
+                    'switchServer' => ($switchServer != null ? $switchServer->getName() : RWF::getLanguage()->get("acp.switchableManagement.button.assignment.switchserverDeleted")),
+                    'model' => ($switchServer != null ? $switchServer->getModel() : ""),
                     'type' => ($switchable instanceof RpiGpioInput ? 'Input' : 'Output'),
                     'pin' => $switchable->getPinNumber(),
                     'name' => $switchable->getName(),
                     'rooms' => $rooms
                 );
+                RWF::getLanguage()->enableAutoHtmlEndocde();
             }
         }
 

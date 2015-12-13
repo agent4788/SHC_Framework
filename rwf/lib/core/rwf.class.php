@@ -33,7 +33,7 @@ class RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.4';
+    const VERSION = '2.2.5';
 
     /**
      * Einstellungen
@@ -276,7 +276,7 @@ class RWF {
      */
     protected function initLanguage() {
 
-        if (self::$visitor instanceof User) {
+        if (self::$visitor instanceof User && self::$visitor->getLanguage() !== null) {
 
             self::$language = new Language(self::$visitor->getLanguage());
         } else {

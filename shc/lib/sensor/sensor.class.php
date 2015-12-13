@@ -187,4 +187,19 @@ interface Sensor {
      * @return string
      */
     public function getTypeName();
+
+    /**
+     * setzt das Icon welches Angezeigt werden soll
+     *
+     * @param  String $path Dateiname
+     * @return \SHC\Sensor\Sensor
+     */
+    public function setIcon($path);
+
+    /**
+     * gibt den Dateinamen des Icons zurueck
+     *
+     * @return String
+     */
+    public function getIcon();
 }

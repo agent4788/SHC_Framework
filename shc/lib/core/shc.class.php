@@ -29,7 +29,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.4';
+    const VERSION = '2.2.5';
 
     /**
      * Sensor Transmitter
@@ -163,6 +163,7 @@ class SHC extends RWF {
         $userEditor->addPermission('shc.acp.settings', false);
         $userEditor->addPermission('shc.acp.databaseManagement', false);
         $userEditor->addPermission('shc.acp.backupsManagement', false);
+        $userEditor->addPermission('shc.acp.roomManagement', false);
         $userEditor->addPermission('shc.acp.switchableManagement', false);
         $userEditor->addPermission('shc.acp.sensorpointsManagement', false);
         $userEditor->addPermission('shc.acp.usersathomeManagement', false);
@@ -221,6 +222,13 @@ class SHC extends RWF {
         require_once(PATH_RWF_CLASSES . 'external/mobile_detect/Mobile_Detect.php');
 
         $mobilDetect = new \Mobile_Detect();
+
+        //pruefen ob der Zugriff von der Android App kommt
+        if($mobilDetect->getUserAgent() == "SHC Android App") {
+
+            //nicht umleiten (unabhaenig von den Einstellungen)
+            return;
+        }
 
         //Umleitung fuer PC/Tablet/Smartphone
 
