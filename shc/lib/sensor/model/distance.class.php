@@ -31,10 +31,25 @@ interface Distance {
     public function getDisplayDistance();
 
     /**
+     * setzt das Entfernungs Offset
+     *
+     * @param  Float $distanceOffset
+     * @return \SHC\Sensor\Model\Distance
+     */
+    public function setDistanceOffset($distanceOffset);
+
+    /**
+     * gbit das Entfernungs Offset zurueck
+     *
+     * @return Float
+     */
+    public function getDistanceOffset();
+
+    /**
      * setzt die Sichtbarkeit der Entfernung
      *
      * @param  Integer $visibility Sichtbarkeit
-     * @return \SHC\Sensor\Model\Energy
+     * @return \SHC\Sensor\Model\Distance
      */
     public function distanceVisibility($visibility);
 
