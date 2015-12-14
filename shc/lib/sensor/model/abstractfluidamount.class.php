@@ -3,6 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
+use RWF\Util\String;
 
 
 /**
@@ -14,21 +15,41 @@ namespace SHC\Sensor\Model;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-interface FluidAmount {
+trait AbstractFluidAmount  {
+
+    /**
+     * Menge
+     *
+     * @var Integer
+     */
+    protected $fluidAmount = 0;
+
+    /**
+     * Menge Anzeigen
+     *
+     * @var Integer
+     */
+    protected $fluidAmountVisibility = 1;
 
     /**
      * gibt die Menge zurueck
      *
      * @return Float
      */
-    public function getFluidAmount();
+    public function getFluidAmount() {
+
+        return $this->fluidAmount + $this->humidityOffset;
+    }
 
     /**
      * gibt die Menge vorbereitet zur Anzeige zurueck
      *
      * @return String
      */
-    public function getDisplayFluidAmount();
+    public function getDisplayFluidAmount() {
+
+        return String::formatFloat($this->getFluidAmount(), 1) .'%';
+    }
 
     /**
      * setzt die Sichtbarkeit der Menge
@@ -36,12 +57,19 @@ interface FluidAmount {
      * @param  Integer $visibility Sichtbarkeit
      * @return \SHC\Sensor\Model\FluidAmount
      */
-    public function fluidAmountVisibility($visibility);
+    public function fluidAmountVisibility($visibility) {
+
+        $this->fluidAmountVisibility = $visibility;
+        return $this;
+    }
 
     /**
      * gibt die Sichtbarkeit der Menge an
      *
      * @return Boolean
      */
-    public function isFluidAmountVisible();
+    public function isFluidAmountVisible() {
+
+        return ($this->fluidAmountVisibility == 1 ? true : false);
+    }
 }
