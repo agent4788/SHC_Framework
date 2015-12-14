@@ -48,7 +48,14 @@ trait AbstractFluidAmount  {
      */
     public function getDisplayFluidAmount() {
 
-        return String::formatFloat($this->getFluidAmount(), 1) .'%';
+        if($this->getDistance() >= 1000000) {
+
+            return String::formatFloat($this->getFluidAmount() / 1000000, 1) .'m³';
+        } elseif($this->getDistance() >= 1000) {
+
+            return String::formatFloat($this->getFluidAmount() / 1000, 1) .'l';
+        }
+        return String::formatFloat($this->getFluidAmount(), 1) .'ml';
     }
 
     /**

@@ -57,13 +57,13 @@ trait AbstractDistance  {
 
         if($this->getDistance() >= 1000000) {
 
-            return String::formatFloat($this->getDistance(), 1) .'km';
+            return String::formatFloat($this->getDistance() / 1000000, 1) .'km';
         } elseif($this->getDistance() >= 1000) {
 
-            return String::formatFloat($this->getDistance(), 1) .'m';
+            return String::formatFloat($this->getDistance() / 1000, 1) .'m';
         } elseif($this->getDistance() >= 10) {
 
-            return String::formatFloat($this->getDistance(), 1) .'cm';
+            return String::formatFloat($this->getDistance() / 10, 1) .'cm';
         }
         return String::formatFloat($this->getDistance(), 1) .'mm';
     }
