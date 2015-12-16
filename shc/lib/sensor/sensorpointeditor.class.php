@@ -104,6 +104,48 @@ class SensorPointEditor {
     const SENSOR_AVM_MEASURING_SOCKET = 7;
 
     /**
+     * EDIMAX Steckdose
+     *
+     * @var Integer
+     */
+    const SENSOR_EDIMAX_MEASURING_SOCKET = 8;
+
+    /**
+     * Gaszaehler
+     *
+     * @var Integer
+     */
+    const SENSOR_GASMETER = 9;
+
+    /**
+     * Wasserzaehler
+     *
+     * @var Integer
+     */
+    const SENSOR_WATERMETER = 10;
+
+    /**
+     * COMET DECT Heitkoerperthermostat
+     *
+     * @var Integer
+     */
+    const SENSOR_COMET_DECT_RADIATOR_THERMOSTAT = 11;
+
+    /**
+     * Energiemesser
+     *
+     * @var Integer
+     */
+    const SENSOR_SCT_013 = 12;
+
+    /**
+     * Entfernungsmesser
+     *
+     * @var Integer
+     */
+    const SENSOR_HC_SR04 = 13;
+
+    /**
      * Sensorpunkte
      * 
      * @var Array 
