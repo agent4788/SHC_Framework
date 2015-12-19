@@ -7,12 +7,18 @@ use RWF\Util\String;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
@@ -334,6 +340,106 @@ class SensorPointEditor {
                     $sensor->powerVisibility(((int) $sensorData['powerVisibility'] == true ? 1 : 0));
                     $sensor->energyVisibility(((int) $sensorData['energyVisibility'] == true ? 1 : 0));
                     $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    break;
+                case self::SENSOR_EDIMAX_MEASURING_SOCKET:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'power' => (float) $dataSet['power'],
+                            'energy' => (float) $dataSet['energy'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new EdimaxMeasuringSocket($values);
+                    $sensor->powerVisibility(((int) $sensorData['powerVisibility'] == true ? 1 : 0));
+                    $sensor->energyVisibility(((int) $sensorData['energyVisibility'] == true ? 1 : 0));
+                    break;
+                case self::SENSOR_GASMETER:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'amount' => (float) $dataSet['amount'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new GasMeter($values);
+                    $sensor->fluidAmountVisibility(((int) $sensorData['fluidAmountVisibility'] == true ? 1 : 0));
+                    break;
+                case self::SENSOR_WATERMETER:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'amount' => (float) $dataSet['amount'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new WaterMeter($values);
+                    $sensor->fluidAmountVisibility(((int) $sensorData['fluidAmountVisibility'] == true ? 1 : 0));
+                    break;
+                case self::SENSOR_COMET_DECT_RADIATOR_THERMOSTAT:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'temp' => (float) $dataSet['temp'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new CometDectRadiatorThermostat($values);
+                    $sensor->temperatureVisibility(((int) $sensorData['temperatureVisibility'] == true ? 1 : 0));
+                    $sensor->setTemperatureOffset((float) $sensorData['temperatureOffset']);
+                    break;
+                case self::SENSOR_SCT_013:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'power' => (float) $dataSet['power'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new SCT013($values);
+                    $sensor->powerVisibility(((int) $sensorData['powerVisibility'] == true ? 1 : 0));
+                    break;
+                case self::SENSOR_HC_SR04:
+
+                    //Sensorwerte lesen
+                    $values = array();
+                    $list = $db->lRangeArray(self::$tableName .':sensorData:'. $sensorData['id'], 0, -1);
+                    foreach($list as $dataSet) {
+
+                        $values[] = array(
+                            'dist' => (float) $dataSet['dist'],
+                            'time' => DateTime::createFromDatabaseDateTime((string) $dataSet['time'])
+                        );
+                    }
+
+                    $sensor = new HcSr04($values);
+                    $sensor->distanceVisibility(((int) $sensorData['distanceVisibility'] == true ? 1 : 0));
+                    $sensor->setDistanceOffset((float) $sensorData['distanceOffset']);
                     break;
             }
 
@@ -795,6 +901,29 @@ class SensorPointEditor {
                 $newSensor['energyVisibility'] = true;
                 $newSensor['temperatureOffset'] = 0.0;
                 break;
+            case self::SENSOR_EDIMAX_MEASURING_SOCKET:
+
+                $newSensor['powerVisibility'] = true;
+                $newSensor['energyVisibility'] = true;
+                break;
+            case self::SENSOR_GASMETER:
+            case self::SENSOR_WATERMETER:
+
+                $newSensor['fluidAmountVisibility'] = true;
+                break;
+            case self::SENSOR_COMET_DECT_RADIATOR_THERMOSTAT:
+
+                $newSensor['temperatureVisibility'] = true;
+                $newSensor['temperatureOffset'] = 0.0;
+                break;
+            case self::SENSOR_SCT_013:
+
+                $newSensor['powerVisibility'] = true;
+                break;
+            case self::SENSOR_HC_SR04:
+
+                $newSensor['distanceVisibility'] = true;
+                break;
         }
 
         if(SHC::getDatabase()->hSetNxArray(self::$tableName . ':sensors', $sId, $newSensor) == 0) {
@@ -883,6 +1012,50 @@ class SensorPointEditor {
                     'time' => DateTime::now()->getDatabaseDateTime()
                 );
                 break;
+            case self::SENSOR_EDIMAX_MEASURING_SOCKET:
+
+                $data = array(
+                    'power' => (float) $value1,
+                    'energy' => (float) $value2,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_GASMETER:
+            case self::SENSOR_WATERMETER:
+
+                $knownAmount = 0;
+                if(SHC::getDatabase()->exists(self::$tableName .':sensorData:'. $sId)) {
+
+                    $sensorData = SHC::getDatabase()->lRangeArray(self::$tableName .':sensorData:'. $sId, 0, 24);
+                    $knownAmount = (float) $sensorData[count($sensorData) - 1]['amount'];
+                }
+                $data = array(
+                    'amount' => (float) $knownAmount + $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_COMET_DECT_RADIATOR_THERMOSTAT:
+
+                $data = array(
+                    'temp' => (float) $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_SCT_013:
+
+                $data = array(
+                    'power' => (float) $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+            case self::SENSOR_HC_SR04:
+
+                $data = array(
+                    'dist' => (float) $value1,
+                    'time' => DateTime::now()->getDatabaseDateTime()
+                );
+                break;
+
         }
 
         if(SHC::getDatabase()->lPushArray(self::$tableName .':sensorData:'. $sId, $data) !== false) {
@@ -1326,36 +1499,6 @@ class SensorPointEditor {
     }
 
     /**
-     * bearbeitet einen BMP Sensor
-     *
-     * @param  String  $id                       ID
-     * @param  String  $name                     Name
-     * @param  String  $icon                     Icon
-     * @param  Array   $rooms                    Raeume
-     * @param  Array   $order                    Sortierung
-     * @param  Boolean $visibility               Sichtbarkeit
-     * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
-     * @param  Boolean $powerVisibility          Sichtbarkeit aktuell entnommene Leistung
-     * @param  Boolean $energyVisibility         Sichtbarkeit entnommene Leistung
-     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
-     * @param  Float   $temperatureOffset        Offset
-     * @return Boolean
-     */
-    public function editAvmMeasuringSocket($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $powerVisibility = null, $energyVisibility = null, $dataRecording = null, $temperatureOffset = null) {
-
-        //Zusatzdaten
-        $data = array(
-            'temperatureVisibility' => $temperatureVisibility,
-            'powerVisibility' => $powerVisibility,
-            'energyVisibility' => $energyVisibility,
-            'temperatureOffset' => $temperatureOffset
-        );
-
-        //Sensor bearbeiten
-        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
-    }
-
-    /**
      * bearbeitet einen Avm Power Sensor
      *
      * @param  String  $id                       ID
@@ -1379,6 +1522,156 @@ class SensorPointEditor {
             'powerVisibility' => $powerVisibility,
             'energyVisibility' => $energyVisibility,
             'temperatureOffset' => $temperatureOffset
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Edimax Power Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $powerVisibility          Sichtbarkeit Luftdruck
+     * @param  Boolean $energyVisibility         Sichtbarkeit Hoehe
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @return Boolean
+     */
+    public function editEdimaxMeasuringSensor($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $powerVisibility = null, $energyVisibility = null, $dataRecording = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'powerVisibility' => $powerVisibility,
+            'energyVisibility' => $energyVisibility,
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Wasserzaehler Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $fluidAmountVisibility    Sichtbarkeit Wassermenge
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @return Boolean
+     */
+    public function editWatermeter($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $fluidAmountVisibility = null, $dataRecording = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'fluidAmountVisibility' => $fluidAmountVisibility
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Gaszaehler Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $fluidAmountVisibility    Sichtbarkeit Gasmenge
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @return Boolean
+     */
+    public function editGasmeter($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $fluidAmountVisibility = null, $dataRecording = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'fluidAmountVisibility' => $fluidAmountVisibility
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Comet DECT Thermostat Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $temperatureVisibility    Sichtbarkeit Temperatur
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $temperatureOffset        Offset
+     * @return Boolean
+     */
+    public function editCometDectRadiatoThermostatSensor($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $temperatureVisibility = null, $dataRecording = null, $temperatureOffset = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'temperatureVisibility' => $temperatureVisibility,
+            'temperatureOffset' => $temperatureOffset
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Comet DECT Thermostat Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $powerVisibility          Sichtbarkeit Momentanverbrauch
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @return Boolean
+     */
+    public function editSct013($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $powerVisibility = null, $dataRecording = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'powerVisibility' => $powerVisibility
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Comet DECT Thermostat Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  Array   $rooms                    Raeume
+     * @param  Array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  Boolean $distanceVisibility       Sichtbarkeit der Entfernung
+     * @param  Boolean $dataRecording            Datenaufzeichnung aktiv
+     * @param  Float   $distanceOffset           Offset
+     * @return Boolean
+     */
+    public function editHcSr04($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, $distanceVisibility = null, $dataRecording = null, $distanceOffset = null) {
+
+        //Zusatzdaten
+        $data = array(
+            'distanceVisibility' => $distanceVisibility,
+            'distanceOffset' => $distanceOffset
         );
 
         //Sensor bearbeiten
