@@ -639,13 +639,14 @@ class EditSensorFormPage extends PageCommand {
                 $icon = $hcSr04Form->getElementByName('icon')->getValue();
                 $rooms = $hcSr04Form->getElementByName('rooms')->getValues();
                 $visibility = $hcSr04Form->getElementByName('visibility')->getValue();
-                $powerVisibility = $hcSr04Form->getElementByName('powerVisibility')->getValue();
+                $distanceVisibility = $hcSr04Form->getElementByName('distanceVisibility')->getValue();
+                $distanceOffset = $hcSr04Form->getElementByName('distanceOffset')->getValue();
                 $dataRecording = $hcSr04Form->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editHcSr04($sensorId, $name, $icon, $rooms, null, $visibility, $powerVisibility, $dataRecording);
+                    SensorPointEditor::getInstance()->editHcSr04($sensorId, $name, $icon, $rooms, null, $visibility, $distanceVisibility, $dataRecording, $distanceOffset);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {
@@ -687,14 +688,13 @@ class EditSensorFormPage extends PageCommand {
                 $icon = $sct013Form->getElementByName('icon')->getValue();
                 $rooms = $sct013Form->getElementByName('rooms')->getValues();
                 $visibility = $sct013Form->getElementByName('visibility')->getValue();
-                $distanceVisibility = $sct013Form->getElementByName('distanceVisibility')->getValue();
-                $distanceOffset = $sct013Form->getElementByName('distanceOffset')->getValue();
+                $powerVisibility = $sct013Form->getElementByName('powerVisibility')->getValue();
                 $dataRecording = $sct013Form->getElementByName('dataRecording')->getValue();
 
                 $message = new Message();
                 try {
 
-                    SensorPointEditor::getInstance()->editSct013($sensorId, $name, $icon, $rooms, null, $visibility, $distanceVisibility, $dataRecording, $distanceOffset);
+                    SensorPointEditor::getInstance()->editSct013($sensorId, $name, $icon, $rooms, null, $visibility, $powerVisibility, $dataRecording);
                     $message->setType(Message::SUCCESSFULLY);
                     $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
                 } catch(\Exception $e) {

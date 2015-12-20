@@ -38,7 +38,7 @@ trait AbstractFluidAmount  {
      */
     public function getFluidAmount() {
 
-        return $this->fluidAmount + $this->humidityOffset;
+        return $this->fluidAmount;
     }
 
     /**
@@ -48,10 +48,10 @@ trait AbstractFluidAmount  {
      */
     public function getDisplayFluidAmount() {
 
-        if($this->getDistance() >= 1000000) {
+        if($this->getFluidAmount() >= 1000000) {
 
             return String::formatFloat($this->getFluidAmount() / 1000000, 1) .'m³';
-        } elseif($this->getDistance() >= 1000) {
+        } elseif($this->getFluidAmount() >= 1000) {
 
             return String::formatFloat($this->getFluidAmount() / 1000, 1) .'l';
         }

@@ -41,3 +41,5 @@ $l['index.room.sensorValue.lightIntensity'] = 'Lichtstärke';
 $l['index.room.sensorValue.moisture'] = 'Feuchtigkeit';
 $l['index.room.sensorValue.power'] = 'Leistung';
 $l['index.room.sensorValue.energy'] = 'Energie';
+$l['index.room.sensorValue.amount'] = 'Menge';
+$l['index.room.sensorValue.dist'] = 'Abstand';

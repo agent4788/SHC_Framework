@@ -55,17 +55,18 @@ trait AbstractDistance  {
      */
     public function getDisplayDistance() {
 
-        if($this->getDistance() >= 1000000) {
+        $dist = $this->getDistance() + $this->getDistanceOffset();
+        if($dist >= 1000000) {
 
-            return String::formatFloat($this->getDistance() / 1000000, 1) .'km';
-        } elseif($this->getDistance() >= 1000) {
+            return String::formatFloat($dist / 1000000, 1) .'km';
+        } elseif($dist >= 1000) {
 
-            return String::formatFloat($this->getDistance() / 1000, 1) .'m';
-        } elseif($this->getDistance() >= 10) {
+            return String::formatFloat($dist / 1000, 1) .'m';
+        } elseif($dist >= 10) {
 
-            return String::formatFloat($this->getDistance() / 10, 1) .'cm';
+            return String::formatFloat($dist / 10, 1) .'cm';
         }
-        return String::formatFloat($this->getDistance(), 1) .'mm';
+        return String::formatFloat($dist, 1) .'mm';
     }
 
     /**

@@ -7,12 +7,18 @@ use RWF\Core\RWF;
 use RWF\Util\String;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DS18x20;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
 
 /**
  * erstellt aus Sensorobjekten HTML Fragmente
@@ -63,7 +69,25 @@ abstract class SensorViewHelper {
             return self::showLDR($sensor, $ignoreShow);
         } elseif ($sensor instanceof AvmMeasuringSocket) {
 
-            return self::showLAvmMeasuringSocket($sensor, $ignoreShow);
+            return self::showAvmMeasuringSocket($sensor, $ignoreShow);
+        } elseif ($sensor instanceof GasMeter) {
+
+            return self::showGasMeter($sensor, $ignoreShow);
+        } elseif ($sensor instanceof WaterMeter) {
+
+            return self::showWaterMeter($sensor, $ignoreShow);
+        } elseif ($sensor instanceof CometDectRadiatorThermostat) {
+
+            return self::showCometThermostat($sensor, $ignoreShow);
+        } elseif ($sensor instanceof EdimaxMeasuringSocket) {
+
+            return self::showEdimaxMeasuringSocket($sensor, $ignoreShow);
+        } elseif ($sensor instanceof SCT013) {
+
+            return self::showSct013($sensor, $ignoreShow);
+        } elseif ($sensor instanceof HcSr04) {
+
+            return self::showHcSr04($sensor, $ignoreShow);
         }
         return '<span>Unbekannter Sensor</span>';
     }
@@ -384,7 +408,7 @@ abstract class SensorViewHelper {
      * @param  Boolean                                $ignoreShow Anzeigeeinstellungen ignorieren
      * @return String
      */
-    public static function showLAvmMeasuringSocket(AvmMeasuringSocket $sensor, $ignoreShow = false) {
+    public static function showAvmMeasuringSocket(AvmMeasuringSocket $sensor, $ignoreShow = false) {
 
         $html = '';
         $firstRow = true;
@@ -458,6 +482,275 @@ abstract class SensorViewHelper {
 
                     $html = preg_replace('#%%%%#', 'shc-view-middle', $html);
                 }
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines Gaszählers zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\GasMeter           $sensor     Sensor Objekt
+     * @param  Boolean                                $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showGasMeter(GasMeter $sensor, $ignoreShow = false) {
+
+        $html = '';
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && $sensor->isFluidAmountVisible())) {
+
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.amount') .' : ';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '</div>';
+                $html .= '</div>';
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines Wasserzählers zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\WaterMeter           $sensor     Sensor Objekt
+     * @param  Boolean                                $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showWaterMeter(WaterMeter $sensor, $ignoreShow = false) {
+
+        $html = '';
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && $sensor->isFluidAmountVisible())) {
+
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.amount') .' : ';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '</div>';
+                $html .= '</div>';
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines Comet Thermostats zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\CometDectRadiatorThermostat $sensor     Sensor Objekt
+     * @param  Boolean                                         $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showCometThermostat(CometDectRadiatorThermostat $sensor, $ignoreShow = false) {
+
+        $html = '';
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && $sensor->isTemperatureVisible())) {
+
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '</div>';
+                $html .= '</div>';
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines Edimax Steckdosen Sensors zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\EdimaxMeasuringSocket       $sensor     Sensor Objekt
+     * @param  Boolean                                         $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showEdimaxMeasuringSocket(EdimaxMeasuringSocket $sensor, $ignoreShow = false) {
+
+        $html = '';
+        $firstRow = true;
+        $i = 0;
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && ($sensor->isPowerVisible() || $sensor->isEnergyVisible()))) {
+
+            $sensorId = str_replace(' ', '-', $sensor->getId());
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                if ($sensor->isPowerVisible() || $ignoreShow == true) {
+
+                    ($firstRow === false ? $html .= '<br/>' : null);
+                    $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $firstRow = false;
+                }
+                if ($sensor->isEnergyVisible() || $ignoreShow == true) {
+
+                    ($firstRow === false ? $html .= '<br/>' : null);
+                    $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                }
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
+                if ($sensor->isPowerVisible() || $ignoreShow == true) {
+
+                    ($firstRow === false ? $html .= '<br/>' : null);
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $firstRow = false;
+                    $i++;
+                }
+                if ($sensor->isEnergyVisible() || $ignoreShow == true) {
+
+                    ($firstRow === false ? $html .= '<br/>' : null);
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $i++;
+                }
+                $html .= '</div>';
+                $html .= '</div>';
+
+                //CSS Ausrichtung
+                if ($i == 3) {
+
+                    $html = preg_replace('#%%%%#', 'shc-view-low', $html);
+                } elseif ($i == 2) {
+
+                    $html = preg_replace('#%%%%#', 'shc-view-middle', $html);
+                }
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines SCT-013 Sensors zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\SCT013                      $sensor     Sensor Objekt
+     * @param  Boolean                                         $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showSct013(SCT013 $sensor, $ignoreShow = false) {
+
+        $html = '';
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && $sensor->isPowerVisible())) {
+
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                $html .= '</div>';
+                $html .= '</div>';
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten eines HC-SR04 Sensors zur Anzeige vor
+     *
+     * @param  \SHC\Sensor\Sensors\HcSr04                      $sensor     Sensor Objekt
+     * @param  Boolean                                         $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    public static function showHcSr04(HcSr04 $sensor, $ignoreShow = false) {
+
+        $html = '';
+        if ($ignoreShow == true || ($sensor->isVisible() == Sensor::SHOW && $sensor->isDistanceVisible())) {
+
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobile Ansicht
+                $html .= '<li>';
+                if(SHC_DETECTED_DEVICE != 'smartphone') {
+
+                    $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                }
+                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.dist') .' : ';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . String::encodeHTML($sensor->getDisplayDistance()) . '</span>';
+                $html .= '</li>';
+            } else {
+
+                //Web Ansicht
+                $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
+                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
+                $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . String::encodeHTML($sensor->getDisplayDistance()) . '</span>';
+                $html .= '</div>';
+                $html .= '</div>';
             }
         }
         return $html;

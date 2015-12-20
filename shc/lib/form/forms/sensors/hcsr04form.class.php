@@ -73,7 +73,7 @@ class HcSr04Form extends DefaultHtmlForm {
 
         //Entfernung Offset
         $distanceOffset = new IntegerInputField('distanceOffset', ($sensor instanceof HcSr04 ? $sensor->getDistanceOffset() : 0.0), array('min' => -10000, 'max' => 10000));
-        $distanceOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.temperatureOffset'));
+        $distanceOffset->setTitle(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.distanceOffset'));
         $distanceOffset->setDescription(RWF::getLanguage()->get('acp.switchableManagement.form.sensorForm.offset.description'));
         $distanceOffset->requiredField(true);
         $this->addFormElement($distanceOffset);
