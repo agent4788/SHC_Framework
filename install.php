@@ -310,7 +310,7 @@ class CliUtil {
 
 $cli = new CliUtil();
 
-if(!file_exists('./rwf/db.config.php')) {
+if(!file_exists('./rwf/db.config.json')) {
 
     //IP Adresse
     $n = 0;
@@ -536,7 +536,7 @@ if(!file_exists('./rwf/db.config.php')) {
 $dbConfig = array();
 if(file_exists('./rwf/db.config.json')) {
 
-    $dbConfig = json_decode(file_get_contents('./rwf/db.config'), true);
+    $dbConfig = json_decode(file_get_contents('./rwf/db.config.json'), true);
 } else {
 
     $cli->writeLineColored('Die Datenbankkonfiguration fehlt (db.config.json)', 'red');
