@@ -11,11 +11,17 @@ use RWF\Util\DataTypeUtil;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
 use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
@@ -232,6 +238,31 @@ class RoomElementsJsonAjax extends AjaxCommand
 
             $data['type'] = 'RainSensor';
             $data['val'] = $element->getDisplayMoisture();
+        } elseif ($element instanceof GasMeter) {
+
+            $data['type'] = 'GasMeter';
+            $data['amount'] = $element->getDisplayFluidAmount();
+        } elseif ($element instanceof WaterMeter) {
+
+            $data['type'] = 'WaterMeter';
+            $data['amount'] = $element->getDisplayFluidAmount();
+        } elseif ($element instanceof CometDectRadiatorThermostat) {
+
+            $data['type'] = 'CometThermostat';
+            $data['temp'] = $element->getDisplayTemperature();
+        } elseif ($element instanceof EdimaxMeasuringSocket) {
+
+            $data['type'] = 'EdimaxMeasuringSocket';
+            $data['power'] = $element->getDisplayPower();
+            $data['energy'] = $element->getDisplayEnergy();
+        } elseif ($element instanceof SCT013) {
+
+            $data['type'] = 'Sct013';
+            $data['power'] = $element->getDisplayPower();
+        } elseif ($element instanceof HcSr04) {
+
+            $data['type'] = 'HcSr04';
+            $data['dist'] = $element->getDisplayDistance();
         }
         return $data;
     }
