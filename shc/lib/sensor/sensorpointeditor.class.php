@@ -152,6 +152,55 @@ class SensorPointEditor {
     const SENSOR_HC_SR04 = 13;
 
     /**
+     * Virtueller Sensor Energie
+     *
+     * @var Integer
+     */
+    const VSENSOR_ENERGY = 500;
+
+    /**
+     * Virtueller Sensor Menge
+     *
+     * @var Integer
+     */
+    const VSENSOR_FLUID_AMOUNT = 501;
+
+    /**
+     * Virtueller Sensor Luftfeuchte
+     *
+     * @var Integer
+     */
+    const VSENSOR_HUMIDITY = 502;
+
+    /**
+     * Virtueller Sensor Lichtstärke
+     *
+     * @var Integer
+     */
+    const VSENSOR_LIGHT_INTENSITY = 503;
+
+    /**
+     * Virtueller Sensor Feuchtigkeit
+     *
+     * @var Integer
+     */
+    const VSENSOR_MOISTURE = 504;
+
+    /**
+     * Virtueller Sensor Stromverbrauch
+     *
+     * @var Integer
+     */
+    const VSENSOR_POWER = 505;
+
+    /**
+     * Virtueller Sensor Temperatur
+     *
+     * @var Integer
+     */
+    const VSENSOR_TEMPERATURE = 506;
+
+    /**
      * Sensorpunkte
      * 
      * @var Array 
