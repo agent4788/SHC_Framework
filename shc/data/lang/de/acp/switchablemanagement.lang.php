@@ -76,6 +76,13 @@ $l['acp.switchableManagement.element.watermeter'] = 'Wasserzähler';
 $l['acp.switchableManagement.element.cometRadiatorThermostat'] = 'COMET Thermostat';
 $l['acp.switchableManagement.element.sct013'] = 'SCT-013';
 $l['acp.switchableManagement.element.hcsr04'] = 'HC-SR04';
+$l['acp.switchableManagement.element.vSensor.energy'] = 'vSensor Energieverbrauch';
+$l['acp.switchableManagement.element.vSensor.fluidAmount'] = 'vSensor Menge';
+$l['acp.switchableManagement.element.vSensor.humidity'] = 'vSensor Luftfeuchte';
+$l['acp.switchableManagement.element.vSensor.lightIntensity'] = 'vSensor Lichtstärke';
+$l['acp.switchableManagement.element.vSensor.moisture'] = 'vSensor Feuchtigkeit';
+$l['acp.switchableManagement.element.vSensor.power'] = 'vSensor Stromverbrauch';
+$l['acp.switchableManagement.element.vSensor.temperature'] = 'vSensor Temperatur';
 $l['acp.switchableManagement.element.box'] = 'Box';
 
 //Prompts
