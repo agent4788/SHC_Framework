@@ -12,11 +12,17 @@ use SHC\Room\RoomEditor;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -117,9 +123,13 @@ class RoomSyncAjax extends AjaxCommand {
         $bmpValues = array();
         $analogValues = array();
         $avmPowerValues = array();
+        $fluidAmountValues = array();
+        $cometThermostatValues = array();
+        $edimaxPowerValues = array();
+        $sctPowerValues = array();
+        $distanceValues = array();
         foreach($sensors as $sensor) {
 
-            /* @var $sensor \SHC\Sensor\Sensor */
             if($sensor->isVisible()) {
 
                 if ($sensor instanceof DS18x20) {
@@ -157,6 +167,32 @@ class RoomSyncAjax extends AjaxCommand {
                         'power' => $sensor->getDisplayPower(),
                         'energy' => $sensor->getDisplayEnergy()
                     );
+                } elseif ($sensor instanceof GasMeter || $sensor instanceof WaterMeter) {
+
+                    $fluidAmountValues[$sensor->getId()] = array(
+                        'amount' => $sensor->getDisplayFluidAmount()
+                    );
+                } elseif ($sensor instanceof CometDectRadiatorThermostat) {
+
+                    $cometThermostatValues[$sensor->getId()] = array(
+                        'temp' => $sensor->getDisplayTemperature()
+                    );
+                } elseif ($sensor instanceof EdimaxMeasuringSocket) {
+
+                    $edimaxPowerValues[$sensor->getId()] = array(
+                        'power' => $sensor->getDisplayPower(),
+                        'energy' => $sensor->getDisplayEnergy()
+                    );
+                } elseif ($sensor instanceof SCT013) {
+
+                    $sctPowerValues[$sensor->getId()] = array(
+                        'power' => $sensor->getDisplayPower()
+                    );
+                } elseif ($sensor instanceof HcSr04) {
+
+                    $distanceValues[$sensor->getId()] = array(
+                        'dist' => $sensor->getDisplayDistance()
+                    );
                 }
             }
         }
@@ -167,6 +203,11 @@ class RoomSyncAjax extends AjaxCommand {
         $response['bmp'] = $bmpValues;
         $response['analog'] = $analogValues;
         $response['syncAvmPowerSocket'] = $avmPowerValues;
+        $response['syncFluidAmountMeters'] = $fluidAmountValues;
+        $response['syncCometThermostat'] = $cometThermostatValues;
+        $response['syncEdimaxPowerSocket'] = $edimaxPowerValues;
+        $response['syncSctPower'] = $sctPowerValues;
+        $response['syncDistance'] = $distanceValues;
 
         $this->data = $response;
     }

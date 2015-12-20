@@ -1027,8 +1027,11 @@ class SensorPointEditor {
                 $knownAmount = 0;
                 if(SHC::getDatabase()->exists(self::$tableName .':sensorData:'. $sId)) {
 
-                    $sensorData = SHC::getDatabase()->lRangeArray(self::$tableName .':sensorData:'. $sId, 0, 24);
-                    $knownAmount = (float) $sensorData[count($sensorData) - 1]['amount'];
+                    $sensorData = SHC::getDatabase()->lRangeArray(self::$tableName .':sensorData:'. $sId, 0, 0);
+                    if(isset($sensorData[0])) {
+
+                        $knownAmount = (float) $sensorData[0]['amount'];
+                    }
                 }
                 $data = array(
                     'amount' => (float) $knownAmount + $value1,
