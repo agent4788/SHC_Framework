@@ -70,6 +70,12 @@ $l['acp.switchableManagement.element.Hygrometer'] = 'Feuchtigkeits Sensor';
 $l['acp.switchableManagement.element.LDR'] = 'Lichtstärke Sensor';
 $l['acp.switchableManagement.element.RainSensor'] = 'Regen Sensor';
 $l['acp.switchableManagement.element.avmMeasuringSocket'] = 'AVM Steckdosen Sensor';
+$l['acp.switchableManagement.element.edimaxMeasuringSocket'] = 'Edimax Steckdosen Sensor';
+$l['acp.switchableManagement.element.gasmeter'] = 'Gaszähler';
+$l['acp.switchableManagement.element.watermeter'] = 'Wasserzähler';
+$l['acp.switchableManagement.element.cometRadiatorThermostat'] = 'COMET Thermostat';
+$l['acp.switchableManagement.element.sct013'] = 'SCT-013';
+$l['acp.switchableManagement.element.hcsr04'] = 'HC-SR04';
 $l['acp.switchableManagement.element.box'] = 'Box';
 
 //Prompts
@@ -211,6 +217,11 @@ $l['acp.switchableManagement.form.sensorForm.powerVisibility'] = 'Leistung Anzei
 $l['acp.switchableManagement.form.sensorForm.powerVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der aktuell entnommene Leistung des Sensors';
 $l['acp.switchableManagement.form.sensorForm.energyVisibility'] = 'Arbeit Anzeigen';
 $l['acp.switchableManagement.form.sensorForm.energyVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des der elektrischen Arbeit seit Inbetriebnahme des Sensors';
+$l['acp.switchableManagement.form.sensorForm.fluidAmountVisibility'] = 'Menge Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.fluidAmountVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit des der Menge seit Inbetriebnahme des Sensors';
+$l['acp.switchableManagement.form.sensorForm.distanceVisibility'] = 'Entfernung Anzeigen';
+$l['acp.switchableManagement.form.sensorForm.distanceVisibility.description'] = 'Aktiviert/Deaktiviert die Sichtbarkeit der Entfernung des Sensors';
+$l['acp.switchableManagement.form.sensorForm.distanceOffset'] = 'Entfernungs Offset';
 $l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
 $l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
 

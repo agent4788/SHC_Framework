@@ -12,7 +12,7 @@ use SHC\Sensor\Model\FluidAmount;
  * Wasser/Gas-Zaehler
  *
  * @author     Oliver Kleditzsch
- * @copyright  Copyright (c) 2014, Oliver Kleditzsch
+ * @copyright  Copyright (c) 2015, Oliver Kleditzsch
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @since      2.0.0-0
  * @version    2.0.0-0
@@ -57,4 +57,5 @@ class WaterMeter extends AbstractSensor implements FluidAmount {
         $this->time = $date;
         $this->isModified = true;
     }
+
 }

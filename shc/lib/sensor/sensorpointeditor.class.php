@@ -923,6 +923,7 @@ class SensorPointEditor {
             case self::SENSOR_HC_SR04:
 
                 $newSensor['distanceVisibility'] = true;
+                $newSensor['distanceOffset'] = 0.0;
                 break;
         }
 
