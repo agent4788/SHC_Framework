@@ -632,14 +632,14 @@ abstract class SensorViewHelper {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                 }
                 $html .= '</li>';
             } else {
@@ -652,14 +652,14 @@ abstract class SensorViewHelper {
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';

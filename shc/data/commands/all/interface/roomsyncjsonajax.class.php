@@ -194,7 +194,7 @@ class RoomSyncJsonAjax extends AjaxCommand {
                     );
                 } elseif ($sensor instanceof EdimaxMeasuringSocket) {
 
-                    $edimaxPowerValues[$sensor->getId()] = array(
+                    $edimaxPowerValues[str_replace('.', '_', $sensor->getId())] = array(
                         'power' => $sensor->getDisplayPower(),
                         'energy' => $sensor->getDisplayEnergy()
                     );
