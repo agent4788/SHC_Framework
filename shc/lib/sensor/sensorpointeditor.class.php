@@ -19,6 +19,13 @@ use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\SCT013;
 use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensors\Energy;
+use SHC\Sensor\vSensors\FluidAmount;
+use SHC\Sensor\vSensors\Humidity;
+use SHC\Sensor\vSensors\LightIntensity;
+use SHC\Sensor\vSensors\Moisture;
+use SHC\Sensor\vSensors\Power;
+use SHC\Sensor\vSensors\Temperature;
 use SHC\View\Room\ViewHelperEditor;
 
 /**
@@ -254,6 +261,7 @@ class SensorPointEditor {
 
         //Sensoren lesen
         $sensors = $db->hGetAllArray(self::$tableName .':sensors');
+        $vSensors = array();
         foreach($sensors as $sensorData) {
 
             switch ((int) $sensorData['type']) {
@@ -490,10 +498,44 @@ class SensorPointEditor {
                     $sensor->distanceVisibility(((int) $sensorData['distanceVisibility'] == true ? 1 : 0));
                     $sensor->setDistanceOffset((float) $sensorData['distanceOffset']);
                     break;
+                case self::VSENSOR_ENERGY:
+
+                    $sensor = new Energy();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_TEMPERATURE:
+
+                    $sensor = new Temperature();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_POWER:
+
+                    $sensor = new Power();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_MOISTURE:
+
+                    $sensor = new Moisture();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_LIGHT_INTENSITY:
+
+                    $sensor = new LightIntensity();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_FLUID_AMOUNT:
+
+                    $sensor = new FluidAmount();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
+                case self::VSENSOR_HUMIDITY:
+
+                    $sensor = new Humidity();
+                    $vSensors[(int) $sensorData['id']] = $sensorData['sensors'];
+                    break;
             }
 
             //Allgemeine Daten setzen
-
             $sensor->setId((string) $sensorData['id']);
             $sensor->setIcon((isset($sensorData['icon']) ? (string) $sensorData['icon'] : ''));
             $sensor->setSensorPointId((int) $sensorData['sensorPointId']);
@@ -510,6 +552,18 @@ class SensorPointEditor {
                 $sensorPoint = $this->sensorPoints[$sensor->getSensorPointId()];
                 $sensorPoint->addSensor($sensor);
             }
+        }
+
+        //Sensoren den Virtuellen Sensoren hinzufügen
+        foreach($vSensors as $id => $sensors) {
+
+            $sensor = $this->getSensorById($id);
+            /* @var $sensor \SHC\Sensor\vSensor */
+            foreach($sensors as $usedSensorId) {
+
+                $sensor->addSensor($this->getSensorById($usedSensorId));
+            }
+            $sensor->processData();
         }
     }
 
@@ -973,6 +1027,16 @@ class SensorPointEditor {
 
                 $newSensor['distanceVisibility'] = true;
                 $newSensor['distanceOffset'] = 0.0;
+                break;
+            case self::VSENSOR_ENERGY:
+            case self::VSENSOR_FLUID_AMOUNT:
+            case self::VSENSOR_HUMIDITY:
+            case self::VSENSOR_LIGHT_INTENSITY:
+            case self::VSENSOR_MOISTURE:
+            case self::VSENSOR_POWER:
+            case self::VSENSOR_TEMPERATURE:
+
+                $newSensor['sensors'] = array();
                 break;
         }
 
@@ -1729,6 +1793,29 @@ class SensorPointEditor {
 
         //Sensor bearbeiten
         return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, $dataRecording, $data);
+    }
+
+    /**
+     * bearbeitet einen Comet DECT Thermostat Sensor
+     *
+     * @param  String  $id                       ID
+     * @param  String  $name                     Name
+     * @param  String  $icon                     Icon
+     * @param  array   $rooms                    Raeume
+     * @param  array   $order                    Sortierung
+     * @param  Boolean $visibility               Sichtbarkeit
+     * @param  array   $sensors                  Liste mit den Sensoren welche der Virtuelle Sensor auswerten soll (ID's)
+     * @return Boolean
+     */
+    public function editVirtualSensor($id, $name = null, $icon = null, $rooms = null, $order = null, $visibility = null, array $sensors) {
+
+        //Zusatzdaten
+        $data = array(
+            'sensors' => $sensors
+        );
+
+        //Sensor bearbeiten
+        return $this->editSensor($id, $name, $icon, $rooms, $order, $visibility, false, $data);
     }
 
     /**

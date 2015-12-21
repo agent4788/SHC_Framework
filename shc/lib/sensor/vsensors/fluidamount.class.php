@@ -5,6 +5,7 @@ namespace SHC\Sensor\vSensors;
 //Imports
 use RWF\Util\String;
 use SHC\Sensor\AbstractSensor;
+use SHC\Sensor\vSensor;
 
 /**
  * Vitueller MengenMesser Sensor
@@ -15,7 +16,7 @@ use SHC\Sensor\AbstractSensor;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class FluidAmount extends AbstractSensor {
+class FluidAmount extends AbstractSensor implements vSensor {
 
     /**
      * Liste der Sensoren
