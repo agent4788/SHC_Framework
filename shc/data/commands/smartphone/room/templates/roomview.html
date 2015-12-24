@@ -144,6 +144,57 @@
 
                                             $('#shc-view-sensor-hcsr04-{$roomId}-'+ index +'-dist').text(value.dist);
                                         });
+
+                                        //HC-SR04
+                                        $.each(data.syncvEnergy, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualEnergySensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvAmount, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualAmountSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvHumidity, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-min').text(value.min);
+                                            $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                            $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-max').text(value.max);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvLightIntensity, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-min').text(value.min);
+                                            $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                            $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-max').text(value.max);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvMoisture, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                                            $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                            $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-max').text(value.max);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvPower, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                            $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                        });
+
+                                        //HC-SR04
+                                        $.each(data.syncvTemperature, function (index, value) {
+
+                                            $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                                            $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                            $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-max').text(value.max);
+                                        });
                                     }
                                 }
                         );
