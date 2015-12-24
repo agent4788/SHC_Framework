@@ -43,3 +43,7 @@ $l['index.room.sensorValue.power'] = 'Leistung';
 $l['index.room.sensorValue.energy'] = 'Energie';
 $l['index.room.sensorValue.amount'] = 'Menge';
 $l['index.room.sensorValue.dist'] = 'Abstand';
+$l['index.room.sensorValue.min'] = 'min';
+$l['index.room.sensorValue.avg'] = 'mittel';
+$l['index.room.sensorValue.max'] = 'max';
+$l['index.room.sensorValue.sum'] = 'summe';

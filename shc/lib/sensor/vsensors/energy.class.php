@@ -200,7 +200,7 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getSumEnergy() {
 
-        return $this->max;
+        return $this->sum;
     }
 
     /**
@@ -210,6 +210,6 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getSumDisplayEnergy() {
 
-        return ($this->getSumEnergy() < 1000.0 ? String::formatFloat($this->getSumEnergy(), 0) .' Wh' : String::getSumEnergy($this->getMaxEnergy() / 1000, 2) .' kWh');
+        return ($this->getSumEnergy() < 1000.0 ? String::formatFloat($this->getSumEnergy(), 0) .' Wh' : String::formatFloat($this->getSumEnergy() / 1000, 2) .' kWh');
     }
 }

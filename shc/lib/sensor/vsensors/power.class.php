@@ -200,7 +200,7 @@ class Power extends AbstractSensor implements vSensor {
      */
     public function getSumPower() {
 
-        return $this->max;
+        return $this->sum;
     }
 
     /**

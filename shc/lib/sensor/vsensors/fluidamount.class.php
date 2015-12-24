@@ -98,7 +98,7 @@ class FluidAmount extends AbstractSensor implements vSensor {
      */
     public function getSumFluidAmount() {
 
-        return $this->max;
+        return $this->sum;
     }
 
     /**
