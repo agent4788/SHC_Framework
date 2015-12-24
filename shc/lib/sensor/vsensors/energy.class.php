@@ -76,43 +76,61 @@ class Energy extends AbstractSensor implements vSensor {
     }
 
     /**
+     * gibt eine Liste mit den IDs der Sensoren zurück
+     *
+     * @return mixed
+     */
+    public function listSensorIDs() {
+
+        $list = array();
+        foreach($this->sensors as $sensor) {
+
+            $list[] = $sensor->getId();
+        }
+        return $list;
+    }
+
+    /**
      * verarbeitet die Daten der einzelnen Sensoren
      */
     public function processData() {
 
-        $this->min = null;
-        $this->average = null;
-        $this->max = null;
-        $this->sum = null;
-        $sum = 0.0;
-        $count = 0;
-        foreach($this->sensors as $sensor) {
+        if(count($this->sensors) >= 1) {
 
-            /* @var $sensor \SHC\Sensor\Model\Energy */
-            $val = $sensor->getEnergy();
+            $this->min = null;
+            $this->average = null;
+            $this->max = null;
+            $this->sum = null;
+            $sum = 0.0;
+            $count = 0;
+            foreach($this->sensors as $sensor) {
 
-            //Minimalwert
-            if($val < $this->min || $this->min === null) {
+                /* @var $sensor \SHC\Sensor\Model\Energy */
+                $val = $sensor->getEnergy();
 
-                $this->min = $val;
+                //Minimalwert
+                if($val < $this->min || $this->min === null) {
+
+                    $this->min = $val;
+                }
+
+                //Mittelwert
+                $sum += $val;
+                $count++;
+
+                //Maximalwert
+                if($val > $this->max || $this->max === null) {
+
+                    $this->max = $val;
+                }
             }
 
-            //Mittelwert
-            $sum += $val;
-            $count++;
+            //Mittelwert auswerten
+            $this->average = ($sum / $count);
 
-            //Maximalwert
-            if($val > $this->max || $this->max === null) {
-
-                $this->max = $val;
-            }
+            //Summe
+            $this->sum = $sum;
         }
-
-        //Mittelwert auswerten
-        $this->average = ($sum / $count);
-
-        //Summe
-        $this->sum = $sum;
     }
 
     /**

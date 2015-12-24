@@ -21,6 +21,7 @@ use SHC\Form\Forms\Sensors\HygrometerSensorForm;
 use SHC\Form\Forms\Sensors\LDRSensorForm;
 use SHC\Form\Forms\Sensors\RainSensorForm;
 use SHC\Form\Forms\Sensors\SCT013Form;
+use SHC\Form\Forms\Sensors\vSensorForm;
 use SHC\Form\Forms\Sensors\WaterMeterForm;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
@@ -37,6 +38,7 @@ use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\SCT013;
 use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensor;
 
 /**
  * Listet die schaltbaren Elemente
@@ -706,6 +708,52 @@ class EditSensorFormPage extends PageCommand {
             } else {
 
                 $tpl->assign('sensorForm', $sct013Form);
+            }
+        } elseif($sensor instanceof vSensor) {
+
+            //virtueller Sensor
+            $vSensorForm = new vSensorForm($sensor);
+            $vSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $vSensorForm->addId('shc-view-form-editSensor');
+
+            if($vSensorForm->isSubmitted() && $vSensorForm->validate()) {
+
+                //Speichern
+                $name = $vSensorForm->getElementByName('name')->getValue();
+                $icon = $vSensorForm->getElementByName('icon')->getValue();
+                $rooms = $vSensorForm->getElementByName('rooms')->getValues();
+                $visibility = $vSensorForm->getElementByName('visibility')->getValue();
+                $sensors = $vSensorForm->getElementByName('sensors')->getValues();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editVirtualSensor($sensorId, $name, $icon, $rooms, null, $visibility, $sensors);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $vSensorForm);
             }
         } else {
 

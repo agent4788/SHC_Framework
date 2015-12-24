@@ -25,6 +25,7 @@ $l['acp.switchableManagement.title.addSwitchable'] = 'schaltbares Element hinzuf
 $l['acp.switchableManagement.button.switchFunctions'] = 'Schaltfunktionen';
 $l['acp.switchableManagement.switchables'] = 'Schaltbare Elemente';
 $l['acp.switchableManagement.sensors'] = 'Sensoren';
+$l['acp.switchableManagement.vSensors'] = 'virtuelle Sensoren';
 
 //Elemente Tabelle
 $l['acp.switchableManagement.elementTable.table.head.name'] = 'Name';
@@ -231,6 +232,9 @@ $l['acp.switchableManagement.form.sensorForm.distanceVisibility.description'] = 
 $l['acp.switchableManagement.form.sensorForm.distanceOffset'] = 'Entfernungs Offset';
 $l['acp.switchableManagement.form.sensorForm.dataRecording'] = 'Datenaufzeichnung';
 $l['acp.switchableManagement.form.sensorForm.dataRecording.description'] = 'Sollen die Sensordaten aufgezeichnet werden?';
+$l['acp.switchableManagement.form.sensorForm.sensors'] = 'Sensoren';
+$l['acp.switchableManagement.form.sensorForm.sensors.description'] = 'Wähle die Sensoren die durch den virtuellen Sensor ausgewertet werden sollen';
+$l['acp.switchableManagement.form.addVSensor.error'] =  'der Sensor konnte nicht erstellt werden';
 
 $l['acp.switchableManagement.form.box.name'] = 'Name';
 $l['acp.switchableManagement.form.box.name.description'] = 'Name der Box';

@@ -55,23 +55,40 @@ class FluidAmount extends AbstractSensor implements vSensor {
     }
 
     /**
+     * gibt eine Liste mit den IDs der Sensoren zurück
+     *
+     * @return mixed
+     */
+    public function listSensorIDs() {
+
+        $list = array();
+        foreach($this->sensors as $sensor) {
+
+            $list[] = $sensor->getId();
+        }
+        return $list;
+    }
+
+    /**
      * verarbeitet die Daten der einzelnen Sensoren
      */
     public function processData() {
 
-        $sum = 0.0;
-        $count = 0;
-        foreach($this->sensors as $sensor) {
+        if(count($this->sensors) >= 1) {
 
-            /* @var $sensor \SHC\Sensor\Model\FluidAmount */
-            $val = $sensor->getFluidAmount();
+            $sum = 0.0;
+            foreach($this->sensors as $sensor) {
 
-            //Mittelwert
-            $sum += $val;
+                /* @var $sensor \SHC\Sensor\Model\FluidAmount */
+                $val = $sensor->getFluidAmount();
+
+                //Mittelwert
+                $sum += $val;
+            }
+
+            //Summe
+            $this->sum = $sum;
         }
-
-        //Summe
-        $this->sum = $sum;
     }
 
     /**

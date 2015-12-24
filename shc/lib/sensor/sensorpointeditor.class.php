@@ -1048,6 +1048,36 @@ class SensorPointEditor {
     }
 
     /**
+     * erstellt einen neuen Virtuellen Sensor
+     *
+     * @param  Integer $type Typ ID
+     * @return Integer neue Sensor ID
+     */
+    public function createVirtualSensor($type) {
+
+        $db = SHC::getDatabase();
+
+        //pruefen ob Sensorpunkt existiert (wenn nicht erstellen)
+        if($this->getSensorById(1000) === null) {
+
+            $this->createSensorPoint(1000);
+        }
+
+        //Sensor ID
+        $newId = 1000;
+        if(!$db->exists('autoIncrement:shc:vSensors')) {
+
+            $db->incrBy('autoIncrement:shc:vSensors', $newId);
+        } else {
+
+            $newId = $db->autoIncrement('shc:vSensors');
+        }
+
+        $this->createSensor(1000, $newId, $type);
+        return $newId;
+    }
+
+    /**
      * erstellt einen neuen Datensatz mit Sensorwerten
      *
      * @param  Integer $spId   Sensor Punkt ID

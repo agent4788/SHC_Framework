@@ -16,6 +16,13 @@ namespace SHC\Sensor;
 interface vSensor {
 
     /**
+     * gibt eine Liste mit den IDs der Sensoren zurück
+     *
+     * @return mixed
+     */
+    public function listSensorIDs();
+
+    /**
      * verarbeitet die Daten der einzelnen Sensoren
      */
     public function processData();

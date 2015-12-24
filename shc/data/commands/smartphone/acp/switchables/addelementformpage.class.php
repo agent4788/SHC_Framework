@@ -22,6 +22,7 @@ use SHC\Form\Forms\Elements\RpiGpioOutputForm;
 use SHC\Form\Forms\Elements\ScriptForm;
 use SHC\Form\Forms\Elements\ShutdownForm;
 use SHC\Form\Forms\Elements\WolForm;
+use SHC\Sensor\SensorPointEditor;
 use SHC\Switchable\SwitchableEditor;
 
 /**
@@ -639,6 +640,30 @@ class AddElementFormPage extends PageCommand {
                     } else {
 
                         $tpl->assign('elementForm', $fritzBox);
+                    }
+                    break;
+                case SensorPointEditor::VSENSOR_ENERGY:
+                case SensorPointEditor::VSENSOR_FLUID_AMOUNT:
+                case SensorPointEditor::VSENSOR_HUMIDITY:
+                case SensorPointEditor::VSENSOR_LIGHT_INTENSITY:
+                case SensorPointEditor::VSENSOR_MOISTURE:
+                case SensorPointEditor::VSENSOR_POWER:
+                case SensorPointEditor::VSENSOR_TEMPERATURE:
+
+                    //virtuellen Sensor erstellen und auf Edit Formular umleiten
+                    $message = new Message();
+                    try {
+
+                        $newSensorId = SensorPointEditor::getInstance()->createVirtualSensor($type);
+                        SHC::getResponse()->addLocationHeader('index.php?app=shc&page=editsensorform&id=' . $newSensorId);
+                        SHC::getResponse()->setBody('');
+                        SHC::getResponse()->flush();
+                        exit();
+                    } catch(\Exception $e) {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addVSensor.error'));
                     }
                     break;
             }
