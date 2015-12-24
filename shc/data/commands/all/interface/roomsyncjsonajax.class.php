@@ -24,6 +24,13 @@ use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\SCT013;
 use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensors\Energy;
+use SHC\Sensor\vSensors\FluidAmount;
+use SHC\Sensor\vSensors\Humidity;
+use SHC\Sensor\vSensors\LightIntensity;
+use SHC\Sensor\vSensors\Moisture;
+use SHC\Sensor\vSensors\Power;
+use SHC\Sensor\vSensors\Temperature;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -143,6 +150,13 @@ class RoomSyncJsonAjax extends AjaxCommand {
         $edimaxPowerValues = array();
         $sctPowerValues = array();
         $distanceValues = array();
+        $vEnergyValues = array();
+        $vAmountValues = array();
+        $vHumidityValues = array();
+        $vLightIntensityValues = array();
+        $vMoistureValues = array();
+        $vPowerValues = array();
+        $vTemaratureValues = array();
         foreach($sensors as $sensor) {
 
             if($sensor->isVisible()) {
@@ -208,6 +222,50 @@ class RoomSyncJsonAjax extends AjaxCommand {
                     $distanceValues[$sensor->getId()] = array(
                         'dist' => $sensor->getDisplayDistance()
                     );
+                } elseif ($sensor instanceof Energy) {
+
+                    $vEnergyValues[$sensor->getId()] = array(
+                        'sum' => $sensor->getSumDisplayEnergy()
+                    );
+                } elseif ($sensor instanceof FluidAmount) {
+
+                    $vAmountValues[$sensor->getId()] = array(
+                        'sum' => $sensor->getSumDisplayFluidAmount()
+                    );
+                } elseif ($sensor instanceof Humidity) {
+
+                    $vHumidityValues[$sensor->getId()] = array(
+                        'min' => $sensor->getMinDisplayHunidity(),
+                        'avg' => $sensor->getAvarageDisplayHunidity(),
+                        'max' => $sensor->getMaxDisplayHunidity()
+                    );
+                } elseif ($sensor instanceof LightIntensity) {
+
+                    $vLightIntensityValues[$sensor->getId()] = array(
+                        'min' => $sensor->getMinDisplayLightIntensity(),
+                        'avg' => $sensor->getAvarageDisplayLightIntensity(),
+                        'max' => $sensor->getMaxLightIntensity()
+                    );
+                } elseif ($sensor instanceof Moisture) {
+
+                    $vMoistureValues[$sensor->getId()] = array(
+                        'min' => $sensor->getMaxDisplayMoisture(),
+                        'avg' => $sensor->getAvarageDisplayMoisture(),
+                        'max' => $sensor->getMaxDisplayMoisture()
+                    );
+                } elseif ($sensor instanceof Power) {
+
+                    $vPowerValues[$sensor->getId()] = array(
+                        'avg' => $sensor->getAvarageDisplayPower(),
+                        'sum' => $sensor->getSumDisplayPower()
+                    );
+                } elseif ($sensor instanceof Temperature) {
+
+                    $vTemaratureValues[$sensor->getId()] = array(
+                        'min' => $sensor->getMinTemperature(),
+                        'avg' => $sensor->getAvarageTemperature(),
+                        'max' => $sensor->getMaxTemperature()
+                    );
                 }
             }
         }
@@ -218,6 +276,18 @@ class RoomSyncJsonAjax extends AjaxCommand {
         $response['bmp'] = $bmpValues;
         $response['analog'] = $analogValues;
         $response['syncAvmPowerSocket'] = $avmPowerValues;
+        $response['syncFluidAmountMeters'] = $fluidAmountValues;
+        $response['syncCometThermostat'] = $cometThermostatValues;
+        $response['syncEdimaxPowerSocket'] = $edimaxPowerValues;
+        $response['syncSctPower'] = $sctPowerValues;
+        $response['syncDistance'] = $distanceValues;
+        $response['syncvEnergy'] = $vEnergyValues;
+        $response['syncvAmount'] = $vAmountValues;
+        $response['syncvHumidity'] = $vHumidityValues;
+        $response['syncvLightIntensity'] = $vLightIntensityValues;
+        $response['syncvMoisture'] = $vMoistureValues;
+        $response['syncvPower'] = $vPowerValues;
+        $response['syncvTemperature'] = $vTemaratureValues;
 
         $this->data = $response;
     }

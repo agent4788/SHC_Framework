@@ -22,6 +22,13 @@ use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
 use SHC\Sensor\Sensors\SCT013;
 use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensors\Energy;
+use SHC\Sensor\vSensors\FluidAmount;
+use SHC\Sensor\vSensors\Humidity;
+use SHC\Sensor\vSensors\LightIntensity;
+use SHC\Sensor\vSensors\Moisture;
+use SHC\Sensor\vSensors\Power;
+use SHC\Sensor\vSensors\Temperature;
 use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
@@ -263,6 +270,43 @@ class RoomElementsJsonAjax extends AjaxCommand
 
             $data['type'] = 'HcSr04';
             $data['dist'] = $element->getDisplayDistance();
+        } elseif ($element instanceof Energy) {
+
+            $data['type'] = 'HcSr04';
+            $data['sum'] = $element->getSumDisplayEnergy();
+        } elseif ($element instanceof FluidAmount) {
+
+            $data['type'] = 'HcSr04';
+            $data['sum'] = $element->getSumDisplayFluidAmount();
+        } elseif ($element instanceof Humidity) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayHunidity();
+            $data['avg'] = $element->getAvarageDisplayHunidity();
+            $data['max'] = $element->getMaxDisplayHunidity();
+        } elseif ($element instanceof LightIntensity) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayLightIntensity();
+            $data['avg'] = $element->getAvarageDisplayLightIntensity();
+            $data['max'] = $element->getMaxDisplayLightIntensity();
+        } elseif ($element instanceof Moisture) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayMoisture();
+            $data['avg'] = $element->getAvarageDisplayMoisture();
+            $data['max'] = $element->getMaxDisplayMoisture();
+        } elseif ($element instanceof Power) {
+
+            $data['type'] = 'HcSr04';
+            $data['avg'] = $element->getAvarageDisplayPower();
+            $data['sum'] = $element->getSumDisplayPower();
+        } elseif ($element instanceof Temperature) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayTemperature();
+            $data['avg'] = $element->getAvarageDisplayTemperature();
+            $data['max'] = $element->getMaxDisplayTemperature();
         }
         return $data;
     }
