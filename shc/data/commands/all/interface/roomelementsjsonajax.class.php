@@ -35,12 +35,14 @@ use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\View\Room\ViewHelperBox;
 use SHC\View\Room\ViewHelperEditor;
@@ -146,6 +148,14 @@ class RoomElementsJsonAjax extends AjaxCommand
         } elseif ($element instanceof AvmSocket) {
 
             $data['type'] = 'AvmSocket';
+            $data['buttonText'] = $element->getButtonText();
+        } elseif ($element instanceof EdimaxSocket) {
+
+            $data['type'] = 'EdimaxSocket';
+            $data['buttonText'] = $element->getButtonText();
+        } elseif ($element instanceof VirtualSocket) {
+
+            $data['type'] = 'VirtualSocket';
             $data['buttonText'] = $element->getButtonText();
         } elseif ($element instanceof Countdown) {
 
