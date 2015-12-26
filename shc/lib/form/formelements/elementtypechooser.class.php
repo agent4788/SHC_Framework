@@ -42,7 +42,9 @@ class ElementTypeChooser extends Select {
                 //SwitchableEditor::TYPE_REMOTE_REBOOT=> RWF::getLanguage()->get('acp.switchableManagement.element.remoteReboot'),
                 //SwitchableEditor::TYPE_REMOTE_SHUTDOWN => RWF::getLanguage()->get('acp.switchableManagement.element.remoteShutdown'),
                 SwitchableEditor::TYPE_SCRIPT => RWF::getLanguage()->get('acp.switchableManagement.element.script'),
-                SwitchableEditor::TYPE_FRITZBOX => RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox')
+                SwitchableEditor::TYPE_FRITZBOX => RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox'),
+                SwitchableEditor::TYPE_EDIMAX_SOCKET => RWF::getLanguage()->get('acp.switchableManagement.element.edimaxSocket'),
+                SwitchableEditor::TYPE_VIRTUAL_SOCKET => RWF::getLanguage()->get('acp.switchableManagement.element.virtualSocket')
             ),
             RWF::getLanguage()->get('acp.switchableManagement.vSensors') => array(
                 SensorPointEditor::VSENSOR_ENERGY => RWF::getLanguage()->get('acp.switchableManagement.element.vSensor.energy'),

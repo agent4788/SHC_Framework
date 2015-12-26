@@ -9,12 +9,14 @@ use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -72,10 +74,16 @@ class SwitchableViewHelper {
             return self::showScript($switchable, $ignoreShow);
         } elseif ($switchable instanceof AvmSocket) {
 
-            return self::shoAvmSocket($switchable, $ignoreShow);
+            return self::showAvmSocket($switchable, $ignoreShow);
         } elseif ($switchable instanceof FritzBox) {
 
             return self::showFritzBox($switchable, $ignoreShow);
+        } elseif ($switchable instanceof EdimaxSocket) {
+
+            return self::showEdimanxSocket($switchable, $ignoreShow);
+        } elseif ($switchable instanceof VirtualSocket) {
+
+            return self::showVirtualSocket($switchable, $ignoreShow);
         }
         return '<span>Unbekanntes schaltbares Element</span>';
     }
@@ -311,7 +319,7 @@ class SwitchableViewHelper {
      * @param  Boolean                               $ignoreShow Anzeigeeinstellungen ignorieren
      * @return String
      */
-    protected static function shoAvmSocket(AvmSocket $switchable, $ignoreShow = false) {
+    protected static function showAvmSocket(AvmSocket $switchable, $ignoreShow = false) {
 
         $html = '';
         if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
@@ -355,6 +363,62 @@ class SwitchableViewHelper {
             } else {
                 //Web Ansicht
                 $html = $tpl->fetchString('fritzBox.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer AVM Steckdose zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\EdimaxSocket $switchable AVM Socket
+     * @param  Boolean                                  $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showEdimanxSocket(EdimaxSocket $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileEdimaxSocket.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('edimaxSocket.html');
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * bereitet die Daten einer AVM Steckdose zur Anzeige vor
+     *
+     * @param  \SHC\Switchable\Switchables\VirtualSocket $switchable AVM Socket
+     * @param  Boolean                                   $ignoreShow Anzeigeeinstellungen ignorieren
+     * @return String
+     */
+    protected static function showVirtualSocket(VirtualSocket $switchable, $ignoreShow = false) {
+
+        $html = '';
+        if ($switchable->isUserEntitled(RWF::getVisitor()) && ($ignoreShow == true || ($switchable->isEnabled() && $switchable->isVisible() == Switchable::SHOW))) {
+
+            $tpl = SHC::getTemplate();
+            $tpl->assign('switchable', $switchable);
+            $tpl->assign('roomId', self::$roomId);
+            $tpl->assign('device', SHC_DETECTED_DEVICE);
+            if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
+
+                //Mobil Ansicht
+                $html = $tpl->fetchString('mobileVirtualSocket.html');
+            } else {
+                //Web Ansicht
+                $html = $tpl->fetchString('virtualSocket.html');
             }
         }
         return $html;

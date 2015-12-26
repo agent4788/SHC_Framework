@@ -328,13 +328,15 @@ class SwitchableEditor {
 
                     $object = new EdimaxSocket();
                     $object->setIpAddress((string) $switchable['ip']);
-                    $object->setType((int) $switchable['type']);
+                    $object->setType((int) $switchable['stype']);
                     $object->setUsername((string) $switchable['username']);
                     $object->setPassword((string) $switchable['pwassword']);
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 case self::TYPE_VIRTUAL_SOCKET:
 
                     $object = new VirtualSocket();
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 default:
 
@@ -1852,16 +1854,18 @@ class SwitchableEditor {
      * @param  string  $password          Passwort
      * @param  int     $function          Funktion
      * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      */
-    public function addEdimaxSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $ipAddress, $type, $username, $password, array $allowedUserGroups = array()) {
+    public function addEdimaxSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $ipAddress, $type, $username, $password, array $allowedUserGroups = array(), $buttonText) {
 
         //Daten Vorbereiten
         $data = array(
             'ip' => $ipAddress,
-            'type' => $type,
+            'stype' => $type,
             'username' => $username,
-            'pwassword' => $password
+            'pwassword' => $password,
+            'buttonText' => $buttonText
         );
 
         //Datensatz erstellen
@@ -1887,14 +1891,15 @@ class SwitchableEditor {
      * @param  Integer $buttonText        Button Text
      * @return Boolean
      */
-    public function editEdimaxSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $ipAddress = null, $type = null, $username = null, $password = null, array $allowedUserGroups = null) {
+    public function editEdimaxSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $ipAddress = null, $type = null, $username = null, $password = null, array $allowedUserGroups = null, $buttonText = null) {
 
         //Daten Vorbereiten
         $data = array(
             'ip' => $ipAddress,
-            'type' => $type,
+            'stype' => $type,
             'username' => $username,
-            'pwassword' => $password
+            'pwassword' => $password,
+            'buttonText' => $buttonText
         );
 
         //Datensatz bearbeiten
@@ -1911,12 +1916,18 @@ class SwitchableEditor {
      * @param  array   $rooms             Raeume
      * @param  array   $order             Sortierung
      * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
      * @return Boolean
      */
-    public function addVirtualSocket($name, $enabled, $visibility, $icon, $rooms, array $order, array $allowedUserGroups = array()) {
+    public function addVirtualSocket($name, $enabled, $visibility, $icon, $rooms, array $order, array $allowedUserGroups = array(), $buttonText) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'buttonText' => $buttonText
+        );
 
         //Datensatz erstellen
-        return $this->addElement(self::TYPE_VIRTUAL_SOCKET, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups);
+        return $this->addElement(self::TYPE_VIRTUAL_SOCKET, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
     }
 
     /**
@@ -1933,10 +1944,15 @@ class SwitchableEditor {
      * @param  Integer $buttonText        Button Text
      * @return Boolean
      */
-    public function editVirtualSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, array $allowedUserGroups = null) {
+    public function editVirtualSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'buttonText' => $buttonText
+        );
 
         //Datensatz bearbeiten
-        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups);
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
     }
 
     /**
