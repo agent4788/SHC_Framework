@@ -5,10 +5,14 @@ namespace SHC\Condition;
 //Imports
 use SHC\Condition\Conditions\HumidityGreaterThanCondition;
 use SHC\Condition\Conditions\HumidityLowerThanCondition;
+use SHC\Condition\Conditions\JustCalendarWeekCondition;
 use SHC\Condition\Conditions\LightIntensityGreaterThanCondition;
 use SHC\Condition\Conditions\LightIntensityLowerThanCondition;
 use SHC\Condition\Conditions\MoistureGreaterThanCondition;
 use SHC\Condition\Conditions\MoistureLowerThanCondition;
+use SHC\Condition\Conditions\OddCalendarWeekCondition;
+use SHC\Condition\Conditions\SwitchableStateHighCondition;
+use SHC\Condition\Conditions\SwitchableStateLowCondition;
 use SHC\Condition\Conditions\TemperatureGreaterThanCondition;
 use SHC\Condition\Conditions\TemperatureLowerThanCondition;
 use SHC\Condition\Conditions\NobodyAtHomeCondition;
@@ -244,6 +248,18 @@ abstract class AbstractCondition implements Condition {
         } elseif($this instanceof FirstLoopCondition) {
 
             $type = SHC::getLanguage()->get('acp.conditionManagement.condition.FirstLoopCondition');
+        } elseif($this instanceof JustCalendarWeekCondition) {
+
+            $type = SHC::getLanguage()->get('acp.conditionManagement.condition.JustCalendarWeekCondition');
+        } elseif($this instanceof OddCalendarWeekCondition) {
+
+            $type = SHC::getLanguage()->get('acp.conditionManagement.condition.OddCalendarWeekCondition');
+        } elseif($this instanceof SwitchableStateHighCondition) {
+
+            $type = SHC::getLanguage()->get('acp.conditionManagement.condition.SwitchableStateHighCondition');
+        } elseif($this instanceof SwitchableStateLowCondition) {
+
+            $type = SHC::getLanguage()->get('acp.conditionManagement.condition.SwitchableStateLowCondition');
         } else {
 
             $type = 'unknown';

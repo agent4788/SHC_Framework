@@ -45,7 +45,11 @@ class ConditionTypeChooser extends Select {
             17 => RWF::getLanguage()->get('acp.conditionManagement.condition.HolidaysCondition'),
             18 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputHighCondition'),
             19 => RWF::getLanguage()->get('acp.conditionManagement.condition.InputLowCondition'),
-            20 => RWF::getLanguage()->get('acp.conditionManagement.condition.FirstLoopCondition')
+            20 => RWF::getLanguage()->get('acp.conditionManagement.condition.FirstLoopCondition'),
+            22 => RWF::getLanguage()->get('acp.conditionManagement.condition.JustCalendarWeekCondition'),
+            23 => RWF::getLanguage()->get('acp.conditionManagement.condition.OddCalendarWeekCondition'),
+            24 => RWF::getLanguage()->get('acp.conditionManagement.condition.SwitchableStateHighCondition'),
+            25 => RWF::getLanguage()->get('acp.conditionManagement.condition.SwitchableStateLowCondition'),
         );
         RWF::getLanguage()->enableAutoHtmlEndocde();
         $this->setValues($values);

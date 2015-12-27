@@ -2,4 +2,5 @@
 .idea/
 rwf/data/storage/*.xml
 shc/data/storage/*.xml
-errors.txt
+pcc/data/storage/*.xml
+mb/data/storage/*.xml
