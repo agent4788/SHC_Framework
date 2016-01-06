@@ -281,7 +281,8 @@ class SensorDataTransmitter {
                 //Wartezeit setzen
                 $LEDnextRuntime = (new DateTime('now'))->add(new \DateInterval('PT1S'));
             }
+
+            sleep(10);
         }
     }
-
 }
