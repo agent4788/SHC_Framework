@@ -163,7 +163,7 @@ class SensorDataTransmitter {
 
                             //Daten zum senden vorbereiten
                             $match = array();
-                            preg_match('#t=(\d{1,6})#', $dataRaw, $match);
+                            preg_match('#t=(-?\d{1,6})#', $dataRaw, $match);
 
                             //pruefen ob die Daten valid sind
                             if(isset($match[1])) {
