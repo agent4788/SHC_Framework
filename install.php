@@ -626,7 +626,7 @@ if(!$redis->hExists('apps', 'shc')) {
             'name' => 'Raspberry Pi SmartHome Control',
             'icon' => './shc/inc/img/shc-icon.png',
             'order' => 10,
-            'apLevel' => 14
+            'apLevel' => 16
         )));
 
         //App erfolgreich installiert
@@ -682,7 +682,7 @@ if(!$redis->hExists('apps', 'pcc')) {
             'name' => 'Raspberry Pi Control Center',
             'icon' => './pcc/inc/img/pcc-icon.png',
             'order' => 20,
-            'apLevel' => 14
+            'apLevel' => 16
         )));
 
         //App erfolgreich installiert

@@ -1,0 +1,88 @@
+//Git Anzahl Codezeilen auslesen
+$ find . -type f -not -regex '\./\.git.*' | xargs cat | wc -l
+
+//Klassenlader
+1000 -> Unbekannter Namensraum
+1001 -> Die Klasse konnte nicht gefunden werden
+1002 -> Die Klasse konnte nicht geladen werden
+1003 -> Die classes.php kann wegen felenden Schreibrechten nicht erstellt werden
+1004 -> Die Klasse konnte nicht geladen werden oder existiert nicht
+
+//Allgemein
+1010 -> Die App ist nicht bekannt
+1011 -> Hacking versuch entdeckt
+1012 -> Die HTTP Header wurden schon gesendet
+1013 -> Die App ist nicht installiert
+1014 -> Die Funktion ist deaktiviert
+1015 -> Die Datenbankkonfiguration fehlt
+
+//Frontcontroller
+1020 -> Unbekannter Anfragetyp
+1021 -> Nicht erlaubter Name für die Anfrage
+1022 -> Unbekannte Anfrage
+1023 -> Die Kommandoklasse konnte nicht geladen werden
+1024 -> unbekanntes Kommando mit "-h" oder "--help" kannst du dir anzeigen lassen welche Kommandos es gibt
+
+//XML
+1100 -> Die XML Datei konnte nicht geladen werden
+1101 -> Die XML Datei konnte nicht gefunden werden
+1102 -> Die XML Datei kann wegen fehlenden schreibrechten nicht gespeichert werden
+1103 -> Die XML Datei konnte nicht gespeichert werden
+
+//User
+1110 -> Der Benutzername ist schon vergeben
+1111 -> Der Gründer kann nicht gelöscht werden
+1112 -> Der Gruppenname ist schon vergeben
+1113 -> Eine System Gruppe kann nicht gelöscht werden
+1114 -> Benutzername oder Passwort falsch
+
+//Datenbank
+1120 -> Die Datenbank wird nicht unterstützt
+
+//Einstellungen
+1120 -> Ungültiger Wert
+
+//Sprachverwaltung
+1130 -> Ungültiger Datentyp in der Sprachvariable
+
+//Template
+1140 -> Template compilieren fehlgeschlagen: [Grund]
+1141 -> Der Template Ordner ... existiert nicht
+1142 -> Der Ordner ... für die Compilierten Dateien existirt nicht und konnte nicht erstellt werden
+1143 -> Die "tpl" Variable ist für die Template Engine reserviert
+1144 -> Das Template ... konnte nicht gefunden werden
+1145 -> Die Klasse ... implementiert nicht das richtige Interface
+1146 -> Die Template Datei ... existiert nicht oder konnte nicht gefunden werden
+
+//IO
+1150 -> Verbindung zu "...:..." fehlgeschalgen
+1151 -> Server Socket error
+
+//Redis Fehler
+1200 -> Verbindung zur Datenbank fehlgeschlagen
+1201 -> Authentifizierung Fehlgeschlagen
+1202 -> Auswahl der Datenbank Fehlgeschlagen
+
+//SHC Fehler
+1500 -> Der Raumname ist schon vergeben
+1501 -> Der Servername ist schon vergeben
+1502 -> Der Name der Bedingung ist schon vergeben
+1503 -> Der Name des Schaltpunktes ist schon vergeben
+1504 -> Ein Countdown kann nicht bei einem Countdown registriert werden
+1505 -> Eine Aktivität kann nicht bei einer Aktivität registriert werden
+1506 -> Unbekannter Typ
+1507 -> Der Name ist schon vergeben
+1508 -> Die Aufgabe muss die "Task" Schnittstelle implementieren
+1509 -> Unbekannter Sensortyp
+1510 -> der Schaltserver für den GPIO konnte nicht erreicht werden
+1511 -> der Schaltserver untersützt das GPIO schalten nicht
+1512 -> es konnte kein Schaltserver erreicht werden oder kein Schaltserver untersützt das schalten von Funksteckosen
+1513 -> ungültiges Ereignis
+
+//Bedingungen
+1580 -> Fehlende Parameter
+1581 -> ungültige Bedingung
+
+1600 -> Das Modul ist deaktiviert
+
+//Moviebase Fehler

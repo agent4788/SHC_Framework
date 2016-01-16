@@ -8,6 +8,7 @@ use RWF\Date\DateTime;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\RadioSocketDimmer;
@@ -17,6 +18,7 @@ use SHC\Switchable\Switchables\RemoteShutdown;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\Switchable\Readables\RpiGpioInput;
 use SHC\Timer\SwitchPointEditor;
@@ -149,18 +151,32 @@ class SwitchableEditor {
     const TYPE_SCRIPT = 8192;
 
     /**
-     * Script
+     * AVM Steckodse
      *
      * @var Integer
      */
     const TYPE_AVM_SOCKET = 16384;
 
     /**
-     * Script
+     * Fritz Box Steuerelement
      *
      * @var Integer
      */
     const TYPE_FRITZBOX = 32768;
+
+    /**
+     * EDIMAX Steckdose
+     *
+     * @var Integer
+     */
+    const TYPE_EDIMAX_SOCKET = 65536;
+
+    /**
+     * Virtuelle Steckdose
+     *
+     * @var Integer
+     */
+    const TYPE_VIRTUAL_SOCKET = 131072;
 
     /**
      * Liste mit allen Schaltbaren Objekten
@@ -307,6 +323,20 @@ class SwitchableEditor {
 
                     $object = new FritzBox();
                     $object->setFunction((int) $switchable['function']);
+                    break;
+                case self::TYPE_EDIMAX_SOCKET:
+
+                    $object = new EdimaxSocket();
+                    $object->setIpAddress((string) $switchable['ip']);
+                    $object->setType((int) $switchable['stype']);
+                    $object->setUsername((string) $switchable['username']);
+                    $object->setPassword((string) $switchable['pwassword']);
+                    $object->setButtonText((int) $switchable['buttonText']);
+                    break;
+                case self::TYPE_VIRTUAL_SOCKET:
+
+                    $object = new VirtualSocket();
+                    $object->setButtonText((int) $switchable['buttonText']);
                     break;
                 default:
 
@@ -1807,6 +1837,122 @@ class SwitchableEditor {
 
         //Datensatz bearbeiten
         return $this->editElement($id, null, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * erstellt ein neue AVM Steckdose
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  array   $rooms             Raeume
+     * @param  array   $order             Sortierung
+     * @param  string  $ipAddress         IP Adresse
+     * @param  int     $type              Typ
+     * @param  string  $username          Benutzername
+     * @param  string  $password          Passwort
+     * @param  int     $function          Funktion
+     * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     */
+    public function addEdimaxSocket($name, $enabled, $visibility, $icon, $rooms, array $order, $ipAddress, $type, $username, $password, array $allowedUserGroups = array(), $buttonText) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'ip' => $ipAddress,
+            'stype' => $type,
+            'username' => $username,
+            'pwassword' => $password,
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_EDIMAX_SOCKET, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet eine AVM Steckdose
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  array   $rooms             Raeume
+     * @param  array   $order             Sortierung
+     * @param  string  $ipAddress         IP Adresse
+     * @param  int     $type              Typ
+     * @param  string  $username          Benutzername
+     * @param  string  $password          Passwort
+     * @param  int     $function          Funktion
+     * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     */
+    public function editEdimaxSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, $ipAddress = null, $type = null, $username = null, $password = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'ip' => $ipAddress,
+            'stype' => $type,
+            'username' => $username,
+            'pwassword' => $password,
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * erstellt ein neue AVM Steckdose
+     *
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  array   $rooms             Raeume
+     * @param  array   $order             Sortierung
+     * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     */
+    public function addVirtualSocket($name, $enabled, $visibility, $icon, $rooms, array $order, array $allowedUserGroups = array(), $buttonText) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz erstellen
+        return $this->addElement(self::TYPE_VIRTUAL_SOCKET, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
+    }
+
+    /**
+     * bearbeitet eine AVM Steckdose
+     *
+     * @param  Integer $id                ID
+     * @param  String  $name              Name
+     * @param  Boolean $enabled           Aktiv
+     * @param  Boolean $visibility        Sichtbarkeit
+     * @param  String  $icon              Icon
+     * @param  array   $rooms             Raeume
+     * @param  array   $order             Sortierung
+     * @param  array   $allowedUserGroups Liste erlaubter Benutzergruppen
+     * @param  Integer $buttonText        Button Text
+     * @return Boolean
+     */
+    public function editVirtualSocket($id, $name = null, $enabled = null, $visibility = null, $icon = null, $rooms = null, $order = null, array $allowedUserGroups = null, $buttonText = null) {
+
+        //Daten Vorbereiten
+        $data = array(
+            'buttonText' => $buttonText
+        );
+
+        //Datensatz bearbeiten
+        return $this->editElement($id, $name, $enabled, $visibility, $icon, $rooms, $order, array(), $allowedUserGroups, $data);
     }
 
     /**

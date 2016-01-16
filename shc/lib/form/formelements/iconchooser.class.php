@@ -55,7 +55,13 @@ class IconChooser extends Select {
                 'shc-icon-rain' => array('shc-icon-rain', ($icon == 'shc-icon-rain' ? 1 : 0)),
                 'shc-icon-hygrometer' => array('shc-icon-hygrometer', ($icon == 'shc-icon-hygrometer' ? 1 : 0)),
                 'shc-icon-ldr' => array('shc-icon-ldr', ($icon == 'shc-icon-ldr' ? 1 : 0)),
-                'shc-icon-avmPowerSensor' => array('shc-icon-avmPowerSensor', ($icon == 'shc-icon-avmPowerSensor' ? 1 : 0))
+                'shc-icon-avmPowerSensor' => array('shc-icon-avmPowerSensor', ($icon == 'shc-icon-avmPowerSensor' ? 1 : 0)),
+                'shc-icon-edimaxPowerSensor' => array('shc-icon-edimaxPowerSensor', ($icon == 'shc-icon-edimaxPowerSensor' ? 1 : 0)),
+                'shc-icon-gasmeter' => array('shc-icon-gasmeter', ($icon == 'shc-icon-gasmeter' ? 1 : 0)),
+                'shc-icon-hcsr04' => array('shc-icon-hcsr04', ($icon == 'shc-icon-hcsr04' ? 1 : 0)),
+                'shc-icon-sct013' => array('shc-icon-sct013', ($icon == 'shc-icon-sct013' ? 1 : 0)),
+                'shc-icon-cometThermostat' => array('shc-icon-cometThermostat', ($icon == 'shc-icon-cometThermostat' ? 1 : 0)),
+                'shc-icon-watermeter' => array('shc-icon-watermeter', ($icon == 'shc-icon-watermeter' ? 1 : 0))
             )
         );
         $this->setValues($values);

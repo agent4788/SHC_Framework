@@ -38,13 +38,7 @@
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;{#$sensor->getName()}</td>
                             <td>
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\BMP'}{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\DHT'}{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\DS18x20'}{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\Hygrometer'}{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\LDR'}{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\RainSensor'}{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
-                                {instanceof element=$sensor class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
+                                {$sensor->getTypeName()}
                                 </td>
                             <td>{$sensor->getTime()|timeline}</td>
                             <td></td>

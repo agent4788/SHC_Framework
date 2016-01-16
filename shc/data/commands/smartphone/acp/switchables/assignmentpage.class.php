@@ -99,7 +99,11 @@ class AssignmentPage extends PageCommand {
                 foreach($switchable->getRooms() as $roomId) {
 
                     $room = RoomEditor::getInstance()->getRoomById($roomId);
-                    $rooms[] = $room->getName();
+
+                    if($room instanceof Room) {
+
+                        $rooms[] = $room->getName();
+                    }
                 }
 
                 //GPIO

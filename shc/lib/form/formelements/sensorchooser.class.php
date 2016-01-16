@@ -6,9 +6,13 @@ namespace SHC\Form\FormElements;
 use RWF\Form\FormElements\SelectMultiple;
 use SHC\Sensor\Model\AirPressure;
 use SHC\Sensor\Model\Altitude;
+use SHC\Sensor\Model\Distance;
+use SHC\Sensor\Model\Energy;
+use SHC\Sensor\Model\FluidAmount;
 use SHC\Sensor\Model\Humidity;
 use SHC\Sensor\Model\LightIntensity;
 use SHC\Sensor\Model\Moisture;
+use SHC\Sensor\Model\Power;
 use SHC\Sensor\Model\Temperature;
 use SHC\Sensor\SensorPointEditor;
 
@@ -73,6 +77,34 @@ class SensorChooser extends SelectMultiple {
     const LINGTH_INTENSIVITY = 64;
 
     /**
+     * Stromverbrauch Sensoren
+     *
+     * @var Integer
+     */
+    const POWER = 128;
+
+    /**
+     * Energieverbrauch Sensoren
+     *
+     * @var Integer
+     */
+    const ENERGY = 256;
+
+    /**
+     * Zähler (Wasser/Gas) Sensoren
+     *
+     * @var Integer
+     */
+    const METER = 512;
+
+    /**
+     * Entfernung Sensoren
+     *
+     * @var Integer
+     */
+    const DISTANCE = 1024;
+
+    /**
      * @param String  $name      Feld Name
      * @param Array   $sensors   Ausgewaehlte IDs
      * @param Integer $filter    Filter nach denen die Sensoren selektiert werden
@@ -121,6 +153,26 @@ class SensorChooser extends SelectMultiple {
                 $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
                 continue;
             } elseif($filter & self::LINGTH_INTENSIVITY && $sensor instanceof LightIntensity) {
+
+                //Feuchtigkeitssensoren
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                continue;
+            } elseif($filter & self::POWER && $sensor instanceof Power) {
+
+                //Feuchtigkeitssensoren
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                continue;
+            } elseif($filter & self::ENERGY && $sensor instanceof Energy) {
+
+                //Feuchtigkeitssensoren
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                continue;
+            } elseif($filter & self::METER && $sensor instanceof FluidAmount) {
+
+                //Feuchtigkeitssensoren
+                $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));
+                continue;
+            } elseif($filter & self::DISTANCE && $sensor instanceof Distance) {
 
                 //Feuchtigkeitssensoren
                 $values[$sensor->getId()] = array($sensor->getName() .' ['. $sensor->getNamedRoomList(true) .']', (in_array($sensor->getId(), $sensors) ? 1 : 0));

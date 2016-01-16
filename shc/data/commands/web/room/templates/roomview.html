@@ -122,6 +122,148 @@
                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
                 });
             });
+            eventSource.addEventListener('syncFluidAmountMeters', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-amountMeter-{$roomId}-'+ index +'-amount').text(value.amount);
+                });
+            });
+            eventSource.addEventListener('syncCometThermostat', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //DS18x20 Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-cometThermostat-{$roomId}-'+ index +'-temp').text(value.temp);
+                });
+            });
+            eventSource.addEventListener('syncEdimaxPowerSocket', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-edimaxPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
+                    $('#shc-view-sensor-edimaxPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
+                });
+            });
+            eventSource.addEventListener('syncSctPower', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-sct013-{$roomId}-'+ index +'-power').text(value.power);
+                });
+            });
+            eventSource.addEventListener('syncDistance', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-hcsr04-{$roomId}-'+ index +'-dist').text(value.dist);
+                });
+            });
+            eventSource.addEventListener('syncvEnergy', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualEnergySensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                });
+            });
+            eventSource.addEventListener('syncvAmount', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualAmountSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                });
+            });
+            eventSource.addEventListener('syncvHumidity', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-min').text(value.min);
+                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-max').text(value.max);
+                });
+            });
+            eventSource.addEventListener('syncvLightIntensity', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-min').text(value.min);
+                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-max').text(value.max);
+                });
+            });
+            eventSource.addEventListener('syncvMoisture', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-max').text(value.max);
+                });
+            });
+            eventSource.addEventListener('syncvPower', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                    $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                });
+            });
+            eventSource.addEventListener('syncvTemperature', function(e) {
+
+                //JOSN parsen
+                var data = JSON.parse(e.data);
+
+                //AVM Power Sensoren
+                $.each(data, function(index, value) {
+
+                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-max').text(value.max);
+                });
+            });
 
             eventSource.addEventListener('error', function(e) {
                 if (!e.readyState == EventSource.CLOSED) {
@@ -215,6 +357,88 @@
                                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-temp').text(value.temp);
                                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
                                     $('#shc-view-sensor-avmPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
+                                });
+
+                                //Mengenmesser
+                                $.each(data.syncFluidAmountMeters, function (index, value) {
+
+                                    $('#shc-view-sensor-amountMeter-{$roomId}-'+ index +'-amount').text(value.amount);
+                                });
+
+                                //Comet Thermostat
+                                $.each(data.syncCometThermostat, function (index, value) {
+
+                                    $('#shc-view-sensor-cometThermostat-{$roomId}-'+ index +'-temp').text(value.temp);
+                                });
+
+                                //Edimax Power Sensoren
+                                $.each(data.syncEdimaxPowerSocket, function (index, value) {
+
+                                    $('#shc-view-sensor-edimaxPowerSensor-{$roomId}-'+ index +'-power').text(value.power);
+                                    $('#shc-view-sensor-edimaxPowerSensor-{$roomId}-'+ index +'-energy').text(value.energy);
+                                });
+
+                                //SCT-013
+                                $.each(data.syncSctPower, function (index, value) {
+
+                                    $('#shc-view-sensor-sct013-{$roomId}-'+ index +'-power').text(value.power);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncDistance, function (index, value) {
+
+                                    $('#shc-view-sensor-hcsr04-{$roomId}-'+ index +'-dist').text(value.dist);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvEnergy, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualEnergySensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvAmount, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualAmountSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvHumidity, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-min').text(value.min);
+                                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                    $('#shc-view-sensor-virtualHumiditySensor-{$roomId}-'+ index +'-max').text(value.max);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvLightIntensity, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-min').text(value.min);
+                                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                    $('#shc-view-sensor-virtualLighIntensitySensor-{$roomId}-'+ index +'-max').text(value.max);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvMoisture, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                    $('#shc-view-sensor-virtualMoistureSensor-{$roomId}-'+ index +'-max').text(value.max);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvPower, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                    $('#shc-view-sensor-virtualPowerSensor-{$roomId}-'+ index +'-sum').text(value.sum);
+                                });
+
+                                //HC-SR04
+                                $.each(data.syncvTemperature, function (index, value) {
+
+                                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-min').text(value.min);
+                                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-avg').text(value.avg);
+                                    $('#shc-view-sensor-virtualTemperatureSensor-{$roomId}-'+ index +'-max').text(value.max);
                                 });
                             }
                         }

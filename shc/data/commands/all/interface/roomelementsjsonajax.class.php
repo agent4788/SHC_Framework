@@ -11,23 +11,38 @@ use RWF\Util\DataTypeUtil;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensors\Energy;
+use SHC\Sensor\vSensors\FluidAmount;
+use SHC\Sensor\vSensors\Humidity;
+use SHC\Sensor\vSensors\LightIntensity;
+use SHC\Sensor\vSensors\Moisture;
+use SHC\Sensor\vSensors\Power;
+use SHC\Sensor\vSensors\Temperature;
 use SHC\Switchable\AbstractSwitchable;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\View\Room\ViewHelperBox;
 use SHC\View\Room\ViewHelperEditor;
@@ -134,6 +149,14 @@ class RoomElementsJsonAjax extends AjaxCommand
 
             $data['type'] = 'AvmSocket';
             $data['buttonText'] = $element->getButtonText();
+        } elseif ($element instanceof EdimaxSocket) {
+
+            $data['type'] = 'EdimaxSocket';
+            $data['buttonText'] = $element->getButtonText();
+        } elseif ($element instanceof VirtualSocket) {
+
+            $data['type'] = 'VirtualSocket';
+            $data['buttonText'] = $element->getButtonText();
         } elseif ($element instanceof Countdown) {
 
             $data['type'] = 'Countdown';
@@ -232,6 +255,68 @@ class RoomElementsJsonAjax extends AjaxCommand
 
             $data['type'] = 'RainSensor';
             $data['val'] = $element->getDisplayMoisture();
+        } elseif ($element instanceof GasMeter) {
+
+            $data['type'] = 'GasMeter';
+            $data['amount'] = $element->getDisplayFluidAmount();
+        } elseif ($element instanceof WaterMeter) {
+
+            $data['type'] = 'WaterMeter';
+            $data['amount'] = $element->getDisplayFluidAmount();
+        } elseif ($element instanceof CometDectRadiatorThermostat) {
+
+            $data['type'] = 'CometThermostat';
+            $data['temp'] = $element->getDisplayTemperature();
+        } elseif ($element instanceof EdimaxMeasuringSocket) {
+
+            $data['type'] = 'EdimaxMeasuringSocket';
+            $data['power'] = $element->getDisplayPower();
+            $data['energy'] = $element->getDisplayEnergy();
+        } elseif ($element instanceof SCT013) {
+
+            $data['type'] = 'Sct013';
+            $data['power'] = $element->getDisplayPower();
+        } elseif ($element instanceof HcSr04) {
+
+            $data['type'] = 'HcSr04';
+            $data['dist'] = $element->getDisplayDistance();
+        } elseif ($element instanceof Energy) {
+
+            $data['type'] = 'HcSr04';
+            $data['sum'] = $element->getSumDisplayEnergy();
+        } elseif ($element instanceof FluidAmount) {
+
+            $data['type'] = 'HcSr04';
+            $data['sum'] = $element->getSumDisplayFluidAmount();
+        } elseif ($element instanceof Humidity) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayHunidity();
+            $data['avg'] = $element->getAvarageDisplayHunidity();
+            $data['max'] = $element->getMaxDisplayHunidity();
+        } elseif ($element instanceof LightIntensity) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayLightIntensity();
+            $data['avg'] = $element->getAvarageDisplayLightIntensity();
+            $data['max'] = $element->getMaxDisplayLightIntensity();
+        } elseif ($element instanceof Moisture) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayMoisture();
+            $data['avg'] = $element->getAvarageDisplayMoisture();
+            $data['max'] = $element->getMaxDisplayMoisture();
+        } elseif ($element instanceof Power) {
+
+            $data['type'] = 'HcSr04';
+            $data['avg'] = $element->getAvarageDisplayPower();
+            $data['sum'] = $element->getSumDisplayPower();
+        } elseif ($element instanceof Temperature) {
+
+            $data['type'] = 'HcSr04';
+            $data['min'] = $element->getMinDisplayTemperature();
+            $data['avg'] = $element->getAvarageDisplayTemperature();
+            $data['max'] = $element->getMaxDisplayTemperature();
         }
         return $data;
     }

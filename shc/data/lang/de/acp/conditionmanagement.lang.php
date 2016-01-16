@@ -48,6 +48,10 @@ $l['acp.conditionManagement.condition.HolidaysCondition'] = 'Feiertage';
 $l['acp.conditionManagement.condition.InputHighCondition'] = 'Eingang "1"';
 $l['acp.conditionManagement.condition.InputLowCondition'] = 'Eingang "0"';
 $l['acp.conditionManagement.condition.FirstLoopCondition'] = 'Sheduler start';
+$l['acp.conditionManagement.condition.JustCalendarWeekCondition'] = 'gerade Kalenderwoche';
+$l['acp.conditionManagement.condition.OddCalendarWeekCondition'] = 'ungeradeKalenderwoche';
+$l['acp.conditionManagement.condition.SwitchableStateHighCondition'] = 'schaltbares Element "an"';
+$l['acp.conditionManagement.condition.SwitchableStateLowCondition'] = 'schaltbares Element "aus"';
 
 //Formularfelder
 $l['acp.conditionManagement.form.holiday.NEW_YEARS_DAY'] = 'Neujahr';
@@ -120,6 +124,8 @@ $l['acp.conditionManagement.form.condition.holidaysInvert'] = 'Invertieren';
 $l['acp.conditionManagement.form.condition.holidaysInvert.description'] = 'wenn aktiviert is die Bedingung wahr wenn die ausgewählten Feiertage nicht zutreffen';
 $l['acp.conditionManagement.form.condition.inputs'] = 'Eingänge';
 $l['acp.conditionManagement.form.condition.inputs.description'] = 'wähle die Eingänge die überwacht werden sollen';
+$l['acp.conditionManagement.form.condition.switchables'] = 'schaltbare Elemente';
+$l['acp.conditionManagement.form.condition.switchables.description'] = 'wähle die schaltbaren Elemente die überwacht werden sollen';
 
 //Meldungen
 $l['acp.conditionManagement.form.condition.success'] = 'Die Bedingung wurde erfolgreich gespeichert';

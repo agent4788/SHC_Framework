@@ -11,19 +11,34 @@ use RWF\Util\Message;
 use SHC\Core\SHC;
 use SHC\Form\Forms\Sensors\AvmMeasuringSocketForm;
 use SHC\Form\Forms\Sensors\BMPSensorForm;
+use SHC\Form\Forms\Sensors\CometThermostatForm;
 use SHC\Form\Forms\Sensors\DHTSensorForm;
 use SHC\Form\Forms\Sensors\DS18x20SensorForm;
+use SHC\Form\Forms\Sensors\EdimaxMeasuringSocketForm;
+use SHC\Form\Forms\Sensors\GasMeterForm;
+use SHC\Form\Forms\Sensors\HcSr04Form;
 use SHC\Form\Forms\Sensors\HygrometerSensorForm;
 use SHC\Form\Forms\Sensors\LDRSensorForm;
 use SHC\Form\Forms\Sensors\RainSensorForm;
+use SHC\Form\Forms\Sensors\SCT013Form;
+use SHC\Form\Forms\Sensors\vSensorForm;
+use SHC\Form\Forms\Sensors\WaterMeterForm;
 use SHC\Sensor\SensorPointEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\FluidAmount;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensor;
 
 /**
  * Listet die schaltbaren Elemente
@@ -408,6 +423,337 @@ class EditSensorFormPage extends PageCommand {
             } else {
 
                 $tpl->assign('sensorForm', $avmMeasuringSocketForm);
+            }
+        } elseif($sensor instanceof EdimaxMeasuringSocket) {
+
+            //Edimax Power Steckdose
+            $edimaxMeasuringSocketForm = new EdimaxMeasuringSocketForm($sensor);
+            $edimaxMeasuringSocketForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $edimaxMeasuringSocketForm->addId('shc-view-form-editSensor');
+
+            if($edimaxMeasuringSocketForm->isSubmitted() && $edimaxMeasuringSocketForm->validate()) {
+
+                //Speichern
+                $name = $edimaxMeasuringSocketForm->getElementByName('name')->getValue();
+                $icon = $edimaxMeasuringSocketForm->getElementByName('icon')->getValue();
+                $rooms = $edimaxMeasuringSocketForm->getElementByName('rooms')->getValues();
+                $visibility = $edimaxMeasuringSocketForm->getElementByName('visibility')->getValue();
+                $powerVisibility = $edimaxMeasuringSocketForm->getElementByName('powerVisibility')->getValue();
+                $energyVisibility = $edimaxMeasuringSocketForm->getElementByName('energyVisibility')->getValue();
+                $dataRecording = $edimaxMeasuringSocketForm->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editEdimaxMeasuringSensor($sensorId, $name, $icon, $rooms, null, $visibility, $powerVisibility, $energyVisibility, $dataRecording);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $edimaxMeasuringSocketForm);
+            }
+        } elseif($sensor instanceof GasMeter) {
+
+            //Gaszähler Sensor
+            $gasMeterSensorForm = new GasMeterForm($sensor);
+            $gasMeterSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $gasMeterSensorForm->addId('shc-view-form-editSensor');
+
+            if($gasMeterSensorForm->isSubmitted() && $gasMeterSensorForm->validate()) {
+
+                //Speichern
+                $name = $gasMeterSensorForm->getElementByName('name')->getValue();
+                $icon = $gasMeterSensorForm->getElementByName('icon')->getValue();
+                $rooms = $gasMeterSensorForm->getElementByName('rooms')->getValues();
+                $visibility = $gasMeterSensorForm->getElementByName('visibility')->getValue();
+                $fluidAmountVisibility = $gasMeterSensorForm->getElementByName('fluidAmountVisibility')->getValue();
+                $dataRecording = $gasMeterSensorForm->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editGasmeter($sensorId, $name, $icon, $rooms, null, $visibility, $fluidAmountVisibility, $dataRecording);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $gasMeterSensorForm);
+            }
+        } elseif($sensor instanceof WaterMeter) {
+
+            //Wasserzähler Sensor
+            $waterMeterSensorForm = new WaterMeterForm($sensor);
+            $waterMeterSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $waterMeterSensorForm->addId('shc-view-form-editSensor');
+
+            if($waterMeterSensorForm->isSubmitted() && $waterMeterSensorForm->validate()) {
+
+                //Speichern
+                $name = $waterMeterSensorForm->getElementByName('name')->getValue();
+                $icon = $waterMeterSensorForm->getElementByName('icon')->getValue();
+                $rooms = $waterMeterSensorForm->getElementByName('rooms')->getValues();
+                $visibility = $waterMeterSensorForm->getElementByName('visibility')->getValue();
+                $fluidAmountVisibility = $waterMeterSensorForm->getElementByName('fluidAmountVisibility')->getValue();
+                $dataRecording = $waterMeterSensorForm->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editWatermeter($sensorId, $name, $icon, $rooms, null, $visibility, $fluidAmountVisibility, $dataRecording);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $waterMeterSensorForm);
+            }
+        } elseif($sensor instanceof CometDectRadiatorThermostat) {
+
+            //Comet Thermostat
+            $cometThermostatForm = new CometThermostatForm($sensor);
+            $cometThermostatForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $cometThermostatForm->addId('shc-view-form-editSensor');
+
+            if($cometThermostatForm->isSubmitted() && $cometThermostatForm->validate()) {
+
+                //Speichern
+                $name = $cometThermostatForm->getElementByName('name')->getValue();
+                $icon = $cometThermostatForm->getElementByName('icon')->getValue();
+                $rooms = $cometThermostatForm->getElementByName('rooms')->getValues();
+                $visibility = $cometThermostatForm->getElementByName('visibility')->getValue();
+                $temperatureVisibility = $cometThermostatForm->getElementByName('temperatureVisibility')->getValue();
+                $temperatureOffset = $cometThermostatForm->getElementByName('tempOffset')->getValue();
+                $dataRecording = $cometThermostatForm->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editCometDectRadiatoThermostatSensor($sensorId, $name, $icon, $rooms, null, $visibility, $temperatureVisibility, $dataRecording, $temperatureOffset);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $cometThermostatForm);
+            }
+        } elseif($sensor instanceof HcSr04) {
+
+            //HC-SR04 Entfernungsmesser
+            $hcSr04Form = new HcSr04Form($sensor);
+            $hcSr04Form->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $hcSr04Form->addId('shc-view-form-editSensor');
+
+            if($hcSr04Form->isSubmitted() && $hcSr04Form->validate()) {
+
+                //Speichern
+                $name = $hcSr04Form->getElementByName('name')->getValue();
+                $icon = $hcSr04Form->getElementByName('icon')->getValue();
+                $rooms = $hcSr04Form->getElementByName('rooms')->getValues();
+                $visibility = $hcSr04Form->getElementByName('visibility')->getValue();
+                $distanceVisibility = $hcSr04Form->getElementByName('distanceVisibility')->getValue();
+                $distanceOffset = $hcSr04Form->getElementByName('distanceOffset')->getValue();
+                $dataRecording = $hcSr04Form->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editHcSr04($sensorId, $name, $icon, $rooms, null, $visibility, $distanceVisibility, $dataRecording, $distanceOffset);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $hcSr04Form);
+            }
+        } elseif($sensor instanceof SCT013) {
+
+            //SCT-013 Energiemesser
+            $sct013Form = new SCT013Form($sensor);
+            $sct013Form->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $sct013Form->addId('shc-view-form-editSensor');
+
+            if($sct013Form->isSubmitted() && $sct013Form->validate()) {
+
+                //Speichern
+                $name = $sct013Form->getElementByName('name')->getValue();
+                $icon = $sct013Form->getElementByName('icon')->getValue();
+                $rooms = $sct013Form->getElementByName('rooms')->getValues();
+                $visibility = $sct013Form->getElementByName('visibility')->getValue();
+                $powerVisibility = $sct013Form->getElementByName('powerVisibility')->getValue();
+                $dataRecording = $sct013Form->getElementByName('dataRecording')->getValue();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editCometDectRadiatoThermostatSensor($sensorId, $name, $icon, $rooms, null, $visibility, $powerVisibility, $dataRecording);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $sct013Form);
+            }
+        } elseif($sensor instanceof vSensor) {
+
+            //virtueller Sensor
+            $vSensorForm = new vSensorForm($sensor);
+            $vSensorForm->setAction('index.php?app=shc&page=editsensorform&id='. $sensor->getId());
+            $vSensorForm->addId('shc-view-form-editSensor');
+
+            if($vSensorForm->isSubmitted() && $vSensorForm->validate()) {
+
+                //Speichern
+                $name = $vSensorForm->getElementByName('name')->getValue();
+                $icon = $vSensorForm->getElementByName('icon')->getValue();
+                $rooms = $vSensorForm->getElementByName('rooms')->getValues();
+                $visibility = $vSensorForm->getElementByName('visibility')->getValue();
+                $sensors = $vSensorForm->getElementByName('sensors')->getValues();
+
+                $message = new Message();
+                try {
+
+                    SensorPointEditor::getInstance()->editVirtualSensor($sensorId, $name, $icon, $rooms, null, $visibility, $sensors);
+                    $message->setType(Message::SUCCESSFULLY);
+                    $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.success'));
+                } catch(\Exception $e) {
+
+                    if($e->getCode() == 1102) {
+
+                        //fehlende Schreibrechte
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error.1102'));
+                    } else {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.editSensor.error'));
+                    }
+                }
+                RWF::getSession()->setMessage($message);
+
+                //Umleiten
+                $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                $this->response->setBody('');
+                $this->template = '';
+            } else {
+
+                $tpl->assign('sensorForm', $vSensorForm);
             }
         } else {
 

@@ -25,7 +25,31 @@ span.shc-icon-ldr {
 }
 
 span.shc-icon-avmPowerSensor {
-    background-image: url(../../../img/sensor/pwoersocket.png);
+    background-image: url(../../../img/sensor/powersocket.png);
+}
+
+span.shc-icon-edimaxPowerSensor {
+    background-image: url(../../../img/sensor/powersocket.png);
+}
+
+span.shc-icon-gasmeter {
+    background-image: url(../../../img/sensor/gasmeter.png);
+}
+
+span.shc-icon-hcsr04 {
+    background-image: url(../../../img/sensor/hcsr04.png);
+}
+
+span.shc-icon-sct013 {
+    background-image: url(../../../img/sensor/sct013.png);
+}
+
+span.shc-icon-cometThermostat {
+    background-image: url(../../../img/sensor/thermostat.png);
+}
+
+span.shc-icon-watermeter {
+    background-image: url(../../../img/sensor/watermeter.png);
 }
 
 /* Icons fuer Schaltbare Elemente */
