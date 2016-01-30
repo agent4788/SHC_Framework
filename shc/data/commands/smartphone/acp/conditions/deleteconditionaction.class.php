@@ -40,7 +40,7 @@ class DeleteConditionAction extends ActionCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'switchablemanagement', 'acpindex');
 
     /**
      * Aktion ausfuehren
