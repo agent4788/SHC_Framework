@@ -4,6 +4,8 @@ namespace SHC\Condition\Conditions;
 
 //Imports
 use SHC\Condition\AbstractCondition;
+use SHC\Switchable\Switchable;
+use SHC\Switchable\SwitchableEditor;
 
 /**
  * Bedingung Schaltbares Element hat "0" Zustand
@@ -39,7 +41,7 @@ class SwitchableStateLowCondition extends AbstractCondition {
         foreach($switchables as $switchable) {
 
             $switchableObject = SwitchableEditor::getInstance()->getElementById($switchable);
-            if($switchable instanceof Switchable) {
+            if($switchableObject instanceof Switchable) {
 
                 if($switchableObject->getState() == Switchable::STATE_OFF) {
 

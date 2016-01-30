@@ -41,7 +41,7 @@ class SwitchableStateHighCondition extends AbstractCondition {
         foreach($switchables as $switchable) {
 
             $switchableObject = SwitchableEditor::getInstance()->getElementById($switchable);
-            if($switchable instanceof Switchable) {
+            if($switchableObject instanceof Switchable) {
 
                 if($switchableObject->getState() == Switchable::STATE_ON) {
 
