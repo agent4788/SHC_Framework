@@ -10,12 +10,14 @@ use SHC\Room\RoomEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 use SHC\Timer\SwitchPoint;
 use SHC\Room\Room;
@@ -638,6 +640,12 @@ abstract class AbstractSwitchable implements Switchable {
         } elseif($this instanceof FritzBox) {
 
             $type = RWF::getLanguage()->get('acp.switchableManagement.element.fritzBox');
+        }  elseif($this instanceof EdimaxSocket) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.edimaxSocket');
+        } elseif($this instanceof VirtualSocket) {
+
+            $type = RWF::getLanguage()->get('acp.switchableManagement.element.virtualSocket');
         } else {
 
             $type = 'unknown';

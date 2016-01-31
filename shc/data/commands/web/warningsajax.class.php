@@ -127,7 +127,7 @@ class WarningsAjax extends AjaxCommand {
 
             /* @var $sensorPoint \SHC\Sensor\SensorPoint */
             $lastConnect = $sensorPoint->getTime();
-            if($lastConnect < $inPast) {
+            if($lastConnect < $inPast && $sensorPoint->getId() !== 1000) {
 
                 $message->addSubMessage(RWF::getLanguage()->get('index.warnings.sensorPoint.stop', $sensorPoint->getName()));
             }

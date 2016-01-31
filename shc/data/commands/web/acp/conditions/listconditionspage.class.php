@@ -29,7 +29,7 @@ class ListConditionsPage extends PageCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten

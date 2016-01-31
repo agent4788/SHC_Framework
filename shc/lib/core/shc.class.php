@@ -29,7 +29,7 @@ class SHC extends RWF {
      *
      * @var String
      */
-    const VERSION = '2.2.6';
+    const VERSION = '2.2.7';
 
     /**
      * Sensor Transmitter
@@ -139,6 +139,11 @@ class SHC extends RWF {
         $settings->addSetting('shc.title', Settings::TYPE_STRING, 'SHC 2.2');
         $settings->addSetting('shc.defaultStyle', Settings::TYPE_STRING, 'redmond');
         $settings->addSetting('shc.defaultMobileStyle', Settings::TYPE_STRING, 'default');
+
+        //Werte für Energiedatenerfassung
+        $settings->addSetting('shc.energy.electricityPrice', Settings::TYPE_FLOAT, 0.0);
+        $settings->addSetting('shc.energy.waterPrice', Settings::TYPE_FLOAT, 0.0);
+        $settings->addSetting('shc.energy.gasPrice', Settings::TYPE_FLOAT, 0.0);
 
         //Sheduler
         $settings->addSetting('shc.shedulerDaemon.active', Settings::TYPE_BOOL, false);

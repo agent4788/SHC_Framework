@@ -9,11 +9,24 @@ use RWF\Date\DateTime;
 use SHC\Room\RoomEditor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\BMP;
+use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
 use SHC\Sensor\Sensors\DHT;
 use SHC\Sensor\Sensors\DS18x20;
+use SHC\Sensor\Sensors\EdimaxMeasuringSocket;
+use SHC\Sensor\Sensors\GasMeter;
+use SHC\Sensor\Sensors\HcSr04;
 use SHC\Sensor\Sensors\Hygrometer;
 use SHC\Sensor\Sensors\LDR;
 use SHC\Sensor\Sensors\RainSensor;
+use SHC\Sensor\Sensors\SCT013;
+use SHC\Sensor\Sensors\WaterMeter;
+use SHC\Sensor\vSensors\Energy;
+use SHC\Sensor\vSensors\FluidAmount;
+use SHC\Sensor\vSensors\Humidity;
+use SHC\Sensor\vSensors\LightIntensity;
+use SHC\Sensor\vSensors\Moisture;
+use SHC\Sensor\vSensors\Power;
+use SHC\Sensor\vSensors\Temperature;
 
 /**
  * Standard Sensor
@@ -241,7 +254,7 @@ abstract class AbstractSensor implements Sensor {
     /**
      * gibt eine Liste mit allen Raeumen zurueck
      *
-     * @return Array
+     * @return array
      */
     public function getRooms() {
 
@@ -433,6 +446,45 @@ abstract class AbstractSensor implements Sensor {
         } elseif($this instanceof AvmMeasuringSocket) {
 
             $type = SHC::getLanguage()->get('acp.switchableManagement.element.avmMeasuringSocket');
+        } elseif($this instanceof EdimaxMeasuringSocket) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.edimaxMeasuringSocket');
+        } elseif($this instanceof GasMeter) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.gasmeter');
+        } elseif($this instanceof WaterMeter) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.watermeter');
+        } elseif($this instanceof CometDectRadiatorThermostat) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.cometRadiatorThermostat');
+        } elseif($this instanceof SCT013) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.sct013');
+        } elseif($this instanceof HcSr04) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.hcsr04');
+        } elseif($this instanceof Energy) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.energy');
+        } elseif($this instanceof FluidAmount) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.fluidAmount');
+        } elseif($this instanceof Humidity) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.humidity');
+        } elseif($this instanceof LightIntensity) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.lightIntensity');
+        } elseif($this instanceof Moisture) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.moisture');
+        } elseif($this instanceof Power) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.power');
+        } elseif($this instanceof Temperature) {
+
+            $type = SHC::getLanguage()->get('acp.switchableManagement.element.vSensor.temperature');
         } else {
 
             $type = 'unknown';

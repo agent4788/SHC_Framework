@@ -12,6 +12,7 @@ use RWF\Util\Message;
 use SHC\Condition\ConditionEditor;
 use SHC\Core\SHC;
 use SHC\Form\FormElements\ConditionTypeChooser;
+use SHC\Form\Forms\Conditions\CalendarWeekConditionForm;
 use SHC\Form\Forms\Conditions\DateConditionForm;
 use SHC\Form\Forms\Conditions\DayOfWeekConditionForm;
 use SHC\Form\Forms\Conditions\FileExistsConditionForm;
@@ -25,6 +26,7 @@ use SHC\Form\Forms\Conditions\MoistureConditionForm;
 use SHC\Form\Forms\Conditions\NobodyAtHomeConditionForm;
 use SHC\Form\Forms\Conditions\SunriseSunsetConditionForm;
 use SHC\Form\Forms\Conditions\SunsetSunriseConditionForm;
+use SHC\Form\Forms\Conditions\SwitchableStateConditionForm;
 use SHC\Form\Forms\Conditions\TemperatureConditionForm;
 use SHC\Form\Forms\Conditions\TimeOfDayConditionForm;
 use SHC\Form\Forms\Conditions\UserAtHomeConditionForm;
@@ -50,7 +52,7 @@ class AddConditionFormPage extends PageCommand {
      *
      * @var Array
      */
-    protected $languageModules = array('index', 'conditionmanagement', 'acpindex');
+    protected $languageModules = array('index', 'conditionmanagement', 'switchablemanagement', 'acpindex');
 
     /**
      * Daten verarbeiten
@@ -1062,6 +1064,212 @@ class AddConditionFormPage extends PageCommand {
 
                         //Umleiten
                         $this->response->addLocationHeader('index.php?app=shc&m&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 22:
+
+                    //gerade Kalenderwoche
+                    $conditionForm = new CalendarWeekConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addJustCalendarWeekCondition($name, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 23:
+
+                    //ungerade Kalenderwoche
+                    $conditionForm = new CalendarWeekConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addOddCalendarWeekCondition($name, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 24:
+
+                    //schaltbares Element "an"
+                    $conditionForm = new SwitchableStateConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $switchables = $conditionForm->getElementByName('switchables')->getValues();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addSwitchableStateHighCondition($name, $switchables, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('conditionForm', $conditionForm);
+                    }
+                    break;
+                case 25:
+
+                    //schaltbares Element "aus"
+                    $conditionForm = new SwitchableStateConditionForm();
+                    $conditionForm->setView(Form::SMARTPHONE_VIEW);
+                    $conditionForm->setAction('index.php?app=shc&m&page=addconditionform');
+                    $conditionForm->addId('shc-view-form-addCondition');
+
+                    if($conditionForm->isSubmitted() && $conditionForm->validate()) {
+
+                        //Werte vorbereiten
+                        $name = $conditionForm->getElementByName('name')->getValue();
+                        $switchables = $conditionForm->getElementByName('switchables')->getValues();
+                        $enabled = $conditionForm->getElementByName('enabled')->getValue();
+
+                        //Speichern
+                        $message = new Message();
+                        try {
+
+                            ConditionEditor::getInstance()->addSwitchableStateLowCondition($name, $switchables, $enabled);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1502) {
+
+                                //Name schon vergeben
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1502'));
+                            } elseif($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.conditionManagement.form.condition.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listconditions');
                         $this->response->setBody('');
                         $this->template = '';
                     } else {

@@ -633,24 +633,14 @@ if(file_exists('./rwf/db.config.php')) {
 }
 
 //DB Config erstellen
-$dbConfig =
-    "<?php
-
-/**
- * Redis NoSQL Dantenbank Konfiguration
- *
- * @created ". (new DateTime())->format('H:i d.m.Y') ."
- */
-
-\$dbConfig = array(
-    'host' => '$valid_address',
+$dbConfig = array(
+    'host' => $valid_address,
     'port' => $valid_port,
     'timeout' => $valid_timeout,
-    'pass' => '$valid_password',
+    'pass' => $valid_password,
     'db' => $valid_db
 );
-";
-if(@file_put_contents('./rwf/db.config.php', $dbConfig)) {
+if(@file_put_contents('./rwf/db.config.json', json_encode($dbConfig))) {
 
     $cli->writeLineColored('Die Datenbankkonfiguration wurde erfolgreich erstellt', 'green');
 } else {

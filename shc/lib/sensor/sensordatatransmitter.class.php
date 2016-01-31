@@ -163,7 +163,7 @@ class SensorDataTransmitter {
 
                             //Daten zum senden vorbereiten
                             $match = array();
-                            preg_match('#t=(\d{1,6})#', $dataRaw, $match);
+                            preg_match('#t=(-?\d{1,6})#', $dataRaw, $match);
 
                             //pruefen ob die Daten valid sind
                             if(isset($match[1])) {
@@ -281,7 +281,8 @@ class SensorDataTransmitter {
                 //Wartezeit setzen
                 $LEDnextRuntime = (new DateTime('now'))->add(new \DateInterval('PT1S'));
             }
+
+            sleep(10);
         }
     }
-
 }

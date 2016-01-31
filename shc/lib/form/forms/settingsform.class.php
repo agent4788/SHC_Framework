@@ -5,6 +5,7 @@ namespace SHC\Form\Forms;
 //Imports
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
+use RWF\Form\FormElements\FloatInputField;
 use RWF\Form\FormElements\IntegerInputField;
 use RWF\Form\FormElements\OnOffOption;
 use RWF\Form\FormElements\Select;
@@ -219,6 +220,30 @@ class SettingsForm extends TabbedHtmlForm {
         $fbPassword->setDescription(RWF::getLanguage()->get('acp.settings.form.fbPassword.decription'));
         $fbPassword->requiredField(true);
         $this->addFormElementToTab('fritzBox', $fbPassword);
+
+        //Fritz Box
+        $this->addTab('energy', RWF::getLanguage()->get('acp.settings.tabs.energy'), RWF::getLanguage()->get('acp.settings.tabs.energy.description'));
+
+        //Strompreis
+        $electricityPrice = new FloatInputField('shc_energy_electricityPrice', RWF::getSetting('shc.energy.electricityPrice'), array('min' => 0.0, 'max' => 5.0, 'step' => 0.01));
+        $electricityPrice->setTitle(RWF::getLanguage()->get('acp.settings.form.electricityPrice'));
+        $electricityPrice->setDescription(RWF::getLanguage()->get('acp.settings.form.electricityPrice.decription'));
+        $electricityPrice->requiredField(true);
+        $this->addFormElementToTab('energy', $electricityPrice);
+
+        //Wasserpreis
+        $waterPrice = new FloatInputField('shc_energy_waterPrice', RWF::getSetting('shc.energy.waterPrice'), array('min' => 0.0, 'max' => 5.0, 'step' => 0.01));
+        $waterPrice->setTitle(RWF::getLanguage()->get('acp.settings.form.waterPrice'));
+        $waterPrice->setDescription(RWF::getLanguage()->get('acp.settings.form.waterPrice.decription'));
+        $waterPrice->requiredField(true);
+        $this->addFormElementToTab('energy', $waterPrice);
+
+        //Gaspreis
+        $gasPrice = new FloatInputField('shc_energy_gasPrice', RWF::getSetting('shc.energy.gasPrice'), array('min' => 0.0, 'max' => 5.0, 'step' => 0.01));
+        $gasPrice->setTitle(RWF::getLanguage()->get('acp.settings.form.gasPrice'));
+        $gasPrice->setDescription(RWF::getLanguage()->get('acp.settings.form.gasPrice.decription'));
+        $gasPrice->requiredField(true);
+        $this->addFormElementToTab('energy', $gasPrice);
 
         RWF::getLanguage()->enableAutoHtmlEndocde();
     }

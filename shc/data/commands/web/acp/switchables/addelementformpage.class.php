@@ -13,6 +13,7 @@ use SHC\Form\FormElements\ElementTypeChooser;
 use SHC\Form\Forms\Elements\ActivityForm;
 use SHC\Form\Forms\Elements\AvmSocketForm;
 use SHC\Form\Forms\Elements\CountdownForm;
+use SHC\Form\Forms\Elements\EdimaxSocketForm;
 use SHC\Form\Forms\Elements\FritzBoxForm;
 use SHC\Form\Forms\Elements\RadiosocketForm;
 use SHC\Form\Forms\Elements\RebootForm;
@@ -20,7 +21,9 @@ use SHC\Form\Forms\Elements\RpiGpioInputForm;
 use SHC\Form\Forms\Elements\RpiGpioOutputForm;
 use SHC\Form\Forms\Elements\ScriptForm;
 use SHC\Form\Forms\Elements\ShutdownForm;
+use SHC\Form\Forms\Elements\VirtualSocketForm;
 use SHC\Form\Forms\Elements\WolForm;
+use SHC\Sensor\SensorPointEditor;
 use SHC\Switchable\SwitchableEditor;
 
 /**
@@ -625,6 +628,130 @@ class AddElementFormPage extends PageCommand {
                     } else {
 
                         $tpl->assign('elementForm', $fritzBox);
+                    }
+                    break;
+                case SwitchableEditor::TYPE_EDIMAX_SOCKET:
+
+                    $edimaxSocket= new EdimaxSocketForm();
+                    $edimaxSocket->setAction('index.php?app=shc&page=addelementform');
+                    $edimaxSocket->addId('shc-view-form-addElement');
+
+                    if($edimaxSocket->isSubmitted() && $edimaxSocket->validate()) {
+
+                        //Speichern
+                        $name = $edimaxSocket->getElementByName('name')->getValue();
+                        $icon = $edimaxSocket->getElementByName('icon')->getValue();
+                        $buttonText = $edimaxSocket->getElementByName('buttonText')->getValue();
+                        $rooms = $edimaxSocket->getElementByName('rooms')->getValues();
+                        $ip = $edimaxSocket->getElementByName('ip')->getValue();
+                        $type = $edimaxSocket->getElementByName('type')->getValue();
+                        $username = $edimaxSocket->getElementByName('username')->getValue();
+                        $password = $edimaxSocket->getElementByName('password')->getValue();
+                        $enabled = $edimaxSocket->getElementByName('enabled')->getValue();
+                        $visibility = $edimaxSocket->getElementByName('visibility')->getValue();
+                        $allowedUsers = $edimaxSocket->getElementByName('allowedUsers')->getValues();
+
+                        $message = new Message();
+                        try {
+
+                            SwitchableEditor::getInstance()->addEdimaxSocket($name, $enabled, $visibility, $icon, $rooms, array(), $ip, $type, $username, $password, $allowedUsers, $buttonText);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.eidmaxSocket.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.eidmaxSocket.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.eidmaxSocket.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('elementForm', $edimaxSocket);
+                    }
+                    break;
+                case SwitchableEditor::TYPE_VIRTUAL_SOCKET:
+
+                    $virtualSocket = new VirtualSocketForm();
+                    $virtualSocket->setAction('index.php?app=shc&page=addelementform');
+                    $virtualSocket->addId('shc-view-form-addElement');
+
+                    if($virtualSocket->isSubmitted() && $virtualSocket->validate()) {
+
+                        //Speichern
+                        $name = $virtualSocket->getElementByName('name')->getValue();
+                        $icon = $virtualSocket->getElementByName('icon')->getValue();
+                        $buttonText = $virtualSocket->getElementByName('buttonText')->getValue();
+                        $rooms = $virtualSocket->getElementByName('rooms')->getValues();
+                        $enabled = $virtualSocket->getElementByName('enabled')->getValue();
+                        $visibility = $virtualSocket->getElementByName('visibility')->getValue();
+                        $allowedUsers = $virtualSocket->getElementByName('allowedUsers')->getValues();
+
+                        $message = new Message();
+                        try {
+
+                            SwitchableEditor::getInstance()->addVirtualSocket($name, $enabled, $visibility, $icon, $rooms, array(), $allowedUsers, $buttonText);
+                            $message->setType(Message::SUCCESSFULLY);
+                            $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.virtualSocket.success'));
+                        } catch(\Exception $e) {
+
+                            if($e->getCode() == 1102) {
+
+                                //fehlende Schreibrechte
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.virtualSocket.error.1102'));
+                            } else {
+
+                                //Allgemeiner Fehler
+                                $message->setType(Message::ERROR);
+                                $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.virtualSocket.error'));
+                            }
+                        }
+                        RWF::getSession()->setMessage($message);
+
+                        //Umleiten
+                        $this->response->addLocationHeader('index.php?app=shc&page=listswitchables');
+                        $this->response->setBody('');
+                        $this->template = '';
+                    } else {
+
+                        $tpl->assign('elementForm', $virtualSocket);
+                    }
+                    break;
+                case SensorPointEditor::VSENSOR_ENERGY:
+                case SensorPointEditor::VSENSOR_FLUID_AMOUNT:
+                case SensorPointEditor::VSENSOR_HUMIDITY:
+                case SensorPointEditor::VSENSOR_LIGHT_INTENSITY:
+                case SensorPointEditor::VSENSOR_MOISTURE:
+                case SensorPointEditor::VSENSOR_POWER:
+                case SensorPointEditor::VSENSOR_TEMPERATURE:
+
+                    //virtuellen Sensor erstellen und auf Edit Formular umleiten
+                    $message = new Message();
+                    try {
+
+                        $newSensorId = SensorPointEditor::getInstance()->createVirtualSensor($type);
+                        SHC::getResponse()->addLocationHeader('index.php?app=shc&page=editsensorform&id=' . $newSensorId);
+                        SHC::getResponse()->setBody('');
+                        SHC::getResponse()->flush();
+                        exit();
+                    } catch(\Exception $e) {
+
+                        //Allgemeiner Fehler
+                        $message->setType(Message::ERROR);
+                        $message->setMessage(RWF::getLanguage()->get('acp.switchableManagement.form.addVSensor.error'));
                     }
                     break;
             }

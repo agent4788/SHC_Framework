@@ -1136,6 +1136,144 @@ class ConditionEditor {
     }
 
     /**
+     * erstellt eine neue Bedingung die nur zu geraden Kalenderwochen zutrifft
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function addJustCalendarWeekCondition($name, $enabled) {
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\JustCalendarWeekCondition', $name, $enabled);
+    }
+
+    /**
+     * bearbeitet eine Bedingung die nur zu geraden Kalenderwochen zutrifft
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function editJustCalendarWeekCondition($id, $name = null, $enabled = null) {
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled);
+    }
+
+    /**
+     * erstellt eine neue Bedingung die nur zu ungeraden Kalenderwochen zutrifft
+     *
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function addOddCalendarWeekCondition($name, $enabled) {
+
+        //Datensatz erstellen
+        return $this->addCondition('\SHC\Condition\Conditions\OddCalendarWeekCondition', $name, $enabled);
+    }
+
+    /**
+     * bearbeitet eine Bedingung die nur zu ungeraden Kalenderwochen zutrifft
+     *
+     * @param  Integer $id      ID
+     * @param  String  $name    Name
+     * @param  Boolean $enabled Aktiv
+     * @return Boolean
+     * @throws \Exception
+     */
+    public function editOddCalendarWeekCondition($id, $name = null, $enabled = null) {
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled);
+    }
+
+    /**
+     * erstellt eine Bedingung die abhängig vom Status von schaltbaren Elementen zutrifft
+     *
+     * @param  String  $name         Name
+     * @param  array   $switchables  Liste mit den Schaltbaren Elementen
+     * @param  Boolean $enabled      Aktiv
+     * @return bool
+     * @throws \Exception
+     */
+    public function addSwitchableStateHighCondition($name, array $switchables, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'switchables' => implode(',', $switchables)
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\SwitchableStateHighCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet Bedingung die abhängig vom Status von schaltbaren Elementen zutrifft
+     *
+     * @param  Integer $id           ID
+     * @param  array   $switchables  Liste mit den Schaltbaren Elementen
+     * @param  Boolean $enabled      Aktiv
+     * @return bool
+     * @throws \Exception
+     */
+    public function editSwitchableStateHighCondition($id, $name = null, array $switchables = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'switchables' => implode(',', $switchables)
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
+     * erstellt eine Bedingung die abhängig vom Status von schaltbaren Elementen zutrifft
+     *
+     * @param  String  $name         Name
+     * @param  array   $switchables  Liste mit den Schaltbaren Elementen
+     * @param  Boolean $enabled      Aktiv
+     * @return bool
+     * @throws \Exception
+     */
+    public function addSwitchableStateLowCondition($name, array $switchables, $enabled) {
+
+        //Daten vorbereiten
+        $data = array(
+            'switchables' => implode(',', $switchables)
+        );
+
+        //Datensatz bearbeiten
+        return $this->addCondition('\SHC\Condition\Conditions\SwitchableStateLowCondition', $name, $enabled, $data);
+    }
+
+    /**
+     * bearbeitet Bedingung die abhängig vom Status von schaltbaren Elementen zutrifft
+     *
+     * @param  Integer $id           ID
+     * @param  array   $switchables  Liste mit den Schaltbaren Elementen
+     * @param  Boolean $enabled      Aktiv
+     * @return bool
+     * @throws \Exception
+     */
+    public function editSwitchableStateLowCondition($id, $name = null, array $switchables = null, $enabled = null) {
+
+        //Daten vorbereiten
+        $data = array(
+            'switchables' => implode(',', $switchables)
+        );
+
+        //Datensatz bearbeiten
+        return $this->editCondition($id, $name, $enabled, $data);
+    }
+
+    /**
      * loascht eine Bedingung
      * 
      * @param  Integer $id ID

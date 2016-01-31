@@ -340,15 +340,18 @@ class CommandSheduler {
                     @exec($commandStr, $result);
 
                     //Ausgabe auswerten
-                    $response = intval(trim($result[0]));
-                    if($response == 1) {
+                    if(isset($result[0])) {
 
-                        //"1" signal
-                        $command->setState(GpioInputCommand::HIGH);
-                    } else {
+                        $response = intval(trim($result[0]));
+                        if($response == 1) {
 
-                        //"0" Signal oder Fehler
-                        $command->setState(GpioInputCommand::LOW);
+                            //"1" signal
+                            $command->setState(GpioInputCommand::HIGH);
+                        } else {
+
+                            //"0" Signal oder Fehler
+                            $command->setState(GpioInputCommand::LOW);
+                        }
                     }
                 }
                 return true;

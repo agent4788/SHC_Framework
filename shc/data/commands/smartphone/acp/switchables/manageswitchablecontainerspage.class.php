@@ -15,12 +15,14 @@ use SHC\Switchable\SwitchableEditor;
 use SHC\Switchable\Switchables\Activity;
 use SHC\Switchable\Switchables\AvmSocket;
 use SHC\Switchable\Switchables\Countdown;
+use SHC\Switchable\Switchables\EdimaxSocket;
 use SHC\Switchable\Switchables\FritzBox;
 use SHC\Switchable\Switchables\RadioSocket;
 use SHC\Switchable\Switchables\Reboot;
 use SHC\Switchable\Switchables\RpiGpioOutput;
 use SHC\Switchable\Switchables\Script;
 use SHC\Switchable\Switchables\Shutdown;
+use SHC\Switchable\Switchables\VirtualSocket;
 use SHC\Switchable\Switchables\WakeOnLan;
 
 /**
@@ -84,6 +86,8 @@ class ManageSwitchableContainersPage extends PageCommand {
                     || $switchableElement instanceof Script
                     || $switchableElement instanceof AvmSocket
                     || $switchableElement instanceof FritzBox
+                    || $switchableElement instanceof EdimaxSocket
+                    || $switchableElement instanceof VirtualSocket
                 ) {
 
                     //pruefen ob Element schon registriert

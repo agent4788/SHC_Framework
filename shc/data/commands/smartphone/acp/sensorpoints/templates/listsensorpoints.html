@@ -55,13 +55,7 @@
                     <li>
                         <span style="font-weight: bold;">{#$sensor->getName()}</span>
                         <br/>
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\BMP'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.BMP"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\DHT'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.DHT"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\DS18x20'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.DS18x20"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\Hygrometer'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.Hygrometer"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\LDR'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.LDR"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\RainSensor'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.RainSensor"}{/instanceof}
-                        {instanceof element=$sensor class='\SHC\Sensor\Sensors\AvmMeasuringSocket'}&nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.switchableManagement.element.avmMeasuringSocket"}{/instanceof}
+                        {$sensor->getTypeName()}
                         <br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{lang var="acp.sensorpointsManagement.roomList.table.head.lastConnect"}: {$sensor->getTime()|timeline}
                     </li>

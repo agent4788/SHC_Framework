@@ -42,27 +42,7 @@
                         <tr>
                             <td>{if $condition->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$condition->getName()}{if $condition->isEnabled() == false}</span>{/if}</td>
                             <td>
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.HumidityGreaterThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\HumidityLowerThanCondition'}{lang var="acp.conditionManagement.condition.HumidityLowerThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityGreaterThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityGreaterThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\LightIntensityLowerThanCondition'}{lang var="acp.conditionManagement.condition.LightIntensityLowerThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.MoistureGreaterThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\MoistureLowerThanCondition'}{lang var="acp.conditionManagement.condition.MoistureLowerThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureGreaterThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureGreaterThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\TemperatureLowerThanCondition'}{lang var="acp.conditionManagement.condition.TemperatureLowerThanCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\NobodyAtHomeCondition'}{lang var="acp.conditionManagement.condition.NobodyAtHomeCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserAtHomeCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\DateCondition'}{lang var="acp.conditionManagement.condition.DateCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\DayOfWeekCondition'}{lang var="acp.conditionManagement.condition.DayOfWeekCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\TimeOfDayCondition'}{lang var="acp.conditionManagement.condition.TimeOfDayCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunriseSunsetCondition'}{lang var="acp.conditionManagement.condition.SunriseSunsetCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\SunsetSunriseCondition'}{lang var="acp.conditionManagement.condition.SunsetSunriseCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\FileExistsCondition'}{lang var="acp.conditionManagement.condition.FileExistsCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\HolidaysCondition'}{lang var="acp.conditionManagement.condition.HolidaysCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputHighCondition'}{lang var="acp.conditionManagement.condition.InputHighCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\InputLowCondition'}{lang var="acp.conditionManagement.condition.InputLowCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\FirstLoopCondition'}{lang var="acp.conditionManagement.condition.FirstLoopCondition"}{/instanceof}
-                                {instanceof element=$condition class='\SHC\Condition\Conditions\UserNotAtHomeCondition'}{lang var="acp.conditionManagement.condition.UserNotAtHomeCondition"}{/instanceof}
+                                {$condition->getTypeName()}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteconditionfromswitchpoint&id={$switchPoint->getId()}&condition={$condition->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>
@@ -100,13 +80,7 @@
                         <tr>
                             <td>{if $element->isEnabled() == false}<span style="text-decoration: line-through;">{/if}{#$element->getName()}{if $element->isEnabled() == false}</span>{/if}</td>
                             <td>
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\RadioSocket'}{lang var="acp.switchableManagement.element.radiosocket"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\RPiGpioOutput'}{lang var="acp.switchableManagement.element.rpiGpioOutput"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\WakeOnLan'}{lang var="acp.switchableManagement.element.wakeOnLan"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\Reboot'}{lang var="acp.switchableManagement.element.reboot"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\Shutdown'}{lang var="acp.switchableManagement.element.shutdown"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\Script'}{lang var="acp.switchableManagement.element.script"}{/instanceof}
-                                {instanceof element=$element class='\SHC\Switchable\Switchables\Activity'}{lang var="acp.switchableManagement.element.activity"}{/instanceof}
+                                {$element->getTypeName()}
                             </td>
                             <td>
                                 <a class="shc-view-buttons-delete" href="index.php?app=shc&action=deleteswitchablefromswitchpoint&id={$switchPoint->getId()}&element={$element->getId()}" title="{lang var='acp.switchableManagement.button.deleteFormContainer'}"></a>

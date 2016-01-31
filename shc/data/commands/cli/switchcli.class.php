@@ -5,6 +5,7 @@ namespace SHC\Command\CLI;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
+use RWF\Util\JSON;
 use SHC\Command\CommandSheduler;
 use SHC\Switchable\Switchable;
 use SHC\Switchable\SwitchableEditor;
@@ -95,6 +96,92 @@ class SwitchCli extends CliCommand {
             }
 
             $r->writeLn('***********************************************************************************************');
+            return;
+        }
+
+        //JSON Modus zum schalten mehrere Elemente
+        if (in_array('-j', $argv) || in_array('--json', $argv)) {
+
+            foreach($argv as $param) {
+
+                if (preg_match('#\[.*#', $param)) {
+
+                    $json = JSON::decode($param);
+                    foreach ($json as $id => $command) {
+
+                        //schaltbares Element
+                        $switchable = SwitchableEditor::getInstance()->getElementById($id);
+                        if ($switchable instanceof Switchable) {
+
+                            //Befehl
+                            switch ($command) {
+
+                                case 1:
+
+                                    //an
+                                    $switchable->switchOn();
+                                    break;
+                                case 2:
+
+                                    //aus
+                                    if ($switchable instanceof WakeOnLan || $switchable instanceof Reboot || $switchable instanceof Shutdown) {
+
+                                        //diese Elemente koennen nicht ausgeschalten werden
+                                        $r->writeLnColored('error 1', 'red');
+                                        return;
+                                    }
+                                    $switchable->switchOff();
+                                    break;
+                                case 3:
+
+                                    //umschalten
+                                    if ($switchable instanceof WakeOnLan || $switchable instanceof Reboot || $switchable instanceof Shutdown) {
+
+                                        //diese Elemente koennen nicht ausgeschalten werden
+                                        $r->writeLnColored('error 2', 'red');
+                                        return;
+                                    }
+                                    $switchable->toggle();
+                                    break;
+                                default:
+
+                                    //ungueltiger Befehl
+                                    $r->writeLnColored('error 3', 'red');
+                                    return;
+                            }
+                        }
+                    }
+
+                    //Befehle senden
+                    try {
+
+                        CommandSheduler::getInstance()->sendCommands();
+                        $r->writeLnColored('success', 'green');
+                        SwitchableEditor::getInstance()->updateState();
+                        return;
+                    } catch (\Exception $e) {
+
+                        if ($e->getCode() == 1510) {
+
+                            //GPIO Schaltserver nicht errreicht
+                            $r->writeLnColored(RWF::getLanguage()->get('error 4'), 'red');
+                            return;
+                        } elseif ($e->getCode() == 1511) {
+
+                            //Schaltserver unterstuetzt kein GPIO schalten
+                            $r->writeLnColored(RWF::getLanguage()->get('error 5'), 'red');
+                            return;
+                        } elseif ($e->getCode() == 1512) {
+
+                            //kein Schaltserver erreichbar
+                            RWF::getLanguage()->enableAutoHtmlEndocde();
+                            $r->writeLnColored(RWF::getLanguage()->get('error 6'), 'red');
+                            return;
+                        }
+                    }
+                }
+                break;
+            }
             return;
         }
 

@@ -1,0 +1,100 @@
+<div class="shc-contentbox-body-row shc-view-switchable">
+    <span class="shc-contentbox-body-row-title">{#$switchable->getName()}</span>
+    <span class="shc-icon {$switchable->getIcon()}"></span>
+    <div class="shc-contentbox-body-row-content">
+        <div id="shc-view-switchable-set-{$roomId}-{$switchable->getId()}">
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-on" style="width: 5em; height: 2em; font-size: 1.3em;">
+                {if $switchable->getButtonText() == 2}
+                {lang var='global.up'}
+                {elseif $switchable->getButtonText() == 4}
+                {lang var='global.open'}
+                {else}
+                {lang var='index.room.button.on'}
+                {/if}
+            </button>
+            <button id="shc-view-switchable-{$roomId}-{$switchable->getId()}-off" style="width: 5em; height: 2em; font-size: 1.3em;">
+                {if $switchable->getButtonText() == 2}
+                {lang var='global.down'}
+                {elseif $switchable->getButtonText() == 4}
+                {lang var='global.closed'}
+                {else}
+                {lang var='index.room.button.off'}
+                {/if}
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        //Buttons Initialisieren
+        $('#shc-view-switchable-set-{$roomId}-{$switchable->getId()}').buttonset();
+        {if $switchable->getState() == 1}
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button({ icons: { primary: 'ui-icon-check' } });
+        {else}
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').button({ icons: { primary: 'ui-icon-check' } });
+        {/if}
+
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').click(function() {
+
+            //An Button gedrueckt
+            $.getJSON(
+                    "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=1&hash=" + Math.floor(Math.random() * 11),
+                    function(data) {
+
+                        if (data.success == true) {
+
+                            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").button({ icons: { primary: "" } });
+                            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").button({ icons: { primary: "ui-icon-check" } });
+                        } else {
+
+                            $('#shc-view-errorFrame').text(data.message);
+                            $('#shc-view-errorFrame').dialog({
+                                resizable: false,
+                                modal: true,
+                                buttons: {
+                                    OK: function() {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                        }
+                    }
+            );
+            return false;
+        });
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-off').click(function() {
+
+            //Aus Button gedrueckt
+            $.getJSON(
+                    "index.php?app=shc&a&ajax=executeswitchcommand&sid={$switchable->getId()}&command=0&hash=" + Math.floor(Math.random() * 11),
+                    function(data) {
+
+                        if (data.success == true) {
+
+                            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-on").button({ icons: { primary: "" } });
+                            $("#shc-view-switchable-{$roomId}-{$switchable->getId()}-off").button({ icons: { primary: "ui-icon-check" } });
+                        } else {
+
+                            $('#shc-view-errorFrame').text(data.message);
+                            $('#shc-view-errorFrame').dialog({
+                                resizable: false,
+                                modal: true,
+                                buttons: {
+                                    OK: function() {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                        }
+                    }
+            );
+            return false;
+        });
+
+        $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').mouseleave(function() {
+
+            $('#shc-view-switchable-{$roomId}-{$switchable->getId()}-on').button("icons");
+        });
+    });
+</script>
