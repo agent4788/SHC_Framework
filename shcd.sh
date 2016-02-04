@@ -18,8 +18,6 @@ SHC_SHEDULER_PIDFILE=/var/run/shcd_sheduler.pid
 SHC_SWITCH_SERVER_PIDFILE=/var/run/shcd_switchserver.pid
 SHC_SENSOR_TRANSMITTER_PIDFILE=/var/run/shcd_sensor_transmitter.pid
 
-/bin/sleep 20
-
 do_start() {
     if [ -x /etc/rc.local ]; then
             [ "$VERBOSE" != no ] && log_begin_msg "Running local boot scripts (/etc/rc.local)"
@@ -32,6 +30,7 @@ do_start() {
 
 case "$1" in
     start)
+        /bin/sleep 20
         /usr/bin/php /var/www/shc/index.php app=shc -sh >> /var/log/messages 2>&1  &
         echo $! > $SHC_SHEDULER_PIDFILE
         /usr/bin/php /var/www/shc/index.php app=shc -ss >> /var/log/messages 2>&1  &
