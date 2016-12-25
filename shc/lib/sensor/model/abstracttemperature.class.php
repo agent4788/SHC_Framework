@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -55,7 +55,7 @@ trait AbstractTemperature {
      */
     public function getDisplayTemperature() {
 
-        return String::formatFloat($this->getTemperature(), 1) .' °C';
+        return StringUtils::formatFloat($this->getTemperature(), 1) .' °C';
     }
 
     /**

@@ -4,7 +4,7 @@ namespace RWF\User;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Benutzerverwaltung
@@ -162,7 +162,7 @@ class UserEditor {
             'id' => 1,
             'name' => 'admin',
             'password' => password_hash('admin', PASSWORD_DEFAULT),
-            'authCode' => String::randomStr(64),
+            'authCode' => StringUtils::randomStr(64),
             'language' => '',
             'webStyle' => '',
             'mobileStyle' => '',
@@ -280,7 +280,7 @@ class UserEditor {
         foreach ($this->users as $user) {
 
             /* @var $user \RWF\User\User */
-            if (String::toLower($user->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($user->getName()) == StringUtils::toLower($name)) {
 
                 return $user;
             }
@@ -438,7 +438,7 @@ class UserEditor {
             'id' => $id,
             'name' => $name,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'authCode' => String::randomStr(64),
+            'authCode' => StringUtils::randomStr(64),
             'language' => ($language !== null ? $language : ''),
             'webStyle' => ($webStyle !== null ? $webStyle : ''),
             'mobileStyle' => ($mobileStyle !== null ? $mobileStyle : ''),

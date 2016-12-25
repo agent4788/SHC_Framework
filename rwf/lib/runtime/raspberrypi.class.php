@@ -4,7 +4,7 @@ namespace RWF\Runtime;
 
 //Imports
 use RWF\Util\FileUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * liest Raspberry Pi spezifische Daten vom System aus
@@ -86,7 +86,10 @@ class RaspberryPi {
     public function __construct() {
 
         $this->cpuInfo = file_get_contents('/proc/cpuinfo');
-        $this->config = @parse_ini_file("/boot/config.txt");
+        if(file_exists("/boot/config.txt")) {
+
+            $this->config = @parse_ini_file("/boot/config.txt");
+        }
     }
 
     /**
@@ -896,19 +899,19 @@ class RaspberryPi {
                     if (preg_match('#\s+idVendor(.*)#i', $deviceData, $match)) {
 
                         //VendorID
-                        $outputDevices[$devId]['idVendor'] = String::trim($match[1]);
+                        $outputDevices[$devId]['idVendor'] = StringUtils::trim($match[1]);
                     } elseif (preg_match('#\s+idProduct(.*)#i', $deviceData, $match)) {
 
                         //Produkt Id
-                        $outputDevices[$devId]['idProduct'] = String::trim($match[1]);
+                        $outputDevices[$devId]['idProduct'] = StringUtils::trim($match[1]);
                     } elseif (preg_match('#\s+MaxPower(.*)#i', $deviceData, $match)) {
 
                         //Maximal Strom
-                        $outputDevices[$devId]['MaxPower'] = String::trim($match[1]);
+                        $outputDevices[$devId]['MaxPower'] = StringUtils::trim($match[1]);
                     } elseif (preg_match('#      bInterfaceClass(.*)#i', $deviceData, $match)) {
 
                         //Schnittstellen Klasse
-                        $outputDevices[$devId]['bInterfaceClass'] = String::trim($match[1]);
+                        $outputDevices[$devId]['bInterfaceClass'] = StringUtils::trim($match[1]);
                     }
                 }
 
@@ -949,10 +952,10 @@ class RaspberryPi {
                         $cleanDevices[] = array(
                             'ident' => $dev['ident'],
                             'count' => $device['count'],
-                            'vendor' => String::trim(preg_replace('#(0x[\da-f]{4})#i', '', $dev['idVendor'])),
-                            'produkt' => String::trim(preg_replace('#(0x[\da-f]{4})#i', '', $dev['idProduct'])),
+                            'vendor' => StringUtils::trim(preg_replace('#(0x[\da-f]{4})#i', '', $dev['idVendor'])),
+                            'produkt' => StringUtils::trim(preg_replace('#(0x[\da-f]{4})#i', '', $dev['idProduct'])),
                             'maxPower' => $dev['MaxPower'],
-                            'interface' => String::trim(preg_replace('#(\d{1,2})#', '', $dev['bInterfaceClass'])),
+                            'interface' => StringUtils::trim(preg_replace('#(\d{1,2})#', '', $dev['bInterfaceClass'])),
                         );
                         break;
                     }
@@ -973,7 +976,7 @@ class RaspberryPi {
 
         if (!isset($this->cache['osName'])) {
 
-            $files = FileUtil::listDirectoryFiles('/etc');
+            $files = FileUtil::listDirectoryFiles('/etc', false, false, true);
 
             foreach ($files as $file) {
 

@@ -4,7 +4,6 @@ namespace RWF\AVM;
 
 //Imports
 
-
 /**
  * Auslesen der Fritz Box Geraetedaten
  *

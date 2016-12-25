@@ -3,7 +3,7 @@
 namespace RWF\Form;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Html\AbstractHtmlElement;
 
 /**
@@ -162,7 +162,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
      */
     public function addFormElement(FormElement $element) {
 
-        $name = String::toLower($element->getName());
+        $name = StringUtils::toLower($element->getName());
         $this->elements[$name] = $element;
         return $this;
     }
@@ -208,7 +208,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
      */
     public function getElementByName($name) {
 
-        $name = String::toLower($name);
+        $name = StringUtils::toLower($name);
         if (isset($this->elements[$name])) {
 
             return $this->elements[$name];
@@ -224,7 +224,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
      */
     public function fetchElementByName($name) {
 
-        $name = String::toLower($name);
+        $name = StringUtils::toLower($name);
         if (isset($this->elements[$name])) {
 
             return $this->elements[$name]->fetch($this->getView());
@@ -260,7 +260,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
             /* @var $element FormElement */
             if (!$element->validate()) {
 
-                $this->invalidElements[String::toLower($element->getName())] = $element;
+                $this->invalidElements[StringUtils::toLower($element->getName())] = $element;
                 $this->message->addSubMessages($element->getMessages());
                 $success = false;
             }
@@ -281,7 +281,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
 
             if (!$element->validate()) {
 
-                $this->invalidElements[String::toLower($element->getName())] = $element;
+                $this->invalidElements[StringUtils::toLower($element->getName())] = $element;
                 $this->message->addSubMessages($element->getMessages());
                 return false;
             }
@@ -303,7 +303,7 @@ abstract class AbstractForm extends AbstractHtmlElement implements Form {
         if ($element instanceof FormElement) {
 
             $element->addClass('rwf-ui-form-content-invalid');
-            $this->invalidElements[String::toLower($element->getName())] = $element;
+            $this->invalidElements[StringUtils::toLower($element->getName())] = $element;
 
             if ($message != '') {
                 $this->message->addSubMessage($message);

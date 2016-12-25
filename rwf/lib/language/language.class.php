@@ -3,7 +3,7 @@
 namespace RWF\Language;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\FileUtil;
 
 /**
@@ -174,6 +174,7 @@ class Language {
         }
 
         $file = FileUtil::scannDirectory($this->languageDir . $this->language, strtolower($name) . '.lang.php');
+        $l = array();
         if ($file !== null && @require($file)) {
 
             $this->languageItems = array_merge($this->languageItems, $l);
@@ -210,14 +211,14 @@ class Language {
 
             if ($encodeHTML == true) {
 
-                return String::encodeHTML($this->languageItems[$var]);
+                return StringUtils::encodeHTML($this->languageItems[$var]);
             }
             return $this->languageItems[$var];
         }
 
         if ($encodeHTML == true) {
 
-            return String::encodeHTML($this->unknown);
+            return StringUtils::encodeHTML($this->unknown);
         }
         return $this->unknown;
     }
@@ -253,15 +254,15 @@ class Language {
 
             if (isset($this->languageItems[$var])) {
 
-                return String::encodeHTML(@preg_replace('#\{(\d+):(i|f|s)(?::([^:]+))?(?::(\d+))?\}#ie', "\$this->parse('$1', '$2', '$3', '$4')\n", $this->languageItems[$var]));
+                return StringUtils::encodeHTML(preg_replace_callback('#\{(\d+):(i|f|s)(?::([^:]+))?(?::(\d+))?\}#i', "\\RWF\\Language\\Language::parse", $this->languageItems[$var]));
             }
 
-            return String::encodeHTML($this->unknown);
+            return StringUtils::encodeHTML($this->unknown);
         } else {
 
             if (isset($this->languageItems[$var])) {
 
-                return @preg_replace('#\{(\d+):(i|f|s)(?::([^:]+))?(?::(\d+))?\}#ie', "\$this->parse('$1', '$2', '$3', '$4')\n", $this->languageItems[$var]);
+                return preg_replace_callback('#\{(\d+):(i|f|s)(?::([^:]+))?(?::(\d+))?\}#i', "\\RWF\\Language\\Language::parse", $this->languageItems[$var]);
             }
 
             return $this->unknown;
@@ -276,10 +277,15 @@ class Language {
      * @param String $default  Standart Falls keine Daten uebergeben
      * @param String $decimals Kommastellen
      */
-    protected function parse($id, $type, $default = '', $decimals = '') {
+    protected function parse($matches) {
+
+        $id = (isset($matches[1]) ? $matches[1] : null);
+        $type = (isset($matches[2]) ? $matches[2] : null);
+        $default = (isset($matches[3]) ? $matches[3] : null);
+        $decimals = (isset($matches[4]) ? $matches[4] : null);
 
         $i = intval($id);
-        $type = String::toLower(String::trim($type));
+        $type = StringUtils::toLower(StringUtils::trim($type));
         switch ($type) {
 
             case 's':

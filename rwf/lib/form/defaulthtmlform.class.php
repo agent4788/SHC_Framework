@@ -4,7 +4,7 @@ namespace RWF\Form;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\Message;
 
 /**
@@ -38,7 +38,7 @@ class DefaultHtmlForm extends AbstractForm {
 
         if($this->getDescription() != '') {
 
-            return '<div class="rwf-ui-form-description-container"><div class="rwf-ui-form-description-text">' . String::encodeHTML($this->getDescription()) . '</div></div>' . "\n";
+            return '<div class="rwf-ui-form-description-container"><div class="rwf-ui-form-description-text">' . StringUtils::encodeHTML($this->getDescription()) . '</div></div>' . "\n";
         }
         return '';
     }
@@ -74,14 +74,14 @@ class DefaultHtmlForm extends AbstractForm {
      */
     public function fetchStartTag() {
 
-        $html = '<form action="' . String::encodeHTML($this->action) . '" method="post" accept-charset="' . String::encodeHTML($this->encodeing) . '" ';
+        $html = '<form action="' . StringUtils::encodeHTML($this->action) . '" method="post" accept-charset="' . StringUtils::encodeHTML($this->encodeing) . '" ';
         if (count($this->ids) > 0) {
 
-            $html .= 'id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $html .= 'id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
         if (count($this->classes) > 0) {
 
-            $html .= 'class="' . String::encodeHTML(implode(' ', $this->classes)) . '" ';
+            $html .= 'class="' . StringUtils::encodeHTML(implode(' ', $this->classes)) . '" ';
         }
         $html .= '>';
 

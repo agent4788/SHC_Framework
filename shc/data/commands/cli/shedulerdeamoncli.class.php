@@ -6,7 +6,7 @@ namespace SHC\Command\CLI;
 use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 use SHC\Sheduler\Sheduler;
 
@@ -78,7 +78,7 @@ class ShedulerDeamonCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('shedulerDaemon.input.active', (RWF::getSetting('shc.shedulerDaemon.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $active_not_change = true;
                 $valid = true;
@@ -120,7 +120,7 @@ class ShedulerDeamonCli extends CliCommand {
             $pin = $cli->input(RWF::getLanguage()->get('shedulerDaemon.input.blinkPin', RWF::getSetting('shc.shedulerDaemon.blinkPin')));
 
             //Pin nicht aendern
-            if (String::length($pin) == 0) {
+            if (StringUtils::length($pin) == 0) {
 
                 $pin_not_change = true;
                 $valid = true;

@@ -11,7 +11,7 @@ use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Runtime\RaspberryPi;
 use RWF\Util\FileUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\TimeUtil;
 
 /**
@@ -55,15 +55,15 @@ class StateSyncAjax extends AjaxCommand {
                 $data['wireless'] .= $headline;
                 $data['wireless'] .= '
                     <li>
-                        <h1>' . String::encodeHTML($device['name']) . '</h1>
+                        <h1>' . StringUtils::encodeHTML($device['name']) . '</h1>
                         <p>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.standard') .':</span> ' . String::encodeHTML($device['standard']) . '
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.standard') .':</span> ' . StringUtils::encodeHTML($device['standard']) . '
                             <br/>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.ssid') .':</span> ' . String::encodeHTML(($device['connected'] === true ? $device['ssid'] : RWF::getLanguage()->get('index.box.wlan.notConnected'))) . '
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.ssid') .':</span> ' . StringUtils::encodeHTML(($device['connected'] === true ? $device['ssid'] : RWF::getLanguage()->get('index.box.wlan.notConnected'))) . '
                             <br/>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.speed') .':</span> ' . String::encodeHTML(($device['connected'] === true ? $device['bitRate'] : '0')) . 'MB/s
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.speed') .':</span> ' . StringUtils::encodeHTML(($device['connected'] === true ? $device['bitRate'] : '0')) . 'MB/s
                             <br/>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.quality') .':</span> ' . String::encodeHTML(($device['connected'] === true ? $device['quality'] : '0/0')) .'  -> '. String::encodeHTML(($device['connected'] === true ? $device['signalLevel'] : '0'))  .'dBm
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.wlan.quality') .':</span> ' . StringUtils::encodeHTML(($device['connected'] === true ? $device['quality'] : '0/0')) .'  -> '. StringUtils::encodeHTML(($device['connected'] === true ? $device['signalLevel'] : '0'))  .'dBm
                         </p>
                     </li>
                     ';
@@ -93,9 +93,9 @@ class StateSyncAjax extends AjaxCommand {
 
                 if($cpuId == 0) {
 
-                    $data['cpuClockCpu0'] = ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                    $data['cpuClockCpu0'] = ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 }
-                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuClock'] = $html;
@@ -103,7 +103,7 @@ class StateSyncAjax extends AjaxCommand {
             $brake = '';
             foreach($rpi->getCpuMinClock() as $cpuId => $value) {
 
-                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuMinClock'] = $html;
@@ -111,17 +111,17 @@ class StateSyncAjax extends AjaxCommand {
             $brake = '';
             foreach($rpi->getCpuMaxClock() as $cpuId => $value) {
 
-                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span style="font-weight: bold;">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuMaxClock'] = $html;
 
-            $data['coreTemp'] = String::formatFloat($rpi->getCoreTemprature());
+            $data['coreTemp'] = StringUtils::formatFloat($rpi->getCoreTemprature());
 
             //Speicher
             $memory = $rpi->getMemoryUsage();
             $data['memoryPercent'] = $memory['percent'];
-            $data['memoryPercentDisplay'] = String::formatFloat($memory['percent'], 0);
+            $data['memoryPercentDisplay'] = StringUtils::formatFloat($memory['percent'], 0);
             $data['memoryTotal'] = FileUtil::formatBytesBinary($memory['total']);
             $data['memoryFree'] = FileUtil::formatBytesBinary($memory['free']);
             $data['memoryUsed'] = FileUtil::formatBytesBinary($memory['used']);
@@ -129,7 +129,7 @@ class StateSyncAjax extends AjaxCommand {
             //Swap
             $swap = $rpi->getSwapUsage();
             $data['swapPercent'] = $swap['percent'];
-            $data['swapPercentDisplay'] = String::formatFloat($swap['percent'], 0);
+            $data['swapPercentDisplay'] = StringUtils::formatFloat($swap['percent'], 0);
             $data['swapTotal'] = FileUtil::formatBytesBinary($swap['total']);
             $data['swapFree'] = FileUtil::formatBytesBinary($swap['free']);
             $data['swapUsed'] = FileUtil::formatBytesBinary($swap['used']);
@@ -143,11 +143,11 @@ class StateSyncAjax extends AjaxCommand {
 
                     $data['sysMemory'] .= '
                     <li>
-                        <h1>' . String::encodeHTML($mem['device']) . '</h1>
+                        <h1>' . StringUtils::encodeHTML($mem['device']) . '</h1>
                         <p>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.mountpoint') .':</span> ' . String::encodeHTML($mem['mountpoint']) . '
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.mountpoint') .':</span> ' . StringUtils::encodeHTML($mem['mountpoint']) . '
                             <br/>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.usage') .':</span> ' . String::formatFloat($mem['percent'], 0) . '%
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.usage') .':</span> ' . StringUtils::formatFloat($mem['percent'], 0) . '%
                             <br/>
                             <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.total') .':</span> ' . FileUtil::formatBytesBinary($mem['total']) . '
                             <br/>
@@ -163,7 +163,7 @@ class StateSyncAjax extends AjaxCommand {
                     <li data-role="list-divider" role="heading">' . RWF::getLanguage()->get('index.box.memory.total') . '</li>
                     <li>
                         <p>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.usage') .':</span> ' . String::formatFloat($mem['percent'], 0) . '%
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.usage') .':</span> ' . StringUtils::formatFloat($mem['percent'], 0) . '%
                             <br/>
                             <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.memory.total') .':</span> ' . FileUtil::formatBytesBinary($mem['total']) . '
                             <br/>
@@ -183,13 +183,13 @@ class StateSyncAjax extends AjaxCommand {
 
                 $data['network'] .= '
                     <li>
-                        <h1>' . String::encodeHTML($net['name']) . '</h1>
+                        <h1>' . StringUtils::encodeHTML($net['name']) . '</h1>
                         <p>
                             <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.network.recived') .':</span> ' . FileUtil::formatBytesBinary($net['in']) . '
                             <br/>
                             <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.network.transmitted') .':</span> ' . FileUtil::formatBytesBinary($net['out']) . '
                             <br/>
-                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.network.errors') .':</span> ' . String::formatFloat($net['errors'], 0) . '/' . String::formatFloat($net['drops'], 0) . '
+                            <span style="font-weight: bold;">'. PCC::getLanguage()->get('index.box.network.errors') .':</span> ' . StringUtils::formatFloat($net['errors'], 0) . '/' . StringUtils::formatFloat($net['drops'], 0) . '
                         </p>
                     </li>
                     ';

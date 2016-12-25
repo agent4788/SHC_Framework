@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -110,11 +110,11 @@ class FluidAmount extends AbstractSensor implements vSensor {
 
         if($this->getSumFluidAmount() >= 1000000) {
 
-            return String::formatFloat($this->getSumFluidAmount() / 1000000, 1) .'m³';
+            return StringUtils::formatFloat($this->getSumFluidAmount() / 1000000, 1) .'m³';
         } elseif($this->getSumFluidAmount() >= 1000) {
 
-            return String::formatFloat($this->getSumFluidAmount() / 1000, 1) .'l';
+            return StringUtils::formatFloat($this->getSumFluidAmount() / 1000, 1) .'l';
         }
-        return String::formatFloat($this->getSumFluidAmount(), 1) .'ml';
+        return StringUtils::formatFloat($this->getSumFluidAmount(), 1) .'ml';
     }
 }

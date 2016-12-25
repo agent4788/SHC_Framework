@@ -5,7 +5,7 @@ namespace SHC\Command\Smartphone;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\UserAtHome\UserAtHome;
 use SHC\UserAtHome\UserAtHomeEditor;
 
@@ -49,10 +49,10 @@ class UserAtHomeUpdateAjax extends AjaxCommand {
             /* @var $userAtHome \SHC\UserAtHome\UserAtHome */
             if($userAtHome->getState() == UserAtHome::STATE_ONLINE) {
 
-                $online .= '<li>'. String::encodeHTML($userAtHome->getName()) .'</li>';
+                $online .= '<li>'. StringUtils::encodeHTML($userAtHome->getName()) .'</li>';
             } else {
 
-                $offline .= '<li>'. String::encodeHTML($userAtHome->getName()) .'</li>';
+                $offline .= '<li>'. StringUtils::encodeHTML($userAtHome->getName()) .'</li>';
             }
         }
         $html .= '<li data-role="list-divider">'. RWF::getLanguage()->get('index.userAtHome.online') .'</li>';

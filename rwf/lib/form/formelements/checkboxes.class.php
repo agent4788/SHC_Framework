@@ -6,7 +6,7 @@ namespace RWF\Form\FormElements;
 use RWF\Core\RWF;
 use RWF\Request\Request;
 use RWF\Form\AbstractFormElement;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Check Boxen
@@ -45,7 +45,7 @@ class CheckBoxes extends AbstractFormElement {
             //Leerzeichen entfernen
             foreach ($values as $index => $value) {
 
-                $values[$index] = String::trim($value);
+                $values[$index] = StringUtils::trim($value);
             }
 
             //Pruefen ob der Wert veraendert wurde
@@ -84,7 +84,7 @@ class CheckBoxes extends AbstractFormElement {
     protected function fetchWebView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -99,14 +99,14 @@ class CheckBoxes extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -115,7 +115,7 @@ class CheckBoxes extends AbstractFormElement {
         //Titel
         if ($this->getTitle() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-title">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
+            $html .= '<div class="rwf-ui-form-content-title">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
         }
 
         //Formularfeld
@@ -133,7 +133,7 @@ class CheckBoxes extends AbstractFormElement {
                 $checked = 'checked="checked"';
             }
 
-            $html .= '<input type="checkbox" id="a' . $randomId . '_checkbox_' . $i . '" name="' . String::encodeHTML($this->getName()) . '[]" value="' . String::encodeHTML($value) . '" ' . $checked . $disabled . ' /><label for="a' . $randomId . '_checkbox_' . $i . '">' . (is_array($index) ? String::encodeHTML($index[0]) : String::encodeHTML($index)) . '</label>' . "\n";
+            $html .= '<input type="checkbox" id="a' . $randomId . '_checkbox_' . $i . '" name="' . StringUtils::encodeHTML($this->getName()) . '[]" value="' . StringUtils::encodeHTML($value) . '" ' . $checked . $disabled . ' /><label for="a' . $randomId . '_checkbox_' . $i . '">' . (is_array($index) ? StringUtils::encodeHTML($index[0]) : StringUtils::encodeHTML($index)) . '</label>' . "\n";
             $i++;
         }
         $html .= "</div>\n";
@@ -142,7 +142,7 @@ class CheckBoxes extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";
@@ -166,7 +166,7 @@ class CheckBoxes extends AbstractFormElement {
     protected function fetchMobileView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -181,14 +181,14 @@ class CheckBoxes extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -196,7 +196,7 @@ class CheckBoxes extends AbstractFormElement {
 
         //Titel
         $html .= '<fieldset data-role="controlgroup" class="' . $class . '" '. $id .'>' . "\n";
-        $html .= '<legend>' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</legend>\n";
+        $html .= '<legend>' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</legend>\n";
 
         //Formularfeld
         $i = 0;
@@ -210,7 +210,7 @@ class CheckBoxes extends AbstractFormElement {
                 $checked = 'checked="checked"';
             }
 
-            $html .= '<input type="checkbox" id="a' . $randomId . '_checkbox_' . $i . '" name="' . String::encodeHTML($this->getName()) . '[]" value="' . String::encodeHTML($value) . '" ' . $checked . $disabled . ' /><label for="a' . $randomId . '_checkbox_' . $i . '">' . (is_array($index) ? String::encodeHTML($index[0]) : String::encodeHTML($index)) . '</label>' . "\n";
+            $html .= '<input type="checkbox" id="a' . $randomId . '_checkbox_' . $i . '" name="' . StringUtils::encodeHTML($this->getName()) . '[]" value="' . StringUtils::encodeHTML($value) . '" ' . $checked . $disabled . ' /><label for="a' . $randomId . '_checkbox_' . $i . '">' . (is_array($index) ? StringUtils::encodeHTML($index[0]) : StringUtils::encodeHTML($index)) . '</label>' . "\n";
             $i++;
         }
         
@@ -228,7 +228,7 @@ class CheckBoxes extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";

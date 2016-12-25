@@ -3,7 +3,7 @@
 namespace SHC\Condition;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 
 /**
@@ -118,7 +118,7 @@ class ConditionEditor {
         foreach ($this->conditions as $condition) {
 
             /* @var $condition \SHC\Condition\Condition */
-            if (String::toLower($condition->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($condition->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

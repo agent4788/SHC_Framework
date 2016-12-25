@@ -82,7 +82,7 @@ class FileUtil {
             $x++;
         }
 
-        $size = String::formatFloat($size, 2) . ' ' . $norm[$x];
+        $size = StringUtils::formatFloat($size, 2) . ' ' . $norm[$x];
         return $size;
     }
 
@@ -120,7 +120,7 @@ class FileUtil {
             $x++;
         }
 
-        $size = String::formatFloat($size, 2) . ' ' . $norm[$x];
+        $size = StringUtils::formatFloat($size, 2) . ' ' . $norm[$x];
         return $size;
     }
 

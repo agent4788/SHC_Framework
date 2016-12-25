@@ -6,7 +6,7 @@ namespace RWF\Form\FormElements;
 use RWF\Core\RWF;
 use RWF\Request\Request;
 use RWF\Form\AbstractFormElement;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Auswahlfeld mit einem Leeren Element
@@ -36,7 +36,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
         if ($request->issetParam($this->getName(), Request::POST)) {
 
             //Daten per POST
-            $value = String::trim($request->getParam($this->getName(), Request::POST));
+            $value = StringUtils::trim($request->getParam($this->getName(), Request::POST));
 
             //Leeres Element in den Wert Null umwandeln
             if ($value == 'null') {
@@ -82,7 +82,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
     protected function fetchWebView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -97,21 +97,21 @@ class SelectWithEmptyElement extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //Size
         $size = '';
         if (isset($this->options['size'])) {
 
-            $size = ' size="' . String::encodeHTML($this->options['size']) . '" ';
+            $size = ' size="' . StringUtils::encodeHTML($this->options['size']) . '" ';
         }
 
         //HTML Code
@@ -120,12 +120,12 @@ class SelectWithEmptyElement extends AbstractFormElement {
         //Titel
         if ($this->getTitle() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-title">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
+            $html .= '<div class="rwf-ui-form-content-title">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
         }
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element">';
-        $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" >' . "\n";
+        $html .= '<select name="' . StringUtils::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" >' . "\n";
 
         //Auswahl des leeren Elements
         $selected = '';
@@ -138,13 +138,13 @@ class SelectWithEmptyElement extends AbstractFormElement {
                 unset($inputValue[0]);
             }
         }
-        $html .= '<option value="null" ' . $selected . '>' . String::encodeHTML((isset($this->options['emptyLabel']) ? $this->options['emptyLabel'] : 'keine')) . '</option>' . "\n";
+        $html .= '<option value="null" ' . $selected . '>' . StringUtils::encodeHTML((isset($this->options['emptyLabel']) ? $this->options['emptyLabel'] : 'keine')) . '</option>' . "\n";
         if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
 
             //Gruppierte Auswahl
             foreach ($this->values as $group => $entrys) {
 
-                $html .= '<optgroup label="' . String::encodeHTML($group) . '">' . "\n";
+                $html .= '<optgroup label="' . StringUtils::encodeHTML($group) . '">' . "\n";
                 foreach ($entrys as $value => $index) {
 
                     //Pruefen ob Ausgewaehlt
@@ -154,7 +154,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
                         $selected = 'selected="selected"';
                     }
 
-                    $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+                    $html .= '<option value="' . StringUtils::encodeHTML($value) . '" ' . $selected . '>' . StringUtils::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
                 }
                 $html .= "</optgroup>\n";
             }
@@ -170,7 +170,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
                     $selected = 'selected="selected"';
                 }
 
-                $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+                $html .= '<option value="' . StringUtils::encodeHTML($value) . '" ' . $selected . '>' . StringUtils::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
             }
         }
         $html .= "</select>\n";
@@ -179,7 +179,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";
@@ -195,7 +195,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
     protected function fetchMobileView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -210,21 +210,21 @@ class SelectWithEmptyElement extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //Size
         $size = '';
         if (isset($this->options['size'])) {
 
-            $size = ' size="' . String::encodeHTML($this->options['size']) . '" ';
+            $size = ' size="' . StringUtils::encodeHTML($this->options['size']) . '" ';
         }
 
         //HTML Code
@@ -232,9 +232,9 @@ class SelectWithEmptyElement extends AbstractFormElement {
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
-        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        $html .= '<label for="a' . $randomId . '">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
-        $html .= '<select name="' . String::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" data-native-menu="false">' . "\n";
+        $html .= '<select name="' . StringUtils::encodeHTML($this->getName()) . '" ' . $id . $disabled . $size . ' class="rwf-ui-form-content-select' . $class . '" data-native-menu="false">' . "\n";
 
         //Auswahl des leeren Elements
         $selected = '';
@@ -247,13 +247,13 @@ class SelectWithEmptyElement extends AbstractFormElement {
                 unset($inputValue[0]);
             }
         }
-        $html .= '<option value="null" ' . $selected . '>' . String::encodeHTML((isset($this->options['emptyLabel']) ? $this->options['emptyLabel'] : 'keine')) . '</option>' . "\n";
+        $html .= '<option value="null" ' . $selected . '>' . StringUtils::encodeHTML((isset($this->options['emptyLabel']) ? $this->options['emptyLabel'] : 'keine')) . '</option>' . "\n";
         if (isset($this->options['grouped']) && $this->options['grouped'] == true) {
 
             //Gruppierte Auswahl
             foreach ($this->values as $group => $entrys) {
 
-                $html .= '<optgroup label="' . String::encodeHTML($group) . '">' . "\n";
+                $html .= '<optgroup label="' . StringUtils::encodeHTML($group) . '">' . "\n";
                 foreach ($entrys as $value => $index) {
 
                     //Pruefen ob Ausgewaehlt
@@ -263,7 +263,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
                         $selected = 'selected="selected"';
                     }
 
-                    $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+                    $html .= '<option value="' . StringUtils::encodeHTML($value) . '" ' . $selected . '>' . StringUtils::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
                 }
                 $html .= "</optgroup>\n";
             }
@@ -279,7 +279,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
                     $selected = 'selected="selected"';
                 }
 
-                $html .= '<option value="' . String::encodeHTML($value) . '" ' . $selected . '>' . String::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
+                $html .= '<option value="' . StringUtils::encodeHTML($value) . '" ' . $selected . '>' . StringUtils::encodeHTML((is_array($index) ? $index[0] : $index)) . '</option>' . "\n";
             }
         }
         $html .= "</select>\n";
@@ -297,7 +297,7 @@ class SelectWithEmptyElement extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";

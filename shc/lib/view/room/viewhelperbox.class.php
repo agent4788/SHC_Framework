@@ -6,7 +6,7 @@ namespace SHC\View\Room;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Switchable;
 use SHC\Sensor\Sensor;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Raum Anzeige Box
@@ -302,13 +302,13 @@ class ViewHelperBox {
         if(defined('RWF_DEVICE') && (RWF_DEVICE == 'smartphone' || RWF_DEVICE == 'tablet')) {
 
             //Mobilansicht
-            $html .= '<li data-role="list-divider" role="heading">'. String::encodeHtml($this->getName()) .'</li>';
+            $html .= '<li data-role="list-divider" role="heading">'. StringUtils::encodeHtml($this->getName()) .'</li>';
         } else {
 
             //Webansicht
             $html .= '<div class="shc-contentbox shc-contentbox-room ui-tabs ui-widget ui-widget-content ui-corner-all">';
             $html .= '<div class="shc-contentbox-header ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">';
-            $html .= String::encodeHtml($this->getName());
+            $html .= StringUtils::encodeHtml($this->getName());
             $html .= '</div>';
             $html .= '<div class="shc-contentbox-body">';
         }

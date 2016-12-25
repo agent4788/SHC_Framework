@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -150,7 +150,7 @@ class Power extends AbstractSensor implements vSensor {
      */
     public function getMinDisplayPower() {
 
-        return ($this->getMinPower() < 1000000.0 ? String::formatFloat($this->getMinPower() / 1000, 1) .' W' : String::formatFloat($this->getMinPower() / 1000 / 1000, 1) .' kW');
+        return ($this->getMinPower() < 1000000.0 ? StringUtils::formatFloat($this->getMinPower() / 1000, 1) .' W' : StringUtils::formatFloat($this->getMinPower() / 1000 / 1000, 1) .' kW');
     }
 
     /**
@@ -170,7 +170,7 @@ class Power extends AbstractSensor implements vSensor {
      */
     public function getAvarageDisplayPower() {
 
-        return ($this->getAvaragePower() < 1000000.0 ? String::formatFloat($this->getAvaragePower() / 1000, 1) .' W' : String::formatFloat($this->getAvaragePower() / 1000 / 1000, 1) .' kW');
+        return ($this->getAvaragePower() < 1000000.0 ? StringUtils::formatFloat($this->getAvaragePower() / 1000, 1) .' W' : StringUtils::formatFloat($this->getAvaragePower() / 1000 / 1000, 1) .' kW');
     }
 
     /**
@@ -190,7 +190,7 @@ class Power extends AbstractSensor implements vSensor {
      */
     public function getMaxDisplayPower() {
 
-        return ($this->getMaxPower() < 1000000.0 ? String::formatFloat($this->getMaxPower() / 1000, 1) .' W' : String::formatFloat($this->getMaxPower() / 1000 / 1000, 1) .' kW');
+        return ($this->getMaxPower() < 1000000.0 ? StringUtils::formatFloat($this->getMaxPower() / 1000, 1) .' W' : StringUtils::formatFloat($this->getMaxPower() / 1000 / 1000, 1) .' kW');
     }
 
     /**
@@ -210,6 +210,6 @@ class Power extends AbstractSensor implements vSensor {
      */
     public function getSumDisplayPower() {
 
-        return ($this->getSumPower() < 1000000.0 ? String::formatFloat($this->getSumPower() / 1000, 1) .' W' : String::formatFloat($this->getSumPower() / 1000 / 1000, 1) .' kW');
+        return ($this->getSumPower() < 1000000.0 ? StringUtils::formatFloat($this->getSumPower() / 1000, 1) .' W' : StringUtils::formatFloat($this->getSumPower() / 1000 / 1000, 1) .' kW');
     }
 }

@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -48,7 +48,7 @@ trait AbstractEnergy {
      */
     public function getDisplayEnergy() {
 
-        return ($this->getEnergy() < 1000.0 ? String::formatFloat($this->getEnergy(), 0) .' Wh' : String::formatFloat($this->getEnergy() / 1000, 2) .' kWh');
+        return ($this->getEnergy() < 1000.0 ? StringUtils::formatFloat($this->getEnergy(), 0) .' Wh' : StringUtils::formatFloat($this->getEnergy() / 1000, 2) .' kWh');
     }
 
     /**

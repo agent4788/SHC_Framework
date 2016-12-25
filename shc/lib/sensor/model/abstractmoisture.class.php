@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -55,7 +55,7 @@ trait AbstractMoisture {
      */
     public function getDisplayMoisture() {
 
-        return String::formatInteger($this->getMoisture() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getMoisture() * 100 / 1023) .'%';
     }
 
     /**

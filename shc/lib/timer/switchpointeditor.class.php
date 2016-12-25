@@ -3,7 +3,7 @@
 namespace SHC\Timer;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 use RWF\Date\DateTime;
 use SHC\Condition\ConditionEditor;
@@ -129,7 +129,7 @@ class SwitchPointEditor {
         foreach ($this->switchPoints as $switchPoint) {
 
             /* @var $condition \SHC\Timer\SwitchPoint */
-            if (String::toLower($switchPoint->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($switchPoint->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

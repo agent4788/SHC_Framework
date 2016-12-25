@@ -6,7 +6,7 @@ namespace RWF\Form\FormElements;
 use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
 use RWF\Request\Request;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * An/Aus Option
@@ -93,7 +93,7 @@ class OnOffOption extends AbstractFormElement {
         if ($request->issetParam($this->getName(), Request::POST)) {
 
             //Daten per POST
-            $value = String::trim($request->getParam($this->getName(), Request::POST));
+            $value = StringUtils::trim($request->getParam($this->getName(), Request::POST));
 
             if($value == 'on') {
 
@@ -131,7 +131,7 @@ class OnOffOption extends AbstractFormElement {
     protected function fetchWebView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -146,14 +146,14 @@ class OnOffOption extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -162,23 +162,23 @@ class OnOffOption extends AbstractFormElement {
         //Titel
         if ($this->getTitle() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-title">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
+            $html .= '<div class="rwf-ui-form-content-title">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
         }
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element">';
         $html .= '<div ' . $id . ' class="rwf-ui-form-content-on-off-chooser' . $class . '">' . "\n";
-        $html .= '<input type="radio" id="a' . $randomId . '_on" name="' . String::encodeHTML($this->getName()) . '" value="1" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
-        $html .= '<label class="yes" for="a' . $randomId . '_on">' . String::encodeHTML($this->label['on']) . '</label>' . "\n";
-        $html .= '<input type="radio" id="a' . $randomId . '_off" name="' . String::encodeHTML($this->getName()) . '" value="0" ' . ($this->getValue() == false ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
-        $html .= '<label class="no" for="a' . $randomId . '_off">' . String::encodeHTML($this->label['off']) . '</label>' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_on" name="' . StringUtils::encodeHTML($this->getName()) . '" value="1" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="yes" for="a' . $randomId . '_on">' . StringUtils::encodeHTML($this->label['on']) . '</label>' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_off" name="' . StringUtils::encodeHTML($this->getName()) . '" value="0" ' . ($this->getValue() == false ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="no" for="a' . $randomId . '_off">' . StringUtils::encodeHTML($this->label['off']) . '</label>' . "\n";
         $html .= "</div>\n";
         $html .= "</div>\n";
 
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";
@@ -202,7 +202,7 @@ class OnOffOption extends AbstractFormElement {
     protected function fetchMobileView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -217,14 +217,14 @@ class OnOffOption extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -233,12 +233,12 @@ class OnOffOption extends AbstractFormElement {
 
         //Formularfeld
         $html .= '<div ' . $id . ' class="ui-field-contain ' . $class . '">' . "\n";
-        $html .= '<label for="a' . $randomId . '">'. String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') .'</label>' . "\n";
+        $html .= '<label for="a' . $randomId . '">'. StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') .'</label>' . "\n";
         $html .= '<div data-role="controlgroup" data-type="horizontal" id="a' . $randomId . '">' . "\n";
-        $html .= '<input type="radio" id="a' . $randomId . '_on" name="' . String::encodeHTML($this->getName()) . '" value="1" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
-        $html .= '<label class="yes" for="a' . $randomId . '_on">' . String::encodeHTML($this->label['on']) . '</label>' . "\n";
-        $html .= '<input type="radio" id="a' . $randomId . '_off" name="' . String::encodeHTML($this->getName()) . '" value="0" ' . ($this->getValue() == false ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
-        $html .= '<label class="no" for="a' . $randomId . '_off">' . String::encodeHTML($this->label['off']) . '</label>' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_on" name="' . StringUtils::encodeHTML($this->getName()) . '" value="1" ' . ($this->getValue() == true ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="yes" for="a' . $randomId . '_on">' . StringUtils::encodeHTML($this->label['on']) . '</label>' . "\n";
+        $html .= '<input type="radio" id="a' . $randomId . '_off" name="' . StringUtils::encodeHTML($this->getName()) . '" value="0" ' . ($this->getValue() == false ? 'checked="checked"' : '') . $disabled . '/>' . "\n";
+        $html .= '<label class="no" for="a' . $randomId . '_off">' . StringUtils::encodeHTML($this->label['off']) . '</label>' . "\n";
         $html .= "</div>\n";
         $html .= "</div>\n";
 
@@ -254,7 +254,7 @@ class OnOffOption extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";

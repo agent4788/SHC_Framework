@@ -3,7 +3,7 @@
 namespace SHC\Sensor;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Date\DateTime;
 use SHC\Core\SHC;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
@@ -1225,7 +1225,7 @@ class SensorPointEditor {
         foreach($this->sensorPoints as $sensorPoint) {
 
             /* @var $sensorPoint \SHC\Sensor\Sensorpoint */
-            if (String::toLower($sensorPoint->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($sensorPoint->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

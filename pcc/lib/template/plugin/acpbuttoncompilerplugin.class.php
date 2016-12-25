@@ -6,7 +6,7 @@ namespace PCC\Template\Plugin;
 use RWF\Template\TemplateCompilerPlugin;
 use RWF\Template\TemplateCompiler;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Button im ACP Bereich
@@ -40,7 +40,7 @@ class AcpButtonCompilerPlugin implements TemplateCompilerPlugin {
             throw new TemplateCompilationException('missing "text" attribute in premission tag', $compiler->getTemplateName(), $compiler->getCurrentLine());
         }
 
-        $randomStr = String::randomStr(64);
+        $randomStr = StringUtils::randomStr(64);
         $html = '<button id="'. $randomStr .'" ><?php echo \\RWF\\Core\\RWF::getLanguage()->get('. $args['text'] .'); ?></button>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';

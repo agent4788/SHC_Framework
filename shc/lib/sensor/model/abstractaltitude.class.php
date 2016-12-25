@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -55,7 +55,7 @@ trait AbstractAltitude {
      */
     public function getDisplayAltitude() {
 
-        return String::formatFloat($this->getAltitude(), 1) .'m';
+        return StringUtils::formatFloat($this->getAltitude(), 1) .'m';
     }
 
     /**

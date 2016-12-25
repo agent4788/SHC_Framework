@@ -3,7 +3,7 @@
 namespace RWF\Request;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Core\RWF;
 
 /**
@@ -236,14 +236,14 @@ class HttpResponse implements Response {
      */
     public function insert($content, $start, $length = -1, $overwrite = false) {
 
-        $newBody = String::subString($this->httpBody, 0, $start);
+        $newBody = StringUtils::subString($this->httpBody, 0, $start);
         $newBody .= $content;
         if ($overwrite == true) {
 
-            $newBody .= String::subString($this->httpBody, ($start + ($length === -1 ? String::length($content) : $length)));
+            $newBody .= StringUtils::subString($this->httpBody, ($start + ($length === -1 ? StringUtils::length($content) : $length)));
         } else {
 
-            $newBody .= String::subString($this->httpBody, $start);
+            $newBody .= StringUtils::subString($this->httpBody, $start);
         }
 
         $this->httpBody = $newBody;

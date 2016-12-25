@@ -3,7 +3,7 @@
 namespace SHC\UserAtHome;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 
 /**
@@ -121,7 +121,7 @@ class UserAtHomeEditor {
         foreach ($this->usersAtHome as $usersAtHome) {
 
             /* @var $switchServer \SHC\UserAtHome\UserAtHome */
-            if (String::toLower($usersAtHome->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($usersAtHome->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

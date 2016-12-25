@@ -7,7 +7,7 @@ use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Runtime\RaspberryPi;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\FileUtil;
 
 /**
@@ -66,11 +66,11 @@ class DataSyncAjax extends AjaxCommand {
 
             //Systemdaten
             //Betriebssystem
-            $data['osName'] = String::encodeHTML($rpi->getOsName());
-            $data['kernel'] = String::encodeHTML($rpi->getKernelVersion());
-            $data['firmwareShort'] = String::encodeHTML(String::subString($rpi->getFirmwareVersion(), 0, 45) . ' ...');
-            $data['firmware'] = String::encodeHTML($rpi->getFirmwareVersion());
-            $data['hostname'] = String::encodeHTML($rpi->getHostname());
+            $data['osName'] = StringUtils::encodeHTML($rpi->getOsName());
+            $data['kernel'] = StringUtils::encodeHTML($rpi->getKernelVersion());
+            $data['firmwareShort'] = StringUtils::encodeHTML(StringUtils::subString($rpi->getFirmwareVersion(), 0, 45) . ' ...');
+            $data['firmware'] = StringUtils::encodeHTML($rpi->getFirmwareVersion());
+            $data['hostname'] = StringUtils::encodeHTML($rpi->getHostname());
 
             //RPI Revision
             if($rpi->getRpiRevision() != null) {
@@ -79,19 +79,19 @@ class DataSyncAjax extends AjaxCommand {
                 $data['boardType'] = 'rpi';
 
                 //Systemdaten
-                $data['cpuType'] = String::encodeHTML($rpi->getCPUType());
+                $data['cpuType'] = StringUtils::encodeHTML($rpi->getCPUType());
                 $cpuMemory = $rpi->getCpuMemory();
                 $gpuMemory = $rpi->getGPUMemory();
                 $data['splitSystem'] = FileUtil::formatBytesBinary($cpuMemory);
                 $data['splitVideo'] = FileUtil::formatBytesBinary($gpuMemory);
                 $overclock = $rpi->getOverclockInfo();
-                $data['ocCpu'] = String::formatFloat($overclock['cpu']);
-                $data['ocGpu'] = String::formatFloat($overclock['gpu']);
-                $data['ocRam'] = String::formatFloat($overclock['ram']);
-                $data['ocVoltage'] = String::formatFloat($overclock['voltage'], 3);
+                $data['ocCpu'] = StringUtils::formatFloat($overclock['cpu']);
+                $data['ocGpu'] = StringUtils::formatFloat($overclock['gpu']);
+                $data['ocRam'] = StringUtils::formatFloat($overclock['ram']);
+                $data['ocVoltage'] = StringUtils::formatFloat($overclock['voltage'], 3);
 
-                $data['cpuFeatures'] = String::encodeHTML($rpi->getCPUFeatures());
-                $data['serial'] = String::encodeHTML($rpi->getRpiSerial());
+                $data['cpuFeatures'] = StringUtils::encodeHTML($rpi->getCPUFeatures());
+                $data['serial'] = StringUtils::encodeHTML($rpi->getRpiSerial());
                 $rev = $rpi->getRpiRevision();
                 if ($rev == 1) {
                     $data['revision'] = 'Beta';
@@ -128,7 +128,7 @@ class DataSyncAjax extends AjaxCommand {
                 } else {
                     $data['revision'] = RWF::getLanguage()->get('global.unknown');
                 }
-                $data['usbCurrent'] = String::numberFormat($rpi->getUsbCurrent());
+                $data['usbCurrent'] = StringUtils::numberFormat($rpi->getUsbCurrent());
 
                 //Video Lizensen
                 if ($rpi->isSetMPEGCode()) {

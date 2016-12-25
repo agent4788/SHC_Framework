@@ -5,7 +5,7 @@ namespace SHC\Command\CLI;
 //Imports
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\XML\XmlFileManager;
 use SHC\Core\SHC;
 use SHC\Sensor\SensorDataTransmitter;
@@ -290,7 +290,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.active', ($this->getSetting('shc.sensorTransmitter.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $active_not_change = true;
                 $valid = true;
@@ -332,7 +332,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $address = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.ip', $this->getSetting('shc.sensorTransmitter.ip')));
 
             //Adresse nicht aendern
-            if (String::length($address) == 0) {
+            if (StringUtils::length($address) == 0) {
 
                 $address_not_change = true;
                 $valid = true;
@@ -377,7 +377,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $port = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.port', $this->getSetting('shc.sensorTransmitter.port')));
 
             //Port nicht aendern
-            if (String::length($port) == 0) {
+            if (StringUtils::length($port) == 0) {
 
                 $port_not_change = true;
                 $valid = true;
@@ -416,7 +416,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $id = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.sensorPointId', $this->getSetting('shc.sensorTransmitter.pointId')));
 
             //Port nicht aendern
-            if (String::length($id) == 0) {
+            if (StringUtils::length($id) == 0) {
 
                 $sp_not_change = true;
                 $valid = true;
@@ -458,7 +458,7 @@ class SensorDatatTransmitterCli extends CliCommand {
             $pin = $cli->input(RWF::getLanguage()->get('sensorTransmitter.input.blinkPin', $this->getSetting('shc.sensorTransmitter.blinkPin')));
 
             //Pin nicht aendern
-            if (String::length($pin) == 0) {
+            if (StringUtils::length($pin) == 0) {
 
                 $pin_not_change = true;
                 $valid = true;

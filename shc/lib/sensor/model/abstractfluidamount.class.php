@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -50,12 +50,12 @@ trait AbstractFluidAmount  {
 
         if($this->getFluidAmount() >= 1000000) {
 
-            return String::formatFloat($this->getFluidAmount() / 1000000, 1) .'m³';
+            return StringUtils::formatFloat($this->getFluidAmount() / 1000000, 1) .'m³';
         } elseif($this->getFluidAmount() >= 1000) {
 
-            return String::formatFloat($this->getFluidAmount() / 1000, 1) .'l';
+            return StringUtils::formatFloat($this->getFluidAmount() / 1000, 1) .'l';
         }
-        return String::formatFloat($this->getFluidAmount(), 1) .'ml';
+        return StringUtils::formatFloat($this->getFluidAmount(), 1) .'ml';
     }
 
     /**

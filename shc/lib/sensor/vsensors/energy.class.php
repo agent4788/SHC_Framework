@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -150,7 +150,7 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getMinDisplayEnergy() {
 
-        return ($this->getMinEnergy() < 1000.0 ? String::formatFloat($this->getMinEnergy(), 0) .' Wh' : String::formatFloat($this->getMinEnergy() / 1000, 2) .' kWh');
+        return ($this->getMinEnergy() < 1000.0 ? StringUtils::formatFloat($this->getMinEnergy(), 0) .' Wh' : StringUtils::formatFloat($this->getMinEnergy() / 1000, 2) .' kWh');
     }
 
     /**
@@ -170,7 +170,7 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getAvarageDisplayEnergy() {
 
-        return ($this->getAvarageEnergy() < 1000.0 ? String::formatFloat($this->getAvarageEnergy(), 0) .' Wh' : String::formatFloat($this->getAvarageEnergy() / 1000, 2) .' kWh');
+        return ($this->getAvarageEnergy() < 1000.0 ? StringUtils::formatFloat($this->getAvarageEnergy(), 0) .' Wh' : StringUtils::formatFloat($this->getAvarageEnergy() / 1000, 2) .' kWh');
     }
 
     /**
@@ -190,7 +190,7 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getMaxDisplayEnergy() {
 
-        return ($this->getMaxEnergy() < 1000.0 ? String::formatFloat($this->getMaxEnergy(), 0) .' Wh' : String::formatFloat($this->getMaxEnergy() / 1000, 2) .' kWh');
+        return ($this->getMaxEnergy() < 1000.0 ? StringUtils::formatFloat($this->getMaxEnergy(), 0) .' Wh' : StringUtils::formatFloat($this->getMaxEnergy() / 1000, 2) .' kWh');
     }
 
     /**
@@ -210,6 +210,6 @@ class Energy extends AbstractSensor implements vSensor {
      */
     public function getSumDisplayEnergy() {
 
-        return ($this->getSumEnergy() < 1000.0 ? String::formatFloat($this->getSumEnergy(), 0) .' Wh' : String::formatFloat($this->getSumEnergy() / 1000, 2) .' kWh');
+        return ($this->getSumEnergy() < 1000.0 ? StringUtils::formatFloat($this->getSumEnergy(), 0) .' Wh' : StringUtils::formatFloat($this->getSumEnergy() / 1000, 2) .' kWh');
     }
 }

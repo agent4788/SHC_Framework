@@ -3,7 +3,7 @@
 namespace SHC\View\Room;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 use SHC\Sensor\Sensor;
 use SHC\Switchable\Readable;
@@ -293,7 +293,7 @@ class ViewHelperEditor {
         foreach ($this->boxes as $box) {
 
             /* @var $box \SHC\View\Room\ViewHelperBox */
-            if (String::toLower($box->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($box->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

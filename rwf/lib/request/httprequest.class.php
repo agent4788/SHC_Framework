@@ -51,7 +51,7 @@ class HttpRequest implements Request {
                 $_COOKIE = ArrayUtil::stripSlashes($_COOKIE);
                 $_SERVER = ArrayUtil::stripSlashes($_SERVER);
             }
-            set_magic_quotes_runtime(0);
+            //set_magic_quotes_runtime(0); -> PHP 7
             @ini_set('magic_quotes_gpc', 0);
             @ini_set('magic_quotes_runtime', 0);
         }

@@ -6,7 +6,7 @@ namespace SHC\Command\CLI;
 use RWF\Core\RWF;
 use RWF\Request\Commands\CliCommand;
 use RWF\Util\CliUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\XML\XmlFileManager;
 use SHC\Core\SHC;
 use SHC\SwitchServer\SwitchServerSocket;
@@ -151,7 +151,7 @@ class SwitchServerCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.active', ($this->getSetting('shc.switchServer.active') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $active_not_change = true;
                 $valid = true;
@@ -193,7 +193,7 @@ class SwitchServerCli extends CliCommand {
             $address = $cli->input(RWF::getLanguage()->get('switchServer.input.ip', $this->getSetting('shc.switchServer.ip')));
 
             //Adresse nicht aendern
-            if (String::length($address) == 0) {
+            if (StringUtils::length($address) == 0) {
 
                 $address_not_change = true;
                 $valid = true;
@@ -238,7 +238,7 @@ class SwitchServerCli extends CliCommand {
             $port = $cli->input(RWF::getLanguage()->get('switchServer.input.port', $this->getSetting('shc.switchServer.port')));
 
             //Port nicht aendern
-            if (String::length($port) == 0) {
+            if (StringUtils::length($port) == 0) {
 
                 $port_not_change = true;
                 $valid = true;
@@ -277,7 +277,7 @@ class SwitchServerCli extends CliCommand {
             $pin = $cli->input(RWF::getLanguage()->get('switchServer.input.ledPin', $this->getSetting('shc.switchServer.sendLedPin')));
 
             //Port nicht aendern
-            if (String::length($pin) == 0) {
+            if (StringUtils::length($pin) == 0) {
 
                 $ledpin_not_change = true;
                 $valid = true;
@@ -315,7 +315,7 @@ class SwitchServerCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.senderActive', ($this->getSetting('shc.switchServer.senderActive') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $sender_not_change = true;
                 $valid = true;
@@ -357,7 +357,7 @@ class SwitchServerCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioRead', ($this->getSetting('shc.switchServer.readGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $gpio_read_not_change = true;
                 $valid = true;
@@ -399,7 +399,7 @@ class SwitchServerCli extends CliCommand {
             $sender = $cli->input(RWF::getLanguage()->get('switchServer.input.gpioWrite', ($this->getSetting('shc.switchServer.writeGpio') == true ? RWF::getLanguage()->get('global.yes') : RWF::getLanguage()->get('global.no'))));
 
             //Port nicht aendern
-            if (String::length($sender) == 0) {
+            if (StringUtils::length($sender) == 0) {
 
                 $gpio_write_not_change = true;
                 $valid = true;

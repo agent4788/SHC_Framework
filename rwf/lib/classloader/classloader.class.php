@@ -78,6 +78,8 @@ class ClassLoader {
 
     /**
      * packt alle Klassen in eine Klassendatei
+     *
+     * @deprecated use the autoloader function
      */
     protected function packClasses() {
         
@@ -249,12 +251,18 @@ class ClassLoader {
      */
     public function loadClass($class) {
 
+        //Globalen Namensraum Filtern
+        if(preg_match("#^\\[_A-Za-z0-9]+$#", $class) || preg_match("#^[_A-Za-z0-9]+$#", $class)) {
+
+            return;
+        }
+
         //Basis Namensraum
         $matches = array();
         preg_match('#^(\S+?)\\\\#', $class, $matches);
         if(!isset($matches[1])) {
 
-            throw new ClassNotFoundException($class, 1000, 'Unbekannter Namensraum ""');
+            throw new ClassNotFoundException($class, 1000, 'Unbekannter Namensraum');
         }
         $baseNamespace = strtolower($matches[1]);
 

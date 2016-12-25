@@ -74,7 +74,7 @@ abstract class ArrayUtil {
 
                 $val = self::trim($var, $removeEmpty, $recursive);
 
-                if (($removeEmpty == true && String::length($val) > 0) || ($removeEmpty == false)) {
+                if (($removeEmpty == true && StringUtils::length($val) > 0) || ($removeEmpty == false)) {
 
                     $array[$key] = $val;
                 } else {
@@ -84,7 +84,7 @@ abstract class ArrayUtil {
             }
         } else {
 
-            $array = String::trim($array);
+            $array = StringUtils::trim($array);
         }
 
         return $array;
@@ -106,7 +106,7 @@ abstract class ArrayUtil {
             }
         }
 
-        return String::encodeHTML($array);
+        return StringUtils::encodeHTML($array);
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class ArrayUtil {
             }
         } else {
 
-            $array = String::stripSlashes($array);
+            $array = StringUtils::stripSlashes($array);
         }
 
         return $array;
@@ -147,7 +147,7 @@ abstract class ArrayUtil {
             }
         } else {
 
-            $array = String::addSlashes($array);
+            $array = StringUtils::addSlashes($array);
         }
 
         return $array;
@@ -169,7 +169,7 @@ abstract class ArrayUtil {
             }
         } else {
 
-            $array = String::convertToUnixLines($array);
+            $array = StringUtils::convertToUnixLines($array);
         }
 
         return $array;
@@ -185,11 +185,11 @@ abstract class ArrayUtil {
     public static function printArray($array, $html = false) {
 
         $string = print_r($array, true);
-        $string = String::convertEncoding('ISO-8859-1', 'UTF-8', $string);
+        $string = StringUtils::convertEncoding('ISO-8859-1', 'UTF-8', $string);
 
         if ($html === true) {
-            $string = String::encodeHTML($string);
-            $string = String::replace(' ', '&nbsp;', $string);
+            $string = StringUtils::encodeHTML($string);
+            $string = StringUtils::replace(' ', '&nbsp;', $string);
             $string = nl2br($string);
         }
         return $string;

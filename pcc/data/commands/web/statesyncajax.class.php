@@ -10,7 +10,7 @@ use RWF\Request\Commands\AjaxCommand;
 use RWF\Request\Request;
 use RWF\Runtime\RaspberryPi;
 use RWF\Util\FileUtil;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\TimeUtil;
 
 /**
@@ -53,11 +53,11 @@ class StateSyncAjax extends AjaxCommand {
 
                 $data['wireless'] .= '
                     <tr>
-                        <td>' . String::encodeHTML($device['name']) . '</td>
-                        <td>' . String::encodeHTML($device['standard']) . '</td>
-                        <td>' . String::encodeHTML(($device['connected'] === true ? $device['ssid'] : RWF::getLanguage()->get('index.box.wlan.notConnected'))) . '</td>
-                        <td>' . String::encodeHTML(($device['connected'] === true ? $device['bitRate'] : '0')) . 'MB/s</td>
-                        <td>' . String::encodeHTML(($device['connected'] === true ? $device['quality'] : '0/0')) .'  -> '. String::encodeHTML(($device['connected'] === true ? $device['signalLevel'] : '0'))  .'dBm</td>
+                        <td>' . StringUtils::encodeHTML($device['name']) . '</td>
+                        <td>' . StringUtils::encodeHTML($device['standard']) . '</td>
+                        <td>' . StringUtils::encodeHTML(($device['connected'] === true ? $device['ssid'] : RWF::getLanguage()->get('index.box.wlan.notConnected'))) . '</td>
+                        <td>' . StringUtils::encodeHTML(($device['connected'] === true ? $device['bitRate'] : '0')) . 'MB/s</td>
+                        <td>' . StringUtils::encodeHTML(($device['connected'] === true ? $device['quality'] : '0/0')) .'  -> '. StringUtils::encodeHTML(($device['connected'] === true ? $device['signalLevel'] : '0'))  .'dBm</td>
                     </tr>';
             }
         } else {
@@ -65,9 +65,9 @@ class StateSyncAjax extends AjaxCommand {
             //Systemstatus
             //Systemzeit
             $uptime = TimeUtil::formatTimefromSeconds($rpi->getUptime());
-            if (String::length($uptime) > 50) {
+            if (StringUtils::length($uptime) > 50) {
 
-                $data['uptimeSort'] = String::subString($uptime, 0, 45) . ' ...';
+                $data['uptimeSort'] = StringUtils::subString($uptime, 0, 45) . ' ...';
                 $data['uptime'] = $uptime;
             } else {
                 $data['uptimeSort'] = $uptime;
@@ -91,9 +91,9 @@ class StateSyncAjax extends AjaxCommand {
 
                 if($cpuId == 0) {
 
-                    $data['cpuClockCpu0'] = ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                    $data['cpuClockCpu0'] = ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 }
-                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuClock'] = $html;
@@ -101,7 +101,7 @@ class StateSyncAjax extends AjaxCommand {
             $brake = '';
             foreach($rpi->getCpuMinClock() as $cpuId => $value) {
 
-                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuMinClock'] = $html;
@@ -109,17 +109,17 @@ class StateSyncAjax extends AjaxCommand {
             $brake = '';
             foreach($rpi->getCpuMaxClock() as $cpuId => $value) {
 
-                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? String::formatFloat($value / 1000) . ' GHz' : String::formatFloat($value) .' MHz');
+                $html .= $brake . '<span class="tooltip_strong">cpu'. $cpuId .'</span>: '. ($value > 1000 ? StringUtils::formatFloat($value / 1000) . ' GHz' : StringUtils::formatFloat($value) .' MHz');
                 $brake = '<br/>';
             }
             $data['cpuMaxClock'] = $html;
 
-            $data['coreTemp'] = String::formatFloat($rpi->getCoreTemprature());
+            $data['coreTemp'] = StringUtils::formatFloat($rpi->getCoreTemprature());
 
             //Speicher
             $memory = $rpi->getMemoryUsage();
             $data['memoryPercent'] = $memory['percent'];
-            $data['memoryPercentDisplay'] = String::formatFloat($memory['percent'], 0);
+            $data['memoryPercentDisplay'] = StringUtils::formatFloat($memory['percent'], 0);
             $data['memoryTotal'] = FileUtil::formatBytesBinary($memory['total']);
             $data['memoryFree'] = FileUtil::formatBytesBinary($memory['free']);
             $data['memoryUsed'] = FileUtil::formatBytesBinary($memory['used']);
@@ -127,7 +127,7 @@ class StateSyncAjax extends AjaxCommand {
             //Swap
             $swap = $rpi->getSwapUsage();
             $data['swapPercent'] = $swap['percent'];
-            $data['swapPercentDisplay'] = String::formatFloat($swap['percent'], 0);
+            $data['swapPercentDisplay'] = StringUtils::formatFloat($swap['percent'], 0);
             $data['swapTotal'] = FileUtil::formatBytesBinary($swap['total']);
             $data['swapFree'] = FileUtil::formatBytesBinary($swap['free']);
             $data['swapUsed'] = FileUtil::formatBytesBinary($swap['used']);
@@ -141,8 +141,8 @@ class StateSyncAjax extends AjaxCommand {
 
                     $data['sysMemory'] .= '
             <tr>
-                <td>' . String::encodeHTML($mem['device']) . '</td>
-                <td>' . String::encodeHTML($mem['mountpoint']) . '</td>
+                <td>' . StringUtils::encodeHTML($mem['device']) . '</td>
+                <td>' . StringUtils::encodeHTML($mem['mountpoint']) . '</td>
                 <td>
                     <script type="text/javascript">
                         $(function() {
@@ -151,7 +151,7 @@ class StateSyncAjax extends AjaxCommand {
                     </script>
                     <div class="storage_progress" id="sysMem_progress_' . $index . '"></div>
                 </td>
-                <td>' . String::encodeHTML($mem['percent']) . '%</td>
+                <td>' . StringUtils::encodeHTML($mem['percent']) . '%</td>
                 <td>' . FileUtil::formatBytesBinary($mem['total']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($mem['used']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($mem['free']) . '</td>
@@ -170,7 +170,7 @@ class StateSyncAjax extends AjaxCommand {
                     </script>
                     <div class="storage_progress" id="sysMem_progress_' . $index . '" style="border: solid 1px #ffffff"></div>
                 </td>
-                <td>' . String::encodeHTML($mem['percent']) . '%</td>
+                <td>' . StringUtils::encodeHTML($mem['percent']) . '%</td>
                 <td>' . FileUtil::formatBytesBinary($mem['total']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($mem['used']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($mem['free']) . '</td>
@@ -185,10 +185,10 @@ class StateSyncAjax extends AjaxCommand {
 
                 $data['network'] .= '
             <tr>
-                <td>' . String::encodeHTML($net['name']) . '</td>
+                <td>' . StringUtils::encodeHTML($net['name']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($net['in']) . '</td>
                 <td>' . FileUtil::formatBytesBinary($net['out']) . '</td>
-                <td>' . String::formatFloat($net['errors'], 0) . '/' . String::formatFloat($net['drops'], 0) . '</td>
+                <td>' . StringUtils::formatFloat($net['errors'], 0) . '/' . StringUtils::formatFloat($net['drops'], 0) . '</td>
             </tr>';
             }
         }

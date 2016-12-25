@@ -137,7 +137,7 @@ class FritzBoxSmartHome extends FritzBox {
      * @param  string $ain Geraete Identifikation
      * @return array
      */
-    public function getDevice($ain) {
+    public function getSmartHomeDevice($ain) {
 
         $devices = $this->listDevices();
         if(isset($devices[$ain])) {

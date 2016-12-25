@@ -149,9 +149,9 @@ abstract class TimeUtil {
 
         if ($time < 1.0) {
             $time *= 1000;
-            $time = String::formatFloat($time, 6) . ' ms';
+            $time = StringUtils::formatFloat($time, 6) . ' ms';
         } else {
-            $time = String::formatFloat($time, 6) . ' s';
+            $time = StringUtils::formatFloat($time, 6) . ' s';
         }
 
         return $time;

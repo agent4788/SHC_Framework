@@ -4,7 +4,7 @@ namespace SHC\View\Room;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Switchable\Readable;
 use SHC\Switchable\Readables\RpiGpioInput;
 
@@ -63,11 +63,11 @@ class ReadableViewHelper {
                 $html .= '<div data-role="controlgroup" data-type="horizontal">';
                 if($readable->getState() == Readable::STATE_ON) {
 
-                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= StringUtils::encodeHtml($readable->getName()) .':';
                     $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-check"></span>';
                 } else {
 
-                    $html .= String::encodeHtml($readable->getName()) .':';
+                    $html .= StringUtils::encodeHtml($readable->getName()) .':';
                     $html .= '<span id="shc-view-switchable-' . self::$roomId . '-'. $readable->getId() .'" class="ui-btn-inline ui-btn-icon-notext ui-icon-delete"></span>';
                 }
                 $html .= '</div>';
@@ -76,7 +76,7 @@ class ReadableViewHelper {
 
                 //Web Ansicht
                 $html = '<div class="shc-contentbox-body-row shc-view-readable">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHtml($readable->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHtml($readable->getName()) . '</span>';
                 $html .= '<span id="shc-view-readable-' . self::$roomId . '-' . $readable->getId() . '" class="shc-icon ' . ($readable->getState() == Readable::STATE_ON ? 'shc-icon-high' : 'shc-icon-low') . '"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content"></div>';
                 $html .= '</div>';

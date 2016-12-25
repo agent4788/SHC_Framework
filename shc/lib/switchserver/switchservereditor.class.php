@@ -3,7 +3,7 @@
 namespace SHC\SwitchServer;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Core\SHC;
 
 
@@ -106,7 +106,7 @@ class SwitchServerEditor {
         foreach ($this->switchServers as $switchServer) {
 
             /* @var $switchServer \SHC\SwitchServer\SwitchServer */
-            if (String::toLower($switchServer->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($switchServer->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

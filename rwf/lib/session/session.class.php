@@ -9,7 +9,7 @@ use RWF\Util\FileUtil;
 use RWF\Util\DataTypeUtil;
 use RWF\Util\JSON;
 use RWF\Util\Message;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Session
@@ -76,7 +76,7 @@ class Session {
             $this->sid = $sessionCookie->getValue(DataTypeUtil::STRING_64);
         } else {
 
-            $this->sid = String::randomStr(64);
+            $this->sid = StringUtils::randomStr(64);
             $this->newSession = true;
         }
 
@@ -117,7 +117,7 @@ class Session {
     public function regenerateSessionId() {
 
         $oldSid = $this->sid;
-        $this->sid = String::randomStr(64);
+        $this->sid = StringUtils::randomStr(64);
         $sessionCookie = new Cookie(RWF_COOKIE_PREFIX, 'session', $this->sid);
         $sessionCookie->setTimeByInterval(0, 0, 0, 0, 0, 15);
         RWF::getResponse()->addCookie($sessionCookie);

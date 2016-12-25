@@ -6,7 +6,7 @@ namespace SHC\Room;
 use RWF\User\UserEditor;
 use RWF\User\UserGroup;
 use SHC\Core\SHC;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Database\NoSQL\Redis;
 
 /**
@@ -127,7 +127,7 @@ class RoomEditor {
         foreach ($this->rooms as $room) {
 
             /* @var $room \SHC\Room\Room */
-            if (String::toLower($room->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($room->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

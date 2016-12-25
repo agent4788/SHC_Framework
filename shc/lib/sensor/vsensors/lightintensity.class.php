@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -139,7 +139,7 @@ class LightIntensity extends AbstractSensor implements vSensor {
      */
     public function getMinDisplayLightIntensity() {
 
-        return String::formatInteger($this->getMaxLightIntensity() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getMaxLightIntensity() * 100 / 1023) .'%';
     }
 
     /**
@@ -159,7 +159,7 @@ class LightIntensity extends AbstractSensor implements vSensor {
      */
     public function getAvarageDisplayLightIntensity() {
 
-        return String::formatInteger($this->getAvarageLightIntensity() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getAvarageLightIntensity() * 100 / 1023) .'%';
     }
 
     /**
@@ -179,6 +179,6 @@ class LightIntensity extends AbstractSensor implements vSensor {
      */
     public function getMaxDisplayLightIntensity() {
 
-        return String::formatInteger($this->getMaxLightIntensity() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getMaxLightIntensity() * 100 / 1023) .'%';
     }
 }

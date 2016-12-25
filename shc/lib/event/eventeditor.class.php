@@ -4,7 +4,7 @@ namespace SHC\Event;
 
 //Imports
 use RWF\Date\DateTime;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 use SHC\Condition\Condition;
 use SHC\Condition\ConditionEditor;
@@ -276,7 +276,7 @@ class EventEditor {
         foreach ($this->events as $event) {
 
             /* @var $condition \SHC\Event\Event */
-            if (String::toLower($event->getName()) == String::toLower($name)) {
+            if (StringUtils::toLower($event->getName()) == StringUtils::toLower($name)) {
 
                 return false;
             }

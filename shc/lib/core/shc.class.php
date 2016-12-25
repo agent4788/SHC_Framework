@@ -182,7 +182,7 @@ class SHC extends RWF {
      * XML Verwaltung initialisieren
      */
     protected function initXml() {
-        
+
         $fileManager = XmlFileManager::getInstance();
         $fileManager->registerXmlFile(self::XML_SWITCHSERVER_SETTINGS, PATH_SHC_STORAGE . 'switchserversettings.xml', PATH_SHC_STORAGE . 'default/defaultSwitchserversettings.xml');
         $fileManager->registerXmlFile(self::XML_SENSOR_TRANSMITTER, PATH_SHC_STORAGE . 'sensortransmitter.xml', PATH_SHC_STORAGE . 'default/defaultSensortransmitter.xml');

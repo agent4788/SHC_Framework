@@ -232,7 +232,7 @@ class Error {
      * @param \Exception $e
      * @param String    $logFile Datei in die das Fehlerlog geschrieben werden soll
      */
-    public function handleException(\Exception $e, $logFile = 'exception.log') {
+    public function handleException(/*\Exception*/ $e, $logFile = 'exception.log') {
 
         //XML Fehler
         if ($e instanceof XmlException) {

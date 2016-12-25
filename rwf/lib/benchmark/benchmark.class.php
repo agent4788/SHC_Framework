@@ -4,7 +4,7 @@ namespace RWF\Benchmark;
 
 //Imports
 use RWF\Runtime\Runtime;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Laufzeitverhalten Messen
@@ -71,7 +71,7 @@ class Benchmark {
      */
     public function startBlockBenchmark($name, $description = '') {
 
-        $name = String::toLower($name);
+        $name = StringUtils::toLower($name);
         $this->time[$name]         = strtok(microtime(), ' ') . strtok('');
         $this->memory[$name]       = Runtime::getInstance()->getMemorySize();
         $this->descriptions[$name] = $description;
@@ -85,7 +85,7 @@ class Benchmark {
      */
     public function stopBlockBenchmark($name) {
 
-        $name = String::toLower($name);
+        $name = StringUtils::toLower($name);
         //Auswertung
         $this->finishedBenchmarks[$name][0] = round(strtok(microtime(), ' ') . strtok('') - $this->time[$name], 6);
         $this->finishedBenchmarks[$name][1] = Runtime::getInstance()->getMemorySize() - $this->memory[$name];

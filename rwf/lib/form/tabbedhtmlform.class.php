@@ -3,7 +3,7 @@
 namespace RWF\Form;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * HTML Formulat in Tabs aufgeteilt
@@ -290,7 +290,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
 
         if (isset($this->tabs[$tabName]['description'])) {
 
-            return '<div class="rwf-ui-form-description-text">' . String::encodeHTML($this->tabs[$tabName]['description']) . '</div>' . "\n";
+            return '<div class="rwf-ui-form-description-text">' . StringUtils::encodeHTML($this->tabs[$tabName]['description']) . '</div>' . "\n";
         }
         return '';
     }
@@ -312,7 +312,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
         $html = "<ul>\n";
         foreach ($this->tabs as $tabName => $content) {
 
-            $html .= '<li><a href="#rwf-view-form-tab_' . String::encodeHTML($tabName) . '">' . String::encodeHTML($content['title']) . '</a></li>' . "\n";
+            $html .= '<li><a href="#rwf-view-form-tab_' . StringUtils::encodeHTML($tabName) . '">' . StringUtils::encodeHTML($content['title']) . '</a></li>' . "\n";
         }
         $html .= "</ul>\n";
         return $html;
@@ -329,13 +329,13 @@ class TabbedHtmlForm extends DefaultHtmlForm {
         //mobile Ansicht
         if($this->view == self::SMARTPHONE_VIEW || $this->view == self::TABLET_VIEW) {
 
-            $html = '<div data-role="collapsible" '. ($this->first === true ? 'data-collapsed="false"' : '') .' ><h3>'. String::encodeHTML($this->tabs[$tabName]['title']) .'</h3>';
+            $html = '<div data-role="collapsible" '. ($this->first === true ? 'data-collapsed="false"' : '') .' ><h3>'. StringUtils::encodeHTML($this->tabs[$tabName]['title']) .'</h3>';
             $this->first = false;
             return $html;
         }
 
         //Webansicht
-        return '<div id="rwf-view-form-tab_' . String::encodeHTML($tabName) . '">' . "\n";
+        return '<div id="rwf-view-form-tab_' . StringUtils::encodeHTML($tabName) . '">' . "\n";
     }
 
     /**
@@ -426,7 +426,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
             /* @var $element FormElement */
             if (!$element->validate()) {
 
-                $this->invalidElements[String::toLower($element->getName())] = $element;
+                $this->invalidElements[StringUtils::toLower($element->getName())] = $element;
                 $this->message->addSubMessages($element->getMessages());
                 $success = false;
             }
@@ -449,7 +449,7 @@ class TabbedHtmlForm extends DefaultHtmlForm {
             /* @var $element FormElement */
             if (!$element->validate()) {
 
-                $this->invalidElements[String::toLower($element->getName())] = $element;
+                $this->invalidElements[StringUtils::toLower($element->getName())] = $element;
                 $this->message->addSubMessages($element->getMessages());
                 $success = false;
             }

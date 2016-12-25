@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -139,7 +139,7 @@ class Moisture extends AbstractSensor implements vSensor {
      */
     public function getMinDisplayMoisture() {
 
-        return String::formatInteger($this->getMaxMoisture() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getMaxMoisture() * 100 / 1023) .'%';
     }
 
     /**
@@ -159,7 +159,7 @@ class Moisture extends AbstractSensor implements vSensor {
      */
     public function getAvarageDisplayMoisture() {
 
-        return String::formatInteger($this->getAvarageMoisture() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getAvarageMoisture() * 100 / 1023) .'%';
     }
 
     /**
@@ -179,6 +179,6 @@ class Moisture extends AbstractSensor implements vSensor {
      */
     public function getMaxDisplayMoisture() {
 
-        return String::formatInteger($this->getMaxMoisture() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getMaxMoisture() * 100 / 1023) .'%';
     }
 }

@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Lichtstaerke Schnittstelle
@@ -54,7 +54,7 @@ trait AbstractLightIntensity {
      */
     public function getDisplayLightIntensity() {
 
-        return String::formatInteger($this->getLightIntensity() * 100 / 1023) .'%';
+        return StringUtils::formatInteger($this->getLightIntensity() * 100 / 1023) .'%';
     }
 
     /**

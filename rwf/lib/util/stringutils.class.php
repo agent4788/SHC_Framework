@@ -14,7 +14,7 @@ use RWF\Core\RWF;
  * @since      2.0.0-0
  * @version    2.0.0-0
  */
-class String {
+class StringUtils {
 
     /**
      * generiert eine zufaellige Zeichenkette
@@ -434,11 +434,11 @@ class String {
         var_dump($array);
         $String = ob_get_contents();
         ob_end_clean();
-        $String = String::convertEncoding('ISO-8859-1', 'UTF-8', $String);
+        $String = StringUtils::convertEncoding('ISO-8859-1', 'UTF-8', $String);
 
         if ($html === true) {
-            $String = String::encodeHTML($String);
-            $String = String::replace(' ', '&nbsp;', $String);
+            $String = StringUtils::encodeHTML($String);
+            $String = StringUtils::replace(' ', '&nbsp;', $String);
             $String = nl2br($String);
         }
         return $String;

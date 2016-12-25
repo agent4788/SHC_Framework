@@ -3,7 +3,7 @@
 namespace SHC\Sensor\vSensors;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\AbstractSensor;
 use SHC\Sensor\vSensor;
 
@@ -139,7 +139,7 @@ class Temperature extends AbstractSensor implements vSensor{
      */
     public function getMinDisplayTemperature() {
 
-        return String::formatFloat($this->getMinTemperature(), 1) .' °C';
+        return StringUtils::formatFloat($this->getMinTemperature(), 1) .' °C';
     }
 
     /**
@@ -159,7 +159,7 @@ class Temperature extends AbstractSensor implements vSensor{
      */
     public function getAvarageDisplayTemperature() {
 
-        return String::formatFloat($this->getAvarageTemperature(), 1) .' °C';
+        return StringUtils::formatFloat($this->getAvarageTemperature(), 1) .' °C';
     }
 
     /**
@@ -179,6 +179,6 @@ class Temperature extends AbstractSensor implements vSensor{
      */
     public function getMaxDisplayTemperature() {
 
-        return String::formatFloat($this->getMaxTemperature(), 1) .' °C';
+        return StringUtils::formatFloat($this->getMaxTemperature(), 1) .' °C';
     }
 }

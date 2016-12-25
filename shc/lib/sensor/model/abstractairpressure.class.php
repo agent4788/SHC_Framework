@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -55,7 +55,7 @@ trait AbstractAirPressure {
      */
     public function getDisplayAirPressure() {
 
-        return String::formatFloat($this->getAirPressure(), 1) .' hPa';
+        return StringUtils::formatFloat($this->getAirPressure(), 1) .' hPa';
     }
 
     /**

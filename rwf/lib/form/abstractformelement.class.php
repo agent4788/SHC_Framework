@@ -6,7 +6,7 @@ namespace RWF\Form;
 use RWF\Html\AbstractHtmlElement;
 use RWF\Core\RWF;
 use RWF\Request\Request;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Basisklasse fuer Formular Elemente
@@ -311,7 +311,7 @@ abstract class AbstractFormElement extends AbstractHtmlElement implements FormEl
         if ($request->issetParam($this->getName(), Request::POST)) {
 
             //Daten per POST
-            $value = String::trim($request->getParam($this->getName(), Request::POST));
+            $value = StringUtils::trim($request->getParam($this->getName(), Request::POST));
 
             //Pruefen ob 
             if ($value == $this->value) {

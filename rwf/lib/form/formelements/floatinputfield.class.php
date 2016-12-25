@@ -5,7 +5,7 @@ namespace RWF\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Eingabefeld fuer Gleitpunktzahlen
@@ -26,7 +26,7 @@ class FloatInputField extends AbstractFormElement {
     protected function fetchWebView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -41,14 +41,14 @@ class FloatInputField extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -57,18 +57,18 @@ class FloatInputField extends AbstractFormElement {
         //Titel
         if ($this->getTitle() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-title">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
+            $html .= '<div class="rwf-ui-form-content-title">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
         }
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element">';
-        $html .= '<input type="text" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield' . $class . '" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . $disabled . ' />';
+        $html .= '<input type="text" name="' . StringUtils::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield' . $class . '" value="' . StringUtils::encodeHTML($this->getValue()) . '" ' . $id . $disabled . ' />';
         $html .= "</div>\n";
 
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";
@@ -96,7 +96,7 @@ class FloatInputField extends AbstractFormElement {
     protected function fetchMobileView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -111,14 +111,14 @@ class FloatInputField extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //Optionen
@@ -141,10 +141,10 @@ class FloatInputField extends AbstractFormElement {
 
         //Titel
         $html .= '<div class="ui-field-contain' . $class . '">' . "\n";
-        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        $html .= '<label for="a' . $randomId . '">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
 
         //Formularfeld
-        $html .= '<input type="text" pattern="[0-9\.]*" name="' . String::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . $options . $disabled . ' />';
+        $html .= '<input type="text" pattern="[0-9\.]*" name="' . StringUtils::encodeHTML($this->getName()) . '" class="rwf-ui-form-content-integerinputfield" value="' . StringUtils::encodeHTML($this->getValue()) . '" ' . $id . $options . $disabled . ' />';
 
         $html .= "</div>";
 
@@ -160,7 +160,7 @@ class FloatInputField extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";

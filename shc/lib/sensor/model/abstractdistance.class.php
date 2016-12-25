@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -58,15 +58,15 @@ trait AbstractDistance  {
         $dist = $this->getDistance() + $this->getDistanceOffset();
         if($dist >= 1000000) {
 
-            return String::formatFloat($dist / 1000000, 1) .'km';
+            return StringUtils::formatFloat($dist / 1000000, 1) .'km';
         } elseif($dist >= 1000) {
 
-            return String::formatFloat($dist / 1000, 1) .'m';
+            return StringUtils::formatFloat($dist / 1000, 1) .'m';
         } elseif($dist >= 10) {
 
-            return String::formatFloat($dist / 10, 1) .'cm';
+            return StringUtils::formatFloat($dist / 10, 1) .'cm';
         }
-        return String::formatFloat($dist, 1) .'mm';
+        return StringUtils::formatFloat($dist, 1) .'mm';
     }
 
     /**

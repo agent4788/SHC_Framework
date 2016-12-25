@@ -6,7 +6,7 @@ namespace SHC\Template\Plugin;
 use RWF\Template\TemplateCompilerPlugin;
 use RWF\Template\TemplateCompiler;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * erstellt einen Menueeintrag im ACP Hauptmenue
@@ -57,7 +57,7 @@ class AcpMenuItemCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         $html = '';
-        $randomStr = String::randomStr(64);
+        $randomStr = StringUtils::randomStr(64);
         //Bedinguneg
         if($premission != '' && $setting != '') {
 

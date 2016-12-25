@@ -5,7 +5,7 @@ namespace SHC\Timer;
 //Imports
 use RWF\Core\RWF;
 use RWF\Date\DateTime;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Condition\Condition;
 
 /**
@@ -486,7 +486,7 @@ class SwitchPoint {
             foreach ($this->conditions as $condition) {
 
                 /* @var $condition \SHC\Condition\Condition */
-                $html .= $comma . String::encodeHTML($condition->getName());
+                $html .= $comma . StringUtils::encodeHTML($condition->getName());
                 $comma = ', </br>';
             }
         } else {

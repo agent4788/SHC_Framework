@@ -5,7 +5,7 @@ namespace RWF\Form\FormElements;
 //Imports
 use RWF\Core\RWF;
 use RWF\Form\AbstractFormElement;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 /**
  * Schieberegler fuer Ganzzahlen
@@ -31,7 +31,7 @@ class Slider extends AbstractFormElement {
     protected function fetchWebView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -44,14 +44,14 @@ class Slider extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //HTML Code
@@ -60,20 +60,20 @@ class Slider extends AbstractFormElement {
         //Titel
         if ($this->getTitle() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-title">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
+            $html .= '<div class="rwf-ui-form-content-title">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</div>\n";
         }
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element">';
         $html .= '<div class="rwf-ui-form-content-slider-container"><div id="a'. $randomId .'_slider"></div></div>';
-        $html .= '<input type="text" class="rwf-ui-form-content-slider' . $class . '" disabled="disabled" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'_show" style="width: 50px;" />';
-        $html .= '<input type="hidden" name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" ' . $id . ' />';
+        $html .= '<input type="text" class="rwf-ui-form-content-slider' . $class . '" disabled="disabled" value="' . StringUtils::encodeHTML($this->getValue()) . '" id="a'.$randomId.'_show" style="width: 50px;" />';
+        $html .= '<input type="hidden" name="' . StringUtils::encodeHTML($this->getName()) . '" value="' . StringUtils::encodeHTML($this->getValue()) . '" ' . $id . ' />';
         $html .= "</div>\n";
 
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";
@@ -105,7 +105,7 @@ class Slider extends AbstractFormElement {
     protected function fetchMobileView() {
 
         //Zufaellige ID
-        $randomId = String::randomStr(64);
+        $randomId = StringUtils::randomStr(64);
         $this->addId('a' . $randomId);
 
         //Deaktiviert
@@ -118,14 +118,14 @@ class Slider extends AbstractFormElement {
         $class = '';
         if (count($this->classes) > 0) {
 
-            $class = ' ' . String::encodeHTML(implode(' ', $this->classes));
+            $class = ' ' . StringUtils::encodeHTML(implode(' ', $this->classes));
         }
 
         //CSS IDs
         $id = '';
         if (count($this->ids) > 0) {
 
-            $id = ' id="' . String::encodeHTML(implode(' ', $this->ids)) . '" ';
+            $id = ' id="' . StringUtils::encodeHTML(implode(' ', $this->ids)) . '" ';
         }
 
         //Optionen
@@ -149,8 +149,8 @@ class Slider extends AbstractFormElement {
 
         //Formularfeld
         $html .= '<div class="rwf-ui-form-content-element ui-field-contain">';
-        $html .= '<label for="a' . $randomId . '">' . String::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
-        $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" '. $id .' name="' . String::encodeHTML($this->getName()) . '" value="' . String::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
+        $html .= '<label for="a' . $randomId . '">' . StringUtils::encodeHTML($this->getTitle()) . ($this->isRequiredField() ? ' <span class="rwf-ui-form-content-required">*</span>' : '') . "</label>\n";
+        $html .= '<input type="range" class="rwf-ui-form-content-slider' . $class . '" '. $id .' name="' . StringUtils::encodeHTML($this->getName()) . '" value="' . StringUtils::encodeHTML($this->getValue()) . '" id="a'.$randomId.'" data-highlight="true"/>';
         $html .= "</div>\n";
 
         //Pflichtfeld
@@ -165,7 +165,7 @@ class Slider extends AbstractFormElement {
         //Beschreibung
         if ($this->getDescription() != '') {
 
-            $html .= '<div class="rwf-ui-form-content-description">' . String::encodeHTML($this->getDescription()) . '</div>';
+            $html .= '<div class="rwf-ui-form-content-description">' . StringUtils::encodeHTML($this->getDescription()) . '</div>';
         }
 
         $html .= "</div>\n";

@@ -3,7 +3,7 @@
 namespace SHC\Sensor\Model;
 
 //Imports
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 
 
 /**
@@ -55,7 +55,7 @@ trait AbstractHumidity  {
      */
     public function getDisplayHumidity() {
 
-        return String::formatFloat($this->getHumidity(), 1) .'%';
+        return StringUtils::formatFloat($this->getHumidity(), 1) .'%';
     }
 
     /**

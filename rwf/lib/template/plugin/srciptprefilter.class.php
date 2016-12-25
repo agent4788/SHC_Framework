@@ -26,10 +26,10 @@ class SrciptPrefilter implements TemplatePrefilter {
      */
     public function execute(TemplateCompiler $compiler, $content) {
 
-        $content = @preg_replace('#\{js\}(.*?)\{/js\}#ies', 'self::scriptJS', $content);
-        $content = @preg_replace('#\{js\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', 'self::scriptJSSrc', $content);
-        $content = @preg_replace('#\{css\}(.*?)\{/css\}#ies', 'self::css', $content);
-        $content = @preg_replace('#\{css\s+src=(?:"|\')([^\s]*)(?:"|\')\}#ies', 'self::cssSrc', $content);
+        $content = preg_replace_callback('#\{js\}(.*?)\{/js\}#is', 'self::scriptJS', $content);
+        $content = preg_replace_callback('#\{js\s+src=(?:"|\')([^\s]*)(?:"|\')\}#is', 'self::scriptJSSrc', $content);
+        $content = preg_replace_callback('#\{css\}(.*?)\{/css\}#is', 'self::css', $content);
+        $content = preg_replace_callback('#\{css\s+src=(?:"|\')([^\s]*)(?:"|\')\}#is', 'self::cssSrc', $content);
 
         return $content;
     }

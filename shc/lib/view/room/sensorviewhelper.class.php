@@ -4,7 +4,7 @@ namespace SHC\View\Room;
 
 //Imports
 use RWF\Core\RWF;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\Sensor\Sensor;
 use SHC\Sensor\Sensors\AvmMeasuringSocket;
 use SHC\Sensor\Sensors\CometDectRadiatorThermostat;
@@ -141,18 +141,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-ds18x20-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -182,37 +182,37 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isHumidityVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.hum') .' : ';
-                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-hum">' . String::encodeHTML($sensor->getDisplayHumidity()) . '</span> ';
+                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-hum">' . StringUtils::encodeHTML($sensor->getDisplayHumidity()) . '</span> ';
                 }
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
-                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isHumidityVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-hum">' . String::encodeHTML($sensor->getDisplayHumidity()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-dht-' . self::$roomId . '-' . $sensor->getId() . '-hum">' . StringUtils::encodeHTML($sensor->getDisplayHumidity()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';
@@ -250,51 +250,51 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isAirPressureVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.press') .' : ';
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-press">' . String::encodeHTML($sensor->getDisplayAirPressure()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-press">' . StringUtils::encodeHTML($sensor->getDisplayAirPressure()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isAltitudeVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.alti') .' : ';
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-alti">' . String::encodeHTML($sensor->getDisplayAltitude()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-alti">' . StringUtils::encodeHTML($sensor->getDisplayAltitude()) . '</span>';
                 }
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isAirPressureVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-press">' . String::encodeHTML($sensor->getDisplayAirPressure()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-press">' . StringUtils::encodeHTML($sensor->getDisplayAirPressure()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isAltitudeVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-alti">' . String::encodeHTML($sensor->getDisplayAltitude()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-bmp-' . self::$roomId . '-' . $sensor->getId() . '-alti">' . StringUtils::encodeHTML($sensor->getDisplayAltitude()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';
@@ -333,18 +333,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.moisture') .' : ';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -372,18 +372,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.moisture') .' : ';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayMoisture()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -411,18 +411,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.lightIntensity') .' : ';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayLightIntensity()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . String::encodeHTML($sensor->getDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-analog-' . self::$roomId . '-' . $sensor->getId() . '-value">' . StringUtils::encodeHTML($sensor->getDisplayLightIntensity()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -453,51 +453,51 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . StringUtils::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                 }
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
                 if ($sensor->isTemperatureVisible() || $ignoreShow == true) {
 
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-avmPowerSensor-' . self::$roomId . '-' . $sensorId . '-energy">' . StringUtils::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';
@@ -536,18 +536,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.amount') .' : ';
-                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . StringUtils::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . StringUtils::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -575,18 +575,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.amount') .' : ';
-                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . StringUtils::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . String::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-amountMeter-' . self::$roomId . '-' . $sensor->getId() . '-amount">' . StringUtils::encodeHTML($sensor->getDisplayFluidAmount()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -614,18 +614,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.temp') .' : ';
-                $html .= '<span id="shc-view-sensor-cometThermostat-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-cometThermostat-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-cometThermostat-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . String::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-cometThermostat-' . self::$roomId . '-' . $sensor->getId() . '-temp">' . StringUtils::encodeHTML($sensor->getDisplayTemperature()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -656,39 +656,39 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.energy') .' : ';
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . StringUtils::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                 }
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content %%%%" style="padding-left: 10px;">';
                 if ($sensor->isPowerVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                     $firstRow = false;
                     $i++;
                 }
                 if ($sensor->isEnergyVisible() || $ignoreShow == true) {
 
                     ($firstRow === false ? $html .= '<br/>' : null);
-                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . String::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
+                    $html .= '<span id="shc-view-sensor-edimaxPowerSensor-' . self::$roomId . '-' . str_replace('.', '_', $sensorId) . '-energy">' . StringUtils::encodeHTML($sensor->getDisplayEnergy()) . '</span>';
                     $i++;
                 }
                 $html .= '</div>';
@@ -727,18 +727,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.power') .' : ';
-                $html .= '<span id="shc-view-sensor-sct013-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-sct013-' . self::$roomId . '-' . $sensor->getId() . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-sct013-' . self::$roomId . '-' . $sensor->getId() . '-power">' . String::encodeHTML($sensor->getDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-sct013-' . self::$roomId . '-' . $sensor->getId() . '-power">' . StringUtils::encodeHTML($sensor->getDisplayPower()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -766,18 +766,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.dist') .' : ';
-                $html .= '<span id="shc-view-sensor-hcsr04-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . String::encodeHTML($sensor->getDisplayDistance()) . '</span>';
+                $html .= '<span id="shc-view-sensor-hcsr04-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . StringUtils::encodeHTML($sensor->getDisplayDistance()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-hcsr04-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . String::encodeHTML($sensor->getDisplayDistance()) . '</span>';
+                $html .= '<span id="shc-view-sensor-hcsr04-' . self::$roomId . '-' . $sensor->getId() . '-dist">' . StringUtils::encodeHTML($sensor->getDisplayDistance()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -805,18 +805,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.sum') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualEnergySensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . String::encodeHTML($sensor->getSumDisplayEnergy()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualEnergySensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . StringUtils::encodeHTML($sensor->getSumDisplayEnergy()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualEnergySensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . String::encodeHTML($sensor->getSumDisplayEnergy()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualEnergySensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . StringUtils::encodeHTML($sensor->getSumDisplayEnergy()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -844,18 +844,18 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.sum') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualAmountSensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . String::encodeHTML($sensor->getSumDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualAmountSensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . StringUtils::encodeHTML($sensor->getSumDisplayFluidAmount()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualAmountSensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . String::encodeHTML($sensor->getSumDisplayFluidAmount()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualAmountSensor-' . self::$roomId . '-' . $sensor->getId() . '-sum">' . StringUtils::encodeHTML($sensor->getSumDisplayFluidAmount()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -884,28 +884,28 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.min') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-min">' . String::encodeHTML($sensor->getMinDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-min">' . StringUtils::encodeHTML($sensor->getMinDisplayHunidity()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.avg') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . String::encodeHTML($sensor->getAvarageDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . StringUtils::encodeHTML($sensor->getAvarageDisplayHunidity()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.max') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-max">' . String::encodeHTML($sensor->getMaxDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-max">' . StringUtils::encodeHTML($sensor->getMaxDisplayHunidity()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content shc-view-low" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . String::encodeHTML($sensor->getMinDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . StringUtils::encodeHTML($sensor->getMinDisplayHunidity()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . String::encodeHTML($sensor->getAvarageDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . StringUtils::encodeHTML($sensor->getAvarageDisplayHunidity()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . String::encodeHTML($sensor->getMaxDisplayHunidity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualHumiditySensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . StringUtils::encodeHTML($sensor->getMaxDisplayHunidity()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -934,28 +934,28 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.min') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-min">' . String::encodeHTML($sensor->getMinDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-min">' . StringUtils::encodeHTML($sensor->getMinDisplayLightIntensity()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.avg') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . String::encodeHTML($sensor->getAvarageDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . StringUtils::encodeHTML($sensor->getAvarageDisplayLightIntensity()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.max') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-max">' . String::encodeHTML($sensor->getMaxDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-max">' . StringUtils::encodeHTML($sensor->getMaxDisplayLightIntensity()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content shc-view-low" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . String::encodeHTML($sensor->getMinDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . StringUtils::encodeHTML($sensor->getMinDisplayLightIntensity()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . String::encodeHTML($sensor->getAvarageDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . StringUtils::encodeHTML($sensor->getAvarageDisplayLightIntensity()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . String::encodeHTML($sensor->getMaxDisplayLightIntensity()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualLighIntensitySensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . StringUtils::encodeHTML($sensor->getMaxDisplayLightIntensity()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -984,28 +984,28 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.min') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . String::encodeHTML($sensor->getMinDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . StringUtils::encodeHTML($sensor->getMinDisplayMoisture()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.avg') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . String::encodeHTML($sensor->getAvarageDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . StringUtils::encodeHTML($sensor->getAvarageDisplayMoisture()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.max') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . String::encodeHTML($sensor->getMaxDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . StringUtils::encodeHTML($sensor->getMaxDisplayMoisture()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content shc-view-low" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . String::encodeHTML($sensor->getMinDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . StringUtils::encodeHTML($sensor->getMinDisplayMoisture()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . String::encodeHTML($sensor->getAvarageDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . StringUtils::encodeHTML($sensor->getAvarageDisplayMoisture()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . String::encodeHTML($sensor->getMaxDisplayMoisture()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualMoistureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . StringUtils::encodeHTML($sensor->getMaxDisplayMoisture()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -1034,23 +1034,23 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.avg') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . String::encodeHTML($sensor->getAvarageDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . StringUtils::encodeHTML($sensor->getAvarageDisplayPower()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.sum') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-sum">' . String::encodeHTML($sensor->getSumDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-sum">' . StringUtils::encodeHTML($sensor->getSumDisplayPower()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content shc-view-middle" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . String::encodeHTML($sensor->getAvarageDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . StringUtils::encodeHTML($sensor->getAvarageDisplayPower()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-sum">' . RWF::getLanguage()->get('index.room.sensorValue.sum') . ': ' . String::encodeHTML($sensor->getSumDisplayPower()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualPowerSensor-' . self::$roomId . '-' . $sensorId . '-sum">' . RWF::getLanguage()->get('index.room.sensorValue.sum') . ': ' . StringUtils::encodeHTML($sensor->getSumDisplayPower()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }
@@ -1079,28 +1079,28 @@ abstract class SensorViewHelper {
 
                     $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 }
-                $html .= '<span style="font-weight: bold;">'. String::encodeHtml($sensor->getName()) .' : </span></br>';
+                $html .= '<span style="font-weight: bold;">'. StringUtils::encodeHtml($sensor->getName()) .' : </span></br>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.min') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . String::encodeHTML($sensor->getMinDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . StringUtils::encodeHTML($sensor->getMinDisplayTemperature()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.avg') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . String::encodeHTML($sensor->getAvarageDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . StringUtils::encodeHTML($sensor->getAvarageDisplayTemperature()) . '</span>';
                 $html .= '<br/>';
                 $html .= '&nbsp;&nbsp;&nbsp;&nbsp;'. RWF::getLanguage()->get('index.room.sensorValue.max') .' : ';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . String::encodeHTML($sensor->getMaxDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . StringUtils::encodeHTML($sensor->getMaxDisplayTemperature()) . '</span>';
                 $html .= '</li>';
             } else {
 
                 //Web Ansicht
                 $html .= '<div class="shc-contentbox-body-row shc-view-sensor">';
-                $html .= '<span class="shc-contentbox-body-row-title">' . String::encodeHTML($sensor->getName()) . '</span>';
+                $html .= '<span class="shc-contentbox-body-row-title">' . StringUtils::encodeHTML($sensor->getName()) . '</span>';
                 $html .= '<span class="shc-icon '. $sensor->getIcon() .'"></span>';
                 $html .= '<div class="shc-contentbox-body-row-content shc-view-low" style="padding-left: 10px;">';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . String::encodeHTML($sensor->getMinDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-min">' . RWF::getLanguage()->get('index.room.sensorValue.min') . ': ' . StringUtils::encodeHTML($sensor->getMinDisplayTemperature()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . String::encodeHTML($sensor->getAvarageDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-avg">' . RWF::getLanguage()->get('index.room.sensorValue.avg') . ': ' . StringUtils::encodeHTML($sensor->getAvarageDisplayTemperature()) . '</span>';
                 $html .= '<br/>';
-                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . String::encodeHTML($sensor->getMaxDisplayTemperature()) . '</span>';
+                $html .= '<span id="shc-view-sensor-virtualTemperatureSensor-' . self::$roomId . '-' . $sensorId . '-max">' . RWF::getLanguage()->get('index.room.sensorValue.max') . ': ' . StringUtils::encodeHTML($sensor->getMaxDisplayTemperature()) . '</span>';
                 $html .= '</div>';
                 $html .= '</div>';
             }

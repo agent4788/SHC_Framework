@@ -5,7 +5,7 @@ namespace SHC\Command\Web;
 //Imports
 use RWF\Core\RWF;
 use RWF\Request\Commands\AjaxCommand;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use SHC\UserAtHome\UserAtHome;
 use SHC\UserAtHome\UserAtHomeEditor;
 
@@ -45,7 +45,7 @@ class UserAtHomeUpdateAjax extends AjaxCommand {
 
                 $html .= '<div class="shc-view-userAtHome-icon" title="' . ($userAtHome->getState() == UserAtHome::STATE_ONLINE ? RWF::getLanguage()->get('index.userAtHome.online') : RWF::getLanguage()->get('index.userAtHome.offline')) . '">';
                 $html .= '<span class="' . ($userAtHome->getState() == UserAtHome::STATE_ONLINE ? 'shc-view-userAtHome-icon-online' : 'shc-view-userAtHome-icon-offline') . '"></span>';
-                $html .= '<span class="shc-view-userAtHome-icon-text">' . String::encodeHTML($userAtHome->getName()) . '</span>';
+                $html .= '<span class="shc-view-userAtHome-icon-text">' . StringUtils::encodeHTML($userAtHome->getName()) . '</span>';
                 $html .= '</div>';
             }
         }

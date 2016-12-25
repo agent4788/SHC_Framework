@@ -5,7 +5,7 @@ namespace RWF\Template;
 //Imports
 use RWF\Template\Exception\TemplateCompilerException;
 use RWF\Template\Exception\TemplateCompilationException;
-use RWF\Util\String;
+use RWF\Util\StringUtils;
 use RWF\Util\FileUtil;
 use RWF\Util\ArrayUtil;
 
@@ -395,7 +395,7 @@ class TemplateCompiler {
                 }
 
                 preg_match('#^([\w\d_]+)\.class\.php$#', $file, $match);
-                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper($match[1]);
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . StringUtils::firstCharToUpper($match[1]);
                 $object = new $class();
 
                 if ($object instanceof TemplatePrefilter) {
@@ -520,9 +520,9 @@ class TemplateCompiler {
         $count = count($tags);
         for ($i = 0; $i < $count; $i++) {
 
-            $this->line += String::countSubString($text[$i], "\n");
+            $this->line += StringUtils::countSubString($text[$i], "\n");
             $compiledTags[$i] = $this->compileTag($tags[$i]);
-            $this->line += String::countSubString($tags[$i], "\n");
+            $this->line += StringUtils::countSubString($tags[$i], "\n");
         }
         //Exception wenn nicht alle Tags geschlossen
         if (count($this->opendTags) > 0) {
@@ -537,7 +537,7 @@ class TemplateCompiler {
             $compiled .= $text[$i] . $compiledTags[$i];
         }
         $compiled .= $text[$i];
-        $compiled = String::trim($compiled);
+        $compiled = StringUtils::trim($compiled);
         //literale einfuegen
         $compiled = $this->insertLiterals($compiled);
         //Postfilter
@@ -672,7 +672,7 @@ class TemplateCompiler {
             //Plugin suchen
             foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerPlugin';
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . StringUtils::firstCharToUpper(StringUtils::toLower($command)) . 'CompilerPlugin';
                 foreach($this->plugins['compiler'] as $plugin) {
 
                     if($plugin instanceof $class) {
@@ -698,16 +698,16 @@ class TemplateCompiler {
         if (isset($this->plugins['compilerBlock'])) {
 
             $tagStart = true;
-            if (String::subString($command, 0, 1) == '/') {
+            if (StringUtils::subString($command, 0, 1) == '/') {
 
                 $tagStart = false;
-                $command = String::subString($command, 1);
+                $command = StringUtils::subString($command, 1);
             }
 
             //Plugin suchen
             foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+                $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . StringUtils::firstCharToUpper(StringUtils::toLower($command)) . 'CompilerBlockPlugin';
                 foreach($this->plugins['compilerBlock'] as $plugin) {
 
                     if($plugin instanceof $class) {
@@ -744,16 +744,16 @@ class TemplateCompiler {
     protected function compileBlockPlugins($command, array $args) {
 
         $tagStart = true;
-        if (String::subString($command, 0, 1) == '/') {
+        if (StringUtils::subString($command, 0, 1) == '/') {
 
             $tagStart = false;
-            $command = String::subString($command, 1);
+            $command = StringUtils::subString($command, 1);
         }
 
         //Plugin suchen
         foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
 
-            $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . String::firstCharToUpper(String::toLower($command)) . 'CompilerBlockPlugin';
+            $class = '\\'. $baseNamespace .'\\Template\\Plugin\\' . StringUtils::firstCharToUpper(StringUtils::toLower($command)) . 'CompilerBlockPlugin';
             foreach($this->plugins['compilerBlock'] as $plugin) {
 
                 if ($plugin instanceof $class) {
@@ -805,7 +805,7 @@ class TemplateCompiler {
      */
     protected function compileTag($tag) {
 
-        $tag = String::trim($tag);
+        $tag = StringUtils::trim($tag);
 
         //Output Tag
         $output = $this->compileOutputTag($tag);
@@ -820,8 +820,8 @@ class TemplateCompiler {
         //Command und Argumente trennen
         $match = array();
         preg_match('#^(/?[\w\d_]+)#', $tag, $match);
-        $command = String::trim($match[1]);
-        $argString = String::trim(String::subString($tag, String::length($command)));
+        $command = StringUtils::trim($match[1]);
+        $argString = StringUtils::trim(StringUtils::subString($tag, StringUtils::length($command)));
         $args = $this->parseArgs($argString);
 
         switch ($command) {
@@ -1203,7 +1203,7 @@ class TemplateCompiler {
                             $modifierData['negation'] = true;
                         }
 
-                        $modifierData['name'] = String::firstCharToUpper(String::toLower($currentVar));
+                        $modifierData['name'] = StringUtils::firstCharToUpper(StringUtils::toLower($currentVar));
 
                         $found = false;
                         foreach($this->pluginDirs as $baseNamespace => $pluginDir) {
@@ -1223,7 +1223,7 @@ class TemplateCompiler {
 
                         if($found === false) {
 
-                            $modifierData['name'] = String::toLower($modifierData['name']);
+                            $modifierData['name'] = StringUtils::toLower($modifierData['name']);
                             if ((function_exists($modifierData['name']) || in_array($modifierData['name'], $this->availableFunctions)) && !in_array($modifierData['name'], $this->disabledeFunctions)) {
 
                                 $modifierData['className'] = $modifierData['name'];
@@ -1531,7 +1531,7 @@ class TemplateCompiler {
         if (substr($variable, 0, 1) == '$') {
 
             return 'variable';
-        } elseif (String::checkMD5($variable)) {
+        } elseif (StringUtils::checkMD5($variable)) {
 
             return 'string';
         } else {
@@ -1687,10 +1687,10 @@ class TemplateCompiler {
         $code .= 'if(count(' . $args['from'] . ') > 0) { ';
         if (isset($args['key'])) {
 
-            $code .= 'foreach(' . $args['from'] . ' as ' . (String::subString($args['key'], 0, 1) != '$' ? '$this->var[' . $args['key'] . ']' : $args['key']) . ' => ' . (String::subString($args['item'], 0, 1) != '$' ? '$this->var[' . $args['item'] . ']' : $args['item']) . ') { ';
+            $code .= 'foreach(' . $args['from'] . ' as ' . (StringUtils::subString($args['key'], 0, 1) != '$' ? '$this->var[' . $args['key'] . ']' : $args['key']) . ' => ' . (StringUtils::subString($args['item'], 0, 1) != '$' ? '$this->var[' . $args['item'] . ']' : $args['item']) . ') { ';
         } else {
 
-            $code .= 'foreach(' . $args['from'] . ' as ' . (String::subString($args['item'], 0, 1) != '$' ? '$this->var[' . $args['item'] . ']' : $args['item']) . ') { ';
+            $code .= 'foreach(' . $args['from'] . ' as ' . (StringUtils::subString($args['item'], 0, 1) != '$' ? '$this->var[' . $args['item'] . ']' : $args['item']) . ') { ';
         }
 
         if ($useItems === true) {
@@ -1872,7 +1872,7 @@ class TemplateCompiler {
         $lastIsOperator = false;
         for ($i = 0, $j = count($conditions); $i < $j; $i++) {
 
-            if (String::length($conditions[$i]) > 0) {
+            if (StringUtils::length($conditions[$i]) > 0) {
 
                 $code .= $this->compileVar($conditions[$i]) . ' ';
                 $lastIsOperator = false;
