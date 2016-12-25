@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Update von Version 2.2.3 auf 2.2.4
+ * Update von Version 2.2.3 auf 2.2.8
  *
  * @author     Oliver Kleditzsch
  * @copyright  Copyright (c) 2015, Oliver Kleditzsch
@@ -487,6 +487,28 @@ if($pccInstalled === true && $pccApiLevel == 15) {
 
     //DB Konfiguration in JSON Datei umwandeln
     $pccApiLevel = 16;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Update v2.2.7 auf v2.2.8  (API Level 16 auf 17) /////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//SHC
+if($shcInstalled === true && $shcApiLevel == 16) {
+
+    //Update Funktionen
+
+    //DB Konfiguration in JSON Datei umwandeln
+    $shcApiLevel = 17;
+}
+
+//PCC
+if($pccInstalled === true && $pccApiLevel == 16) {
+
+    //Update Funktionen
+
+    //DB Konfiguration in JSON Datei umwandeln
+    $pccApiLevel = 17;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
