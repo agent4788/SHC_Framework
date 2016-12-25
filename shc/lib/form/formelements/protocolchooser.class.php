@@ -65,7 +65,8 @@ class ProtocolChooser extends Select {
                 'rc102' => array('RC102 (rc102)', ($protocol == 'rc102' ? 1 : 0)),
                 'duwi' => array('Düwi Terminal (duwi)', ($protocol == 'duwi' ? 1 : 0)),
                 'logilink-switch' => array('Logilink EC0002, EC0004, EC0005 and EC0006 (logilink-switch)', ($protocol == 'logilink-switch' ? 1 : 0)),
-                'techlico_switch' => array('TechLiCo (techlico_switch)', ($protocol == 'techlico_switch' ? 1 : 0))
+                'techlico_switch' => array('TechLiCo (techlico_switch)', ($protocol == 'techlico_switch' ? 1 : 0)),
+                'quigg_gt7000' => array('Quigg GT7000 (quigg_gt7000)', ($protocol == 'quigg_gt7000' ? 1 : 0))
             )
 
         );
