@@ -50,7 +50,7 @@ class DeleteLinkCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         $link = str_replace('\'', '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
-        $html  = '<?php $randomId = RWF\Util\String::randomStr(64); $randomId2 = RWF\Util\String::randomStr(64); ?>';
+        $html  = '<?php $randomId = RWF\Util\StringUtils::randomStr(64); $randomId2 = RWF\Util\StringUtils::randomStr(64); ?>';
         $html .= '<a href="#"  id="<?php echo $randomId; ?>" class="shc-view-buttons-delete" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.delete\'); ?>"></a>';
         if($safetyPromptText != '') {
 

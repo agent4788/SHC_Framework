@@ -39,7 +39,7 @@ class EditListCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         $link = str_replace(array('"', "'"), '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
-        $html  = '<?php $randomId = RWF\Util\String::randomStr(64); ?>';
+        $html  = '<?php $randomId = RWF\Util\StringUtils::randomStr(64); ?>';
         $html .= '<a href="#"  id="<?php echo $randomId; ?>" class="shc-view-buttons-editlist" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.editlist\'); ?>"></a>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';

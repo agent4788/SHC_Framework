@@ -35,7 +35,7 @@ class SettingCompilerPlugin implements TemplateCompilerPlugin {
         
         if(isset($args['encodeHtml'])) {
             
-            return '<?php echo \\RWF\\Util\\String::encodeHtml(\\RWF\\Core\\RWF::getSetting('. $args['name'] .')); ?> ';
+            return '<?php echo \\RWF\\Util\\StringUtils::encodeHtml(\\RWF\\Core\\RWF::getSetting('. $args['name'] .')); ?> ';
         }
         return '<?php echo \\RWF\\Core\\RWF::getSetting('. $args['name'] .'); ?> ';
     }

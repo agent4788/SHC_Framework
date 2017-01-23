@@ -40,7 +40,7 @@ class EditLinkCompilerPlugin implements TemplateCompilerPlugin {
         }
 
         $link = str_replace(array('"', "'"), '', $args['link']) .'<?php echo '. $args['id'] .'; ?>';
-        $html  = '<?php $randomId = RWF\Util\String::randomStr(64); ?>';
+        $html  = '<?php $randomId = RWF\Util\StringUtils::randomStr(64); ?>';
         $html .= '<a href="#"  id="<?php echo $randomId; ?>" class="pcc-view-buttons-edit" title="<?php echo \\RWF\\Core\\RWF::getLanguage()->get(\'global.button.edit\'); ?>"></a>';
         $html .= '<script type="text/javascript">';
         $html .= '$(function() {';
