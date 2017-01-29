@@ -1060,19 +1060,19 @@ class TemplateCompiler {
         //HTML Encode
         if ($encodeHTML === true) {
 
-            $compiledTag = 'RWF\Util\String::encodeHTML(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\StringUtils::encodeHTML(' . $compiledTag . ')';
         }
 
         //Strip HTML
         if ($stripHTML === true) {
 
-            $compiledTag = 'RWF\Util\String::stripHTML(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\StringUtils::stripHTML(' . $compiledTag . ')';
         }
 
         //Number Format
         if ($numFormat === true) {
 
-            $compiledTag = 'RWF\Util\String::numberFormat(' . $compiledTag . ')';
+            $compiledTag = 'RWF\Util\StringUtils::numberFormat(' . $compiledTag . ')';
         }
 
         return '<?php echo ' . $compiledTag . '; ?>';
